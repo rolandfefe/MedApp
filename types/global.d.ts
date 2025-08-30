@@ -1,4 +1,16 @@
-import { eGender, eMaritalStatus } from "@/constants/enums";
+import {
+	eAllergySeverity,
+	eAppointmentTypes,
+	eArticleCategories,
+	eArticleType,
+	eGender,
+	eLicenseType,
+	eMaritalStatus,
+	eMedicalDegreeTypes,
+	eMedicalSpecialties,
+	eMethodOfDrugAdministration,
+	eWeekDays,
+} from "@/constants/enums";
 
 export {};
 
@@ -25,6 +37,7 @@ declare global {
 		occupation?: string;
 		ethnicity?: string;
 		race?: string;
+		languagesSpoken: eLanguages[];
 
 		emergencyContacts: {
 			name: string;
@@ -40,9 +53,110 @@ declare global {
 	interface IDoctor {
 		_id?: string;
 		user: IUser | string;
+		DOB: Date;
+		gender: eGender;
+		bio?: string;
+		languagesSpoken: eLanguages[];
+
+		// Professional Credentials & Qualifications
+		credentials: {
+			medicalDegree: {
+				type: eMedicalDegreeTypes;
+				institution: string;
+				date: Date;
+			};
+			licenses: IMedicalLicense[];
+			boardCertifications?: IBoardCertification[];
+			hospitalAffiliations: IHospitalAffiliation[];
+			residencies: Array<{
+				specialty: string;
+				hospital: string;
+				startDate: Date;
+				endDate?: Date;
+			}>;
+			isVerified: boolean;
+		};
+
+		// Specialties & Expertise
+		specialties: {
+			primary: eMedicalSpecialties;
+			secondary?: eMedicalSpecialties[];
+			procedures: string[]; // List of procedures they are qualified to perform
+		};
+
+		contactInfo: {
+			officePhone: string;
+			officeEmail?: string;
+			mobilePhone?: string; // For on-call purposes
+			pager?: string;
+		};
+
+		// Professional Schedule & Availability
+		schedule: {
+			officeHours: Array<{
+				dayOfWeek: eWeekDays;
+				startTime: string; // in HH:MM format
+				endTime: string;
+				isAvailable: boolean;
+			}>;
+			averageAppointmentDuration: string;
+			isAcceptingNewPatients: boolean;
+			nextAvailableAppointmentDate?: Date;
+		};
+
+		// Professional Metrics & Performance (For internal/admin use)
+		metrics?: {
+			rating?: number[]; // 0-100 scale
+			numberOfPatients: number;
+			yearsOfExperience: number;
+			readmissionRate?: number;
+		};
+
+		// ? System Access & Administrative Data
+		// systemAccess: {
+		// 	role:
+		// 		| "admin"
+		// 		| "physician"
+		// 		| "resident"
+		// 		| "fellow"
+		// 		| "nurse-practitioner";
+		// 	ehrSystemUsername: string;
+		// 	permissions: string[]; // e.g., ['prescribe_medications', 'view_all_records', 'order_labs']
+		// 	isActive: boolean;
+		// };
 
 		createdAt?: Date;
 		updatedAt?: Date;
+	}
+
+	// Supporting Interfaces for more complex structures
+
+	interface IMedicalLicense {
+		licenseNumber: string;
+		state: string;
+		issuingState: string; // or country/province
+		expirationDate?: Date;
+		active: boolean;
+		licenseType: eLicenseType;
+	}
+
+	interface IBoardCertification {
+		boardName: string; // e.g., 'American Board of Internal Medicine'
+		specialty: string; // e.g., 'Internal Medicine'
+		subSpecialty?: string; // e.g., 'Cardiovascular Disease'
+		certificationId: string;
+		initialCertificationDate: Date;
+		expirationDate?: Date; // Time-limited certifications
+		status: "active" | "expired" | "not-certified";
+	}
+
+	interface IHospitalAffiliation {
+		name: string;
+		startDate: Date;
+		endDate?: Date; // If the affiliation has ended
+		department: string;
+		role: string; // e.g., 'Attending Physician', 'Chief of Surgery'
+		privilegeDetails?: string[]; // Specific procedures they are privileged for
 	}
 
 	interface IHistory {
@@ -69,7 +183,6 @@ declare global {
 		// socialHistory
 		smoking: {
 			status: "never" | "former" | "current";
-			packsPerDay?: number;
 			years?: number;
 			quitDate?: Date;
 		};
@@ -94,27 +207,34 @@ declare global {
 	}
 
 	interface IAllergy {
+		_id?: string;
+
 		substance: string;
 		reaction: string;
-		severity: "mild" | "moderate" | "severe";
+		severity: eAllergySeverity;
 		onsetDate?: Date;
 		documentedBy: string;
 		lastReactionDate?: Date;
+
+		createdAt?: Date;
+		updatedAt?: Date;
 	}
 
 	interface IMedication {
 		_id?: string;
 		name: string;
+		prescribedBy: IDoctor | IUser;
 		dosage: string;
 		frequency: string;
-		route: "oral" | "topical" | "injection" | "inhalation" | "other";
+		route: eMethodOfDrugAdministration;
 		startDate: Date;
 		endDate?: Date;
-		prescribedBy: string;
-		reason: string;
 		active: boolean;
+
+		reason?: string;
 		instructions?: string;
 		sideEffects?: string[];
+
 		createdAt?: Date;
 		updatedAt?: Date;
 	}
@@ -139,118 +259,161 @@ declare global {
 		_id: string;
 		title: string;
 		subtitle?: string;
-
-		// Authorship Information
 		authors: IDoctor[];
 
 		// Publication Metadata
-		publication: {
-			journalName: string;
+		publication?: {
 			publisher: string;
-			volume?: string;
-			issue?: string;
-			publicationDate: Date;
-			epubDate?: Date; // Date published online first
-			pageRange?: string; // e.g., "102-115"
+			version?: string;
+			Date: Date;
 		};
 
-		// Article Content
 		content: {
-			abstract: string;
-			keywords: string[];
 			body: Array<{
 				sectionTitle: string;
 				sectionContent: string;
-				// For more complex content, this could be an array of text, image references, etc.
 			}>;
-			references: Array<{
-				id: string; // e.g., "1", "[1]"
+			supplementaryMaterials?: Array<{
+				title: string;
+				url: string;
+			}>;
+			figures: Array<{
+				caption: string;
+				url: string;
+				type: "image" | "chart" | "graph" | "table";
+			}>;
+			references?: Array<{
 				citation: string; // Full APA/AMA/Vancouver format citation
-				doi?: string;
 			}>;
 		};
 
-		// Medical & Scientific Metadata
-		scientificData: {
-			articleType:
-				| "research"
-				| "review"
-				| "case-report"
-				| "editorial"
-				| "letter";
-			studyType?:
-				| "randomized-controlled-trial"
-				| "cohort"
-				| "case-control"
-				| "cross-sectional";
+		validation: {
 			peerReviewed: boolean;
 			conflictOfInterestStatement: string;
-			fundingStatement?: string;
-			acknowledgements?: string;
+			isVerified: boolean;
 		};
 
-		// Licensing and Copyright
 		licensing: {
 			copyright: string; // e.g., "© 2023 American Medical Association"
 			licenseType: string; // e.g., "CC-BY-NC 4.0"
 			isOpenAccess: boolean;
 		};
 
-		// Related Data
-		related: {
-			figures: Array<{
-				id: string;
-				caption: string;
-				url: string;
-				type: "image" | "chart" | "graph" | "table";
-			}>;
-			tables: Array<{
-				id: string;
-				title: string;
-				htmlContent?: string; // Or a structured data object
-			}>;
-			supplementaryMaterials?: Array<{
-				id: string;
-				title: string;
-				url: string;
-				description: string;
-			}>;
-		};
-
 		// Metadata for discoverability and administration
 		meta: {
-			wordCount: number;
-			revisionHistory: Array<{
-				version: number;
-				date: Date;
-				description: string; // e.g., "Submitted", "Accepted", "Corrected Proof"
-			}>;
-			citationCount?: number;
-			firstReceivedDate: Date;
-			acceptedDate: Date;
-			categories: string[]; // MeSH terms or other categories
+			articleType: eArticleType;
+			categories: eArticleCategories; // MeSH terms or other categories
+
+			reads: IUser[] | string[];
+			likes: IUser[] | string[];
+			dislikes: IUser[] | string[];
 		};
 	}
 
-	// Example of a more complex reference interface
-	interface IArticleReference {
-		id: string;
-		authors: string[];
-		publicationYear: number;
-		title: string;
-		journal?: string;
-		volume?: string;
-		issue?: string;
-		pageNumbers?: string;
-		doi?: string;
-		pmid?: string; // PubMed ID
+	interface IAppointment {
+		_id?: string;
+
+		patient: IPatient | string;
+		doctor: IDoctor | string;
+		starTime: Date;
+		endTime: Date;
+		// Appointment Details
+		type:eAppointmentTypes;
+		status: eAppointmentStatus;
+		reason: string; // Chief complaint or reason for appointment
+		chiefComplaint?: string; // More formal medical description
+
+		// Clinical Context
+		vitalsRecorded?: boolean;
+		vitals?: IVitals;
+		nurseNotes?: string;
+		preAppointmentQuestionnaireCompleted?: boolean;
+
+		// Recurring Appointments
+		isRecurring: boolean;
+		recurrencePattern?: {
+			frequency: "daily" | "weekly" | "bi-weekly" | "monthly";
+			interval: number;
+			endDate?: Date;
+			exceptions: Date[]; // Dates where the recurrence doesn't happen
+		};
+		originalAppointmentId?: string; // For rescheduled appointments
+
+		// Communication & Reminders
+		reminders: {
+			sent: {
+				sms: boolean;
+				email: boolean;
+				push: boolean;
+			};
+			lastReminderSentAt?: Date;
+			confirmation: {
+				method: "auto" | "manual" | "none";
+				confirmed: boolean;
+				confirmedAt?: Date;
+				confirmedBy?: "patient" | "staff" | "system";
+			};
+		};
+
+		// Cancellation & No-Show Details
+		cancellation?: {
+			cancelledAt: Date;
+			cancelledBy: "patient" | "doctor" | "staff" | "system";
+			reason: string;
+		};
+
+		// Follow-up & Outcomes
+		followUpInstructions?: string;
+		refAppointment?: IAppointment | string;
+		referral?: {
+			specialistId?: string;
+			specialistName?: string;
+			reason: string;
+		};
+
+		createdAt: Date;
+		updatedAt: Date;
 	}
 
-	// Example of a more complex body content interface for structured data
-	interface IArticleSection {
-		sectionTitle: string;
-		paragraphs: string[];
-		figures?: string[]; // Array of figure IDs
-		tables?: string[]; // Array of table IDs
+	// Supporting Interfaces for Complex Types
+
+	interface IRecurrencePattern {
+		frequency: "daily" | "weekly" | "bi-weekly" | "monthly";
+		interval: number;
+		daysOfWeek?: number[]; // 0-6 (Sunday-Saturday)
+		dayOfMonth?: number;
+		endDate?: Date;
+		occurrenceCount?: number;
+		exceptions: Date[];
+	}
+
+	interface IAppointmentReminder {
+		type: "sms" | "email" | "push" | "voice";
+		scheduledTime: Date; // When to send the reminder
+		sent: boolean;
+		sentAt?: Date;
+		deliveryStatus?: "pending" | "delivered" | "failed";
+		failureReason?: string;
+	}
+
+	interface IAppointmentBillingDetails {
+		insuranceProviderId?: string;
+		insurancePlanId?: string;
+		subscriberId?: string;
+		groupNumber?: string;
+		estimatedCost?: number;
+		patientResponsibility?: number;
+		paidAmount?: number;
+		paymentMethod?: "cash" | "card" | "check" | "hsa" | "insurance";
+		invoiceId?: string;
+	}
+
+	interface IAppointmentClinicalContext {
+		preAppointmentNotes?: string;
+		medicationsReviewed?: boolean;
+		allergiesReviewed?: boolean;
+		requiredLabs?: string[];
+		requiredImaging?: string[];
+		templateUsed?: string; // EHR template name
 	}
 }
