@@ -20,7 +20,7 @@ export default function Home() {
 					<li className="tracking-[-.01em]">
 						Client:{" "}
 						<code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-							Roland Willabo
+							Roland S. Willabo
 						</code>
 					</li>
 				</ol>
