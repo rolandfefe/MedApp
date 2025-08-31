@@ -118,12 +118,39 @@ export enum eAppointmentTypes {
 export enum eAppointmentStatus {
 	SCHEDULED = "Scheduled",
 	CONFIRMED = "Confirmed",
+	CANCELLED = "Cancelled",
 	ARRIVED = "Arrived",
 	IN_PROGRESS = "In Progress",
 	COMPLETED = "Completed",
-	CANCELLED = "Cancelled",
 	NO_SHOW = "No Show",
 	RESCHEDULED = "Rescheduled",
+}
+
+export enum eMessageStatus {
+	SENT = "Sent",
+	RECEIVED = "Received",
+	READ = "Read",
+}
+
+export enum eReminderVariants {
+	APPOINTMENT = "Appointment",
+	MEDICATION = "Medication",
+}
+
+export enum eConfidenceLevel {
+	RULED_OUT = "Ruled-out",
+	LOW = "Low",
+	MEDIUM = "Medium",
+	HIGH = "High",
+	CONFIRMED = "Confirmed",
+}
+
+export enum eDiagnosticStatus {
+	Active = "Active",
+	Provisional = "Provisional",
+	RuledOut = "Ruled-out",
+	Confirmed = "Confirmed",
+	Resolved = "Resolved",
 }
 
 export enum eLanguages {

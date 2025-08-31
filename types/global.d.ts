@@ -1,14 +1,19 @@
 import {
 	eAllergySeverity,
+	eAppointmentStatus,
 	eAppointmentTypes,
 	eArticleCategories,
 	eArticleType,
+	eConfidenceLevel,
+	eDiagnosticStatus,
 	eGender,
 	eLicenseType,
 	eMaritalStatus,
 	eMedicalDegreeTypes,
 	eMedicalSpecialties,
+	eMessageStatus,
 	eMethodOfDrugAdministration,
+	eReminderVariants,
 	eWeekDays,
 } from "@/constants/enums";
 
@@ -223,7 +228,7 @@ declare global {
 	interface IMedication {
 		_id?: string;
 		name: string;
-		prescribedBy: IDoctor | IUser;
+		doctor: IDoctor | IUser;
 		dosage: string;
 		frequency: string;
 		route: eMethodOfDrugAdministration;
@@ -313,107 +318,229 @@ declare global {
 	interface IAppointment {
 		_id?: string;
 
-		patient: IPatient | string;
-		doctor: IDoctor | string;
+		// ? Optional since we want to allow Open appointments
+		patient?: IPatient | string;
+		doctor?: IDoctor | string;
 		starTime: Date;
 		endTime: Date;
+
 		// Appointment Details
-		type:eAppointmentTypes;
+		type: eAppointmentTypes;
 		status: eAppointmentStatus;
 		reason: string; // Chief complaint or reason for appointment
-		chiefComplaint?: string; // More formal medical description
+		diagnosis?: IDiagnosis;
 
-		// Clinical Context
-		vitalsRecorded?: boolean;
-		vitals?: IVitals;
-		nurseNotes?: string;
-		preAppointmentQuestionnaireCompleted?: boolean;
-
-		// Recurring Appointments
-		isRecurring: boolean;
-		recurrencePattern?: {
-			frequency: "daily" | "weekly" | "bi-weekly" | "monthly";
-			interval: number;
-			endDate?: Date;
-			exceptions: Date[]; // Dates where the recurrence doesn't happen
-		};
-		originalAppointmentId?: string; // For rescheduled appointments
-
+		// ? Appointments can be under recurrence plan.
+		recurrencePattern?: IRecurrencePlan | string;
 		// Communication & Reminders
-		reminders: {
-			sent: {
-				sms: boolean;
-				email: boolean;
-				push: boolean;
-			};
-			lastReminderSentAt?: Date;
-			confirmation: {
-				method: "auto" | "manual" | "none";
-				confirmed: boolean;
-				confirmedAt?: Date;
-				confirmedBy?: "patient" | "staff" | "system";
-			};
+		reminders: IReminder[];
+
+		confirmation?: {
+			isConfirmed: boolean;
+			confirmedAt?: Date;
+			confirmedBy?: "patient" | "staff" | "system";
 		};
 
-		// Cancellation & No-Show Details
 		cancellation?: {
 			cancelledAt: Date;
-			cancelledBy: "patient" | "doctor" | "staff" | "system";
+			cancelledBy: "patient" | "doctor" | "staff";
 			reason: string;
 		};
 
 		// Follow-up & Outcomes
 		followUpInstructions?: string;
-		refAppointment?: IAppointment | string;
-		referral?: {
-			specialistId?: string;
-			specialistName?: string;
-			reason: string;
+		referral?: IReferral;
+
+		createdAt: Date;
+		updatedAt: Date;
+	}
+
+	// ? Allow constant follow up on the patients
+	interface IRecurrencePlan {
+		_id?: string;
+
+		supervisor: IPatient | IDoctor | string;
+		name: string;
+		frequency: "daily" | "weekly" | "bi-weekly" | "monthly";
+		interval: number;
+		weekDays?: eWeekDays[];
+		// dayOfMonth?: number;
+		startDate?: Date;
+		endDate?: Date;
+		occurrenceCount?: number;
+		exceptions: Date[];
+
+		createdAt: Date;
+		updatedAt: Date;
+	}
+
+	interface IReferral {
+		_id?: string;
+
+		appointment: IAppointment | string;
+
+		reason: string;
+
+		createdAt: Date;
+		updatedAt: Date;
+	}
+
+	interface IReminder {
+		_id?: string;
+
+		user: IUser | string;
+
+		variant: eReminderVariants;
+		item: IAppointment | IMedication | string;
+		body: string;
+
+		scheduledTime: Date;
+		sent: boolean;
+		status?: "pending" | "sent" | "failed";
+
+		createdAt: Date;
+		updatedAt: Date;
+	}
+
+	interface IDiagnosis {
+		_id?: string;
+
+		appointment: IAppointment | string;
+		patient: IPatient | string;
+		doctor: IDoctor | string;
+
+		chiefComplaint?: string; // More formal medical description
+
+		preAppointmentNotes?: string;
+		medicationsReviewed?: boolean;
+		templateUsed?: string; // EHR template name
+
+		onsetDate?: Date;
+		dateResolved?: Date;
+
+		healthStatus: IHealthStatus | string;
+
+		// Presenting Information
+		historyOfPresentIllness: string;
+
+		differentialDiagnosis: IDifferentialDiagnosis[];
+		status: eDiagnosticStatus;
+
+		createdAt: Date;
+		updatedAt: Date;
+		updatedBy: IDoctor | string;
+	}
+
+	interface IDifferentialDiagnosis {
+		condition: string;
+		icd10Code?: string;
+		confidence: eConfidenceLevel;
+		reasoning?: string;
+		isPrimary: boolean; // Primary vs. secondary/comorbid diagnosis
+		laterality?: "left" | "right" | "bilateral"; // For side-specific conditions
+		severity?: "mild" | "moderate" | "severe";
+		stage?: string; // e.g., "Stage IIB", "Class 3"
+		dateConfirmed: Date;
+	}
+
+	interface IVerdict {
+		_id?: string;
+		diagnosis: IDiagnosis | string; // Links back to the IDiagnosis record
+		doctor: IDoctor | string;
+
+		// The Final Diagnosis
+		confirmedDiagnoses: IDifferentialDiagnosis[];
+		
+		// Clinical Impact & Assessment
+		clinicalSummary: string; // Summary of the case and findings
+		complications?: string[]; // Any complications identified
+		prognosis: {
+			outlook: "excellent" | "good" | "fair" | "poor" | "guarded";
+			estimatedRecoveryTime?: string; // e.g., "2-4 weeks"
+			notes?: string;
+		};
+
+		// Treatment Plan Derived from the Verdict
+		treatmentPlan: {
+			plan: string; // Overall description of the treatment approach
+			medications: IMedication[];
+			procedures?: Array<{
+				type: string;
+				scheduledDate?: Date;
+				status: "recommended" | "scheduled" | "completed";
+			}>;
+			therapies?: Array<{
+				type: string; // e.g., "Physical Therapy", "Occupational Therapy"
+				frequency: string;
+				duration: string;
+			}>;
+			lifestyleRecommendations?: string[];
+		};
+
+		// Follow-up and Monitoring
+		followUp: {
+			isRequired: boolean;
+			frequency?: string; // e.g., "every 3 months"
+			nextAppointmentDate?: Date;
+			monitoringInstructions?: string; // What to watch for at home
+		};
+
+		// Patient Education & Communication
+		patientExplanation: string; // How the diagnosis was explained to the patient in layman's terms
+		patientMaterialsProvided?: string[]; // e.g., ["brochure_on_hypertension", "website_link"]
+
+		// Verification & Sign-off
+		dateFinalized?: Date;
+		isConfirmed: boolean;
+		requiresSecondOpinion: boolean;
+		secondOpinionClinicianId?: string;
+
+		// Metadata
+		createdBy: string;
+		createdAt: Date;
+		updatedAt: Date;
+		updatedBy: string;
+	}
+
+	// ! Forms Basis of patient follow up
+	interface IHealthStatus {
+		_id?: string;
+
+		patient: IPatient | string;
+		vitals: IVitals | string;
+
+		chiefComplaint?: string;
+		symptoms?: Array<{
+			description: string;
+			onset: Date;
+			severity: number; // 1-10 scale
+			duration?: string;
+		}>;
+
+		pain?: {
+			location: string;
+			intensity: number; // 0-10 scale
+			character: string; // sharp, dull, burning, etc.
+			aggravatingFactors?: string[];
+			relievingFactors?: string[];
 		};
 
 		createdAt: Date;
 		updatedAt: Date;
 	}
 
-	// Supporting Interfaces for Complex Types
+	interface IMessage {
+		_id?: string;
 
-	interface IRecurrencePattern {
-		frequency: "daily" | "weekly" | "bi-weekly" | "monthly";
-		interval: number;
-		daysOfWeek?: number[]; // 0-6 (Sunday-Saturday)
-		dayOfMonth?: number;
-		endDate?: Date;
-		occurrenceCount?: number;
-		exceptions: Date[];
-	}
+		appointment: IAppointment | string;
+		body: string;
+		status: eMessageStatus;
+		refMessage?: IMessage | string;
 
-	interface IAppointmentReminder {
-		type: "sms" | "email" | "push" | "voice";
-		scheduledTime: Date; // When to send the reminder
-		sent: boolean;
-		sentAt?: Date;
-		deliveryStatus?: "pending" | "delivered" | "failed";
-		failureReason?: string;
-	}
+		from: IUser | string;
+		to: IUser | string;
 
-	interface IAppointmentBillingDetails {
-		insuranceProviderId?: string;
-		insurancePlanId?: string;
-		subscriberId?: string;
-		groupNumber?: string;
-		estimatedCost?: number;
-		patientResponsibility?: number;
-		paidAmount?: number;
-		paymentMethod?: "cash" | "card" | "check" | "hsa" | "insurance";
-		invoiceId?: string;
-	}
-
-	interface IAppointmentClinicalContext {
-		preAppointmentNotes?: string;
-		medicationsReviewed?: boolean;
-		allergiesReviewed?: boolean;
-		requiredLabs?: string[];
-		requiredImaging?: string[];
-		templateUsed?: string; // EHR template name
+		createdAt: Date;
+		updatedAt: Date;
 	}
 }
