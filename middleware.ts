@@ -1,6 +1,16 @@
-import { clerkMiddleware } from "@clerk/nextjs/server";
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { NextRequest } from "next/server";
+import "@/lib/db/models";
 
-export default clerkMiddleware();
+const publicRoutes = createRouteMatcher([
+	"/",
+	"/api/webhooks/clerk",
+	"/api/uploadthing",
+]);
+
+export default clerkMiddleware(async (auth, req: NextRequest) => {
+	// Auth rules here
+});
 
 export const config = {
 	matcher: [

@@ -1,13 +1,15 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
-import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "@/app/api/uploadthing/core";
 import { ThemeProvider } from "@/components/theme-provider";
+import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
+import type { Metadata } from "next";
+import { Geist_Mono, Poppins } from "next/font/google";
+import { extractRouterConfig } from "uploadthing/server";
+import "./globals.css";
 
-const geistSans = Geist({
-	variable: "--font-geist-sans",
+const poppinsFont = Poppins({
+	weight: ["100", "200", "300", "400", "500", "600", "700"],
+	style: "normal",
+	display: "auto",
 	subsets: ["latin"],
 });
 
@@ -17,7 +19,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-	title: "Health App",
+	title: "Med App",
 	description: "Saving Live is all we do.",
 };
 
@@ -29,7 +31,7 @@ export default function RootLayout({
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<body
-				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+				className={`${poppinsFont.className} ${geistMono.variable} antialiased`}
 			>
 				<NextSSRPlugin
 					/**

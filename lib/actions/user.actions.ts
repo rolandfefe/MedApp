@@ -51,7 +51,10 @@ export const updateUser = async (
 	try {
 		await connectDb();
 
-		await userModel.findByIdAndUpdate(updatedUser._id, updatedUser);
+		await userModel.findOneAndUpdate(
+			{ clerkId: updatedUser.clerkId },
+			updatedUser
+		);
 
 		after(() => revalidatePath(pathname));
 	} catch (error: any) {
@@ -60,13 +63,13 @@ export const updateUser = async (
 };
 
 export const deleteUser = async (
-	userId: IUser["_id"],
+	clerkId: string,
 	pathname: string
 ): Promise<void> => {
 	try {
 		await connectDb();
 
-		await userModel.findByIdAndDelete(userId);
+		await userModel.findOneAndDelete({clerkId});
 
 		after(() => revalidatePath(pathname));
 	} catch (error: any) {
