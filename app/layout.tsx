@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import { Geist_Mono, Poppins } from "next/font/google";
 import { extractRouterConfig } from "uploadthing/server";
 import "./globals.css";
+import { ClerkProvider } from "@clerk/nextjs";
 
 const poppinsFont = Poppins({
 	weight: ["100", "200", "300", "400", "500", "600", "700"],
@@ -30,28 +31,22 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en" suppressHydrationWarning>
-			<body
-				className={`${poppinsFont.className} ${geistMono.variable} antialiased`}
-			>
-				<NextSSRPlugin
-					/**
-					 * The `extractRouterConfig` will extract **only** the route configs
-					 * from the router to prevent additional information from being
-					 * leaked to the client. The data passed to the client is the same
-					 * as if you were to fetch `/api/uploadthing` directly.
-					 */
-					routerConfig={extractRouterConfig(ourFileRouter)}
-				/>
-
-				<ThemeProvider
-					attribute="class"
-					defaultTheme="system"
-					enableSystem
-					disableTransitionOnChange
+			<ClerkProvider afterSignOutUrl={"/"}>
+				<body
+					className={`${poppinsFont.className} ${geistMono.variable} antialiased`}
 				>
-					{children}
-				</ThemeProvider>
-			</body>
+					<NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
+
+					<ThemeProvider
+						attribute="class"
+						defaultTheme="system"
+						enableSystem
+						disableTransitionOnChange
+					>
+						{children}
+					</ThemeProvider>
+				</body>
+			</ClerkProvider>
 		</html>
 	);
 }

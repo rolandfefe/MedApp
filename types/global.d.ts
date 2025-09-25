@@ -450,7 +450,7 @@ declare global {
 
 		// The Final Diagnosis
 		confirmedDiagnoses: IDifferentialDiagnosis[];
-		
+
 		// Clinical Impact & Assessment
 		clinicalSummary: string; // Summary of the case and findings
 		complications?: string[]; // Any complications identified
@@ -542,5 +542,11 @@ declare global {
 
 		createdAt: Date;
 		updatedAt: Date;
+	}
+
+	interface CustomJwtSessionClaims {
+		metadata: {
+			onboardingComplete?: boolean;
+		};
 	}
 }

@@ -4,6 +4,7 @@ import { after } from "next/server";
 import { connectDb } from "../db/db";
 import userModel from "../db/models/user.model";
 import { revalidatePath } from "next/cache";
+import { auth, clerkClient } from "@clerk/nextjs/server";
 
 export const createUser = async (
 	user: IUser,
@@ -44,6 +45,29 @@ export const getUsers = async (): Promise<IUser[]> => {
 	}
 };
 
+export const completeOnboarding = async (formData: FormData) => {
+	const { isAuthenticated, userId } = await auth();
+
+	if (!isAuthenticated) {
+		return { message: "No Logged In User" };
+	}
+
+	const client = await clerkClient();
+
+	try {
+		const res = await client.users.updateUser(userId, {
+			publicMetadata: {
+				onboardingComplete: true,
+				applicationName: formData.get("applicationName"),
+				applicationType: formData.get("applicationType"),
+			},
+		});
+		return { message: res.publicMetadata };
+	} catch (err) {
+		return { error: "There was an error updating the user metadata." };
+	}
+};
+
 export const updateUser = async (
 	updatedUser: IUser,
 	pathname: string
@@ -69,7 +93,7 @@ export const deleteUser = async (
 	try {
 		await connectDb();
 
-		await userModel.findOneAndDelete({clerkId});
+		await userModel.findOneAndDelete({ clerkId });
 
 		after(() => revalidatePath(pathname));
 	} catch (error: any) {

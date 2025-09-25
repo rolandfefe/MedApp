@@ -50,8 +50,8 @@
 	--card-foreground: oklch(0.141 0.005 285.823);
 	--popover: oklch(1 0 0);
 	--popover-foreground: oklch(0.141 0.005 285.823);
-	--primary: oklch(0.606 0.25 292.717);
-	--primary-foreground: oklch(0.969 0.016 293.756);
+	--primary: oklab(87.845% -0.20527 0.15171);
+	--primary-foreground: oklch(0.21 0.006 285.885);
 	--secondary: oklch(0.967 0.001 286.375);
 	--secondary-foreground: oklch(0.21 0.006 285.885);
 	--muted: oklch(0.967 0.001 286.375);
@@ -84,8 +84,8 @@
 	--card-foreground: oklch(0.985 0 0);
 	--popover: oklch(0.21 0.006 285.885);
 	--popover-foreground: oklch(0.985 0 0);
-	--primary: oklch(0.541 0.281 293.009);
-	--primary-foreground: oklch(0.969 0.016 293.756);
+	--primary: oklab(87.845% -0.20527 0.15171);
+	--primary-foreground: oklch(0.21 0.006 285.885);
 	--secondary: oklch(0.274 0.006 286.033);
 	--secondary-foreground: oklch(0.985 0 0);
 	--muted: oklch(0.274 0.006 286.033);
@@ -121,4 +121,10 @@
 	img {
 		@apply object-cover;
 	}
+	.glass-bg {
+		@apply bg-secondary/10 backdrop-blur-3xl backdrop-saturate-150;
+	}
 }
+
+/* @layer utils { */
+/* } */
