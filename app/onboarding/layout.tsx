@@ -1,3 +1,4 @@
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import React, { ReactNode } from "react";
@@ -7,5 +8,11 @@ export default async function layout({ children }: { children: ReactNode }) {
 	// 	redirect("/");
 	// }
 
-	return <>{children}</>;
+	return (
+		<>
+			<ScrollArea className="h-screen">
+				<main className="p-1">{children}</main>
+			</ScrollArea>
+		</>
+	);
 }

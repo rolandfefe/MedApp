@@ -9,16 +9,20 @@ import {
 import MyBtn from "../custom/MyBtn";
 import { SidebarTrigger } from "../ui/sidebar";
 import { ThemeBtn } from "../btns/ThemeBtn";
+import BackBtn from "../btns/BackBtn";
 
 export default function Navbar({ className }: { className?: string }) {
 	return (
 		<nav
 			className={cn(
-				"glass-bg p-2 h-[7vh] sticky top-2 right-0 z-30 w-[99%] mx-auto flex items-center justify-between gap-x-2  rounded-xl",
+				"glass p-2 h-[7vh] sticky top-2 right-0 z-30 w-[97%] sm:w-[99%] mx-auto flex items-center justify-between gap-x-2 rounded-xl border shadow-md",
 				className
 			)}
 		>
-			<SidebarTrigger />
+			<div className="flex items-center gap-x-2">
+				<SidebarTrigger />
+				<BackBtn />
+			</div>
 
 			<div className="flex items-center gap-x-2">
 				<ThemeBtn />
@@ -29,9 +33,9 @@ export default function Navbar({ className }: { className?: string }) {
 					<SignInButton mode="modal">
 						<MyBtn>Sign in</MyBtn>
 					</SignInButton>
-					<SignUpButton mode="modal">
+					{/* <SignUpButton mode="modal">
 						<MyBtn variant={"outline"}>Sign up</MyBtn>
-					</SignUpButton>
+					</SignUpButton> */}
 				</SignedOut>
 			</div>
 		</nav>

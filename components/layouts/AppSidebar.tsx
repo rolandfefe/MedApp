@@ -6,15 +6,21 @@ import {
 	SidebarHeader,
 	SidebarMenu,
 } from "../ui/sidebar";
+import AppSidebarHeader from "./AppSidebarHeader";
+import AppSidebarFooter from "./AppSidebarFooter";
 
 export default function AppSidebar() {
 	return (
 		<Sidebar variant="floating">
-			<SidebarHeader></SidebarHeader>
+			<SidebarHeader>
+				<AppSidebarHeader />
+			</SidebarHeader>
 			<SidebarContent>
 				<SidebarMenu></SidebarMenu>
 			</SidebarContent>
-			<SidebarFooter></SidebarFooter>
+			<SidebarFooter>
+				<AppSidebarFooter />
+			</SidebarFooter>
 		</Sidebar>
 	);
 }

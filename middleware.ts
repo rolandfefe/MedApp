@@ -4,6 +4,7 @@ import "@/lib/db/models";
 
 const isPublicRoute = createRouteMatcher([
 	"/",
+	"/home",
 	"/api/webhooks/clerk",
 	"/api/uploadthing",
 ]);

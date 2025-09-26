@@ -15,7 +15,7 @@ import {
 	eMethodOfDrugAdministration,
 	eReminderVariants,
 	eWeekDays,
-} from "@/constants/enums";
+} from "@/types/enums";
 
 export {};
 

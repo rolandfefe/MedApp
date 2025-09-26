@@ -1,10 +1,28 @@
 "use server";
 
+import { auth, clerkClient, currentUser } from "@clerk/nextjs/server";
+import { revalidatePath } from "next/cache";
 import { after } from "next/server";
 import { connectDb } from "../db/db";
 import userModel from "../db/models/user.model";
-import { revalidatePath } from "next/cache";
-import { auth, clerkClient } from "@clerk/nextjs/server";
+
+export const getCurrentUser = async (): Promise<IUser> => {
+	try {
+		await connectDb();
+
+		const clerkUser = (await currentUser())!;
+
+		const mongoUser = await userModel.findOne({ clerkId: clerkUser.id });
+
+		// return JSON.stringify(JSON.stringify(mongoUser));
+
+		return mongoUser
+
+
+	} catch (error: any) {
+		throw new Error(error);
+	}
+};
 
 export const createUser = async (
 	user: IUser,
