@@ -1,6 +1,6 @@
 import Heading from "@/components/custom/Heading";
 import MyBtn from "@/components/custom/MyBtn";
-import { logoFont } from "@/components/layouts/fonts";
+import { logoFont } from "@/app/fonts";
 import OnboardingNav from "@/components/layouts/OnboardingNav";
 import { getCurrentUser } from "@/lib/actions/user.actions";
 import { Hospital, User } from "lucide-react";
@@ -26,13 +26,11 @@ export default async function page() {
 				/>
 				<div className="space-y-3">
 					<Heading className="text-3xl">
-
-							Hello,{" "}
-							<span className={` ${logoFont.className} text-primary`}>
-								{currentUser.fname}
-							</span>
-							👋
-
+						Hello,{" "}
+						<span className={` ${logoFont.className} text-primary`}>
+							{currentUser.fname}
+						</span>
+						👋
 					</Heading>
 
 					<div>

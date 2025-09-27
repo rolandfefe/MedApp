@@ -7,42 +7,51 @@ import {
 	eConfidenceLevel,
 	eDiagnosticStatus,
 	eGender,
+	eLicenseStatus,
 	eLicenseType,
 	eMaritalStatus,
 	eMedicalDegreeTypes,
 	eMedicalSpecialties,
 	eMessageStatus,
 	eMethodOfDrugAdministration,
+	eRating,
 	eReminderVariants,
 	eWeekDays,
 } from "@/types/enums";
+import {
+	IBoardCertification,
+	IHospitalAffiliation,
+	IMedicalLicense,
+} from "./doctor";
 
 export {};
 
 declare global {
-	interface IUser {
+	interface Base {
 		_id?: string;
+
+		createdAt?: Date;
+		updatedAt?: Date;
+	}
+
+	interface IUser extends Base {
 		clerkId: string;
 		username: string;
 		fname?: string;
 		lname?: string;
 		email: string;
 		imageUrl?: string;
-
-		createdAt?: Date;
-		updatedAt?: Date;
 	}
 
-	interface IPatient {
-		_id?: string;
+	interface IPatient extends Base {
 		user: IUser | string;
-		DOB: string;
+		DOB: Date;
 		gender: eGender;
 		maritalStatus?: eMaritalStatus;
 		occupation?: string;
 		ethnicity?: string;
 		race?: string;
-		languagesSpoken: eLanguages[];
+		languages?: eLanguages[];
 
 		emergencyContacts: {
 			name: string;
@@ -50,70 +59,49 @@ declare global {
 			phone: string;
 			priority: number;
 		}[];
-
-		createdAt?: Date;
-		updatedAt?: Date;
 	}
 
-	interface IDoctor {
-		_id?: string;
+	interface IDoctor extends Base {
 		user: IUser | string;
 		DOB: Date;
 		gender: eGender;
 		bio?: string;
-		languagesSpoken: eLanguages[];
+		languages: eLanguages[];
 
 		// Professional Credentials & Qualifications
 		credentials: {
-			medicalDegree: {
+			medicalDegrees: Array<{
 				type: eMedicalDegreeTypes;
 				institution: string;
 				date: Date;
-			};
+			}>;
 			licenses: IMedicalLicense[];
 			boardCertifications?: IBoardCertification[];
 			hospitalAffiliations: IHospitalAffiliation[];
-			residencies: Array<{
-				specialty: string;
-				hospital: string;
-				startDate: Date;
-				endDate?: Date;
-			}>;
 			isVerified: boolean;
 		};
 
 		// Specialties & Expertise
-		specialties: {
+		specialties: Array<{
 			primary: eMedicalSpecialties;
 			secondary?: eMedicalSpecialties[];
 			procedures: string[]; // List of procedures they are qualified to perform
-		};
+		}>;
 
-		contactInfo: {
+		contact: {
 			officePhone: string;
-			officeEmail?: string;
+			officeEmail: string;
 			mobilePhone?: string; // For on-call purposes
 			pager?: string;
 		};
 
 		// Professional Schedule & Availability
-		schedule: {
-			officeHours: Array<{
-				dayOfWeek: eWeekDays;
-				startTime: string; // in HH:MM format
-				endTime: string;
-				isAvailable: boolean;
-			}>;
-			averageAppointmentDuration: string;
-			isAcceptingNewPatients: boolean;
-			nextAvailableAppointmentDate?: Date;
-		};
 
 		// Professional Metrics & Performance (For internal/admin use)
 		metrics?: {
-			rating?: number[]; // 0-100 scale
-			numberOfPatients: number;
-			yearsOfExperience: number;
+			ratings?: { user: IUser | string; rating: eRating }[]; // 0-100 scale
+			numberOfPatients?: number;
+			experience?: number;
 			readmissionRate?: number;
 		};
 
@@ -129,43 +117,22 @@ declare global {
 		// 	permissions: string[]; // e.g., ['prescribe_medications', 'view_all_records', 'order_labs']
 		// 	isActive: boolean;
 		// };
-
-		createdAt?: Date;
-		updatedAt?: Date;
 	}
 
-	// Supporting Interfaces for more complex structures
-
-	interface IMedicalLicense {
-		licenseNumber: string;
-		state: string;
-		issuingState: string; // or country/province
-		expirationDate?: Date;
-		active: boolean;
-		licenseType: eLicenseType;
+	interface ISchedule extends Base {
+		doctor: IDoctor | string;
+		officeHours: Array<{
+			dayOfWeek: eWeekDays;
+			startTime: string; // in HH:MM format
+			endTime: string;
+			isAvailable: boolean;
+		}>;
+		averageAppointmentDuration: string;
+		isAcceptingNewPatients: boolean;
+		nextAvailableAppointmentDate?: Date;
 	}
 
-	interface IBoardCertification {
-		boardName: string; // e.g., 'American Board of Internal Medicine'
-		specialty: string; // e.g., 'Internal Medicine'
-		subSpecialty?: string; // e.g., 'Cardiovascular Disease'
-		certificationId: string;
-		initialCertificationDate: Date;
-		expirationDate?: Date; // Time-limited certifications
-		status: "active" | "expired" | "not-certified";
-	}
-
-	interface IHospitalAffiliation {
-		name: string;
-		startDate: Date;
-		endDate?: Date; // If the affiliation has ended
-		department: string;
-		role: string; // e.g., 'Attending Physician', 'Chief of Surgery'
-		privilegeDetails?: string[]; // Specific procedures they are privileged for
-	}
-
-	interface IHistory {
-		_id?: string;
+	interface IHistory extends Base {
 		patient: IPatient | string;
 
 		pastConditions: Array<{
@@ -206,27 +173,18 @@ declare global {
 
 		// Allergies
 		allergies: IAllergy[];
-
-		createdAt?: Date;
-		updatedAt?: Date;
 	}
 
-	interface IAllergy {
-		_id?: string;
-
+	interface IAllergy extends Base {
 		substance: string;
 		reaction: string;
 		severity: eAllergySeverity;
 		onsetDate?: Date;
 		documentedBy: string;
 		lastReactionDate?: Date;
-
-		createdAt?: Date;
-		updatedAt?: Date;
 	}
 
-	interface IMedication {
-		_id?: string;
+	interface IMedication extends Base {
 		name: string;
 		doctor: IDoctor | IUser;
 		dosage: string;
@@ -239,14 +197,9 @@ declare global {
 		reason?: string;
 		instructions?: string;
 		sideEffects?: string[];
-
-		createdAt?: Date;
-		updatedAt?: Date;
 	}
 
-	interface IVitals {
-		_id?: string;
-
+	interface IVitals extends Base {
 		bloodPressure?: string;
 		heartRate?: number;
 		temperature?: number;
@@ -255,12 +208,9 @@ declare global {
 		height?: number;
 		weight?: number;
 		bmi?: number;
-
-		createdAt?: Date;
-		updatedAt?: Date;
 	}
 
-	interface IArticle {
+	interface IArticle extends Base {
 		_id: string;
 		title: string;
 		subtitle?: string;
@@ -315,9 +265,7 @@ declare global {
 		};
 	}
 
-	interface IAppointment {
-		_id?: string;
-
+	interface IAppointment extends Base {
 		// ? Optional since we want to allow Open appointments
 		patient?: IPatient | string;
 		doctor?: IDoctor | string;
@@ -356,9 +304,7 @@ declare global {
 	}
 
 	// ? Allow constant follow up on the patients
-	interface IRecurrencePlan {
-		_id?: string;
-
+	interface IRecurrencePlan extends Base {
 		supervisor: IPatient | IDoctor | string;
 		name: string;
 		frequency: "daily" | "weekly" | "bi-weekly" | "monthly";
@@ -374,9 +320,7 @@ declare global {
 		updatedAt: Date;
 	}
 
-	interface IReferral {
-		_id?: string;
-
+	interface IReferral extends Base {
 		appointment: IAppointment | string;
 
 		reason: string;
@@ -385,9 +329,7 @@ declare global {
 		updatedAt: Date;
 	}
 
-	interface IReminder {
-		_id?: string;
-
+	interface IReminder extends Base {
 		user: IUser | string;
 
 		variant: eReminderVariants;
@@ -402,9 +344,7 @@ declare global {
 		updatedAt: Date;
 	}
 
-	interface IDiagnosis {
-		_id?: string;
-
+	interface IDiagnosis extends Base {
 		appointment: IAppointment | string;
 		patient: IPatient | string;
 		doctor: IDoctor | string;
@@ -431,7 +371,7 @@ declare global {
 		updatedBy: IDoctor | string;
 	}
 
-	interface IDifferentialDiagnosis {
+	interface IDifferentialDiagnosis extends Base {
 		condition: string;
 		icd10Code?: string;
 		confidence: eConfidenceLevel;
@@ -443,8 +383,7 @@ declare global {
 		dateConfirmed: Date;
 	}
 
-	interface IVerdict {
-		_id?: string;
+	interface IVerdict extends Base {
 		diagnosis: IDiagnosis | string; // Links back to the IDiagnosis record
 		doctor: IDoctor | string;
 
@@ -503,9 +442,7 @@ declare global {
 	}
 
 	// ! Forms Basis of patient follow up
-	interface IHealthStatus {
-		_id?: string;
-
+	interface IHealthStatus extends Base {
 		patient: IPatient | string;
 		vitals: IVitals | string;
 
@@ -529,9 +466,7 @@ declare global {
 		updatedAt: Date;
 	}
 
-	interface IMessage {
-		_id?: string;
-
+	interface IMessage extends Base {
 		appointment: IAppointment | string;
 		body: string;
 		status: eMessageStatus;
@@ -544,7 +479,7 @@ declare global {
 		updatedAt: Date;
 	}
 
-	interface CustomJwtSessionClaims {
+	interface CustomJwtSessionClaims extends Base {
 		metadata: {
 			onboardingComplete?: boolean;
 		};

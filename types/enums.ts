@@ -50,6 +50,28 @@ export enum eLicenseType {
 	PROVISIONAL = "Provisional",
 }
 
+export enum eLicenseStatus {
+	ACTIVE = "active",
+	INACTIVE = "inactive",
+	SUSPENDED = "suspended",
+	REVOKED = "revoked",
+	EXPIRED = "expired",
+}
+
+export enum eCertificationStatus {
+	ACTIVE = "active",
+	EXPIRED = "expired",
+	NOT_CERTIFIED = "not-certified",
+}
+
+export enum eRating {
+	ONE = 1,
+	TWO = 2,
+	THREE = 3,
+	FOUR = 4,
+	FIVE = 5,
+}
+
 export enum eMedicalSpecialties {
 	GeneralPractice = "General Practice",
 	InternalMedicine = "Internal Medicine",

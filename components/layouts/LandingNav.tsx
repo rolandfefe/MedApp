@@ -38,7 +38,7 @@ export default function LandingNav({ className }: { className?: string }) {
 						<NavbarButton href="/home" variant={"gradient"}>
 							Get started✨
 						</NavbarButton>
-						<SignInButton mode="modal">
+						<SignInButton mode="modal" withSignUp >
 							<NavbarButton href="#" variant={"primary"}>
 								Login
 							</NavbarButton>
