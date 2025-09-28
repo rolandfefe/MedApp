@@ -51,7 +51,7 @@ declare global {
 		occupation?: string;
 		ethnicity?: string;
 		race?: string;
-		languages?: eLanguages[];
+		languages?: eLanguages[	];
 
 		emergencyContacts: {
 			name: string;

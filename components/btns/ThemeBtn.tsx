@@ -21,22 +21,27 @@ export function ThemeBtn({ className }: { className?: string }) {
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
 				<MyBtn variant="outline" size="icon" className={cn("", className)}>
-					<Sun className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
-					<Moon className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
+					{theme === "light" ? (
+						<Sun />
+					) : theme === "dark" ? (
+						<Moon />
+					) : (
+						<Monitor />
+					)}
 					<span className="sr-only">Toggle theme</span>
 				</MyBtn>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align="end">
 				<DropdownMenuItem onClick={() => setTheme("light")}>
-					<Sun className=" scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
+					<Sun size={20} />
 					Light
 				</DropdownMenuItem>
 				<DropdownMenuItem onClick={() => setTheme("dark")}>
-					<Moon className="h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
+					<Moon size={20} />
 					Dark
 				</DropdownMenuItem>
 				<DropdownMenuItem onClick={() => setTheme("system")}>
-					<Monitor className="h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
+					<Monitor size={20} />
 					System
 				</DropdownMenuItem>
 			</DropdownMenuContent>

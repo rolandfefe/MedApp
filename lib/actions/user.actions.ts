@@ -12,13 +12,14 @@ export const getCurrentUser = async (): Promise<IUser> => {
 
 		const clerkUser = (await currentUser())!;
 
-		const mongoUser = await userModel.findOne({ clerkId: clerkUser.id });
+		const clerkId =
+			process.env.MY_ENV === "dev"
+				? "user_33IZXmIngU2ExfPoAhHyH49Rdho"
+				: clerkUser.id;
 
-		// return JSON.stringify(JSON.stringify(mongoUser));
+		const mongoUser = await userModel.findOne({ clerkId });
 
-		return mongoUser
-
-
+		return JSON.parse(JSON.stringify(mongoUser));
 	} catch (error: any) {
 		throw new Error(error);
 	}

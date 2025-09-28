@@ -6,8 +6,10 @@ import { Button } from "../ui/button";
 
 export default function MyBtn({ ...props }: ComponentProps<typeof Button>) {
 	return (
-		<motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.99 }}>
-			<Button {...props}>{props.children}</Button>
-		</motion.div>
+		<Button asChild {...props}>
+			<motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.99 }}>
+				{props.children}
+			</motion.button>
+		</Button>
 	);
 }

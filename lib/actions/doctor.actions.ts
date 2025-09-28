@@ -26,7 +26,7 @@ export const getDoctors = async (): Promise<IDoctor[]> => {
 			.populate("user")
 			.sort({ createdAt: -1 });
 
-		return doctors;
+		return JSON.parse(JSON.stringify(doctors));
 	} catch (error: any) {
 		throw new Error(error);
 	}
@@ -43,7 +43,7 @@ export const getDoctorsBySpecialty = async (
 			.populate("user")
 			.sort({ createdAt: -1 });
 
-		return doctors;
+		return JSON.parse(JSON.stringify(doctors));
 	} catch (error: any) {
 		throw new Error(error);
 	}
@@ -64,7 +64,7 @@ export const getDoctor = async ({
 			.or([{ _id: id }, { user: userId }])
 			.populate("user");
 
-		return doctor;
+		return JSON.parse(JSON.stringify(doctor));
 	} catch (error: any) {
 		throw new Error(error);
 	}

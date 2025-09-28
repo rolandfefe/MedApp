@@ -26,7 +26,7 @@ export const getPatients = async (): Promise<IPatient[]> => {
 			.populate("user")
 			.sort({ createdAt: -1 });
 
-		return patients;
+		return JSON.parse(JSON.stringify(patients));
 	} catch (error: any) {
 		throw new Error();
 	}
@@ -41,7 +41,7 @@ export const getPatient = async (id: string): Promise<IPatient> => {
 			.populate("user")
 			.sort({ createdAt: -1 });
 
-		return patient;
+		return JSON.parse(JSON.stringify(patient));
 	} catch (error: any) {
 		throw new Error(error);
 	}
