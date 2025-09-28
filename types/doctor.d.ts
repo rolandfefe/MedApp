@@ -12,10 +12,8 @@ export interface IMedicalLicense {
 
 export interface IBoardCertification {
 	boardName: string; // e.g., 'American Board of Internal Medicine'
-	specialty: string; // e.g., 'Internal Medicine'
-	subSpecialty?: string; // e.g., 'Cardiovascular Disease'
 	certificationId: string;
-	certificationDate: Date;
+	date: Date;
 	expirationDate?: Date; // Time-limited certifications
 	status: eCertificationStatus;
 }
@@ -25,6 +23,5 @@ export interface IHospitalAffiliation {
 	startDate: Date;
 	endDate?: Date; // If the affiliation has ended
 	department: string;
-	role: string; // e.g., 'Attending Physician', 'Chief of Surgery'
-	privilegeDetails?: string[]; // Specific procedures they are privileged for
+	roles: string[]; // e.g., 'Attending Physician', 'Chief of Surgery'
 }

@@ -1,5 +1,3 @@
-"use client";
-
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import React from "react";
@@ -28,7 +26,7 @@ export default function OnboardingNav({ className }: { className?: string }) {
 				<LogoText className="text-xl md:text-2xl hidden sm:block" />
 			</div>
 
-			<Heading className="text-xl md:text-2xl">OnBoarding</Heading>
+			<Heading className="text-xl md:text-2xl">Onboarding</Heading>
 
 			<div className="flex items-center gap-x-2">
 				<ThemeBtn />

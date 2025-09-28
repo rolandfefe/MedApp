@@ -3,9 +3,10 @@
 import { PatientFormData } from "@/lib/formSchemas/patient.schema";
 import { eGender, eMaritalStatus, eRating } from "@/types/enums";
 import { Loader, Plus, Trash2 } from "lucide-react";
-import { JSX, useState } from "react";
+import { motion } from "motion/react";
+import Image from "next/image";
+import { JSX } from "react";
 import { FieldErrors, useFieldArray, useForm } from "react-hook-form";
-import Heading from "../custom/Heading";
 import MyBtn from "../custom/MyBtn";
 import {
 	FormControl,
@@ -23,8 +24,6 @@ import {
 	SelectValue,
 } from "../ui/select";
 import { Textarea } from "../ui/textarea";
-import Image from "next/image";
-import { AnimatePresence, motion } from "motion/react";
 
 export default function getPatientFormStepper(
 	form: ReturnType<typeof useForm<PatientFormData>>,
@@ -212,7 +211,8 @@ export default function getPatientFormStepper(
 						alt="complete"
 						width={999}
 						height={999}
-						className="w-full sm:w-2/3 md:w-1/2 mx-auto "
+						priority
+						className="w-[90vw] sm:w-2/3 md:w-1/2 mx-auto "
 					/>
 					<MyBtn
 						disabled={isPending}

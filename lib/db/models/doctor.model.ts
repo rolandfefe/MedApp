@@ -8,7 +8,7 @@ import {
 	eGender,
 	eLicenseStatus,
 	eLicenseType,
-	eMedicalDegreeTypes,
+	eMedicalCertificationTypes,
 	eRating,
 } from "@/types/enums";
 import { model } from "mongoose";
@@ -28,8 +28,6 @@ const licenseSchema = new Schema<IMedicalLicense>({
 
 const boardCertificationsSchema = new Schema<IBoardCertification>({
 	boardName: { type: String, required: true },
-	specialty: { type: String, required: true },
-	subSpecialty: String,
 	certificationId: {
 		type: String,
 		required: true,
@@ -41,25 +39,25 @@ const boardCertificationsSchema = new Schema<IBoardCertification>({
 		enum: eCertificationStatus,
 		default: eCertificationStatus.ACTIVE,
 	},
-	certificationDate: { type: Date, required: true },
+	date: { type: Date, required: true },
 	expirationDate: { type: Date, required: true },
 });
 
 const hospitalAffiliationSchema = new Schema<IHospitalAffiliation>({
 	name: { type: String, required: true },
 	department: { type: String, required: true },
-	role: { type: String, required: true },
-	privilegeDetails: [String],
+	roles: [{ type: String, required: true }],
 	startDate: { type: Date, required: true },
 	endDate: Date,
 });
 
 const credentialsSchema = new Schema<IDoctor["credentials"]>({
-	medicalDegrees: [
+	medicalCertifications: [
 		{
-			type: { type: String, enum: eMedicalDegreeTypes, required: true },
+			type: { type: String, enum: eMedicalCertificationTypes, required: true },
 			institution: { type: String, required: true },
 			date: { type: Date, required: true },
+			name: { type: String, required: true },
 		},
 	],
 	licenses: [{ type: licenseSchema, required: true }],
@@ -112,7 +110,6 @@ const doctorSchema = new Schema<IDoctor>(
 			officePhone: { type: String, required: true },
 			officeEmail: { type: String, required: true },
 			mobilePhone: String,
-			pager: String, // ! Future.
 		},
 
 		metrics: metricsSchema,

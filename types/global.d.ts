@@ -10,7 +10,7 @@ import {
 	eLicenseStatus,
 	eLicenseType,
 	eMaritalStatus,
-	eMedicalDegreeTypes,
+	eMedicalCertificationTypes,
 	eMedicalSpecialties,
 	eMessageStatus,
 	eMethodOfDrugAdministration,
@@ -69,9 +69,10 @@ declare global {
 
 		// Professional Credentials & Qualifications
 		credentials: {
-			medicalDegrees: Array<{
-				type: eMedicalDegreeTypes;
+			medicalCertifications: Array<{
+				type: eMedicalCertificationTypes;
 				institution: string;
+				name: string;
 				date: Date | string;
 			}>;
 			licenses: IMedicalLicense[];
@@ -91,7 +92,6 @@ declare global {
 			officePhone: string;
 			officeEmail: string;
 			mobilePhone?: string; // For on-call purposes
-			pager?: string;
 		};
 
 		// Professional Schedule & Availability

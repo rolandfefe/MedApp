@@ -27,11 +27,8 @@ export function FormPanel({
 	return (
 		<Drawer
 			{...props}
-			
 			modal={false}
 			direction={isSmScreen ? "bottom" : "right"}
-
-			
 		>
 			{children}
 		</Drawer>
@@ -66,13 +63,15 @@ export const FormPanelContent = ({
 				<DrawerDescription>Fill in your details</DrawerDescription>
 			</DrawerHeader>
 
-			<DrawerClose asChild className="hidden sm:inline-flex absolute top-2 right-2 z-30">
+			<DrawerClose asChild className="glass absolute top-2 right-2 z-30">
 				<MyBtn size="icon" variant={"outline"} className="rounded-xl size-7">
 					<X />
 				</MyBtn>
 			</DrawerClose>
 
-			<ScrollArea className="h-[93vh] sm:h-screen p-2 sm:p-3">{children}</ScrollArea>
+			<ScrollArea className="h-[93vh] sm:h-screen p-2 sm:p-3">
+				{children}
+			</ScrollArea>
 			{/* {children} */}
 		</DrawerContent>
 	);

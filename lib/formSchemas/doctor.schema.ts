@@ -4,58 +4,58 @@ import {
 	eGender,
 	eLicenseStatus,
 	eLicenseType,
-	eMedicalDegreeTypes,
+	eMedicalCertificationTypes,
 	eRating,
 } from "@/types/enums";
 
 // Medical License Schema
 const licenseSchema = z.object({
 	licenseNumber: z.string().min(1, "License number is required"),
-	type: z.nativeEnum(eLicenseType),
+	type: z.nativeEnum(eLicenseType).nullable(),
+	status: z
+		.nativeEnum(eLicenseStatus)
+		.nullable()
+		.default(eLicenseStatus.ACTIVE),
 	issuingState: z.string().min(1, "Issuing state is required"),
-	status: z.nativeEnum(eLicenseStatus).default(eLicenseStatus.ACTIVE),
-	expirationDate: z.date(),
+	expirationDate: z.string().optional(),
 });
 
 // Board Certification Schema
 const boardCertificationsSchema = z.object({
-	boardName: z.string().min(1, "Board name is required"),
-	specialty: z.string().min(1, "Specialty is required"),
-	subSpecialty: z.string().optional(),
 	certificationId: z.string().min(1, "Certification ID is required"),
+	boardName: z.string().min(1, "Board name is required"),
 	status: z
 		.nativeEnum(eCertificationStatus)
 		.default(eCertificationStatus.ACTIVE),
-	certificationDate: z.date(),
-	expirationDate: z.date(),
+	date: z.string(),
+	expirationDate: z.string().optional(),
 });
 
 // Hospital Affiliation Schema
 const hospitalAffiliationSchema = z.object({
 	name: z.string().min(1, "Hospital name is required"),
 	department: z.string().min(1, "Department is required"),
-	role: z.string().min(1, "Role is required"),
-	privilegeDetails: z.array(z.string()).default([]),
-	startDate: z.date(),
-	endDate: z.date().optional().nullable(),
+	roles: z.string().min(1, "Roles is required"),
+	startDate: z.string(),
+	endDate: z.string().optional(),
 });
 
 // Medical Degree Schema
-const medicalDegreeSchema = z.object({
-	type: z.nativeEnum(eMedicalDegreeTypes),
+const medicalCertificationSchema = z.object({
+	name: z.string(),
 	institution: z.string().min(1, "Institution is required"),
-	date: z.date(),
+	type: z.nativeEnum(eMedicalCertificationTypes),
+	date: z.string(),
 });
 
 // Credentials Schema
 const credentialsSchema = z.object({
-	medicalDegrees: z.array(medicalDegreeSchema).default([]),
+	medicalCertifications: z.array(medicalCertificationSchema).default([]),
 	licenses: z.array(licenseSchema).min(1, "At least one license is required"),
 	boardCertifications: z.array(boardCertificationsSchema).default([]),
 	hospitalAffiliations: z
 		.array(hospitalAffiliationSchema)
 		.min(1, "At least one hospital affiliation is required"),
-	isVerified: z.boolean().default(true),
 });
 
 // Metrics Schema
@@ -69,9 +69,7 @@ const metricsSchema = z.object({
 const specialtySchema = z.object({
 	primary: z.string().min(1, "Primary specialty is required"),
 	secondary: z.string().optional(),
-	procedures: z
-		.array(z.string().min(1, "Procedure name is required"))
-		.default([]),
+	procedures: z.string().min(1, "Procedure name is required"),
 });
 
 // Contact Schema
@@ -79,19 +77,13 @@ const contactSchema = z.object({
 	officePhone: z.string().min(1, "Office phone is required"),
 	officeEmail: z.string().email("Invalid email address"),
 	mobilePhone: z.string().optional(),
-	pager: z.string().optional(),
 });
 
 // Main Doctor Form Schema
 export const doctorFormSchema = z.object({
-	DOB: z
-		.date()
-		.refine(
-			(date) => date <= new Date(),
-			"Date of birth cannot be in the future"
-		),
+	DOB: z.string(),
 	gender: z.nativeEnum(eGender),
-	languages: z.array(z.string()).default([]),
+	languages: z.string().optional(),
 	bio: z.string().max(5000, "Bio must be 5000 characters or less").optional(),
 	credentials: credentialsSchema,
 	specialties: z
@@ -126,7 +118,7 @@ export {
 	licenseSchema,
 	boardCertificationsSchema,
 	hospitalAffiliationSchema,
-	medicalDegreeSchema,
+	medicalCertificationSchema,
 	credentialsSchema,
 	specialtySchema,
 	contactSchema,

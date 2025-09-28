@@ -6,7 +6,8 @@ import { getCurrentUser } from "@/lib/actions/user.actions";
 import { Hospital, User } from "lucide-react";
 import Image from "next/image";
 import React from "react";
-import PatientFormPanel from "@/components/panels/PatientFormPanel";
+import { PatientFormPanel } from "@/components/forms/patientForm";
+import { DoctorFormPanel } from "@/components/forms/DoctorForm";
 
 export default async function page() {
 	const currentUser = await getCurrentUser();
@@ -55,9 +56,12 @@ export default async function page() {
 								<User /> Patient
 							</MyBtn>
 						</PatientFormPanel>
-						<MyBtn size="lg" className="flex-1">
-							<Hospital /> Doctor
-						</MyBtn>
+
+						<DoctorFormPanel currentUser={currentUser}   >
+							<MyBtn size="lg" className="flex-1">
+								<Hospital /> Doctor
+							</MyBtn>
+						</DoctorFormPanel>
 					</div>
 				</div>
 			</section>

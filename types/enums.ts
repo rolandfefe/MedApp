@@ -51,11 +51,11 @@ export enum eLicenseType {
 }
 
 export enum eLicenseStatus {
-	ACTIVE = "active",
-	INACTIVE = "inactive",
-	SUSPENDED = "suspended",
-	REVOKED = "revoked",
-	EXPIRED = "expired",
+	ACTIVE = "Active",
+	INACTIVE = "Inactive",
+	SUSPENDED = "Suspended",
+	REVOKED = "Revoked",
+	EXPIRED = "Expired",
 }
 
 export enum eCertificationStatus {
@@ -115,7 +115,7 @@ export enum eMedicalSpecialties {
 	Other = "Other",
 }
 
-export enum eMedicalDegreeTypes {
+export enum eMedicalCertificationTypes {
 	MD = "MD",
 	DO = "DO",
 	MBBS = "MBBS",

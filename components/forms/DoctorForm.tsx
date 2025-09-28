@@ -2,15 +2,13 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Form } from "@/components/ui/form";
-import { createPatient, updatePatient } from "@/lib/actions/patient.actions";
-import { updateOnBoardingStatus } from "@/lib/actions/user.actions";
 import {
-	PatientFormData,
-	patientZodSchema,
-} from "@/lib/formSchemas/patient.schema";
+	DoctorFormData,
+	doctorFormSchema,
+} from "@/lib/formSchemas/doctor.schema";
+import { PatientFormData } from "@/lib/formSchemas/patient.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { User2, X } from "lucide-react";
-import { motion } from "motion/react";
+import { Hospital, X } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { ReactNode, useState, useTransition } from "react";
 import { FieldErrors, useForm } from "react-hook-form";
@@ -28,18 +26,18 @@ import {
 	StepperTrigger,
 } from "../custom/motion-stepper";
 import MyBtn from "../custom/MyBtn";
-import getPatientFormStepper from "../formSteppers/patientFormStepper";
+import getDoctorFormStepper from "../formSteppers/doctorFormStepper";
 import { Card, CardContent } from "../ui/card";
 import { Separator } from "../ui/separator";
 
-export default function PatientForm({
-	action = "create",
-	patient,
+export default function DoctorForm({
 	currentUser,
+	action,
+	doctor,
 }: {
-	action: "update" | "create";
-	patient?: IPatient;
 	currentUser: IUser;
+	action: "Create" | "Update";
+	doctor?: IDoctor;
 }) {
 	const [activeStep, setActiveStep] = useState<number>(1);
 	const pathname = usePathname();
@@ -47,54 +45,27 @@ export default function PatientForm({
 	const [isSuccess, setIsSuccess] = useState<boolean>(false);
 	const router = useRouter();
 
-	const form = useForm<PatientFormData>({
-		resolver: zodResolver(patientZodSchema),
+	const form = useForm<DoctorFormData>({
+		resolver: zodResolver(doctorFormSchema),
 		defaultValues: {
-			DOB: patient?.DOB as string,
-			gender: patient?.gender,
-			race: patient?.race,
-			occupation: patient?.occupation,
-			maritalStatus: patient?.maritalStatus,
-			languages: patient?.languages?.join(", "),
-			// emergencyContacts
+			bio: doctor?.bio,
+			DOB: doctor?.DOB,
+			gender: doctor?.gender,
+			languages: doctor?.languages.join(", "),
+			contact: doctor?.contact,
+			// credentials: doctor?.credentials,
 		},
 	});
 
-	const submitHandler = async (data: PatientFormData) => {
-		console.log(data);
-
-		if (action === "create") {
+	const submitHandler = async (data: DoctorFormData) => {
+		if (action === "Create") {
 			startTransition(async () => {
-				await createPatient(
-					{
-						...data,
-						user: currentUser._id!,
-						languages: data.languages?.split(", "),
-					},
-					pathname
-				);
-
-				await updateOnBoardingStatus(true);
-
-				form.reset();
-				toast.success("Onboard successful🎉");
-				router.push("/home");
-				// setIsSuccess(true); // ! Coming soon.
+				// await createDoctor({}, pathname)
 			});
-		} else if (action === "update" && patient) {
+		} else if (action === "Update" && doctor) {
 			startTransition(async () => {
-				await updatePatient(
-					{
-						...patient,
-						...data,
-						languages: data.languages?.split(", "),
-					},
-					pathname
-				);
+				// await updateDoctor({...doctor, ...data}, pathname)
 			});
-
-			form.reset();
-			toast.success("Update complete🔃");
 		}
 	};
 
@@ -128,26 +99,22 @@ export default function PatientForm({
 		);
 	};
 
-	const FORM_STEPS = getPatientFormStepper(
+	const FORM_STEPS = getDoctorFormStepper(
 		form,
 		submitHandler,
 		errHandler,
 		isPending
 	);
 
-	if (isSuccess) {
-		return;
-	}
-
 	return (
 		<div className="">
-			<div className="px-2 sticky top-0 bg-background/40 backdrop-blur-2xl backdrop-saturate-150">
+			<div className="px-2 sticky top-0 bg-background/40 backdrop-blur-2xl backdrop-saturate-150"  >
 				<Heading className="text-xl md:text-2xl text-primary">
-					<User2 /> Patient Form <Badge variant={"secondary"}>{action}</Badge>{" "}
+					<Hospital /> Doctor Form <Badge variant={"secondary"}>{action}</Badge>{" "}
 				</Heading>
+			<Separator className="my-3" />
 			</div>
 
-			<Separator className="my-3" />
 
 			<Form {...form}>
 				<Stepper>
@@ -178,35 +145,22 @@ export default function PatientForm({
 	);
 }
 
-export function PatientFormPanel({
-	currentUser,
+export const DoctorFormPanel = ({
+	action = "Create",
 	children,
-	action = "create",
-	patient,
+	currentUser,
 }: {
+	action?: "Update" | "Create";
 	currentUser: IUser;
 	children: ReactNode;
-	action?: "create" | "update";
-	patient?: IPatient;
-}) {
-	// const [isOpen, setIsOpen] = useState<boolean>(false);
-
+}) => {
 	return (
-		// <FormPanel open={isOpen} onOpenChange={setIsOpen}>
 		<FormPanel>
 			<FormPanelTrigger asChild>{children}</FormPanelTrigger>
 
 			<FormPanelContent>
-				<PatientForm
-					action={action}
-					currentUser={currentUser}
-					patient={patient}
-				/>
+				<DoctorForm action={action} currentUser={currentUser} />
 			</FormPanelContent>
 		</FormPanel>
 	);
-}
-
-const PatientFormSuccessCard = () => {
-	return <motion.div></motion.div>;
 };

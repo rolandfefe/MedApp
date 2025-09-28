@@ -11,7 +11,7 @@ export default function BackBtn() {
 
 	return (
 		<Tooltip>
-			<TooltipTrigger>
+			<TooltipTrigger asChild >
 				<MyBtn
 					size={"icon"}
 					onClick={() => router.back()}
