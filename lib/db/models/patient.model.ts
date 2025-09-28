@@ -1,4 +1,4 @@
-import { eGender, eMaritalStatus } from "@/types/enums";
+import { eGender, eMaritalStatus, eRating } from "@/types/enums";
 import { model, models, Schema } from "mongoose";
 
 const patientSchema = new Schema<IPatient>(
@@ -30,7 +30,7 @@ const patientSchema = new Schema<IPatient>(
 				name: { type: String, required: true },
 				relationship: { type: String, required: true },
 				phone: { type: String, required: true },
-				priority: { type: String, enum: ["1", "2", "3"], default: "1" },
+				priority: { type: String, enum: eRating, default: eRating.ONE },
 			},
 		],
 	},

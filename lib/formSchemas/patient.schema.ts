@@ -1,12 +1,12 @@
 import z from "zod";
-import { eGender, eMaritalStatus } from "@/types/enums";
+import { eGender, eMaritalStatus, eRating } from "@/types/enums";
 
 // Emergency Contact Schema
 const emergencyContactSchema = z.object({
 	name: z.string().min(1, "Emergency contact name is required"),
 	relationship: z.string().min(1, "Relationship is required"),
 	phone: z.string().min(1, "Phone number is required"),
-	priority: z.enum(["1", "2", "3"]).default("1"),
+	priority: z.nativeEnum(eRating).default(eRating.ONE),
 });
 
 // Main Patient Form Schema
@@ -17,7 +17,7 @@ export const patientZodSchema = z.object({
 	occupation: z.string().optional(),
 	race: z.string().optional(),
 	languages: z.string().optional(),
-	emergencyContacts: z.array(emergencyContactSchema).default([]),
+	emergencyContacts: z.array(emergencyContactSchema),
 });
 
 // Partial update schema

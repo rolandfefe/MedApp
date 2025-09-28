@@ -15,7 +15,7 @@ const isOnboardingRoute = createRouteMatcher([
 ]);
 
 export default clerkMiddleware(async (auth, req: NextRequest) => {
-	if (process.env.MY_ENV !== "development") {
+	if (process.env.MY_ENV !== "dev") {
 		const { isAuthenticated, sessionClaims, redirectToSignIn } = await auth();
 
 		// For users visiting /onboarding, don't try to redirect

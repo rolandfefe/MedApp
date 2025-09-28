@@ -1,8 +1,10 @@
+"use client";
+
 import { PatientFormData } from "@/lib/formSchemas/patient.schema";
-import { eGender, eMaritalStatus } from "@/types/enums";
+import { eGender, eMaritalStatus, eRating } from "@/types/enums";
 import { Loader, Plus, Trash2 } from "lucide-react";
 import { JSX, useState } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
+import { FieldErrors, useFieldArray, useForm } from "react-hook-form";
 import Heading from "../custom/Heading";
 import MyBtn from "../custom/MyBtn";
 import {
@@ -22,12 +24,12 @@ import {
 } from "../ui/select";
 import { Textarea } from "../ui/textarea";
 import Image from "next/image";
+import { AnimatePresence, motion } from "motion/react";
 
 export default function getPatientFormStepper(
-	// form: UseFormReturn<PatientFormData>
 	form: ReturnType<typeof useForm<PatientFormData>>,
-	submitHandler: () => Promise<void>,
-	errHandler: () => Promise<void>,
+	submitHandler: (data: PatientFormData) => Promise<void>,
+	errHandler: (err: FieldErrors<PatientFormData>) => Promise<void>,
 	isPending: boolean = false
 ): {
 	title: string;
@@ -245,7 +247,12 @@ const EmergencyFormField = ({
 					variant={"secondary"}
 					size="sm"
 					onClick={() =>
-						append({ name: "", phone: "", priority: "1", relationship: "" })
+						append({
+							name: "",
+							phone: "",
+							priority: eRating.ONE,
+							relationship: "",
+						})
 					}
 					className="mb-3"
 				>
@@ -254,9 +261,14 @@ const EmergencyFormField = ({
 			)}
 
 			<div className="space-y-2">
+				{/* <AnimatePresence> */}
 				{fields.map((field, i) => (
-					<div
+					<motion.div
 						key={field.id}
+						initial={{ opacity: 0, y: 100 }}
+						animate={{ opacity: 1, y: 0 }}
+						exit={{ opacity: 0, x: 100 }}
+						layout
 						className="relative border p-2 pt-3 rounded-xl space-y-2"
 					>
 						<div className="flex flex-col sm:flex-row sm:items-center gap-4">
@@ -328,9 +340,9 @@ const EmergencyFormField = ({
 											</FormControl>
 
 											<SelectContent>
-												{["1", "2", "3"].map((n, i) => (
-													<SelectItem key={i} value={n}>
-														{n}
+												{Object.entries(eRating).map(([k, v]) => (
+													<SelectItem key={k} value={v}>
+														{v}
 													</SelectItem>
 												))}
 											</SelectContent>
@@ -349,8 +361,9 @@ const EmergencyFormField = ({
 								<Trash2 />
 							</MyBtn>
 						</div>
-					</div>
+					</motion.div>
 				))}
+				{/* </AnimatePresence> */}
 			</div>
 		</div>
 	);

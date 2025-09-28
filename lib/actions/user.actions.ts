@@ -64,26 +64,22 @@ export const getUsers = async (): Promise<IUser[]> => {
 	}
 };
 
-export const completeOnboarding = async (formData: FormData) => {
-	const { isAuthenticated, userId } = await auth();
-
-	if (!isAuthenticated) {
-		return { message: "No Logged In User" };
-	}
+export const updateOnBoardingStatus = async (isComplete: boolean) => {
+	const { userId } = await auth();
 
 	const client = await clerkClient();
 
 	try {
-		const res = await client.users.updateUser(userId, {
+		const res = await client.users.updateUser(userId!, {
 			publicMetadata: {
-				onboardingComplete: true,
-				applicationName: formData.get("applicationName"),
-				applicationType: formData.get("applicationType"),
+				onboardingComplete: isComplete,
 			},
 		});
-		return { message: res.publicMetadata };
-	} catch (err) {
-		return { error: "There was an error updating the user metadata." };
+		console.log(res.publicMetadata);
+
+		after(() => revalidatePath("/"));
+	} catch (err: any) {
+		throw new Error(err);
 	}
 };
 
