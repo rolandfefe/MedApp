@@ -49,15 +49,14 @@ declare global {
 		gender: eGender;
 		maritalStatus?: eMaritalStatus;
 		occupation?: string;
-		ethnicity?: string;
 		race?: string;
-		languages?: eLanguages[	];
+		languages?: eLanguages[];
 
 		emergencyContacts: {
 			name: string;
 			relationship: string;
 			phone: string;
-			priority: number;
+			priority: ["1", "2", "3"];
 		}[];
 	}
 

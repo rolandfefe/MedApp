@@ -6,23 +6,17 @@ const emergencyContactSchema = z.object({
 	name: z.string().min(1, "Emergency contact name is required"),
 	relationship: z.string().min(1, "Relationship is required"),
 	phone: z.string().min(1, "Phone number is required"),
-	priority: z.number().int().min(1).max(3).default(1), // Assuming priority 1-3
+	priority: z.enum(["1", "2", "3"]).default("1"),
 });
 
 // Main Patient Form Schema
 export const patientZodSchema = z.object({
-	DOB: z
-		.date()
-		.refine(
-			(date) => date <= new Date(),
-			"Date of birth cannot be in the future"
-		),
-	gender: z.enum(eGender),
-	maritalStatus: z.enum(eMaritalStatus).optional(),
+	DOB: z.string(),
+	gender: z.nativeEnum(eGender),
+	maritalStatus: z.nativeEnum(eMaritalStatus).optional(),
 	occupation: z.string().optional(),
 	race: z.string().optional(),
-	ethnicity: z.string().optional(),
-	languages: z.string(),
+	languages: z.string().optional(),
 	emergencyContacts: z.array(emergencyContactSchema).default([]),
 });
 
@@ -42,7 +36,6 @@ export const patientStrictCreateSchema = patientZodSchema
 		maritalStatus: patientZodSchema.shape.maritalStatus.optional(),
 		occupation: patientZodSchema.shape.occupation.optional(),
 		race: patientZodSchema.shape.race.optional(),
-		ethnicity: patientZodSchema.shape.ethnicity.optional(),
 		languages: patientZodSchema.shape.languages,
 		emergencyContacts: patientZodSchema.shape.emergencyContacts,
 	});

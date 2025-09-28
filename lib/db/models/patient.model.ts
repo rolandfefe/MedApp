@@ -24,14 +24,13 @@ const patientSchema = new Schema<IPatient>(
 		},
 		occupation: String,
 		race: String,
-		ethnicity: String,
 		languages: [String],
 		emergencyContacts: [
 			{
 				name: { type: String, required: true },
 				relationship: { type: String, required: true },
 				phone: { type: String, required: true },
-				priority: { type: Number, default: 1 },
+				priority: { type: String, enum: ["1", "2", "3"], default: "1" },
 			},
 		],
 	},

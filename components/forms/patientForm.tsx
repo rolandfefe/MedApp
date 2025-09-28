@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader, User2 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useState, useTransition } from "react";
-import { useForm } from "react-hook-form";
+import { FieldErrors, useForm } from "react-hook-form";
 import Heading from "../custom/Heading";
 import {
 	Step,
@@ -35,7 +35,7 @@ export default function PatientForm({
 	const pathname = usePathname();
 	const [isPending, startTransition] = useTransition();
 
-	const form = useForm({
+	const form = useForm<PatientFormData>({
 		resolver: zodResolver(patientZodSchema),
 		defaultValues: {
 			DOB: patient?.DOB,
@@ -52,11 +52,16 @@ export default function PatientForm({
 		console.log(data);
 	};
 
-	const errHandler = async (err: any) => {
+	const errHandler = async (err: FieldErrors<PatientFormData>) => {
 		console.log("err:", err);
 	};
 
-	const FORM_STEPS = getPatientFormStepper<typeof form>(form);
+	const FORM_STEPS = getPatientFormStepper(
+		form,
+		submitHandler,
+		errHandler,
+		isPending
+	);
 
 	return (
 		<div className="">
@@ -91,13 +96,7 @@ export default function PatientForm({
 						</Step>
 					))}
 				</Stepper>
-				<div>
-					<Heading>All Done</Heading>
-
-					<MyBtn disabled={isPending} className="flex w-fit mx-auto">
-						Submit {isPending && <Loader className="animate-spin" />}
-					</MyBtn>
-				</div>
+				<div></div>
 			</Form>
 		</div>
 	);

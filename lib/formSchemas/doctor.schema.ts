@@ -11,9 +11,9 @@ import {
 // Medical License Schema
 const licenseSchema = z.object({
 	licenseNumber: z.string().min(1, "License number is required"),
-	type: z.enum(eLicenseType),
+	type: z.nativeEnum(eLicenseType),
 	issuingState: z.string().min(1, "Issuing state is required"),
-	status: z.enum(eLicenseStatus).default(eLicenseStatus.ACTIVE),
+	status: z.nativeEnum(eLicenseStatus).default(eLicenseStatus.ACTIVE),
 	expirationDate: z.date(),
 });
 
@@ -23,7 +23,9 @@ const boardCertificationsSchema = z.object({
 	specialty: z.string().min(1, "Specialty is required"),
 	subSpecialty: z.string().optional(),
 	certificationId: z.string().min(1, "Certification ID is required"),
-	status: z.enum(eCertificationStatus).default(eCertificationStatus.ACTIVE),
+	status: z
+		.nativeEnum(eCertificationStatus)
+		.default(eCertificationStatus.ACTIVE),
 	certificationDate: z.date(),
 	expirationDate: z.date(),
 });
@@ -40,7 +42,7 @@ const hospitalAffiliationSchema = z.object({
 
 // Medical Degree Schema
 const medicalDegreeSchema = z.object({
-	type: z.enum(eMedicalDegreeTypes),
+	type: z.nativeEnum(eMedicalDegreeTypes),
 	institution: z.string().min(1, "Institution is required"),
 	date: z.date(),
 });
@@ -88,7 +90,7 @@ export const doctorFormSchema = z.object({
 			(date) => date <= new Date(),
 			"Date of birth cannot be in the future"
 		),
-	gender: z.enum(eGender),
+	gender: z.nativeEnum(eGender),
 	languages: z.array(z.string()).default([]),
 	bio: z.string().max(5000, "Bio must be 5000 characters or less").optional(),
 	credentials: credentialsSchema,

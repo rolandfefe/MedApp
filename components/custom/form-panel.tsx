@@ -72,7 +72,7 @@ export const FormPanelContent = ({
 				</MyBtn>
 			</DrawerClose>
 
-			<ScrollArea className="h-[95vh] sm:h-screen p-2 sm:p-3">{children}</ScrollArea>
+			<ScrollArea className="h-[93vh] sm:h-screen p-2 sm:p-3">{children}</ScrollArea>
 			{/* {children} */}
 		</DrawerContent>
 	);

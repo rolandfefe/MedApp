@@ -73,7 +73,7 @@ function DrawerContent({
 			>
 				<div
 					className={cn(
-						"cursor-grab bg-muted mx-auto mt-4 h-2 w-[100px] shrink-0 rounded-full",
+						"cursor-grab bg-muted/40 backdrop-blur-md mx-auto mt-4 h-2 w-[100px] shrink-0 rounded-full",
 						"group-data-[vaul-drawer-direction=right]/drawer-content:w-2 group-data-[vaul-drawer-direction=right]/drawer-content:h-[100px]",
 						"group-data-[vaul-drawer-direction=right]/drawer-content:absolute group-data-[vaul-drawer-direction=right]/drawer-content:left-2 group-data-[vaul-drawer-direction=right]/drawer-content:top-1/2 group-data-[vaul-drawer-direction=right]/drawer-content:-translate-y-1/2 group-data-[vaul-drawer-direction=right]/drawer-content:z-30"
 					)}
