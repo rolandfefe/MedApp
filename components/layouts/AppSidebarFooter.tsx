@@ -44,7 +44,7 @@ export default function AppSidebarFooter({
 	const [doctor, setDoctor] = useState<IDoctor>();
 	const [patient, setPatient] = useState<IPatient>();
 
-	const isSmScreen = useMediaQuery("(width < 640px )");
+	const isSmScreen = useMediaQuery("(width <= 640px )");
 	const router = useRouter();
 	const pathname = usePathname();
 
@@ -82,7 +82,7 @@ export default function AppSidebarFooter({
 							tooltip={"Choose mode"}
 							// size="lg"
 							variant={"outline"}
-							className="h-10"
+							className="h-12"
 						>
 							{isDoctorMode ? (
 								<>

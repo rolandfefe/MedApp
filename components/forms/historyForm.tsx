@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { Badge } from "@/components/ui/badge";
 import { Form } from "@/components/ui/form";
 import {
@@ -8,7 +9,7 @@ import {
 } from "@/lib/formSchemas/doctor.schema";
 import { PatientFormData } from "@/lib/formSchemas/patient.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Hospital, X } from "lucide-react";
+import { History, Hospital, X } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { ReactNode, useState, useTransition } from "react";
 import { FieldErrors, useForm } from "react-hook-form";
@@ -30,15 +31,21 @@ import getDoctorFormStepper from "../formSteppers/doctorFormStepper";
 import { Card, CardContent } from "../ui/card";
 import { Separator } from "../ui/separator";
 import { createDoctor, updateDoctor } from "@/lib/actions/doctor.actions";
+import {
+	HistoryFormData,
+	historyFormSchema,
+} from "@/lib/formSchemas/history.schema";
+import { createHistory, updateHistory } from "@/lib/actions/history.action";
+import getHistoryFormStepper from "../formSteppers/HistoryFormStepper";
 
-export default function DoctorForm({
-	currentUser,
+export default function HistoryForm({
+	history,
 	action,
-	doctor,
+	currentUser,
 }: {
-	currentUser: IUser;
+	history?: IHistory;
 	action: "Create" | "Update";
-	doctor?: IDoctor;
+	currentUser: IUser;
 }) {
 	const [activeStep, setActiveStep] = useState<number>(1);
 	const pathname = usePathname();
@@ -46,53 +53,28 @@ export default function DoctorForm({
 	const [isSuccess, setIsSuccess] = useState<boolean>(false);
 	const router = useRouter();
 
-	const form = useForm<DoctorFormData>({
-		resolver: zodResolver(doctorFormSchema),
-		defaultValues: {
-			bio: doctor?.bio,
-			DOB: doctor?.DOB as string,
-			gender: doctor?.gender,
-			languages: doctor?.languages.join(", "),
-			contact: doctor?.contact,
-			// credentials: doctor?.credentials,
-		},
+	const form = useForm<HistoryFormData>({
+		resolver: zodResolver(historyFormSchema),
+		defaultValues: {},
 	});
 
-	const submitHandler = async (data: DoctorFormData) => {
-		const cleanData: IDoctor = {
-			...data,
-			user: currentUser._id!,
-			languages: data.languages!.split(", "),
-			specialties: data.specialties.map(({ procedures, ...specialty }) => ({
-				...specialty,
-				procedures: procedures.split(", "),
-			})),
-			credentials: {
-				...data.credentials,
-				hospitalAffiliations: data.credentials.hospitalAffiliations.map(
-					({ roles, ...affiliation }) => ({
-						...affiliation,
-						roles: roles.split(", "),
-					})
-				),
-			},
-		};
+	const submitHandler = async (data: HistoryFormData) => {
+		console.log(data);
+		// const cleanData: IHistory = {};
 
 		if (action === "Create") {
 			startTransition(async () => {
-				const { _id } = await createDoctor(cleanData, pathname);
+				// await createHistory({}, pathname);
+
+				toast.success("Patient history created👍");
 				form.reset();
-				toast.success(
-					"Application submitted for verification🤙. \n Feedback will be notified🤗"
-				);
 				setIsSuccess(true);
-				router.push(`/doctor/${encodeURIComponent(_id!)}`);
 			});
-		} else if (action === "Update" && doctor) {
+		} else if (action === "Update" && history) {
 			startTransition(async () => {
-				await updateDoctor({ ...doctor, ...cleanData }, pathname);
+				// await updateHistory({}, pathname);
+				toast.success("Patient history updated🔃");
 				form.reset();
-				toast.success("Doctor Profile updated.");
 				setIsSuccess(true);
 			});
 		}
@@ -129,7 +111,7 @@ export default function DoctorForm({
 		);
 	};
 
-	const FORM_STEPS = getDoctorFormStepper(
+	const FORM_STEPS = getHistoryFormStepper(
 		form,
 		submitHandler,
 		errHandler,
@@ -140,7 +122,7 @@ export default function DoctorForm({
 		<div className="">
 			<div className="px-2 sticky top-0 bg-background/40 backdrop-blur-2xl backdrop-saturate-150">
 				<Heading className="text-xl md:text-2xl text-primary">
-					<Hospital /> Doctor Form <Badge variant={"secondary"}>{action}</Badge>{" "}
+					<History /> History Form <Badge variant={"secondary"}>{action}</Badge>{" "}
 				</Heading>
 				<Separator className="my-3" />
 			</div>
@@ -174,21 +156,21 @@ export default function DoctorForm({
 	);
 }
 
-export const DoctorFormPanel = ({
-	action = "Create",
+export const HistoryFormPanel = async ({
 	children,
-	currentUser,
+	...props
 }: {
-	action?: "Update" | "Create";
+	history?: IHistory;
+	action: "Create" | "Update";
 	currentUser: IUser;
-	children: ReactNode;
+	children?: ReactNode;
 }) => {
 	return (
 		<FormPanel>
 			<FormPanelTrigger asChild>{children}</FormPanelTrigger>
 
 			<FormPanelContent>
-				<DoctorForm action={action} currentUser={currentUser} />
+				<HistoryForm {...props} />
 			</FormPanelContent>
 		</FormPanel>
 	);

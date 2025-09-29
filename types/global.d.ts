@@ -24,6 +24,7 @@ import {
 	IHospitalAffiliation,
 	IMedicalLicense,
 } from "./doctor";
+import { IAllergy, ISocialHistory } from "./history";
 
 export {};
 
@@ -135,56 +136,26 @@ declare global {
 	interface IHistory extends Base {
 		patient: IPatient | string;
 
-		pastConditions: Array<{
-			condition: string;
+		diseaseHistory: Array<{
+			name: string;
 			diagnosisDate: Date | string;
 			resolved: boolean;
-			resolutionDate: Date | string;
+			resolutionDate?: Date | string;
 		}>;
 		surgicalHistory: Array<{
 			procedure: string;
 			date: Date | string;
-			facility?: string;
+			facility: string;
 		}>;
 		familyHistory: Array<{
 			condition: string;
 			relation: string;
 			notes?: string;
 		}>;
-
-		// socialHistory
-		smoking: {
-			status: eLifeStyleStatus;
-			years?: number;
-			quitDate?: Date | string;
-			lastUse?: Date | string;
-		};
-		alcohol: {
-			status: eLifeStyleStatus;
-			years?: number;
-			quitDate?: Date | string;
-			lastUse?: Date | string;
-		};
-		substanceUse?: {
-			substances: string[];
-			status: eLifeStyleStatus;
-			quitDate?: Date | string;
-			lastUse?: Date | string;
-		};
+		socialHistory: ISocialHistory;
 		exercise?: string; // e.g., "3 times per week"
 		diet?: string; // e.g., "vegetarian", "Mediterranean"
-
-		// Allergies
 		allergies: IAllergy[];
-	}
-
-	interface IAllergy extends Base {
-		substance: string;
-		reaction: string;
-		severity: eAllergySeverity;
-		onsetDate: Date | string;
-		documentedBy: string;
-		lastReactionDate: Date | string;
 	}
 
 	interface IMedication extends Base {

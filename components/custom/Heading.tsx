@@ -5,11 +5,9 @@ import { headerFont } from "../../app/fonts";
 export default function Heading({
 	children,
 	className,
-}: // icon,
-{
+}: {
 	children: ReactNode;
 	className?: string;
-	// icon?: JSX.Element;
 }) {
 	return (
 		<p
@@ -18,7 +16,6 @@ export default function Heading({
 				className
 			)}
 		>
-			{/* {icon} */}
 			{children}
 		</p>
 	);
