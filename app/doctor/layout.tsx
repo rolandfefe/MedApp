@@ -14,7 +14,7 @@ export default async function layout({ children }: { children: ReactNode }) {
 	return (
 		<>
 			<SidebarProvider defaultOpen>
-				<DoctorSidebar />
+				<DoctorSidebar currentUser={currentUser} />
 				<SidebarInset>
 					<ScrollArea className="h-screen">
 						<DoctorNavbar />

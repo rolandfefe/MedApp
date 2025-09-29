@@ -65,11 +65,6 @@ export const getDoctorNavItems = (id: IDoctor["_id"]) => [
 
 export const PATIENT_NAV_ITEMS = [
 	{
-		name: "Landing",
-		link: "/",
-		icon: <Home size={20} />,
-	},
-	{
 		name: "Home",
 		link: "/home",
 		icon: <Home size={20} />,

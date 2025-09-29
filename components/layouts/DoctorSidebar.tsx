@@ -16,7 +16,7 @@ import { useParams } from "next/navigation";
 import { getDoctorNavItems } from "@/constants";
 import NavItem from "./NavItem";
 
-export default function DoctorSidebar() {
+export default function DoctorSidebar({ currentUser }: { currentUser: IUser }) {
 	const { id } = useParams();
 
 	return (
@@ -32,10 +32,9 @@ export default function DoctorSidebar() {
 				</SidebarMenu>
 			</SidebarContent>
 			<SidebarFooter>
-				<AppSidebarFooter />
+				<AppSidebarFooter currentUser={currentUser} />
 			</SidebarFooter>
 			<SidebarRail />
-
 		</Sidebar>
 	);
 }

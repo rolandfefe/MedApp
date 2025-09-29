@@ -50,15 +50,15 @@ export default function AppSidebarFooter({
 
 	const isDoctorMode = pathname.split("/")[1] === "doctor";
 
-	useEffect(() => {
-		const fetchDoctor = async () =>
-			setDoctor(await getDoctor({ userId: currentUser._id! }));
-		const fetchPatient = async () =>
-			setPatient(await getPatient({ userId: currentUser._id! }));
+	console.log("pat:", patient, "DOc:", doctor);
 
-		fetchDoctor();
-		fetchPatient();
-	});
+	useEffect(() => {
+		const fetchData = async () => {
+			setDoctor(await getDoctor({ userId: currentUser._id! }));
+			setPatient(await getPatient({ userId: currentUser._id! }));
+		};
+		fetchData();
+	}, []);
 
 	return (
 		<div className="space-y-2">
@@ -82,6 +82,7 @@ export default function AppSidebarFooter({
 							tooltip={"Choose mode"}
 							// size="lg"
 							variant={"outline"}
+							className="h-10"
 						>
 							{isDoctorMode ? (
 								<>
@@ -117,8 +118,8 @@ export default function AppSidebarFooter({
 						</DropdownMenuItem>
 					) : (
 						<DoctorFormPanel currentUser={currentUser} action="Create">
-							<MyBtn variant="ghost" size="sm" className="w-full">
-								Apply as Doctor
+							<MyBtn size="sm" className="w-full">
+								Apply as Doctor <Hospital />
 							</MyBtn>
 						</DoctorFormPanel>
 					)}
@@ -133,12 +134,9 @@ export default function AppSidebarFooter({
 						</DropdownMenuItem>
 					) : (
 						<PatientFormPanel currentUser={currentUser} action="create">
-							<MyBtn
-								variant="ghost"
-								size="sm"
-								className="w-full bg-transparent"
-							>
+							<MyBtn size="sm" className="w-full bg-transparent">
 								Apply as Patient
+								<UserPlus2 />
 							</MyBtn>
 						</PatientFormPanel>
 					)}

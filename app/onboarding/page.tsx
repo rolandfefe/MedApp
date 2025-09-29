@@ -3,7 +3,7 @@ import MyBtn from "@/components/custom/MyBtn";
 import { logoFont } from "@/app/fonts";
 import OnboardingNav from "@/components/layouts/OnboardingNav";
 import { getCurrentUser } from "@/lib/actions/user.actions";
-import { Hospital, User } from "lucide-react";
+import { Hospital, User, UserPlus2 } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 import { PatientFormPanel } from "@/components/forms/patientForm";
@@ -53,11 +53,12 @@ export default async function page() {
 								size="lg"
 								className="flex-1 text-primary"
 							>
-								<User /> Patient
+								<UserPlus2 />
+								Patient
 							</MyBtn>
 						</PatientFormPanel>
 
-						<DoctorFormPanel currentUser={currentUser}   >
+						<DoctorFormPanel currentUser={currentUser}>
 							<MyBtn size="lg" className="flex-1">
 								<Hospital /> Doctor
 							</MyBtn>

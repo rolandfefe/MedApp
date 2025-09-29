@@ -14,7 +14,7 @@ export const getCurrentUser = async (): Promise<IUser> => {
 
 		const clerkId =
 			process.env.MY_ENV === "dev"
-				? "user_33IZXmIngU2ExfPoAhHyH49Rdho"
+				? "user_33IYoE4ONaznKJn53RfVyPslr2t"
 				: clerkUser.id;
 
 		const mongoUser = await userModel.findOne({ clerkId });
