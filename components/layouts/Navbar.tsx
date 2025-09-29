@@ -1,17 +1,17 @@
-import { cn } from "@/lib/utils";
-import {
-	SignedIn,
-	SignedOut,
-	SignInButton,
-	SignUpButton,
-	UserButton,
-} from "@clerk/nextjs";
+"use client";
+
+import { cn, getNavItem } from "@/lib/utils";
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+import { useParams, usePathname } from "next/navigation";
+import BackBtn from "../btns/BackBtn";
+import { ThemeBtn } from "../btns/ThemeBtn";
+import Heading from "../custom/Heading";
 import MyBtn from "../custom/MyBtn";
 import { SidebarTrigger } from "../ui/sidebar";
-import { ThemeBtn } from "../btns/ThemeBtn";
-import BackBtn from "../btns/BackBtn";
 
 export default function Navbar({ className }: { className?: string }) {
+	const pathname = usePathname();
+
 	return (
 		<nav
 			className={cn(
@@ -23,6 +23,10 @@ export default function Navbar({ className }: { className?: string }) {
 				<SidebarTrigger />
 				<BackBtn />
 			</div>
+
+			<Heading className="text-xl md:text-2xl">
+				{getNavItem(pathname, "Patient")?.name}
+			</Heading>
 
 			<div className="flex items-center gap-x-2">
 				<ThemeBtn />

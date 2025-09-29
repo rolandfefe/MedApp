@@ -119,4 +119,4 @@ const doctorSchema = new Schema<IDoctor>(
 	{ timestamps: true }
 );
 
-export default models.Doctor || model<IDoctor>("Doctor", doctorSchema);
+export default models?.Doctor || model<IDoctor>("Doctor", doctorSchema);

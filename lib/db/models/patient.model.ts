@@ -38,4 +38,4 @@ const patientSchema = new Schema<IPatient>(
 	{ timestamps: true }
 );
 
-export default models.Patient || model<IPatient>("Patient", patientSchema);
+export default models?.Patient || model<IPatient>("Patient", patientSchema);

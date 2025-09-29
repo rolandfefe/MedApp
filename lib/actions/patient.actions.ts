@@ -32,12 +32,19 @@ export const getPatients = async (): Promise<IPatient[]> => {
 	}
 };
 
-export const getPatient = async (id: string): Promise<IPatient> => {
+export const getPatient = async ({
+	id,
+	userId,
+}: {
+	id?: string;
+	userId?: string;
+}): Promise<IPatient> => {
 	try {
 		await connectDb();
 
 		const patient = await patientModel
-			.findById(id)
+			.findOne()
+			.or([{ _id: id }, { user: userId }])
 			.populate("user")
 			.sort({ createdAt: -1 });
 

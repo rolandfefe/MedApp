@@ -6,6 +6,7 @@ import Image from "next/image";
 import { AnimatePresence, motion } from "motion/react";
 import { useSidebar } from "../ui/sidebar";
 import LogoText from "./LogoText";
+import { cn } from "@/lib/utils";
 
 export default function AppSidebarHeader() {
 	const { state } = useSidebar();
@@ -17,14 +18,17 @@ export default function AppSidebarHeader() {
 	};
 
 	return (
-		<Link href="/" className="flex items-center gap-x-2">
+		<Link href="/home" className="flex items-center gap-x-2">
 			<Image
 				src="/assets/logo.png"
 				alt="logo"
 				width={999}
 				height={999}
 				priority
-				className="object-cover rounded-lg size-12"
+				className={cn(
+					"object-cover rounded-lg size-12",
+					state === "collapsed" && "size-8"
+				)}
 			/>
 			<AnimatePresence>
 				{state === "expanded" && (

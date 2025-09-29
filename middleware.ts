@@ -1,6 +1,8 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 import "@/lib/db/models";
+import { getCurrentUser } from "./lib/actions/user.actions";
+import { getDoctor } from "./lib/actions/doctor.actions";
 
 const isPublicRoute = createRouteMatcher([
 	"/",
@@ -14,12 +16,13 @@ const isOnboardingRoute = createRouteMatcher([
 	"/onboarding/(.*)",
 ]);
 
-const isDoctorRoute = createRouteMatcher(["/onboarding/(.*)"]);
+const isDoctorRoute = createRouteMatcher(["/doctor/(.*)"]);
 
 export default clerkMiddleware(async (auth, req: NextRequest) => {
-	if (process.env.MY_ENV !== "dev") {
-		const { isAuthenticated, sessionClaims, redirectToSignIn } = await auth();
+	const { isAuthenticated, sessionClaims, redirectToSignIn, userId } =
+		await auth();
 
+	if (process.env.MY_ENV !== "dev") {
 		// For users visiting /onboarding, don't try to redirect
 		if (isAuthenticated && isOnboardingRoute(req)) {
 			return NextResponse.next();
@@ -38,11 +41,17 @@ export default clerkMiddleware(async (auth, req: NextRequest) => {
 
 		// If the user is logged in and the route is protected, let them view.
 		if (isAuthenticated && !isPublicRoute(req)) return NextResponse.next();
-	} 
+	}
 
+	if (isDoctorRoute(req)) {
+		// ! trying to apply security on doctor's file.
+		const id = req.nextUrl.pathname.split("/")[1];
+		// const { clerkId } = (await getDoctor({ id })).user as IUser;
 
-	if(isDoctorRoute(req)) {
-		console.log("📡Req: ", req);
+		// const redirectUrl = new URL("/home", req.url);
+		// console.log("📡Req: ", id, clerkId, userId, clerkId != userId);
+
+		// if (clerkId != userId) return NextResponse.redirect(redirectUrl);
 	}
 });
 

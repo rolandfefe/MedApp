@@ -12,7 +12,7 @@ export default function Heading({
 	// icon?: JSX.Element;
 }) {
 	return (
-		<h3
+		<p
 			className={cn(
 				`${headerFont.className} flex items-center gap-x-1 font-medium`,
 				className
@@ -20,6 +20,6 @@ export default function Heading({
 		>
 			{/* {icon} */}
 			{children}
-		</h3>
+		</p>
 	);
 }

@@ -171,7 +171,7 @@ function Sidebar({
 			<div
 				data-slot="sidebar"
 				className={cn(
-					"bg-sidebar text-sidebar-foreground flex h-full w-(--sidebar-width) flex-col",
+					"bg-sidebar/40 text-sidebar-foreground flex h-full w-(--sidebar-width) flex-col",
 					className
 				)}
 				{...props}
@@ -542,10 +542,13 @@ function SidebarMenuButton({
 
 	return (
 		<Tooltip>
-			<TooltipTrigger asChild>{button}</TooltipTrigger>
+			<TooltipTrigger asChild className="cursor-pointer">
+				{button}
+			</TooltipTrigger>
 			<TooltipContent
 				side="right"
 				align="center"
+				className="!text-primary"
 				hidden={state !== "collapsed" || isMobile}
 				{...tooltip}
 			/>

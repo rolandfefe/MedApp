@@ -1,14 +1,29 @@
-import Heading from "@/components/custom/Heading";
-import MyBtn from "@/components/custom/MyBtn";
-import { Card, CardContent } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { PatientFormData } from "@/lib/formSchemas/patient.schema";
+import {
+	ADMIN_NAV_ITEMS,
+	getDoctorNavItems,
+	LANDING_NAV_ITEMS,
+	PATIENT_NAV_ITEMS,
+} from "@/constants";
 import { clsx, type ClassValue } from "clsx";
-import { X } from "lucide-react";
-import { FieldErrors } from "react-hook-form";
-import toast from "react-hot-toast";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
 }
+
+export const getNavItem = (
+	pathname: string,
+	variant: "Patient" | "Doctor" | "Admin",
+	id?: string
+) => {
+	const navItems =
+		variant === "Admin"
+			? ADMIN_NAV_ITEMS
+			: variant === "Doctor"
+			? getDoctorNavItems(id!)
+			: PATIENT_NAV_ITEMS;
+
+	return navItems.find(
+		(item) => item.link === pathname || item.link.startsWith(pathname)
+	);
+};

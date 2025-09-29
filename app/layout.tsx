@@ -8,6 +8,8 @@ import { Geist_Mono, Poppins } from "next/font/google";
 import { extractRouterConfig } from "uploadthing/server";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
+import "@/lib/db/models";
+import { getCurrentUser } from "@/lib/actions/user.actions";
 
 const poppinsFont = Poppins({
 	weight: ["100", "200", "300", "400", "500", "600", "700"],
@@ -31,6 +33,7 @@ export default async function RootLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
+
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<ClerkProvider
@@ -41,7 +44,7 @@ export default async function RootLayout({
 				<body
 					className={`${poppinsFont.className} ${geistMono.variable} antialiased`}
 				>
-					<Toaster  />
+					<Toaster />
 					<NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
 
 					<ThemeProvider
