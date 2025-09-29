@@ -87,7 +87,7 @@ export default function DoctorForm({
 					"Application submitted for verification🤙. \n Feedback will be notified🤗"
 				);
 				setIsSuccess(true);
-				router.push(encodeURIComponent(`/doctor/${_id}`));
+				router.push(`/doctor/${encodeURIComponent(_id!)}`);
 			});
 		} else if (action === "Update" && doctor) {
 			startTransition(async () => {
