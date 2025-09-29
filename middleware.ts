@@ -14,6 +14,8 @@ const isOnboardingRoute = createRouteMatcher([
 	"/onboarding/(.*)",
 ]);
 
+const isDoctorRoute = createRouteMatcher(["/onboarding/(.*)"]);
+
 export default clerkMiddleware(async (auth, req: NextRequest) => {
 	if (process.env.MY_ENV !== "dev") {
 		const { isAuthenticated, sessionClaims, redirectToSignIn } = await auth();
@@ -36,6 +38,11 @@ export default clerkMiddleware(async (auth, req: NextRequest) => {
 
 		// If the user is logged in and the route is protected, let them view.
 		if (isAuthenticated && !isPublicRoute(req)) return NextResponse.next();
+	} 
+
+
+	if(isDoctorRoute(req)) {
+		console.log("📡Req: ", req);
 	}
 });
 

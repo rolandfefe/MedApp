@@ -175,6 +175,13 @@ export enum eDiagnosticStatus {
 	Resolved = "Resolved",
 }
 
+export enum eLifeStyleStatus {
+	NEVER = "Never",
+	OCCASIONAL = "Occasional",
+	REGULAR = "Regular",
+	FORMER = "Former",
+}
+
 export enum eLanguages {
 	English = "English",
 	MandarinChinese = "Mandarin Chinese",

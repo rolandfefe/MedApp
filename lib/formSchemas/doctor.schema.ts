@@ -5,6 +5,7 @@ import {
 	eLicenseStatus,
 	eLicenseType,
 	eMedicalCertificationTypes,
+	eMedicalSpecialties,
 	eRating,
 } from "@/types/enums";
 
@@ -17,7 +18,7 @@ const licenseSchema = z.object({
 		.nullable()
 		.default(eLicenseStatus.ACTIVE),
 	issuingState: z.string().min(1, "Issuing state is required"),
-	expirationDate: z.string().optional(),
+	expirationDate: z.string(),
 });
 
 // Board Certification Schema
@@ -28,7 +29,7 @@ const boardCertificationsSchema = z.object({
 		.nativeEnum(eCertificationStatus)
 		.default(eCertificationStatus.ACTIVE),
 	date: z.string(),
-	expirationDate: z.string().optional(),
+	expirationDate: z.string(),
 });
 
 // Hospital Affiliation Schema
@@ -67,8 +68,10 @@ const metricsSchema = z.object({
 
 // Specialty Schema
 const specialtySchema = z.object({
-	primary: z.string().min(1, "Primary specialty is required"),
-	secondary: z.string().optional(),
+	primary: z.nativeEnum(eMedicalSpecialties, {
+		required_error: "Primary specialty is required",
+	}),
+	secondary: z.nativeEnum(eMedicalSpecialties).optional(),
 	procedures: z.string().min(1, "Procedure name is required"),
 });
 

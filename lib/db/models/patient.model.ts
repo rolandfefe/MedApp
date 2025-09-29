@@ -8,6 +8,7 @@ const patientSchema = new Schema<IPatient>(
 			ref: "User",
 			required: true,
 			immutable: true,
+			// unique: true, // ! Not Restrict users from creating 2 Patient profiles.
 		},
 		DOB: {
 			type: Date,

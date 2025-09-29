@@ -5,13 +5,18 @@ import { connectDb } from "../db/db";
 import doctorModel from "../db/models/doctor.model";
 import { after } from "next/server";
 
-export const createDoctor = async (doctor: IDoctor, pathname: string) => {
+export const createDoctor = async (
+	doctor: IDoctor,
+	pathname: string
+): Promise<IDoctor> => {
 	try {
 		await connectDb();
 
-		await doctorModel.create(doctor);
+		const newDoctor = await doctorModel.create(doctor);
 
 		after(() => revalidatePath(pathname));
+
+		return JSON.parse(JSON.stringify(newDoctor));
 	} catch (error: any) {
 		throw new Error(error);
 	}

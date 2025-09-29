@@ -9,6 +9,7 @@ import {
 	eLicenseStatus,
 	eLicenseType,
 	eMedicalCertificationTypes,
+	eMedicalSpecialties,
 	eRating,
 } from "@/types/enums";
 import { model } from "mongoose";
@@ -40,7 +41,7 @@ const boardCertificationsSchema = new Schema<IBoardCertification>({
 		default: eCertificationStatus.ACTIVE,
 	},
 	date: { type: Date, required: true },
-	expirationDate: { type: Date, required: true },
+	expirationDate: Date,
 });
 
 const hospitalAffiliationSchema = new Schema<IHospitalAffiliation>({
@@ -85,6 +86,7 @@ const doctorSchema = new Schema<IDoctor>(
 			ref: "User",
 			required: true,
 			immutable: true,
+			// unique: true, // ! Not Restrict users from creating 2 doctor profiles.
 		},
 		DOB: {
 			type: Date,
@@ -100,8 +102,8 @@ const doctorSchema = new Schema<IDoctor>(
 		credentials: { type: credentialsSchema, required: true },
 		specialties: [
 			{
-				primary: { type: String, required: true },
-				secondary: String,
+				primary: { type: String, enum: eMedicalSpecialties, required: true },
+				secondary: { type: String, enum: eMedicalSpecialties },
 				procedures: [{ type: String, required: true }],
 			},
 		],

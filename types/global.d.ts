@@ -9,6 +9,7 @@ import {
 	eGender,
 	eLicenseStatus,
 	eLicenseType,
+	eLifeStyleStatus,
 	eMaritalStatus,
 	eMedicalCertificationTypes,
 	eMedicalSpecialties,
@@ -78,13 +79,13 @@ declare global {
 			licenses: IMedicalLicense[];
 			boardCertifications?: IBoardCertification[];
 			hospitalAffiliations: IHospitalAffiliation[];
-			isVerified: boolean;
+			isVerified?: boolean;
 		};
 
 		// Specialties & Expertise
 		specialties: Array<{
 			primary: eMedicalSpecialties;
-			secondary?: eMedicalSpecialties[];
+			secondary?: eMedicalSpecialties;
 			procedures: string[]; // List of procedures they are qualified to perform
 		}>;
 
@@ -123,12 +124,12 @@ declare global {
 		officeHours: Array<{
 			dayOfWeek: eWeekDays;
 			startTime: string; // in HH:MM format
-			endTime: string;
+			endTime?: string;
 			isAvailable: boolean;
 		}>;
 		averageAppointmentDuration: string;
 		isAcceptingNewPatients: boolean;
-		nextAvailableAppointmentDate | string?: Date | string;
+		nextAvailableAppointmentDate?: Date | string;
 	}
 
 	interface IHistory extends Base {
@@ -136,9 +137,9 @@ declare global {
 
 		pastConditions: Array<{
 			condition: string;
-			diagnosisDate | string?: Date | string;
+			diagnosisDate: Date | string;
 			resolved: boolean;
-			resolutionDate | string?: Date | string;
+			resolutionDate: Date | string;
 		}>;
 		surgicalHistory: Array<{
 			procedure: string;
@@ -153,18 +154,21 @@ declare global {
 
 		// socialHistory
 		smoking: {
-			status: "never" | "former" | "current";
+			status: eLifeStyleStatus;
 			years?: number;
-			quitDate | string?: Date | string;
+			quitDate?: Date | string;
+			lastUse?: Date | string;
 		};
 		alcohol: {
-			status: "never" | "occasional" | "regular";
-			drinksPerWeek?: number;
-			type?: string;
+			status: eLifeStyleStatus;
+			years?: number;
+			quitDate?: Date | string;
+			lastUse?: Date | string;
 		};
 		substanceUse?: {
 			substances: string[];
-			frequency?: string;
+			status: eLifeStyleStatus;
+			quitDate?: Date | string;
 			lastUse?: Date | string;
 		};
 		exercise?: string; // e.g., "3 times per week"
@@ -178,9 +182,9 @@ declare global {
 		substance: string;
 		reaction: string;
 		severity: eAllergySeverity;
-		onsetDate | string?: Date | string;
+		onsetDate: Date | string;
 		documentedBy: string;
-		lastReactionDate | string?: Date | string;
+		lastReactionDate: Date | string;
 	}
 
 	interface IMedication extends Base {
@@ -189,8 +193,8 @@ declare global {
 		dosage: string;
 		frequency: string;
 		route: eMethodOfDrugAdministration;
-		startDate | string: Date | string;
-		endDate | string?: Date | string;
+		startDate: Date | string;
+		endDate?: Date | string;
 		active: boolean;
 
 		reason?: string;
@@ -219,7 +223,7 @@ declare global {
 		publication?: {
 			publisher: string;
 			version?: string;
-			Date | string: Date | string;
+			Date: Date | string;
 		};
 
 		content: {
@@ -269,7 +273,7 @@ declare global {
 		patient?: IPatient | string;
 		doctor?: IDoctor | string;
 		starTime: Date | string;
-		endTime: Date | string;
+		endTime?: Date | string;
 
 		// Appointment Details
 		type: eAppointmentTypes;
@@ -297,9 +301,6 @@ declare global {
 		// Follow-up & Outcomes
 		followUpInstructions?: string;
 		referral?: IReferral;
-
-		createdAt: Date | string;
-		updatedAt: Date | string;
 	}
 
 	// ? Allow constant follow up on the patients
@@ -310,22 +311,16 @@ declare global {
 		interval: number;
 		weekDays?: eWeekDays[];
 		// dayOfMonth?: number;
-		startDate | string?: Date | string;
-		endDate | string?: Date | string;
+		startDate: Date | string;
+		endDate?: Date | string;
 		occurrenceCount?: number;
 		exceptions: Date | string[];
-
-		createdAt: Date | string;
-		updatedAt: Date | string;
 	}
 
 	interface IReferral extends Base {
 		appointment: IAppointment | string;
 
 		reason: string;
-
-		createdAt: Date | string;
-		updatedAt: Date | string;
 	}
 
 	interface IReminder extends Base {
@@ -338,9 +333,6 @@ declare global {
 		scheduledTime: Date | string;
 		sent: boolean;
 		status?: "pending" | "sent" | "failed";
-
-		createdAt: Date | string;
-		updatedAt: Date | string;
 	}
 
 	interface IDiagnosis extends Base {
@@ -354,7 +346,7 @@ declare global {
 		medicationsReviewed?: boolean;
 		templateUsed?: string; // EHR template name
 
-		onsetDate | string?: Date | string;
+		onsetDate: Date | string;
 		dateResolved?: Date | string;
 
 		healthStatus: IHealthStatus | string;
@@ -365,8 +357,6 @@ declare global {
 		differentialDiagnosis: IDifferentialDiagnosis[];
 		status: eDiagnosticStatus;
 
-		createdAt: Date | string;
-		updatedAt: Date | string;
 		updatedBy: IDoctor | string;
 	}
 
@@ -404,7 +394,7 @@ declare global {
 			medications: IMedication[];
 			procedures?: Array<{
 				type: string;
-				scheduledDate | string?: Date | string;
+				scheduledDate: Date | string;
 				status: "recommended" | "scheduled" | "completed";
 			}>;
 			therapies?: Array<{
@@ -419,7 +409,7 @@ declare global {
 		followUp: {
 			isRequired: boolean;
 			frequency?: string; // e.g., "every 3 months"
-			nextAppointmentDate | string?: Date | string;
+			nextAppointmentDate: Date | string;
 			monitoringInstructions?: string; // What to watch for at home
 		};
 
@@ -434,10 +424,8 @@ declare global {
 		secondOpinionClinicianId?: string;
 
 		// Metadata
-		createdBy: string;
-		createdAt: Date | string;
-		updatedAt: Date | string;
-		updatedBy: string;
+		createdBy: IDoctor | string;
+		updatedBy: IDoctor | string;
 	}
 
 	// ! Forms Basis of patient follow up
@@ -460,9 +448,6 @@ declare global {
 			aggravatingFactors?: string[];
 			relievingFactors?: string[];
 		};
-
-		createdAt: Date | string;
-		updatedAt: Date | string;
 	}
 
 	interface IMessage extends Base {
@@ -473,9 +458,6 @@ declare global {
 
 		from: IUser | string;
 		to: IUser | string;
-
-		createdAt: Date | string;
-		updatedAt: Date | string;
 	}
 
 	interface CustomJwtSessionClaims extends Base {

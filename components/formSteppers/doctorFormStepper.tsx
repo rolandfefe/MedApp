@@ -5,6 +5,7 @@ import {
 	eLicenseStatus,
 	eLicenseType,
 	eMedicalCertificationTypes,
+	eMedicalSpecialties,
 } from "@/types/enums";
 import {
 	Building2,
@@ -119,6 +120,24 @@ export default function getDoctorFormStepper(
 							</FormItem>
 						)}
 					/>
+
+					<FormField
+						control={form.control}
+						name="languages"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Languages</FormLabel>
+								<FormControl>
+									<Textarea
+										{...field}
+										placeholder="Comma-separated list eg: (English, Swahili, etc...)"
+									/>
+									{/* <Input {...field} placeholder="Occupation..." /> */}
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
 				</section>
 			),
 			get isComplete(): boolean {
@@ -143,16 +162,14 @@ export default function getDoctorFormStepper(
 							control={form.control}
 							name="contact.officePhone"
 							render={({ field }) => (
-								<FormItem>
-									<FormItem className="flex-1">
-										<FormLabel>Office Phone:</FormLabel>
+								<FormItem className="flex-1">
+									<FormLabel>Office Phone:</FormLabel>
 
-										<FormControl>
-											<Input {...field} placeholder="Phone number..." />
-										</FormControl>
+									<FormControl>
+										<Input {...field} placeholder="Phone number..." />
+									</FormControl>
 
-										<FormMessage />
-									</FormItem>
+									<FormMessage />
 								</FormItem>
 							)}
 						/>
@@ -160,19 +177,14 @@ export default function getDoctorFormStepper(
 							control={form.control}
 							name="contact.mobilePhone"
 							render={({ field }) => (
-								<FormItem>
-									<FormItem className="flex-1">
-										<FormLabel>Mobile Phone:</FormLabel>
+								<FormItem className="flex-1">
+									<FormLabel>Mobile Phone:</FormLabel>
 
-										<FormControl>
-											<Input
-												{...field}
-												placeholder="Phone number...(optional)"
-											/>
-										</FormControl>
+									<FormControl>
+										<Input {...field} placeholder="Phone number...(optional)" />
+									</FormControl>
 
-										<FormMessage />
-									</FormItem>
+									<FormMessage />
 								</FormItem>
 							)}
 						/>
@@ -198,35 +210,38 @@ export default function getDoctorFormStepper(
 				</section>
 			),
 			get isComplete(): boolean {
-				return false;
+				return (
+					!!form.watch("contact.officePhone") &&
+					!!form.watch("contact.officeEmail")
+				);
 			},
 		},
 		{
 			title: "Medical Certifications 📜",
 			body: <MedicalCertificationSection form={form} />,
 			get isComplete(): boolean {
-				return false;
+				return !!form.watch(`credentials.medicalCertifications`);
 			},
 		},
 		{
 			title: "Specialties🤹",
 			body: <SpecialtiesSection form={form} />,
 			get isComplete(): boolean {
-				return false;
+				return !!form.watch(`specialties`);
 			},
 		},
 		{
 			title: "Board certifications 📜",
 			body: <BoardCertificationSection form={form} />,
 			get isComplete(): boolean {
-				return false;
+				return !!form.watch("credentials.boardCertifications");
 			},
 		},
 		{
 			title: "Hospital affiliations🏥",
 			body: <HospitalAffiliationSection form={form} />,
 			get isComplete(): boolean {
-				return false;
+				return !!form.watch(`credentials.hospitalAffiliations`);
 			},
 		},
 		{
@@ -286,7 +301,7 @@ const LicenseSection = ({
 						append({
 							type: null,
 							issuingState: "",
-							status: null,
+							status: eLicenseStatus.ACTIVE,
 							licenseNumber: "",
 							expirationDate: "",
 						})
@@ -624,9 +639,9 @@ const BoardCertificationSection = ({
 					onClick={() =>
 						append({
 							boardName: "",
-							date: "",
 							certificationId: "",
 							status: eCertificationStatus.ACTIVE,
+							date: "",
 							expirationDate: "",
 						})
 					}
@@ -789,8 +804,8 @@ const SpecialtiesSection = ({
 					variant={"secondary"}
 					onClick={() =>
 						append({
-							primary: "",
-							secondary: "",
+							primary: eMedicalSpecialties.Allergy,
+							secondary: eMedicalSpecialties.Anesthesiology,
 							procedures: "",
 						})
 					}
@@ -825,9 +840,26 @@ const SpecialtiesSection = ({
 											<FormItem className="flex-1">
 												<FormLabel>Primary:</FormLabel>
 
-												<FormControl>
-													<Input {...field} placeholder="Primary skill..." />
-												</FormControl>
+												<Select
+													onValueChange={field.onChange}
+													defaultValue={field.value}
+												>
+													<FormControl>
+														<SelectTrigger>
+															<SelectValue placeholder="Choose specialty..." />
+														</SelectTrigger>
+													</FormControl>
+
+													<SelectContent>
+														{Object.entries(eMedicalSpecialties).map(
+															([k, v]) => (
+																<SelectItem key={k} value={v}>
+																	{v}
+																</SelectItem>
+															)
+														)}
+													</SelectContent>
+												</Select>
 
 												<FormMessage />
 											</FormItem>
@@ -840,12 +872,26 @@ const SpecialtiesSection = ({
 											<FormItem className="flex-1">
 												<FormLabel>Secondary:</FormLabel>
 
-												<FormControl>
-													<Input
-														{...field}
-														placeholder="Secondary skill...(optional)"
-													/>
-												</FormControl>
+												<Select
+													onValueChange={field.onChange}
+													defaultValue={field.value}
+												>
+													<FormControl>
+														<SelectTrigger>
+															<SelectValue placeholder="Choose type..." />
+														</SelectTrigger>
+													</FormControl>
+
+													<SelectContent>
+														{Object.entries(eMedicalSpecialties).map(
+															([k, v]) => (
+																<SelectItem key={k} value={v}>
+																	{v}
+																</SelectItem>
+															)
+														)}
+													</SelectContent>
+												</Select>
 
 												<FormMessage />
 											</FormItem>
