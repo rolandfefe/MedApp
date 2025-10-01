@@ -153,9 +153,11 @@ declare global {
 			notes?: string;
 		}>;
 		socialHistory: ISocialHistory;
+		allergies: IAllergy[];
+
 		exercise?: string; // e.g., "3 times per week"
 		diet?: string; // e.g., "vegetarian", "Mediterranean"
-		allergies: IAllergy[];
+		notes?: string;
 	}
 
 	interface IMedication extends Base {
@@ -272,6 +274,28 @@ declare global {
 		// Follow-up & Outcomes
 		followUpInstructions?: string;
 		referral?: IReferral;
+	}
+
+	// ! Forms Basis of patient follow up
+	interface IHealthStatus extends Base {
+		patient: IPatient | string;
+		vitals: IVitals | string;
+
+		chiefComplaint?: string;
+		symptoms?: Array<{
+			description: string;
+			onset: Date | string;
+			severity: number; // 1-10 scale
+			duration?: string;
+		}>;
+
+		pain?: {
+			location: string;
+			intensity: number; // 0-10 scale
+			character: string; // sharp, dull, burning, etc.
+			aggravatingFactors?: string[];
+			relievingFactors?: string[];
+		};
 	}
 
 	// ? Allow constant follow up on the patients
@@ -397,28 +421,6 @@ declare global {
 		// Metadata
 		createdBy: IDoctor | string;
 		updatedBy: IDoctor | string;
-	}
-
-	// ! Forms Basis of patient follow up
-	interface IHealthStatus extends Base {
-		patient: IPatient | string;
-		vitals: IVitals | string;
-
-		chiefComplaint?: string;
-		symptoms?: Array<{
-			description: string;
-			onset: Date | string;
-			severity: number; // 1-10 scale
-			duration?: string;
-		}>;
-
-		pain?: {
-			location: string;
-			intensity: number; // 0-10 scale
-			character: string; // sharp, dull, burning, etc.
-			aggravatingFactors?: string[];
-			relievingFactors?: string[];
-		};
 	}
 
 	interface IMessage extends Base {

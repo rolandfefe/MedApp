@@ -28,7 +28,7 @@ export const getHistory = async ({
 
 		const history = await historyModel
 			.findOne()
-			.or([{ _id: id, patient: patientId }])
+			.or([{ _id: id }, { patient: patientId }])
 			.populate({ path: "patient", populate: "user" });
 
 		return JSON.parse(JSON.stringify(history));

@@ -13,7 +13,9 @@ import Image from "next/image";
 export default async function page() {
 	const currentUser = await getCurrentUser();
 	const patient = await getPatient({ userId: currentUser._id! });
-	const history = await getHistory({ patientId: patient._id });
+	const history = await getHistory({ patientId: patient._id! });
+	console.log("Pat:", patient, "hist", history);
+
 	return (
 		<div className="pt-5 md:px-10 space-y-3">
 			<section className="flex flex-col sm:flex-row sm:items-start gap-3">
@@ -52,7 +54,11 @@ export default async function page() {
 							<span> History</span>
 						</Heading>
 
-						<CopyBadge variant="secondary" content={patient._id!}>
+						<CopyBadge
+							variant="secondary"
+							content={patient._id!}
+							className="text-xs"
+						>
 							{patient._id}
 						</CopyBadge>
 					</div>
@@ -79,7 +85,11 @@ export default async function page() {
 							<p className="text-muted-foreground text-center text-sm">
 								No history data
 							</p>
-							<HistoryFormPanel action="Create" currentUser={currentUser}>
+							<HistoryFormPanel
+								action="Create"
+								currentUser={currentUser}
+								patient={patient}
+							>
 								<MyBtn variant={"secondary"} size="lg">
 									Create history <PlusCircle />
 								</MyBtn>

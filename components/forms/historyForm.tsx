@@ -42,10 +42,12 @@ export default function HistoryForm({
 	history,
 	action,
 	currentUser,
+	patient,
 }: {
 	history?: IHistory;
 	action: "Create" | "Update";
 	currentUser: IUser;
+	patient: IPatient;
 }) {
 	const [activeStep, setActiveStep] = useState<number>(1);
 	const pathname = usePathname();
@@ -60,11 +62,20 @@ export default function HistoryForm({
 
 	const submitHandler = async (data: HistoryFormData) => {
 		console.log(data);
-		// const cleanData: IHistory = {};
+		const cleanData: IHistory = {
+			...data,
+			socialHistory: {
+				...data.socialHistory,
+				substanceUse: {
+					...data.socialHistory?.substanceUse,
+					substances: data.socialHistory?.substanceUse.substances.split(", "),
+				},
+			},
+		};
 
 		if (action === "Create") {
 			startTransition(async () => {
-				// await createHistory({}, pathname);
+				await createHistory({ ...cleanData, patient: patient._id! }, pathname);
 
 				toast.success("Patient history created👍");
 				form.reset();
@@ -72,7 +83,7 @@ export default function HistoryForm({
 			});
 		} else if (action === "Update" && history) {
 			startTransition(async () => {
-				// await updateHistory({}, pathname);
+				await updateHistory({ ...cleanData }, pathname);
 				toast.success("Patient history updated🔃");
 				form.reset();
 				setIsSuccess(true);
@@ -156,7 +167,7 @@ export default function HistoryForm({
 	);
 }
 
-export const HistoryFormPanel = async ({
+export const HistoryFormPanel = ({
 	children,
 	...props
 }: {
@@ -164,6 +175,7 @@ export const HistoryFormPanel = async ({
 	action: "Create" | "Update";
 	currentUser: IUser;
 	children?: ReactNode;
+	patient: IPatient
 }) => {
 	return (
 		<FormPanel>

@@ -66,6 +66,7 @@ const historySchema = new Schema<IHistory>(
 		socialHistory: socialHistorySchema,
 		exercise: String,
 		diet: String,
+		notes: String,
 	},
 	{ timestamps: true }
 );
