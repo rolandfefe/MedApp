@@ -11,7 +11,7 @@ export const createPatient = async (patient: IPatient, pathname: string) => {
 
 		await patientModel.create(patient);
 
-		after(() => revalidatePath(pathname));
+		revalidatePath(pathname);
 	} catch (error: any) {
 		throw new Error(error);
 	}
@@ -63,7 +63,7 @@ export const updatePatient = async (
 
 		await patientModel.findByIdAndUpdate(updatedPatient._id, updatedPatient);
 
-		after(() => revalidatePath(pathname));
+		revalidatePath(pathname);
 	} catch (error: any) {
 		throw new Error(error);
 	}
@@ -75,7 +75,7 @@ export const deletePatient = async (id: string, pathname: string) => {
 
 		await patientModel.findByIdAndDelete(id);
 
-		after(() => revalidatePath(pathname));
+		revalidatePath(pathname);
 	} catch (error: any) {
 		throw new Error(error);
 	}

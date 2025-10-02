@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { ComponentProps } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Form } from "@/components/ui/form";
 import {
@@ -55,13 +55,14 @@ export default function HistoryForm({
 	const [isSuccess, setIsSuccess] = useState<boolean>(false);
 	const router = useRouter();
 
+	console.log("form", history);
+
 	const form = useForm<HistoryFormData>({
 		resolver: zodResolver(historyFormSchema),
 		defaultValues: {},
 	});
 
 	const submitHandler = async (data: HistoryFormData) => {
-		console.log(data);
 		const cleanData: IHistory = {
 			...data,
 			socialHistory: {
@@ -83,7 +84,7 @@ export default function HistoryForm({
 			});
 		} else if (action === "Update" && history) {
 			startTransition(async () => {
-				await updateHistory({ ...cleanData }, pathname);
+				await updateHistory({ ...history, ...cleanData }, pathname);
 				toast.success("Patient history updated🔃");
 				form.reset();
 				setIsSuccess(true);
@@ -161,7 +162,6 @@ export default function HistoryForm({
 						</Step>
 					))}
 				</Stepper>
-				<div></div>
 			</Form>
 		</div>
 	);
@@ -170,19 +170,13 @@ export default function HistoryForm({
 export const HistoryFormPanel = ({
 	children,
 	...props
-}: {
-	history?: IHistory;
-	action: "Create" | "Update";
-	currentUser: IUser;
-	children?: ReactNode;
-	patient: IPatient
-}) => {
+}: { children: ReactNode } & ComponentProps<typeof HistoryForm>) => {
 	return (
 		<FormPanel>
 			<FormPanelTrigger asChild>{children}</FormPanelTrigger>
 
 			<FormPanelContent>
-				<HistoryForm {...props} />
+				<HistoryForm {...props}	 />
 			</FormPanelContent>
 		</FormPanel>
 	);

@@ -14,7 +14,7 @@ export const createDoctor = async (
 
 		const newDoctor = await doctorModel.create(doctor);
 
-		after(() => revalidatePath(pathname));
+		revalidatePath(pathname);
 
 		return JSON.parse(JSON.stringify(newDoctor));
 	} catch (error: any) {
@@ -84,7 +84,7 @@ export const updateDoctor = async (
 
 		await doctorModel.findByIdAndUpdate(updatedDoctor._id, updatedDoctor);
 
-		after(() => revalidatePath(pathname));
+		revalidatePath(pathname);
 	} catch (error: any) {
 		throw new Error(error);
 	}
@@ -96,7 +96,7 @@ export const deleteDoctor = async (id: string, pathname: string) => {
 
 		await doctorModel.findByIdAndDelete(id);
 
-		after(() => revalidatePath(pathname));
+		revalidatePath(pathname);
 	} catch (error: any) {
 		throw new Error(error);
 	}

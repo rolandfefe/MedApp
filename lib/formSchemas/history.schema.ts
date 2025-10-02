@@ -52,7 +52,7 @@ const diseaseHistorySchema = z.object({
 // Surgical History Schema
 const surgicalHistorySchema = z.object({
 	procedure: z.string().min(1, "Procedure name is required"),
-	date: z.string(),
+	date: z.string().min(1, "Procedure name is required"),
 	facility: z.string().min(1, "Facility name is required"),
 });
 

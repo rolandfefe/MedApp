@@ -1,20 +1,20 @@
+import HistoryCard from "@/components/cards/HistoryCard";
 import CopyBadge from "@/components/custom/CopyBadge";
 import Heading from "@/components/custom/Heading";
 import MyBtn from "@/components/custom/MyBtn";
 import { HistoryFormPanel } from "@/components/forms/historyForm";
-import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { getHistory } from "@/lib/actions/history.action";
 import { getPatient } from "@/lib/actions/patient.actions";
 import { getCurrentUser } from "@/lib/actions/user.actions";
-import { Edit3, History, PlusCircle } from "lucide-react";
+import { Edit3, PlusCircle } from "lucide-react";
 import Image from "next/image";
 
 export default async function page() {
 	const currentUser = await getCurrentUser();
 	const patient = await getPatient({ userId: currentUser._id! });
 	const history = await getHistory({ patientId: patient._id! });
-	console.log("Pat:", patient, "hist", history);
+	console.log("hist", history);
 
 	return (
 		<div className="pt-5 md:px-10 space-y-3">
@@ -24,7 +24,7 @@ export default async function page() {
 					alt="doctors"
 					width={999}
 					height={999}
-					className="w-[70vw] sm:w-1/3 md:w-1/2 mx-auto sm:mx-0"
+					className="w-[70vw] sm:w-1/2 md:w-1/3  mx-auto sm:mx-0"
 				/>
 
 				<div className="space-y-2">
@@ -33,7 +33,7 @@ export default async function page() {
 						<span className="text-primary">History ⌛</span>
 					</Heading>
 
-					<div className="text-sm md:text-base space-y-2">
+					<div className="text-xs sm:text-sm md:text-base space-y-2">
 						<p>👉 This is where you can detail your Medical details.</p>
 						<p>
 							👉 This data will be visible to the Doctors who attend to you
@@ -66,7 +66,8 @@ export default async function page() {
 						<HistoryFormPanel
 							action="Update"
 							currentUser={currentUser}
-							history={history}
+							history={history} // ! Erie Error👻
+							patient={patient}
 						>
 							<MyBtn variant={"outline"}>
 								<Edit3 />
@@ -79,7 +80,7 @@ export default async function page() {
 
 				<div className="">
 					{history ? (
-						"history data"
+						<HistoryCard currentUser={currentUser} history={history} />
 					) : (
 						<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[40%]">
 							<p className="text-muted-foreground text-center text-sm">

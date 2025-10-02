@@ -10,7 +10,7 @@ export const createHistory = async (history: IHistory, pathname: string) => {
 		await connectDb();
 		await historyModel.create(history);
 
-		after(() => revalidatePath(pathname));
+		revalidatePath(pathname);
 	} catch (error: any) {
 		throw new Error(error);
 	}
@@ -46,7 +46,7 @@ export const updateHistory = async (
 
 		await historyModel.findByIdAndUpdate(updatedHistory._id, updatedHistory);
 
-		after(() => revalidatePath(pathname));
+		revalidatePath(pathname);
 	} catch (error: any) {
 		throw new Error(error);
 	}
@@ -58,7 +58,7 @@ export const deleteHistory = async (id: string, pathname: string) => {
 
 		await historyModel.findByIdAndDelete(id);
 
-		after(() => revalidatePath(pathname));
+		revalidatePath(pathname);
 	} catch (error: any) {
 		throw new Error(error);
 	}

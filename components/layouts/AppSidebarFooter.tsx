@@ -50,8 +50,6 @@ export default function AppSidebarFooter({
 
 	const isDoctorMode = pathname.split("/")[1] === "doctor";
 
-	console.log("pat:", patient, "DOc:", doctor);
-
 	useEffect(() => {
 		const fetchData = async () => {
 			setDoctor(await getDoctor({ userId: currentUser._id! }));

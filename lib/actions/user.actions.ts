@@ -34,7 +34,7 @@ export const createUser = async (
 
 		await userModel.create(user);
 
-		after(() => revalidatePath(pathname));
+		revalidatePath(pathname);
 	} catch (error: any) {
 		throw new Error(error);
 	}
@@ -95,7 +95,7 @@ export const updateUser = async (
 			updatedUser
 		);
 
-		after(() => revalidatePath(pathname));
+		revalidatePath(pathname);
 	} catch (error: any) {
 		throw new Error(error);
 	}
@@ -110,7 +110,7 @@ export const deleteUser = async (
 
 		await userModel.findOneAndDelete({ clerkId });
 
-		after(() => revalidatePath(pathname));
+		revalidatePath(pathname);
 	} catch (error: any) {
 		throw new Error(error);
 	}
