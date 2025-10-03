@@ -91,8 +91,8 @@ export const PATIENT_NAV_ITEMS = [
 		icon: <Pill size={20} />,
 	},
 	{
-		name: "Vitals",
-		link: "/vitals",
+		name: "Health Status",
+		link: "/health-status",
 		icon: <HeartPulse size={20} />,
 	},
 	// {

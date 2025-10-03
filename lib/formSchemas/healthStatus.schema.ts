@@ -1,11 +1,6 @@
 import { z } from "zod";
 import { ePainType, eTenScale } from "@/types/enums";
 
-// Helper schema for ObjectId validation
-const objectIdSchema = z
-	.string()
-	.regex(/^[0-9a-fA-F]{24}$/, "Invalid ObjectId");
-
 // Vitals Schema
 const vitalsSchema = z.object({
 	bloodPressure: z.string().optional(),
@@ -23,7 +18,7 @@ const symptomSchema = z.object({
 	description: z.string().min(1, "Symptom description is required"),
 	severity: z.nativeEnum(eTenScale),
 	duration: z.string().optional(),
-	onSet: z.date(), // Note: Matches your schema's 'onSet' (not 'onset')
+	onset: z.string(),
 });
 
 // Pain Schema
@@ -31,13 +26,12 @@ const painSchema = z.object({
 	location: z.string().min(1, "Pain location is required"),
 	intensity: z.nativeEnum(eTenScale),
 	type: z.nativeEnum(ePainType),
-	aggravatingFactors: z.array(z.string()).default([]),
-	relievingFactors: z.array(z.string()).default([]),
+	aggravatingFactors: z.string().optional(),
+	relievingFactors: z.string().optional(),
 });
 
 // Main HealthStatus Form Schema
 export const healthStatusFormSchema = z.object({
-	patient: objectIdSchema,
 	vitals: vitalsSchema,
 	complaint: z.string().optional(),
 	symptoms: z.array(symptomSchema).default([]),
@@ -46,15 +40,6 @@ export const healthStatusFormSchema = z.object({
 
 // Partial update schema
 export const healthStatusUpdateSchema = healthStatusFormSchema.partial();
-
-// Create schema
-export const healthStatusCreateSchema = healthStatusFormSchema
-	.omit({
-		patient: true, // Patient might be set from context
-	})
-	.extend({
-		patient: objectIdSchema.optional(),
-	});
 
 // Individual section schemas for modular forms
 export const vitalsFormSchema = z.object({
@@ -72,8 +57,6 @@ export const painFormSchema = z.object({
 // Type inference
 export type HealthStatusFormData = z.infer<typeof healthStatusFormSchema>;
 export type HealthStatusUpdateData = z.infer<typeof healthStatusUpdateSchema>;
-export type HealthStatusCreateData = z.infer<typeof healthStatusCreateSchema>;
-
 export type VitalsFormData = z.infer<typeof vitalsFormSchema>;
 export type SymptomsFormData = z.infer<typeof symptomsFormSchema>;
 export type PainFormData = z.infer<typeof painFormSchema>;

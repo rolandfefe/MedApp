@@ -24,6 +24,7 @@ export default async function page() {
 					alt="doctors"
 					width={999}
 					height={999}
+					priority
 					className="w-[70vw] sm:w-1/2 md:w-1/3  mx-auto sm:mx-0"
 				/>
 
@@ -33,7 +34,7 @@ export default async function page() {
 						<span className="text-primary">History ⌛</span>
 					</Heading>
 
-					<div className="text-xs sm:text-sm md:text-base space-y-2">
+					<div className="text-xs sm:text-sm md:textbase space-y-2">
 						<p>👉 This is where you can detail your Medical details.</p>
 						<p>
 							👉 This data will be visible to the Doctors who attend to you

@@ -21,19 +21,23 @@ export const createHealthStatus = async (
 
 export const getHealthStatuses = async ({
 	patient,
+	latest,
 }: {
 	patient: string;
-}): Promise<IHealthStatus[]> => {
+	latest?: boolean;
+}): Promise<IHealthStatus[] | IHealthStatus> => {
 	try {
 		await connectDb();
 
-		const statuses = await healthStatusModel
+		const _statuses = await healthStatusModel
 			.find()
 			.or([{ patient }])
 			.populate({ path: "patient", populate: "user" })
 			.sort({ createdAt: -1 });
 
-		return JSON.parse(JSON.stringify(statuses));
+		const result = latest ? _statuses[_statuses.length + 1] : _statuses;
+
+		return JSON.parse(JSON.stringify(result));
 	} catch (error: any) {
 		throw new Error(error);
 	}

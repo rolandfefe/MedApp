@@ -285,7 +285,7 @@ declare global {
 	 */
 	interface IHealthStatus extends Base {
 		patient: IPatient | string;
-		vitals: IVitals | string;
+		vitals: IVitals;
 
 		complaint?: string;
 		symptoms?: Array<{
