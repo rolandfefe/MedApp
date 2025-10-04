@@ -66,18 +66,29 @@ export default function HealthStatusForm({
 	});
 	const submitHandler = async (data: HealthStatusFormData) => {
 		console.log(data);
+
+		const cleanData: IHealthStatus = {
+			...data,
+			pain: data.pain.map(({ aggravatingFactors, relievingFactors, ...p }) => ({
+				...p,
+				aggravatingFactors: aggravatingFactors?.split(", "),
+				relievingFactors: relievingFactors?.split(", "),
+			})),
+			patient: patient._id!,
+		};
+
 		if (action === "Create") {
 			startTransition(async () => {
-				// await createHealthStatus({ ...data, patient: patient._id! }, pathname);
+				await createHealthStatus({ ...cleanData }, pathname);
 				toast.success("Health status saved🫀");
 				// form.reset();
 				setIsSuccess(true);
 			});
 		} else if (action === "Update" && healthStatus) {
 			startTransition(async () => {
-				// await updateHealthStatus({ ...healthStatus, ...data }, pathname);
+				await updateHealthStatus({ ...healthStatus, ...cleanData }, pathname);
 				toast.success("Health status saved🫀");
-				// form.reset();
+				form.reset();
 				setIsSuccess(true);
 			});
 		}
@@ -117,7 +128,7 @@ export default function HealthStatusForm({
 	const FORM_STEPS = getHealthStatusFormStepper(
 		form,
 		submitHandler,
-		errHandler
+		errHandler,isPending
 	);
 
 	return (

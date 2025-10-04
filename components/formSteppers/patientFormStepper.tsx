@@ -1,7 +1,7 @@
 "use client";
 
 import { PatientFormData } from "@/lib/formSchemas/patient.schema";
-import { eGender, eMaritalStatus, eRating } from "@/types/enums";
+import { eGender, eMaritalStatus, eRating } from "@/types/enums/enums";
 import { Loader, Plus, Trash2 } from "lucide-react";
 import { motion } from "motion/react";
 import Image from "next/image";

@@ -1,4 +1,4 @@
-import { eGender, eMaritalStatus, eRating } from "@/types/enums";
+import { eGender, eMaritalStatus, eRating } from "@/types/enums/enums";
 import { model, models, Schema } from "mongoose";
 
 const patientSchema = new Schema<IPatient>(

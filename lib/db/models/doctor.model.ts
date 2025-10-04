@@ -11,7 +11,7 @@ import {
 	eMedicalCertificationTypes,
 	eMedicalSpecialties,
 	eRating,
-} from "@/types/enums";
+} from "@/types/enums/enums";
 import { model } from "mongoose";
 import { models, Schema } from "mongoose";
 

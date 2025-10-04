@@ -7,7 +7,7 @@ import {
 	eMedicalCertificationTypes,
 	eMedicalSpecialties,
 	eRating,
-} from "@/types/enums";
+} from "@/types/enums/enums";
 
 // Medical License Schema
 const licenseSchema = z.object({

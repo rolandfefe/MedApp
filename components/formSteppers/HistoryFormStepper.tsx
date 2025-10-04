@@ -9,7 +9,7 @@ import {
 	eLifeStyleStatus,
 	eMedicalCertificationTypes,
 	eMedicalSpecialties,
-} from "@/types/enums";
+} from "@/types/enums/enums";
 import {
 	Bed,
 	BottleWine,

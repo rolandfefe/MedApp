@@ -18,6 +18,23 @@ export enum eArticleType {
 	CASE_REPORT = "Case-report",
 	EDITORIAL = "Editorial",
 	LETTER = "Letter",
+	NEWS = "News",
+	CLINICAL_TRIAL = "Clinical Trial",
+	GUIDELINE = "Guideline",
+	CASE_SERIES = "Case Series",
+	META_ANALYSIS = "Meta-analysis",
+	SHORT_COMMUNICATION = "Short Communication",
+	COMMENTARY = "Commentary",
+	BRIEF_REPORT = "Brief Report",
+	PERSPECTIVE = "Perspective",
+	PROTOCOL = "Protocol",
+	TECHNICAL_REPORT = "Technical Report",
+	CONSENSUS_STATEMENT = "Consensus Statement",
+	WHITE_PAPER = "White Paper",
+	OPINION = "Opinion",
+	EDUCATIONAL = "Educational",
+	INTERVIEW = "Interview",
+	OBITUARY = "Obituary",
 }
 
 export enum eAllergySeverity {
@@ -98,6 +115,14 @@ export enum eRecurrenceFrequency {
 	WEEKLY = "Weekly",
 	BI_WEEKLY = "Bi-weekly",
 	MONTHLY = "Monthly",
+}
+
+export enum ePatientConsent {
+	HEALTH_STATUSES = "Health statuses",
+	VITALS = "VITALS",
+	HISTORY = "History",
+	PATIENT_PROFILE = "Patient profile",
+	USER_PROFILE = "User profile",
 }
 
 export enum eMedicalSpecialties {

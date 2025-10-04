@@ -15,17 +15,19 @@ import {
 	eMedicalSpecialties,
 	eMessageStatus,
 	eMethodOfDrugAdministration,
+	ePatientConsent,
 	eRating,
 	eReminderVariants,
 	eTenScale,
 	eWeekDays,
-} from "@/types/enums";
+} from "@/types/enums/enums";
 import {
 	IBoardCertification,
 	IHospitalAffiliation,
 	IMedicalLicense,
 } from "./doctor";
 import { IAllergy, ISocialHistory } from "./history";
+import { IPaymentInfo } from "./appointment";
 
 export {};
 
@@ -277,6 +279,19 @@ declare global {
 
 		startTime?: Date | string; // ? Optional Allow flexibility
 		endTime?: Date | string;
+
+		// coNSULTATION DETAILS
+		payment?: IPaymentInfo;
+		online: {
+			url: string;
+			accessCode?: string;
+		};
+
+		doctorNotes?: string;
+		patientNotes?: string;
+		isEmergency?: boolean;
+		consentLevels: ePatientConsent[];
+		imgs: string[];
 	}
 
 	// ! Forms Basis of patient follow up
@@ -406,13 +421,7 @@ declare global {
 			lifestyleRecommendations?: string[];
 		};
 
-		// Follow-up and Monitoring
-		followUp: {
-			isRequired: boolean;
-			frequency?: string; // e.g., "every 3 months"
-			nextAppointmentDate: Date | string;
-			monitoringInstructions?: string; // What to watch for at home
-		};
+		recurrencePlan?: IRecurrencePlan;
 
 		// Patient Education & Communication
 		patientExplanation: string; // How the diagnosis was explained to the patient in layman's terms
@@ -430,13 +439,13 @@ declare global {
 	}
 
 	interface IMessage extends Base {
-		appointment: IAppointment | string;
+		consultation: IConsultation | string;
 		body: string;
 		status: eMessageStatus;
 		refMessage?: IMessage | string;
 
 		from: IUser | string;
-		to: IUser | string;
+		// to: IUser | string;
 	}
 
 	interface CustomJwtSessionClaims extends Base {

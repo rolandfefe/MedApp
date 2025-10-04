@@ -1,4 +1,4 @@
-import { eAllergySeverity, eLifeStyleStatus } from "@/types/enums";
+import { eAllergySeverity, eLifeStyleStatus } from "@/types/enums/enums";
 import { IAllergy, ISocialHistory } from "@/types/history";
 import { model, models, Schema } from "mongoose";
 

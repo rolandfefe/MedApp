@@ -7,7 +7,7 @@ import {
 	eMedicalSpecialties,
 	ePainType,
 	eTenScale,
-} from "@/types/enums";
+} from "@/types/enums/enums";
 import {
 	Building2,
 	CreditCard,
@@ -97,12 +97,12 @@ export default function getHealthStatusFormStepper(
 							name="vitals.bloodPressure"
 							render={({ field }) => (
 								<FormItem className="flex-1">
-									<FormLabel>Blood Pressure</FormLabel>
+									<FormLabel>Blood Pressure (sys/dia)</FormLabel>
 
 									<FormControl>
 										<Input
 											{...field}
-											placeholder="Bp in (Systol/Diastol) format"
+											placeholder="Bp in (Systole/Diastole) format"
 										/>
 									</FormControl>
 
@@ -115,7 +115,7 @@ export default function getHealthStatusFormStepper(
 							name="vitals.heartRate"
 							render={({ field }) => (
 								<FormItem className="flex-1">
-									<FormLabel>Heart Rate</FormLabel>
+									<FormLabel>Heart Rate(BpM)</FormLabel>
 
 									<FormControl>
 										<Input

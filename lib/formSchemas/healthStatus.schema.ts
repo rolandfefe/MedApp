@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ePainType, eTenScale } from "@/types/enums";
+import { ePainType, eTenScale } from "@/types/enums/enums";
 
 // Vitals Schema
 const vitalsSchema = z.object({

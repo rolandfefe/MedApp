@@ -6,7 +6,7 @@ import {
 	eLicenseType,
 	eMedicalCertificationTypes,
 	eMedicalSpecialties,
-} from "@/types/enums";
+} from "@/types/enums/enums";
 import {
 	Building2,
 	CreditCard,

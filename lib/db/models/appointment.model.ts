@@ -1,4 +1,8 @@
-import { eAppointmentStatus, eAppointmentTypes } from "@/types/enums";
+import {
+	eAppointmentStatus,
+	eAppointmentTypes,
+	ePatientConsent,
+} from "@/types/enums/enums";
 import { model, models, Schema } from "mongoose";
 
 const appointmentSchema = new Schema<IAppointment>(
@@ -69,6 +73,23 @@ const appointmentSchema = new Schema<IAppointment>(
 
 		startTime: Date,
 		endTime: Date,
+
+		// Consultation details
+		patientNotes: String,
+		doctorNotes: String,
+		consentLevels: [
+			{
+				type: String,
+				enum: ePatientConsent,
+				default: ePatientConsent.HISTORY,
+			},
+		],
+		isEmergency: { type: Boolean, default: false },
+		imgs: [String],
+		online: {
+			url: { type: String, required: true },
+			accessCode: String,
+		},
 	},
 	{ timestamps: true }
 );

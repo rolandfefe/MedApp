@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { eAllergySeverity, eLifeStyleStatus } from "@/types/enums";
+import { eAllergySeverity, eLifeStyleStatus } from "@/types/enums/enums";
 
 // Allergy Schema
 const allergySchema = z.object({

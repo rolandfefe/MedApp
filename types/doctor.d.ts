@@ -1,6 +1,6 @@
 // Supporting Interfaces for more complex structures
 
-import { eCertificationStatus } from "./enums";
+import { eCertificationStatus } from "./enums/enums";
 
 export interface IMedicalLicense {
 	licenseNumber: string;

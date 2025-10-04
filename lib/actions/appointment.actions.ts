@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { connectDb } from "../db/db";
 import appointmentModel from "../db/models/appointment.model";
-import { eAppointmentStatus, eAppointmentTypes } from "@/types/enums";
+import { eAppointmentStatus, eAppointmentTypes } from "@/types/enums/enums";
 
 export const createAppointment = async (
 	appointment: IAppointment,

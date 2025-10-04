@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { eAppointmentStatus, eAppointmentTypes } from "@/types/enums";
+import { eAppointmentStatus, eAppointmentTypes } from "@/types/enums/enums";
 
 // Confirmation Schema
 const confirmationSchema = z.object({

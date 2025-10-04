@@ -1,5 +1,5 @@
 import z from "zod";
-import { eGender, eMaritalStatus, eRating } from "@/types/enums";
+import { eGender, eMaritalStatus, eRating } from "@/types/enums/enums";
 
 // Emergency Contact Schema
 const emergencyContactSchema = z.object({

@@ -1,4 +1,4 @@
-import { ePainType, eTenScale } from "@/types/enums";
+import { ePainType, eTenScale } from "@/types/enums/enums";
 import { model, models, Schema } from "mongoose";
 
 const vitalsSchema = new Schema<IVitals>({
@@ -30,7 +30,7 @@ const healthStatusSchema = new Schema<IHealthStatus>(
 				description: { type: String, required: true },
 				severity: { type: String, enum: eTenScale, required: true },
 				duration: String,
-				onSet: { type: Date, required: true },
+				onset: { type: Date, required: true },
 			},
 		],
 		pain: [

@@ -12,6 +12,8 @@ export default async function page() {
 	const statuses = (await getCurrentPatientHealStatuses()) as IHealthStatus[];
 	const patient = await getCurrentPatient();
 
+	console.log("statuses: ", statuses);
+
 	return (
 		<div className="space-y-3">
 			<section className="flex flex-col sm:flex-row sm:items-start gap-3">
