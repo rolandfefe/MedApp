@@ -26,10 +26,10 @@ export const getAppointments = async ({
 	type,
 	status,
 }: {
-	patientId: string;
-	doctorId: string;
-	type: eAppointmentTypes;
-	status: eAppointmentStatus;
+	patientId?: string;
+	doctorId?: string;
+	type?: eAppointmentTypes;
+	status?: eAppointmentStatus;
 }): Promise<IAppointment[]> => {
 	try {
 		await connectDb();

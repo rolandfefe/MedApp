@@ -16,6 +16,7 @@ import MyBtn from "../custom/MyBtn";
 import getAppointmentFormStepper from "../formSteppers/AppointmentFormStepper";
 import {
 	MorphingDialog,
+	MorphingDialogClose,
 	MorphingDialogContainer,
 	MorphingDialogContent,
 	MorphingDialogSubtitle,
@@ -208,6 +209,7 @@ export const AppointmentPanel = ({
 			<MorphingDialogContainer>
 				<MorphingDialogContent className=" sm:max-w-[80vw]  md:min-w-lg">
 					<AppointmentForm {...props} />
+					 <MorphingDialogClose className='text-foreground' />
 				</MorphingDialogContent>
 			</MorphingDialogContainer>
 		</MorphingDialog>

@@ -39,12 +39,14 @@ import {
 } from "../ui/select";
 import { Textarea } from "../ui/textarea";
 import { Card, CardContent } from "../ui/card";
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { Separator } from "../ui/separator";
 import { AppointmentFormData } from "@/lib/formSchemas/appointment.schema";
 import { Checkbox } from "../ui/checkbox";
 import { Badge } from "../ui/badge";
 import DoctorSearchBox from "../DoctorSearchBox";
+import DoctorCard from "../cards/DoctorCard";
+import { cn } from "@/lib/utils";
 
 export default function getAppointmentFormStepper(
 	form: ReturnType<typeof useForm<AppointmentFormData>>,
@@ -239,6 +241,25 @@ export default function getAppointmentFormStepper(
 						Appointment will be automatically sent to{" "}
 						<span className="font-medium text-primary">Relevant doctors🤖</span>
 					</p>
+
+					<AnimatePresence>
+						{selectedDoctor && (
+							<motion.div
+								key={selectedDoctor._id}
+								layout
+								initial={{ opacity: 0, y: 100 }}
+								animate={{ opacity: 1, y: 0 }}
+								exit={{ opacity: 0, y: 100 }}
+								className="mb-3"
+							>
+								<DoctorCard
+									doctor={selectedDoctor}
+									variant="md"
+									className={cn("w-full")}
+								/>
+							</motion.div>
+						)}
+					</AnimatePresence>
 
 					<DoctorSearchBox
 						doctors={doctors}

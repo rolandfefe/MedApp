@@ -63,12 +63,12 @@ const appointmentSchema = new Schema<IAppointment>(
 		confirmation: {
 			isConfirmed: { type: Boolean, default: false },
 			confirmedAt: Date,
-			confirmedBy: { type: Schema.Types.ObjectId, ref: "User", required: true },
+			confirmedBy: { type: Schema.Types.ObjectId, ref: "User" },
 		},
 		cancellation: {
 			cancelledAt: Date,
-			cancelledBy: { type: Schema.Types.ObjectId, ref: "User", required: true },
-			reason: { type: String, required: true },
+			cancelledBy: { type: Schema.Types.ObjectId, ref: "User" },
+			reason: { type: String },
 		},
 
 		startTime: Date,
@@ -87,7 +87,7 @@ const appointmentSchema = new Schema<IAppointment>(
 		isEmergency: { type: Boolean, default: false },
 		imgs: [String],
 		online: {
-			url: { type: String, required: true },
+			url: { type: String },
 			accessCode: String,
 		},
 	},
