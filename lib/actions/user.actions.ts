@@ -10,12 +10,13 @@ export const getCurrentUser = async (): Promise<IUser> => {
 	try {
 		await connectDb();
 
-		const clerkUser = (await currentUser())!;
+		let clerkId: string;
 
-		const clerkId =
-			process.env.MY_ENV === "dev"
-				? "user_33IYoE4ONaznKJn53RfVyPslr2t"
-				: clerkUser.id;
+		if (process.env.MY_ENV === "dev") {
+			clerkId = "user_33IYoE4ONaznKJn53RfVyPslr2t";
+		} else {
+			clerkId = (await currentUser())!.id;
+		}
 
 		const mongoUser = await userModel.findOne({ clerkId });
 

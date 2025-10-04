@@ -81,7 +81,7 @@ export default function HealthStatusForm({
 			startTransition(async () => {
 				await createHealthStatus({ ...cleanData }, pathname);
 				toast.success("Health status saved🫀");
-				// form.reset();
+				form.reset();
 				setIsSuccess(true);
 			});
 		} else if (action === "Update" && healthStatus) {
@@ -128,7 +128,8 @@ export default function HealthStatusForm({
 	const FORM_STEPS = getHealthStatusFormStepper(
 		form,
 		submitHandler,
-		errHandler,isPending
+		errHandler,
+		isPending
 	);
 
 	return (

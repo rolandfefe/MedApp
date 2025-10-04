@@ -1,16 +1,13 @@
 import { z } from "zod";
-import { eAppointmentStatus, eAppointmentTypes } from "@/types/enums/enums";
+import {
+	eAppointmentStatus,
+	eAppointmentTypes,
+	ePatientConsent,
+} from "@/types/enums/enums";
 
-// Confirmation Schema
-const confirmationSchema = z.object({
-	isConfirmed: z.boolean().default(false),
-	confirmedAt: z.coerce.date().optional(),
-});
-
-// Cancellation Schema
-const cancellationSchema = z.object({
-	cancelledAt: z.coerce.date(),
-	reason: z.string().min(1, "Cancellation reason is required"),
+const onlineFormSchema = z.object({
+	url: z.string().url("Invalid url").optional(),
+	accessCode: z.string(),
 });
 
 // Main Appointment Form Schema
@@ -18,12 +15,16 @@ export const appointmentFormSchema = z
 	.object({
 		reason: z.string().min(1, "Appointment reason is required"),
 		type: z.nativeEnum(eAppointmentTypes),
-		cancellation: cancellationSchema.optional(),
 		startTime: z.coerce
 			.date()
 			.refine((date) => date > new Date(), "Start time must be in the future")
 			.optional(),
 		endTime: z.coerce.date().optional(),
+		online: onlineFormSchema.optional(),
+		isEmergency: z.boolean().optional(),
+		consentLevels: z
+			.nativeEnum(ePatientConsent)
+			.default(ePatientConsent.HEALTH_STATUSES),
 	})
 	.refine(
 		(data) => {
@@ -96,10 +97,6 @@ export type AppointmentStatusUpdateData = z.infer<
 export type AppointmentRescheduleData = z.infer<
 	typeof appointmentRescheduleSchema
 >;
-
-// Individual type exports
-export type Confirmation = z.infer<typeof confirmationSchema>;
-export type Cancellation = z.infer<typeof cancellationSchema>;
 
 // Validation helpers
 export const validateAppointmentTime = (startTime: Date, endTime?: Date) => {

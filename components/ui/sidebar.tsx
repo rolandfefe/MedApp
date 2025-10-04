@@ -103,7 +103,7 @@ function SidebarProvider({
 			) {
 				event.preventDefault();
 				toggleSidebar();
-			}
+			}	
 		};
 
 		window.addEventListener("keydown", handleKeyDown);

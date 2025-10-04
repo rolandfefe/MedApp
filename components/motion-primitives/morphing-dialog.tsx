@@ -98,7 +98,8 @@ function MorphingDialogTrigger({
 	style,
 	triggerRef,
 	asChild = false,
-}: { asChild?: boolean } & MorphingDialogTriggerProps) {
+	shortcutKey,
+}: { asChild?: boolean; shortcutKey?: string } & MorphingDialogTriggerProps) {
 	const { setIsOpen, isOpen, uniqueId } = useMorphingDialog();
 	// const Comp = asChild ? Slot : "button";
 	const Elem = asChild ? motion.div : motion.button;
@@ -109,12 +110,14 @@ function MorphingDialogTrigger({
 
 	const handleKeyDown = useCallback(
 		(event: React.KeyboardEvent) => {
-			if (event.key === "Enter" || event.key === " ") {
+			// if (event.key === "Enter" || event.key === " ") {
+			if (event.key === shortcutKey && (event.metaKey || event.altKey)) {
 				event.preventDefault();
 				setIsOpen(!isOpen);
+				// setIsOpen(prev => !prev);
 			}
 		},
-		[isOpen, setIsOpen]
+		[isOpen, setIsOpen, shortcutKey]
 	);
 
 	return (
@@ -201,18 +204,18 @@ function MorphingDialogContent({
 		}
 	}, [isOpen, triggerRef]);
 
-	useClickOutside(containerRef, () => {
-		if (isOpen) {
-			setIsOpen(false);
-		}
-	});
+	// useClickOutside(containerRef, () => {
+	// 	if (isOpen) {
+	// 		setIsOpen(false);
+	// 	}
+	// });
 
 	return (
 		<motion.div
 			ref={containerRef}
 			layoutId={`dialog-${uniqueId}`}
 			className={cn(
-				"overflow-hidden glass-shadow glass-bg w-full max-w-[calc(100%-2rem)] rounded-lg  p-3 shadow-lg sm:max-w-lg",
+				"overflow-hidden glass-shadow glass-bg w-full max-w-[calc(100%-2rem)] rounded-lg  p-3 shadow-lg sm:max-w-md",
 				className
 			)}
 			style={style}

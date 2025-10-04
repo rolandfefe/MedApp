@@ -27,3 +27,16 @@ export const getNavItem = (
 		(item) => item.link === pathname || item.link.startsWith(pathname)
 	);
 };
+
+
+	export const containsRegex = (query: string): RegExp => {
+  const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return new RegExp(escapedQuery, 'i');
+};
+
+const fuzzyMatchRegex = (query: string): RegExp => {
+  const pattern = query.split('').map(char => {
+    return char.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '.*?';
+  }).join('');
+  return new RegExp(pattern, 'i');
+};

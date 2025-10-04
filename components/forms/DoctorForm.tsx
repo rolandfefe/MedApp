@@ -41,9 +41,9 @@ export default function DoctorForm({
 	doctor?: IDoctor;
 }) {
 	const [activeStep, setActiveStep] = useState<number>(1);
-	const pathname = usePathname();
 	const [isPending, startTransition] = useTransition();
 	const [isSuccess, setIsSuccess] = useState<boolean>(false);
+	const pathname = usePathname();
 	const router = useRouter();
 
 	const form = useForm<DoctorFormData>({
@@ -168,7 +168,6 @@ export default function DoctorForm({
 						</Step>
 					))}
 				</Stepper>
-				<div></div>
 			</Form>
 		</div>
 	);

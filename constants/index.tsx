@@ -11,6 +11,7 @@ import {
 	Pill,
 	Star,
 	UserCircle,
+	UserPlus,
 } from "lucide-react";
 
 export const LANDING_NAV_ITEMS = [
@@ -69,6 +70,11 @@ export const PATIENT_NAV_ITEMS = [
 		name: "Home",
 		link: "/home",
 		icon: <Home size={20} />,
+	},
+	{
+		name: "Doctors",
+		link: "/doctors",
+		icon: <UserPlus size={20} />,
 	},
 	{
 		name: "Appointments",

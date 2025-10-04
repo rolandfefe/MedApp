@@ -25,7 +25,7 @@ const appointmentSchema = new Schema<IAppointment>(
 		healthStatus: {
 			type: Schema.Types.ObjectId,
 			ref: "HealthStatus",
-			required: true,
+			// required: true,
 		},
 		// recurrencePlan: {
 		// 	type: Schema.Types.ObjectId,

@@ -119,7 +119,7 @@ export enum eRecurrenceFrequency {
 
 export enum ePatientConsent {
 	HEALTH_STATUSES = "Health statuses",
-	VITALS = "VITALS",
+	VITALS = "Vitals",
 	HISTORY = "History",
 	PATIENT_PROFILE = "Patient profile",
 	USER_PROFILE = "User profile",

@@ -9,10 +9,13 @@ import MyBtn from "@/components/custom/MyBtn";
 import { Headset } from "lucide-react";
 import { getCurrentPatient } from "@/lib/actions/utils.actions";
 import { MorphingDialogTitle } from "@/components/motion-primitives/morphing-dialog";
+import { ShineBorder } from "@/components/ui/shine-border";
+import { getDoctors } from "@/lib/actions/doctor.actions";
 
 export default async function layout({ children }: { children: ReactNode }) {
 	const currentUser = await getCurrentUser();
 	const patient = await getCurrentPatient();
+	const doctors = await getDoctors();
 
 	return (
 		<>
@@ -27,6 +30,7 @@ export default async function layout({ children }: { children: ReactNode }) {
 				</SidebarInset>
 			</SidebarProvider>
 			<AppointmentPanel
+				doctors={doctors}
 				action="Create"
 				patient={patient}
 				className="fixed bottom-3 right-3 size"
@@ -37,6 +41,8 @@ export default async function layout({ children }: { children: ReactNode }) {
 					variant={"secondary"}
 					className="size-12 sm:size-16 rounded-full glass glass-shadow text-primary"
 				>
+					<ShineBorder shineColor={["#A07CFE", "#FE8FB5", "#FFBE7B"]} />
+
 					<MorphingDialogTitle>
 						<Headset size={23} />
 					</MorphingDialogTitle>

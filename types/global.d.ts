@@ -72,7 +72,6 @@ declare global {
 		bio?: string;
 		languages: eLanguages[];
 
-		// Professional Credentials & Qualifications
 		credentials: {
 			medicalCertifications: Array<{
 				type: eMedicalCertificationTypes;
@@ -86,41 +85,24 @@ declare global {
 			isVerified?: boolean;
 		};
 
-		// Specialties & Expertise
 		specialties: Array<{
 			primary: eMedicalSpecialties;
 			secondary?: eMedicalSpecialties;
-			procedures: string[]; // List of procedures they are qualified to perform
+			procedures: string[];
 		}>;
 
 		contact: {
 			officePhone: string;
 			officeEmail: string;
-			mobilePhone?: string; // For on-call purposes
+			mobilePhone?: string;
 		};
 
-		// Professional Schedule & Availability
-
-		// Professional Metrics & Performance (For internal/admin use)
 		metrics?: {
 			ratings?: { user: IUser | string; rating: eRating }[]; // 0-100 scale
 			numberOfPatients?: number;
 			experience?: number;
 			readmissionRate?: number;
 		};
-
-		// ? System Access & Administrative Data
-		// systemAccess: {
-		// 	role:
-		// 		| "admin"
-		// 		| "physician"
-		// 		| "resident"
-		// 		| "fellow"
-		// 		| "nurse-practitioner";
-		// 	ehrSystemUsername: string;
-		// 	permissions: string[]; // e.g., ['prescribe_medications', 'view_all_records', 'order_labs']
-		// 	isActive: boolean;
-		// };
 	}
 
 	interface ISchedule extends Base {
@@ -249,22 +231,17 @@ declare global {
 		patient?: IPatient | string;
 		doctor?: IDoctor | string;
 		diagnosis?: IDiagnosis;
-		// recurrencePlan?: IRecurrencePlan | string;
+
+		recurrencePlan?: IRecurrencePlan | string;
 		referral?: IReferral;
-		reminders: IReminder[];
-		healthStatus: IHealthStatus;
+		reminders?: IReminder[];
+		healthStatus?: IHealthStatus; // Current reviewed status.
 
-		reason: string; // Chief complaint or reason for appointment
-
-		// Appointment Details
+		reason: string;
 		type: eAppointmentTypes;
 		status?: eAppointmentStatus;
 
-		followUpInstructions?: string[];
-
-		// ? Appointments can be under recurrence plan.
 		// Communication & Reminders
-
 		confirmation?: {
 			isConfirmed: boolean;
 			confirmedAt?: Date | string;
@@ -282,11 +259,12 @@ declare global {
 
 		// coNSULTATION DETAILS
 		payment?: IPaymentInfo;
-		online: {
+		online?: {
 			url: string;
 			accessCode?: string;
 		};
 
+		followUpInstructions?: string[];
 		doctorNotes?: string;
 		patientNotes?: string;
 		isEmergency?: boolean;
@@ -330,7 +308,7 @@ declare global {
 		startDate: Date | string;
 		endDate?: Date | string;
 		occurrenceCount?: number;
-		exceptions: Date | string[];
+		exceptions: Date[] | string[];
 	}
 
 	interface IReferral extends Base {
