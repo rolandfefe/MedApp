@@ -6,7 +6,7 @@ import { getDoctor } from "./lib/actions/doctor.actions";
 
 const isPublicRoute = createRouteMatcher([
 	"/",
-	"/home",
+	// "/home",
 	"/api/webhooks/clerk",
 	"/api/uploadthing",
 ]);
