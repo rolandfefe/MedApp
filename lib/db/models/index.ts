@@ -8,3 +8,4 @@ export * from "./diagnosis.model";
 export * from "./recurrencePlan.model";
 export * from "./referral.model";
 export * from "./reminder.model";
+export * from "./message.model";

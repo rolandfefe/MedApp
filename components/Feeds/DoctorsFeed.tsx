@@ -43,7 +43,6 @@ export default function DoctorsFeed({
 								>
 									<DoctorCard
 										doctor={doctor}
-										variant="md"
 										className={cn("w-full")}
 									/>
 									{/* {doctor.user.username} */}

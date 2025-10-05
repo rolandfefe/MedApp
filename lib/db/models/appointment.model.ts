@@ -35,7 +35,7 @@ const appointmentSchema = new Schema<IAppointment>(
 		referral: {
 			type: Schema.Types.ObjectId,
 			ref: "Referral",
-			unique: true, // ! one-referral && one-appointment
+			// unique: true, // ! one-referral && one-appointment
 		},
 		reminders: [
 			{

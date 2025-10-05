@@ -2,7 +2,7 @@ import React from "react";
 import { Card, CardContent } from "../ui/card";
 import { cn } from "@/lib/utils";
 
-export default function patientCard({
+export default function PatientCard({
 	patient,
 	currentDoctor,
 	className,

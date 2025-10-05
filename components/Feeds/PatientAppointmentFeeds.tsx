@@ -3,7 +3,7 @@
 import { cn } from "@/lib/utils";
 import { eAppointmentStatus, eAppointmentTypes } from "@/types/enums/enums";
 import { AnimatePresence, motion } from "motion/react";
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Void from "../custom/Void";
 import { AppointmentPanel } from "../forms/AppointmentForm";
 import MyBtn from "../custom/MyBtn";
@@ -23,12 +23,13 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { useSidebar } from "../ui/sidebar";
 
 interface Filters {
-	referred: boolean;
+	referred?: boolean;
 	type?: eAppointmentTypes;
 	status?: eAppointmentStatus;
-	emergency: boolean;
+	emergency?: boolean;
 }
 
 export default function PatientAppointmentFeeds({
@@ -44,34 +45,68 @@ export default function PatientAppointmentFeeds({
 		emergency: false,
 		referred: false,
 	});
+	const [filterResults, setFilterResults] =
+		useState<IAppointment[]>(appointments);
+
+	const { state: sidebarState } = useSidebar();
+
+	useEffect(() => {
+		setFilterResults(
+			appointments.filter(
+				(a) =>
+					filters.emergency == a.isEmergency! ||
+					filters.referred == !!a.referral ||
+					filters.status == a.status ||
+					filters.type == a.type
+			)
+		);
+	}, [filters, `${appointments}`]);
 
 	return (
 		<div className="space-y-2 ">
 			<FilterBar filters={filters} setFilters={setFilters} />
 
-			<section>
+			<section className="flex gap-3 flex-col sm:flex-row flex-wrap">
 				<AnimatePresence>
-					{appointments.length > 0 ? (
-						appointments.map((appointment) => (
-							<motion.div
-								key={appointment._id}
-								layout
-								initial={{ opacity: 0, y: 100 }}
-								animate={{ opacity: 1, y: 0 }}
-								exit={{ opacity: 0, y: 100 }}
-								className="mb-3"
-							>
-								<AppointmentCard
-									appointment={appointment}
-									variant="md"
-									currentPatient={currentPatient}
-									mode="Patient"
-								/>
-							</motion.div>
-						))
+					{filterResults.length > 0 ? (
+						filterResults.map((appointment) => {
+							// if (
+							// 	filters.emergency == appointment.isEmergency! ||
+							// 	filters.referred == !!appointment.referral ||
+							// 	filters.status == appointment.status ||
+							// 	filters.type == appointment.type
+							// ) {
+							return (
+								<motion.div
+									key={appointment._id}
+									layout
+									initial={{ opacity: 0, y: 100 }}
+									animate={{ opacity: 1, y: 0 }}
+									exit={{ opacity: 0, y: 100 }}
+									className={cn(
+										"mb-3 basis-full sm:basis-[47%] flex-1",
+										sidebarState === "expanded" && "sm:basis-full"
+									)}
+								>
+									<AppointmentCard
+										appointment={appointment}
+										variant="md"
+										currentPatient={currentPatient}
+										mode="Patient"
+									/>
+								</motion.div>
+							);
+							// }
+						})
 					) : (
 						<div>
-							<Void msg="Oops! you have no appointment. Click below to apply.🤗" />
+							<Void
+								msg={
+									filters
+										? `No Appointment matches your filters. Create one by clicking below.`
+										: "Oops! You have no appointment. Click below to apply.🤗"
+								}
+							/>
 
 							<AppointmentPanel
 								action="Create"
@@ -106,6 +141,7 @@ const FilterBar = ({
 	setFilters: Dispatch<SetStateAction<Filters>>;
 	className?: string;
 }) => {
+	console.log(filters);
 	return (
 		<div
 			className={cn(
@@ -118,7 +154,8 @@ const FilterBar = ({
 				size="sm"
 				variant={"secondary"}
 				onClick={() =>
-					setFilters((prev) => ({ ...prev, referred: !prev.referred }))
+					// setFilters((prev) => ({ ...prev, referred: !prev.referred }))
+					setFilters((prev) => ({ referred: !prev.referred }))
 				}
 				className={cn(
 					"rounded-2xl text-xs",
@@ -149,7 +186,8 @@ const FilterBar = ({
 					{Object.entries(eAppointmentTypes).map(([k, v]) => (
 						<DropdownMenuItem
 							key={k}
-							onClick={() => setFilters((prev) => ({ ...prev, type: v }))}
+							// onClick={() => setFilters((prev) => ({ ...prev, type: v }))}
+							onClick={() => setFilters({ type: v })}
 						>
 							{v}
 						</DropdownMenuItem>
@@ -176,7 +214,8 @@ const FilterBar = ({
 					{Object.entries(eAppointmentStatus).map(([k, v]) => (
 						<DropdownMenuItem
 							key={k}
-							onClick={() => setFilters((prev) => ({ ...prev, status: v }))}
+							// onClick={() => setFilters((prev) => ({ ...prev, status: v }))}
+							onClick={() => setFilters({ status: v })}
 						>
 							{v}
 						</DropdownMenuItem>
@@ -188,7 +227,8 @@ const FilterBar = ({
 				size="sm"
 				variant={"secondary"}
 				onClick={() =>
-					setFilters((prev) => ({ ...prev, emergency: !prev?.emergency! }))
+					// setFilters((prev) => ({ ...prev, emergency: !prev.emergency }))
+					setFilters((prev) => ({ emergency: !prev.emergency }))
 				}
 				className={cn(
 					"rounded-2xl text-xs",

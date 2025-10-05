@@ -183,7 +183,6 @@ export default function DoctorSearchBox({
 													>
 														<DoctorCard
 															doctor={doctor}
-															variant="md"
 															className={cn(
 																"w-full",
 																isSelected && "border-primary bg-muted"

@@ -125,7 +125,7 @@ export default function getAppointmentFormStepper(
 										<FormControl>
 											<Checkbox
 												checked={field.value}
-												onChange={field.onChange}
+												onCheckedChange={field.onChange}
 												className="size-8"
 											/>
 										</FormControl>
@@ -252,11 +252,7 @@ export default function getAppointmentFormStepper(
 								exit={{ opacity: 0, y: 100 }}
 								className="mb-3"
 							>
-								<DoctorCard
-									doctor={selectedDoctor}
-									variant="md"
-									className={cn("w-full")}
-								/>
+								<DoctorCard doctor={selectedDoctor} className={cn("w-full")} />
 							</motion.div>
 						)}
 					</AnimatePresence>

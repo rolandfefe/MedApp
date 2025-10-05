@@ -257,7 +257,7 @@ declare global {
 		startTime?: Date | string; // ? Optional Allow flexibility
 		endTime?: Date | string;
 
-		// coNSULTATION DETAILS
+		//Consultation details
 		payment?: IPaymentInfo;
 		online?: {
 			url: string;
@@ -417,13 +417,11 @@ declare global {
 	}
 
 	interface IMessage extends Base {
-		consultation: IConsultation | string;
+		appointment: IAppointment | string;
 		body: string;
-		status: eMessageStatus;
+		status?: eMessageStatus;
 		refMessage?: IMessage | string;
-
 		from: IUser | string;
-		// to: IUser | string;
 	}
 
 	interface CustomJwtSessionClaims extends Base {

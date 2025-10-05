@@ -8,24 +8,24 @@ import { cn } from "@/lib/utils";
 export default function DoctorCard({
 	doctor,
 	currentUser,
-	variant = "md",
+	variant = "sm",
 	className,
 }: {
 	doctor: IDoctor;
 	currentUser?: IUser;
-	variant: "sm" | "md" | "lg";
+	variant?: "sm" | "md" | "lg";
 	className?: string;
 }) {
 	const user = doctor.user as IUser;
 
-	if (variant === "md") {
+	if (variant === "sm") {
 		return (
 			<Card className={cn("w-fit bg-transparent hover:bg-muted", className)}>
-				<CardContent className="" >
+				<CardContent className="">
 					<section className="flex items-start gap-x-2">
-						<Avatar className="size-10 sm:size-12 md:size-16 rounded-lg">
+						<Avatar className="size-10 sm:size-12 rounded-lg">
 							<AvatarImage src={user.imageUrl!} />
-							<AvatarFallback className="size-full bg-fuchsia-400 dark:bg-fuchsia-600">
+							<AvatarFallback className="size-full rounded-lg bg-fuchsia-400 dark:bg-fuchsia-600">
 								{user.username[0].toUpperCase()}
 							</AvatarFallback>
 						</Avatar>
@@ -40,16 +40,17 @@ export default function DoctorCard({
 									{doctor.contact.officeEmail ?? `@${user.username}`}
 								</p>
 							</div>
-							<div className="hidden sm:flex items-center gap-2 flex-wrap">
+							{/* <div className="hidden sm:flex items-center gap-2 flex-wrap">
 								{doctor.specialties.map((s, i) => (
 									<Badge key={i} variant="secondary" className="rounded-2xl">
 										{s.primary}
 									</Badge>
 								))}
-							</div>
+							</div> */}
 						</div>
 					</section>
-					<div className="my-2 flex sm:hidden items-center gap-2 flex-wrap">
+
+					<div className="mt-2 flex sm:hidde items-center gap-2 flexwrap">
 						{doctor.specialties.map((s, i) => (
 							<Badge key={i} variant="secondary" className="rounded-2xl">
 								{s.primary}
