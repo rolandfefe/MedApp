@@ -13,7 +13,11 @@ export default async function page() {
 
 	return (
 		<div className="sm:p-3">
-			<PatientAppointmentFeeds appointments={appointments} doctors={doctors} currentPatient={currentPatient} />
+			<PatientAppointmentFeeds
+				appointments={appointments}
+				doctors={doctors}
+				currentPatient={currentPatient}
+			/>
 		</div>
 	);
 }

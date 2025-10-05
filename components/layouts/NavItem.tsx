@@ -21,7 +21,7 @@ export default function NavItem({
 	const pathname = usePathname();
 
 	const isActive =
-		pathname === link || (link !== "/" && pathname.startsWith(link + "/"));
+		pathname === link || ((link !== "/" || pathname !== link ) && pathname.startsWith(link + "/"));
 
 	return (
 		<SidebarMenuItem>

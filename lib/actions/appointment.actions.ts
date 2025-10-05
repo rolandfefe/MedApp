@@ -52,8 +52,8 @@ export const getAppointment = async ({
 	_id,
 	referral,
 }: {
-	_id: string;
-	referral: string;
+	_id?: string;
+	referral?: string;
 }): Promise<IAppointment> => {
 	try {
 		await connectDb();

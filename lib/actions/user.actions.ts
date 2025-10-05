@@ -13,7 +13,7 @@ export const getCurrentUser = async (): Promise<IUser> => {
 		let clerkId: string;
 
 		if (process.env.MY_ENV === "dev") {
-			clerkId = "user_33IYoE4ONaznKJn53RfVyPslr2t";
+			clerkId = "user_22Mx47mgDAvDQ9fAvtFfsgNjsM";
 		} else {
 			clerkId = (await currentUser())!.id;
 		}

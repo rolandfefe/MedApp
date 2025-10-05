@@ -25,3 +25,13 @@ export const getCurrentPatientAppointments = async (latest?: boolean) => {
 	const { _id } = await getCurrentPatient();
 	return await getAppointments({ patientId: _id! });
 };
+
+export const getAllocatedAutoAppointments = async (): Promise<
+	IAppointment[]
+> => {
+	const autoAppointments = await getAppointments({ doctorId: undefined });
+
+	const _appointments = autoAppointments.filter((a) => {});
+
+	return autoAppointments;
+};
