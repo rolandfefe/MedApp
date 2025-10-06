@@ -28,15 +28,21 @@ export const getNavItem = (
 	);
 };
 
-
-	export const containsRegex = (query: string): RegExp => {
-  const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  return new RegExp(escapedQuery, 'i');
+export const containsRegex = (query: string): RegExp => {
+	const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+	return new RegExp(escapedQuery, "i");
 };
 
 const fuzzyMatchRegex = (query: string): RegExp => {
-  const pattern = query.split('').map(char => {
-    return char.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '.*?';
-  }).join('');
-  return new RegExp(pattern, 'i');
+	const pattern = query
+		.split("")
+		.map((char) => {
+			return char.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ".*?";
+		})
+		.join("");
+	return new RegExp(pattern, "i");
+};
+
+export const getAge = (DOB: Date): string => {
+	return `${new Date().getFullYear() - new Date(DOB).getFullYear()}yrs`;
 };

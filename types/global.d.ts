@@ -241,7 +241,6 @@ declare global {
 		type: eAppointmentTypes;
 		status?: eAppointmentStatus;
 
-		// Communication & Reminders
 		confirmation?: {
 			isConfirmed: boolean;
 			confirmedAt?: Date | string;
@@ -254,10 +253,9 @@ declare global {
 			reason: string;
 		};
 
-		startTime?: Date | string; // ? Optional Allow flexibility
+		startTime?: Date | string; // ? Optional to Allow flexibility
 		endTime?: Date | string;
 
-		//Consultation details
 		payment?: IPaymentInfo;
 		online?: {
 			url: string;

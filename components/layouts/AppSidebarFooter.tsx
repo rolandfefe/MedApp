@@ -132,7 +132,7 @@ export default function AppSidebarFooter({
 						</DropdownMenuItem>
 					) : (
 						<PatientFormPanel currentUser={currentUser} action="create">
-							<MyBtn size="sm" className="w-full bg-transparent">
+							<MyBtn size="sm" className="w-full">
 								Apply as Patient
 								<UserPlus2 />
 							</MyBtn>

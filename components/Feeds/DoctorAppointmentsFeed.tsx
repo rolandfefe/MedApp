@@ -26,6 +26,7 @@ import {
 } from "../ui/dropdown-menu";
 import { useSidebar } from "../ui/sidebar";
 import { filter } from "lodash-es";
+import AppointmentDynamicPanel from "../panels/AppointmentDynamicPanel";
 
 interface Filters {
 	auto?: boolean;
@@ -83,15 +84,16 @@ export default function DoctorAppointmentFeeds({
 									animate={{ opacity: 1, y: 0 }}
 									exit={{ opacity: 0, y: 100 }}
 									className={cn(
-										"mb-3 basis-full sm:basis-[47%] flex-1",
-										sidebarState === "expanded" && "sm:basis-full"
+										"mb-2 basis-full sm:basis-[47%] flex-1",
+										sidebarState === "expanded" &&
+											"sm:basis-full lg:basis-[47%] "
 									)}
 								>
 									<AppointmentCard
 										appointment={appointment}
 										variant="md"
 										currentDoctor={currentDoctor}
-										mode="Patient"
+										mode="Doctor"
 									/>
 								</motion.div>
 							);
@@ -116,7 +118,6 @@ const FilterBar = ({
 	setFilters: Dispatch<SetStateAction<Filters>>;
 	className?: string;
 }) => {
-	console.log(filters);
 	return (
 		<div
 			className={cn(

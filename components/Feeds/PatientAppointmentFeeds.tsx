@@ -69,35 +69,26 @@ export default function PatientAppointmentFeeds({
 			<section className="flex gap-3 flex-col sm:flex-row flex-wrap">
 				<AnimatePresence>
 					{filterResults.length > 0 ? (
-						filterResults.map((appointment) => {
-							// if (
-							// 	filters.emergency == appointment.isEmergency! ||
-							// 	filters.referred == !!appointment.referral ||
-							// 	filters.status == appointment.status ||
-							// 	filters.type == appointment.type
-							// ) {
-							return (
-								<motion.div
-									key={appointment._id}
-									layout
-									initial={{ opacity: 0, y: 100 }}
-									animate={{ opacity: 1, y: 0 }}
-									exit={{ opacity: 0, y: 100 }}
-									className={cn(
-										"mb-3 basis-full sm:basis-[47%] flex-1",
-										sidebarState === "expanded" && "sm:basis-full"
-									)}
-								>
-									<AppointmentCard
-										appointment={appointment}
-										variant="md"
-										currentPatient={currentPatient}
-										mode="Patient"
-									/>
-								</motion.div>
-							);
-							// }
-						})
+						filterResults.map((appointment) => (
+							<motion.div
+								key={appointment._id}
+								layout
+								initial={{ opacity: 0, y: 100 }}
+								animate={{ opacity: 1, y: 0 }}
+								exit={{ opacity: 0, y: 100 }}
+								className={cn(
+									"mb-3 basis-full sm:basis-[47%] flex-1",
+									sidebarState === "expanded" && "sm:basis-full lg:basis-[47%]"
+								)}
+							>
+								<AppointmentCard
+									appointment={appointment}
+									variant="md"
+									currentPatient={currentPatient}
+									mode="Patient"
+								/>
+							</motion.div>
+						))
 					) : (
 						<div>
 							<Void

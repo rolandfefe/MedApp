@@ -20,7 +20,7 @@ export default function DoctorCard({
 
 	if (variant === "sm") {
 		return (
-			<Card className={cn("w-fit bg-transparent hover:bg-muted", className)}>
+			<Card className={cn(" bg-transparent hover:bg-muted", className)}>
 				<CardContent className="">
 					<section className="flex items-start gap-x-2">
 						<Avatar className="size-10 sm:size-12 rounded-lg">

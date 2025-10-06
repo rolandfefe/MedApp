@@ -8,9 +8,27 @@ import { ThemeBtn } from "../btns/ThemeBtn";
 import Heading from "../custom/Heading";
 import MyBtn from "../custom/MyBtn";
 import { SidebarTrigger } from "../ui/sidebar";
+import { useEffect, useState } from "react";
+import { getAppointment } from "@/lib/actions/appointment.actions";
 
-export default function Navbar({ className }: { className?: string }) {
+export default function ConsultationNavbar({
+	className,
+}: {
+	className?: string;
+}) {
 	const pathname = usePathname();
+	const { appointmentId } = useParams();
+
+	const [appointment, setAppointment] = useState<IAppointment>();
+
+	console.log(appointmentId, appointment);
+
+	useEffect(() => {
+		const fetchAppointment = async () =>
+			setAppointment(await getAppointment({ _id: appointmentId as string }));
+
+		fetchAppointment();
+	}, [appointmentId]);
 
 	return (
 		<nav
@@ -24,10 +42,6 @@ export default function Navbar({ className }: { className?: string }) {
 				<BackBtn />
 			</div>
 
-			<Heading className="text-xl md:text-2xl">
-				{getNavItem(pathname, "Patient")?.name}
-			</Heading>
-
 			<div className="flex items-center gap-x-2">
 				<ThemeBtn />
 				<SignedIn>
@@ -37,9 +51,6 @@ export default function Navbar({ className }: { className?: string }) {
 					<SignInButton mode="modal">
 						<MyBtn>Sign in</MyBtn>
 					</SignInButton>
-					{/* <SignUpButton mode="modal">
-						<MyBtn variant={"outline"}>Sign up</MyBtn>
-					</SignUpButton> */}
 				</SignedOut>
 			</div>
 		</nav>

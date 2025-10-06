@@ -16,7 +16,7 @@ import { useParams } from "next/navigation";
 import { getDoctorNavItems } from "@/constants";
 import NavItem from "./NavItem";
 
-export default function DoctorSidebar({ currentUser }: { currentUser: IUser }) {
+export default function ConsultationSidebar({ currentUser }: { currentUser: IUser }) {
 	const { id } = useParams();
 
 	return (
