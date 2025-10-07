@@ -1,15 +1,15 @@
 import { ourFileRouter } from "@/app/api/uploadthing/core";
 import { ThemeProvider } from "@/components/theme-provider";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import "@/lib/db/models";
 import { ClerkProvider } from "@clerk/nextjs";
 import { shadcn } from "@clerk/themes";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import type { Metadata } from "next";
 import { Geist_Mono, Poppins } from "next/font/google";
+import { Toaster } from "react-hot-toast";
 import { extractRouterConfig } from "uploadthing/server";
 import "./globals.css";
-import { Toaster } from "react-hot-toast";
-import "@/lib/db/models";
-import { getCurrentUser } from "@/lib/actions/user.actions";
 
 const poppinsFont = Poppins({
 	weight: ["100", "200", "300", "400", "500", "600", "700"],
@@ -33,7 +33,6 @@ export default async function RootLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
-
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<ClerkProvider
@@ -53,7 +52,10 @@ export default async function RootLayout({
 						enableSystem
 						disableTransitionOnChange
 					>
-						{children}
+						<ScrollArea className="h-screen">
+							{children}
+							<ScrollBar />
+						</ScrollArea>
 					</ThemeProvider>
 				</body>
 			</ClerkProvider>

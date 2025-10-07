@@ -103,7 +103,7 @@ function SidebarProvider({
 			) {
 				event.preventDefault();
 				toggleSidebar();
-			}	
+			}
 		};
 
 		window.addEventListener("keydown", handleKeyDown);
@@ -171,7 +171,7 @@ function Sidebar({
 			<div
 				data-slot="sidebar"
 				className={cn(
-					" !glass-bg bgsideba/40 text-sidebar-foreground flex h-full w-(--sidebar-width) flex-col",
+					" !glass text-sidebar-foreground flex h-full w-(--sidebar-width) flex-col",
 					className
 				)}
 				{...props}

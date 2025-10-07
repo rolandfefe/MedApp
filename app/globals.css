@@ -43,15 +43,15 @@
 	--radius-lg: var(--radius);
 	--radius-xl: calc(var(--radius) + 4px);
 	--animate-shine: shine var(--duration) infinite linear;
-  @keyframes shine {
-  0% {
-    background-position: 0% 0%;
+	@keyframes shine {
+		0% {
+			background-position: 0% 0%;
 		}
-  50% {
-    background-position: 100% 100%;
+		50% {
+			background-position: 100% 100%;
 		}
-  to {
-    background-position: 0% 0%;
+		to {
+			background-position: 0% 0%;
 		}
 	}
 }
@@ -139,6 +139,10 @@
 @layer utilities {
 	.glass {
 		@apply bg-secondary/40 backdrop-blur-md backdrop-saturate-150 border-secondary;
+	}
+
+	.glass-primary {
+		@apply bg-primary/70 backdrop-blur-md backdrop-saturate-150 border-secondary;
 	}
 
 	.glass-bg {

@@ -7,7 +7,6 @@ const messageSchema = new Schema<IMessage>(
 			type: Schema.Types.ObjectId,
 			ref: "Appointment",
 			required: true,
-			unique: true,
 			immutable: true,
 		},
 		body: {

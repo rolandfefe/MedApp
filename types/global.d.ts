@@ -262,8 +262,8 @@ declare global {
 			accessCode?: string;
 		};
 
-		followUpInstructions?: string[];
-		doctorNotes?: string;
+		followUpInstructions?: string[]; // Notes to patient
+		doctorNotes?: string; // ONly visible to doctors.
 		patientNotes?: string;
 		isEmergency?: boolean;
 		consentLevels: ePatientConsent[];
@@ -311,6 +311,7 @@ declare global {
 
 	interface IReferral extends Base {
 		appointment: IAppointment | string;
+		doctors: string[] | IDoctor[];
 
 		reason: string;
 	}

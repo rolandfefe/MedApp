@@ -1,15 +1,16 @@
 "use client";
 
-import { cn, getNavItem } from "@/lib/utils";
+import {
+	getAppointmentById
+} from "@/lib/actions/appointment.actions";
+import { cn } from "@/lib/utils";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import { useParams, usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import BackBtn from "../btns/BackBtn";
 import { ThemeBtn } from "../btns/ThemeBtn";
-import Heading from "../custom/Heading";
 import MyBtn from "../custom/MyBtn";
 import { SidebarTrigger } from "../ui/sidebar";
-import { useEffect, useState } from "react";
-import { getAppointment } from "@/lib/actions/appointment.actions";
 
 export default function ConsultationNavbar({
 	className,
@@ -21,11 +22,9 @@ export default function ConsultationNavbar({
 
 	const [appointment, setAppointment] = useState<IAppointment>();
 
-	console.log(appointmentId, appointment);
-
 	useEffect(() => {
 		const fetchAppointment = async () =>
-			setAppointment(await getAppointment({ _id: appointmentId as string }));
+			setAppointment(await getAppointmentById(appointmentId as string));
 
 		fetchAppointment();
 	}, [appointmentId]);
@@ -38,7 +37,7 @@ export default function ConsultationNavbar({
 			)}
 		>
 			<div className="flex items-center gap-x-2">
-				<SidebarTrigger />
+				<SidebarTrigger className=" md:hidden" />
 				<BackBtn />
 			</div>
 

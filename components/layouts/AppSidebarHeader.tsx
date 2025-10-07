@@ -12,8 +12,8 @@ export default function AppSidebarHeader() {
 	const { state } = useSidebar();
 
 	const headerVariants = {
-		visible: { x: 0, opacity: 1 },
 		hidden: { x: -140, opacity: 0 },
+		visible: { x: 0, opacity: 1 },
 		exit: { x: -140, opacity: 0 },
 	};
 

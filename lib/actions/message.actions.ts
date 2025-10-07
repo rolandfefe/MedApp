@@ -1,23 +1,30 @@
 "use server";
 
-import { NestedMiddlewareError } from "next/dist/build/utils";
+import { revalidatePath } from "next/cache";
 import { connectDb } from "../db/db";
 import messageModel from "../db/models/message.model";
-import { revalidatePath } from "next/cache";
+import { pusherServer } from "../pusher";
 
-export const createMsg = async (msg: IMessage, pathname: string) => {
+export const createMsg = async (msg: IMessage) => {
 	try {
 		await connectDb();
 
 		const newMsg = await (await messageModel.create(msg)).populate(["from"]);
 
-		revalidatePath(pathname);
+		// ? 1. Pusher trigger.
+		await pusherServer.trigger(
+			`chat-${msg.appointment}-channel`,
+			`new-${msg.appointment}-msg`,
+			JSON.parse(JSON.stringify(newMsg))
+		);
+
+		// revalidatePath(pathname);
 	} catch (error: any) {
 		throw new Error(error);
 	}
 };
 
-export const getMsgsByAppointments = async ({
+export const getMsgsByAppointment = async ({
 	appointment,
 }: {
 	appointment: string;

@@ -48,22 +48,38 @@ export const getAppointments = async ({
 	}
 };
 
-export const getAppointment = async ({
-	_id,
-	referral,
-}: {
-	_id?: string;
-	referral?: string;
-}): Promise<IAppointment> => {
+// export const getAppointment = async ({
+// 	_id,
+// 	referral = "REFERRAL_DUMMY_ID",
+// }: {
+// 	_id?: string;
+// 	referral?: string;
+// }): Promise<IAppointment> => {
+// 	try {
+// 		await connectDb();
+
+// 		const appointment = await appointmentModel
+// 			.findOne()
+// 			// .or([{ _id }, { referral }])
+// 			.or([{ _id }])
+// 			.populate({ path: "patient", populate: "user" })
+// 			.populate({ path: "doctor", populate: "user" })
+// 			.populate("healthStatus");
+
+// 		return JSON.parse(JSON.stringify(appointment));
+// 	} catch (error: any) {
+// 		throw new Error(error);
+// 	}
+// };
+
+export const getAppointmentById = async (id: string): Promise<IAppointment> => {
 	try {
 		await connectDb();
 
 		const appointment = await appointmentModel
-			.findOne()
-			.or([{ _id }, { referral }])
+			.findById(id)
 			.populate({ path: "patient", populate: "user" })
-			.populate({ path: "doctor", populate: "user" })
-			.populate("healthStatus");
+			.populate({ path: "doctor", populate: "user" });
 
 		return JSON.parse(JSON.stringify(appointment));
 	} catch (error: any) {
