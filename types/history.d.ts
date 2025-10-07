@@ -1,7 +1,9 @@
+import { eSeverity, eLifeStyleStatus } from "./enums/enums";
+
 export interface IAllergy {
 	substance: string;
 	reaction: string;
-	severity: eAllergySeverity;
+	severity: eSeverity;
 	onsetDate: Date | string;
 	lastReactionDate: Date | string;
 }

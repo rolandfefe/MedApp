@@ -37,7 +37,7 @@ export default function MessageForm({
 	currentUser: IUser;
 	appointment: IAppointment;
 } & ComponentProps<"div">) {
-	const [body, setBody] = useState<string>();
+	const [body, setBody] = useState<string>("");
 	const [isSending, startSending] = useTransition();
 	const [isUploadMode, setIsUploadMode] = useState<boolean>(false);
 	const { refMsg, updateMsg } = useMsg();

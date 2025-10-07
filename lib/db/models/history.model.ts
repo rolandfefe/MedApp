@@ -1,11 +1,11 @@
-import { eAllergySeverity, eLifeStyleStatus } from "@/types/enums/enums";
+import { eSeverity, eLifeStyleStatus } from "@/types/enums/enums";
 import { IAllergy, ISocialHistory } from "@/types/history";
 import { model, models, Schema } from "mongoose";
 
 const allergySchema = new Schema<IAllergy>({
 	substance: { type: String, required: true },
 	reaction: { type: String, required: true },
-	severity: { type: String, enum: eAllergySeverity, required: true },
+	severity: { type: String, enum: eSeverity, required: true },
 	onsetDate: Date,
 	lastReactionDate: Date,
 });

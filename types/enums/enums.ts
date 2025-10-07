@@ -37,7 +37,7 @@ export enum eArticleType {
 	OBITUARY = "Obituary",
 }
 
-export enum eAllergySeverity {
+export enum eSeverity {
 	MILD = "Mild",
 	MODERATE = "Moderate",
 	SEVERE = "Severe",
@@ -220,12 +220,19 @@ export enum eConfidenceLevel {
 	CONFIRMED = "Confirmed",
 }
 
-export enum eDiagnosticStatus {
+export enum eLaterality {
+	LEFT = "Left",
+	RIGHT = "Right",
+	BILATERAL = "Bilateral",
+}
+
+export enum eDiagnosisStatus {
 	Active = "Active",
 	Provisional = "Provisional",
 	RuledOut = "Ruled-out",
 	Confirmed = "Confirmed",
 	Resolved = "Resolved",
+	Pending = "Pending"
 }
 
 export enum eLifeStyleStatus {

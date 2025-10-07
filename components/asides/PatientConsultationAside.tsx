@@ -9,13 +9,23 @@ import PatientCard from "../cards/patientCard";
 import MyBtn from "../custom/MyBtn";
 import { DoctorNotesFormPanel } from "../forms/DoctorNotesForm";
 import { Badge } from "../ui/badge";
+import {
+	FormPanel,
+	FormPanelContent,
+	FormPanelTrigger,
+} from "../custom/form-panel";
+import PatientHistorySection from "../PatientHistorySection";
 
 export default function PatientConsultationAside({
 	appointment,
+	history,
 }: {
 	appointment: IAppointment;
+	history: IHistory;
 }) {
 	const [consentTab, setConsentTab] = useState<ePatientConsent>();
+	const patient = appointment.patient as IPatient;
+	const doctor = appointment.doctor as IDoctor;
 
 	return (
 		<div className="">
@@ -47,21 +57,31 @@ export default function PatientConsultationAside({
 					<div className="flex items-center gap-2 flex-wrap">
 						{appointment.consentLevels &&
 							appointment.consentLevels.map((consent) => (
-								<MyBtn
-									key={consent}
-									variant={"secondary"}
-									onClick={() =>
-										setConsentTab((prev) =>
-											prev === consent ? undefined : consent
-										)
-									}
-									className={cn(
-										"h-6 px-2 text-xs !glass",
-										consentTab === consent && "text-primary"
-									)}
-								>
-									{consent}
-								</MyBtn>
+								<FormPanel key={consent}>
+									<FormPanelTrigger asChild>
+										<MyBtn
+											variant={"secondary"}
+											onClick={() =>
+												setConsentTab((prev) =>
+													prev === consent ? undefined : consent
+												)
+											}
+											className={cn(
+												"h-6 px-2 text-xs !glass",
+												consentTab === consent && "text-primary"
+											)}
+										>
+											{consent}
+										</MyBtn>
+									</FormPanelTrigger>
+									<FormPanelContent>
+										{consent === ePatientConsent.HISTORY ? (
+											<PatientHistorySection history={history}  />
+										) : (
+											"Other Panels"
+										)}
+									</FormPanelContent>
+								</FormPanel>
 							))}
 						{appointment.consentLevels.length < 5 && (
 							<MyBtn size="sm" className="!py-0 h-6 rounded-lg">

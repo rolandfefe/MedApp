@@ -1,4 +1,4 @@
-import HistoryCard from "@/components/cards/HistoryCard";
+import PatientHistorySection from "@/components/PatientHistorySection";
 import CopyBadge from "@/components/custom/CopyBadge";
 import Heading from "@/components/custom/Heading";
 import MyBtn from "@/components/custom/MyBtn";
@@ -81,7 +81,10 @@ export default async function page() {
 
 				<div className="">
 					{history ? (
-						<HistoryCard currentUser={currentUser} history={history} />
+						<PatientHistorySection
+							currentUser={currentUser}
+							history={history}
+						/>
 					) : (
 						<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[40%]">
 							<p className="text-muted-foreground text-center text-sm">

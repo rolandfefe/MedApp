@@ -1,5 +1,5 @@
 import {
-	eAllergySeverity,
+	eSeverity,
 	eAppointmentStatus,
 	eAppointmentTypes,
 	eArticleCategories,
@@ -7,6 +7,7 @@ import {
 	eConfidenceLevel,
 	eDiagnosticStatus,
 	eGender,
+	eLaterality,
 	eLicenseStatus,
 	eLicenseType,
 	eLifeStyleStatus,
@@ -34,7 +35,6 @@ export {};
 declare global {
 	interface Base {
 		_id?: string;
-
 		createdAt?: Date | string;
 		updatedAt?: Date | string;
 	}
@@ -344,23 +344,22 @@ declare global {
 
 		healthStatus: IHealthStatus | string;
 
-		// Presenting Information
-		historyOfPresentIllness: string;
+		history: IHistory | string;
 
 		differentialDiagnosis: IDifferentialDiagnosis[];
 		status: eDiagnosticStatus;
 
-		updatedBy: IDoctor | string;
+		updatedBy?: IDoctor | string;
 	}
 
-	interface IDifferentialDiagnosis extends Base {
+	interface IDifferentialDiagnosis {
 		condition: string;
 		icd10Code?: string;
 		confidence: eConfidenceLevel;
 		reasoning?: string;
 		isPrimary: boolean; // Primary vs. secondary/comorbid diagnosis
-		laterality?: "left" | "right" | "bilateral"; // For side-specific conditions
-		severity?: "mild" | "moderate" | "severe";
+		laterality?: eLaterality; // For side-specific conditions
+		severity?: eSeverity;
 		stage?: string; // e.g., "Stage IIB", "Class 3"
 		dateConfirmed: Date | string;
 	}

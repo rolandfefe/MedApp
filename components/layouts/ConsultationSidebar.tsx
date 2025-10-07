@@ -15,6 +15,7 @@ import {
 	SidebarHeader,
 } from "../ui/sidebar";
 import { Skeleton } from "../ui/skeleton";
+import { getHistory } from "@/lib/actions/history.action";
 
 export default function ConsultationSidebar({
 	currentUser,
@@ -24,14 +25,22 @@ export default function ConsultationSidebar({
 	const { appointmentId } = useParams();
 
 	const [appointment, setAppointment] = useState<IAppointment>();
+	const [patientHistory, setPatientHistory] = useState<IHistory>();
 	const isAppointmentDoctor = appointment?.doctor!.user._id == currentUser._id;
 
 	useEffect(() => {
-		const fetchAppointment = async () =>
-			setAppointment(await getAppointmentById(appointmentId as string));
+		// Fetch patient data
+		(async () => {
+			const _appointment = await getAppointmentById(appointmentId as string);
 
-		fetchAppointment();
+			setAppointment(_appointment);
+			setPatientHistory(
+				await getHistory({ patientId: _appointment.patient!._id as string })
+			);
+		})();
 	}, [appointmentId]);
+
+	console.log(patientHistory);
 
 	return (
 		<Sidebar variant="sidebar" className="!w[50rem]">
@@ -39,7 +48,10 @@ export default function ConsultationSidebar({
 			<SidebarContent className="p-2">
 				{appointment ? (
 					isAppointmentDoctor ? (
-						<PatientConsultationAside appointment={appointment} />
+						<PatientConsultationAside
+							history={patientHistory!}
+							appointment={appointment}
+						/>
 					) : (
 						<DoctorCard
 							doctor={appointment.doctor as IDoctor}

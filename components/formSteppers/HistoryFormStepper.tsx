@@ -1,7 +1,7 @@
 "use client";
 
 import {
-	eAllergySeverity,
+	eSeverity,
 	eCertificationStatus,
 	eGender,
 	eLicenseStatus,
@@ -964,7 +964,7 @@ const AllergyHistory = ({
 						append({
 							substance: "",
 							reaction: "",
-							severity: eAllergySeverity.MODERATE,
+							severity: eSeverity.MODERATE,
 							onsetDate: "",
 							lastReactionDate: "",
 						})
@@ -1038,7 +1038,7 @@ const AllergyHistory = ({
 													</FormControl>
 
 													<SelectContent>
-														{Object.entries(eAllergySeverity).map(([k, v]) => (
+														{Object.entries(eSeverity).map(([k, v]) => (
 															<SelectItem key={k} value={v}>
 																{v}
 															</SelectItem>

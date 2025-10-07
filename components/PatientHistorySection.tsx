@@ -2,14 +2,14 @@
 
 import { cn } from "@/lib/utils";
 import React, { ComponentProps } from "react";
-import { Card, CardContent } from "../ui/card";
+import { Card, CardContent } from "./ui/card";
 import {
 	Carousel,
 	CarouselContent,
 	CarouselItem,
 	CarouselNavigation,
-} from "../motion-primitives/carousel";
-import Void from "../custom/Void";
+} from "./motion-primitives/carousel";
+import Void from "./custom/Void";
 import {
 	Apple,
 	BottleWine,
@@ -25,17 +25,17 @@ import {
 	Users,
 	Weight,
 } from "lucide-react";
-import { useSidebar } from "../ui/sidebar";
-import { Badge } from "../ui/badge";
+import { useSidebar } from "./ui/sidebar";
+import { Badge } from "./ui/badge";
 import moment from "moment";
-import { Separator } from "../ui/separator";
+import { Separator } from "./ui/separator";
 
-export default function HistoryCard({
+export default function PatientHistorySection({
 	currentUser,
 	history,
 	className,
 }: {
-	currentUser: IUser;
+	currentUser?: IUser;
 	history: IHistory;
 	className?: string;
 }) {

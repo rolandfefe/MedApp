@@ -1,11 +1,11 @@
 import { z } from "zod";
-import { eAllergySeverity, eLifeStyleStatus } from "@/types/enums/enums";
+import { eSeverity, eLifeStyleStatus } from "@/types/enums/enums";
 
 // Allergy Schema
 const allergySchema = z.object({
 	substance: z.string().min(1, "Substance is required"),
 	reaction: z.string().min(1, "Reaction description is required"),
-	severity: z.nativeEnum(eAllergySeverity),
+	severity: z.nativeEnum(eSeverity),
 	onsetDate: z.string().optional(),
 	lastReactionDate: z.string().optional(),
 });

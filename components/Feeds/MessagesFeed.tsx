@@ -4,7 +4,7 @@ import { pusherClient } from "@/lib/pusher";
 import { cn } from "@/lib/utils";
 import { uniqBy } from "lodash-es";
 import { AnimatePresence, motion, Variants } from "motion/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import MsgCard from "../cards/MsgCard";
 import { ScrollArea, ScrollBar } from "../ui/scroll-area";
 
@@ -27,12 +27,21 @@ export default function MessagesFeed({
 }) {
 	const [msgs, setMsgs] = useState<IMessage[]>(initMsgs);
 
+	const lastMsgRef = useRef<HTMLDivElement | null>(null);
+
 	useEffect(() => {
 		// ? 2. Subscribe to Channel
 		pusherClient.subscribe(`chat-${appointment._id!}-channel`).bind(
 			`new-${appointment._id!}-msg`,
 			(newMsg: IMessage) => setMsgs((prev) => uniqBy([...prev, newMsg], "_id")) // Remove duplicate messages by Id.
 		);
+
+		// Scroll to latest msg
+		if (lastMsgRef)
+			lastMsgRef.current?.scrollIntoView({
+				behavior: "smooth",
+				block: "center",
+			});
 
 		return () => pusherClient.unsubscribe(`chat-${appointment._id!}-channel`);
 	}, [appointment]);
@@ -49,13 +58,13 @@ export default function MessagesFeed({
 							exit="exit"
 							layout
 							key={msg._id}
+							ref={msgs[msgs.length - 1]._id === msg._id ? lastMsgRef : null}
 						>
 							<MsgCard msg={msg} currentUser={currentUser} className="" />
 						</motion.div>
 					))}
 				</AnimatePresence>
 			</section>
-			{/* <ScrollBar className="hidden" /> */}
 		</ScrollArea>
 	);
 }
