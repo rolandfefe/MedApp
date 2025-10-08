@@ -28,7 +28,7 @@ import {
 	IMedicalLicense,
 } from "./doctor";
 import { IAllergy, ISocialHistory } from "./history";
-import { IPaymentInfo } from "./appointment";
+import { IPaymentInfo, IReferral } from "./appointment";
 
 export {};
 
@@ -233,7 +233,7 @@ declare global {
 		diagnosis?: IDiagnosis;
 
 		recurrencePlan?: IRecurrencePlan | string;
-		referral?: IReferral;
+		referrals?: IReferral[];
 		reminders?: IReminder[];
 		healthStatus?: IHealthStatus; // Current reviewed status.
 
@@ -305,17 +305,11 @@ declare global {
 		// dayOfMonth?: number;
 		startDate: Date | string;
 		endDate?: Date | string;
-		occurrenceCount?: number;
-		exceptions: Date[] | string[];
+		startTime: Date | string;
+		endTime?: Date | string;
+		// occurrenceCount?: number;
+		exceptions?: Date[] | string[];
 	}
-
-	interface IReferral extends Base {
-		appointment: IAppointment | string;
-		doctors: string[] | IDoctor[];
-
-		reason: string;
-	}
-
 	interface IReminder extends Base {
 		user: IUser | string;
 

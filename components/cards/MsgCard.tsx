@@ -17,7 +17,6 @@ export default function MsgCard({
 	const author = msg.from as IUser;
 	const isAuthor = author._id === currentUser._id;
 
-
 	return (
 		<Card
 			{...props}
@@ -28,7 +27,7 @@ export default function MsgCard({
 		>
 			<CardContent
 				className={cn(
-					"glass-shadow p-2 rounded-xl  w-fit max",
+					"glass-shadow p-2 rounded-xl  w-fit max-w-3/4 sm:max-w-2/3 lg:max-w-1/2",
 					isAuthor
 						? "glass-primary rounded-br-sm ml-auto text-primary-foreground"
 						: "glass rounded-bl-sm"

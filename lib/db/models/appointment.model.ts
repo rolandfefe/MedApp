@@ -20,7 +20,6 @@ const appointmentSchema = new Schema<IAppointment>(
 		diagnosis: {
 			type: Schema.Types.ObjectId,
 			ref: "Diagnosis",
-			// required: true
 		},
 		healthStatus: {
 			type: Schema.Types.ObjectId,
@@ -32,11 +31,13 @@ const appointmentSchema = new Schema<IAppointment>(
 		// 	ref: "RecurrencePlan",
 		// 	// required: true
 		// },
-		referral: {
-			type: Schema.Types.ObjectId,
-			ref: "Referral",
-			// unique: true, // ! one-referral && one-appointment
-		},
+		referrals: [
+			{
+				from: { type: Schema.Types.ObjectId, ref: "Doctor" },
+				to: { type: Schema.Types.ObjectId, ref: "Doctor" },
+				reason: { type: String, required: true, trim: true },
+			},
+		],
 		reminders: [
 			{
 				type: Schema.Types.ObjectId,

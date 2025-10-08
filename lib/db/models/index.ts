@@ -6,7 +6,7 @@ export * from "./appointment.model";
 export * from "./healthStatus.model";
 export * from "./diagnosis.model";
 export * from "./recurrencePlan.model";
-export * from "./referral.model";
 export * from "./reminder.model";
 export * from "./message.model";
 export * from "./diagnosis.model";
+export * from "./recurrencePlan.model";

@@ -11,7 +11,6 @@ export interface IPaymentInfo {
 }
 
 interface IPrescription {
-	id: string;
 	medicationName: string;
 	dosage: string;
 	frequency: string;
@@ -20,4 +19,10 @@ interface IPrescription {
 	refills: number;
 	isSubstitutionAllowed: boolean;
 	prescribedAt: string;
+}
+
+export interface IReferral {
+	from: string | IDoctor;
+	to: string | IDoctor;
+	reason: string;
 }
