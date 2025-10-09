@@ -107,7 +107,13 @@ export const updateAppointment = async (
 			.findByIdAndUpdate(appointment._id, appointment, { new: true })
 			.populate({ path: "patient", populate: "user" })
 			.populate({ path: "doctor", populate: "user" })
-			.populate({ path: "referrals", populate: ["from", "to"] });
+			.populate({
+				path: "referrals",
+				populate: [
+					{ path: "from", populate: "user" },
+					{ path: "to", populate: "user" },
+				],
+			});
 
 		// ? Conditionally trigger Real-time
 		if (pathname) {

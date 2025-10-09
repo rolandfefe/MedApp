@@ -14,6 +14,8 @@ import { ReferralFormDialog } from "../forms/ReferralForm";
 import DoctorCard from "./DoctorCard";
 import moment from "moment";
 import Heading from "../custom/Heading";
+import { Badge } from "../ui/badge";
+import ConfirmationDialog from "../panels/ConfirmationDialog";
 
 export default function ReferralCard({
 	referral,
@@ -30,44 +32,51 @@ export default function ReferralCard({
 
 	if (variant === "sm") {
 		return (
-			<Card {...props} className={cn("bg-muted/60 border-none", className)}>
+			<Card {...props} className={cn("bg-muted/60 border", className)}>
 				<CardContent>
 					<div className="flex items-center gap-x-3 justify-between">
 						<Heading className="flex items-center gap-x-1">
-							<span className="text-primary">Referred </span>
-							<CopyBadge variant={"secondary"} content={appointment._id!}>
+							<span className="text-primary hidden sm:inline">Referred </span>
+							<CopyBadge
+								variant={"secondary"}
+								content={appointment._id!}
+								className="text-primary sm:text-secondary-foreground"
+							>
 								{referral._id!}
 							</CopyBadge>
-							<ArrowBigRightDash className="text-primary" />
 						</Heading>
 						<ActionBtns
 							appointment={appointment}
 							referral={referral}
-							className="hidden sm:flex"
+							className="flex"
 						/>
 					</div>
 					<Separator className="my-2" />
 
-					<section className="space-y-4">
-						<div>
-							<p className="text-sm font-medium mb-1">From: </p>
-
-							<DoctorCard doctor={referral.from as IDoctor} />
-						</div>
-						<div>
-							<p className="text-sm font-medium mb-1">To: </p>
-
-							<DoctorCard doctor={referral.to as IDoctor} />
-						</div>
-
-						<div className="p-2 text-sm rounded-xl bg-popover text-popover-foreground">
-							<p>{referral.reason}</p>
-
-							<p className="text-xs mt-2 text-end">
-								{moment(referral.createdAt).format("")}
-							</p>
-						</div>
+					<section className="flex flex-col sm:flex-row gap-2 items-center mb-3">
+						<DoctorCard
+							doctor={referral.from as IDoctor}
+							variant="xs"
+							className="flex-1"
+						/>
+						<ArrowBigRightDash className="rotate-90 sm:rotate-0 text-primary" />
+						<DoctorCard
+							doctor={referral.to as IDoctor}
+							variant="xs"
+							className="flex-1"
+						/>
 					</section>
+					<div className="p-2 text-sm rounded-xl glass-bg text-popover-foreground">
+						<p>{referral.reason}</p>
+
+						<p className="text-xs mt-2 text-muted-foreground flex items-center justify-between  ">
+							<Badge variant="secondary">{referral.status}</Badge>
+							<span className="">
+								{moment(referral.createdAt).format("Do MMM - h:mma")}
+							</span>
+						</p>
+					</div>
+
 					<section className="flex items-center justify-between"></section>
 				</CardContent>
 			</Card>
@@ -97,7 +106,7 @@ const ActionBtns = ({
 } & ComponentProps<typeof ButtonGroup>) => {
 	const [isDeleting, startDeleting] = useTransition();
 
-	const deleteHandler = () => {
+	const deleteHandler = async () => {
 		const cleanData: IAppointment = {
 			...appointment,
 			referrals: appointment.referrals?.filter((r) => r._id !== referral._id),
@@ -122,14 +131,19 @@ const ActionBtns = ({
 				</MyBtn>
 			</ReferralFormDialog>
 
-			<MyBtn
-				size="icon"
-				variant="outline"
-				onClick={deleteHandler}
-				className="text-destructive"
+			<ConfirmationDialog
+				action={deleteHandler}
+				msg={`Are you sure you want to PERMANENTLY delete referral 🆔: ${referral._id!}?`}
+				successMsg={`Referral of 🆔: ${referral._id!} Deleted🗑️.`}
 			>
-				{isDeleting ? <Spinner /> : <Trash2 />}
-			</MyBtn>
+				<MyBtn
+					size="icon"
+					variant="outline"
+					className="text-destructive"
+				>
+					{isDeleting ? <Spinner /> : <Trash2 />}
+				</MyBtn>
+			</ConfirmationDialog>
 		</ButtonGroup>
 	);
 };

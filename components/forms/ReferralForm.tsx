@@ -58,7 +58,7 @@ export default function ReferralForm({
 	const appointmentDoctor = appointment.doctor as IDoctor;
 
 	const [selectedDoctor, setSelectedDoctor] = useState<IDoctor | undefined>(
-		referral ? referral.to as IDoctor : undefined
+		referral ? (referral.to as IDoctor) : undefined
 	);
 	const [isPending, startTransition] = useTransition();
 	const [doctors, setDoctors] = useState<IDoctor[]>([]);
@@ -71,7 +71,7 @@ export default function ReferralForm({
 	const form = useForm<appointmentReferralFormData>({
 		resolver: zodResolver(appointmentReferralSchema),
 		defaultValues: {
-			reason: referral?.reason|| "",
+			reason: referral?.reason || "",
 		},
 	});
 
@@ -147,7 +147,7 @@ export default function ReferralForm({
 								<FormItem>
 									<FormLabel>Reason for Referral</FormLabel>
 									<FormControl>
-										<Textarea placeholder="Reason for referral" {...field} />
+										<Textarea {...field} autoFocus placeholder="Reason for referral" />
 									</FormControl>
 									<FormDescription>
 										Provide clear reason for the referral.
