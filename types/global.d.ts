@@ -233,7 +233,7 @@ declare global {
 		diagnosis?: IDiagnosis;
 
 		recurrencePlan?: IRecurrencePlan | string;
-		referrals?: IReferral[];
+		
 		reminders?: IReminder[];
 		healthStatus?: IHealthStatus; // Current reviewed status.
 
@@ -271,6 +271,14 @@ declare global {
 		imgs: string[];
 
 		// appointment Activity
+	}
+
+	interface IReferral extends Base {
+		appointment: IAppointment | string;
+		from: string | IDoctor;
+		to: string | IDoctor;
+		reason: string;
+		status?: eReferralStatus;
 	}
 
 	// ! Forms Basis of patient follow up

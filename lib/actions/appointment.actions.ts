@@ -82,13 +82,7 @@ export const getAppointmentById = async (id: string): Promise<IAppointment> => {
 			.findById(id)
 			.populate({ path: "patient", populate: "user" })
 			.populate({ path: "doctor", populate: "user" })
-			.populate({
-				path: "referrals",
-				populate: [
-					{ path: "from", populate: "user" },
-					{ path: "to", populate: "user" },
-				],
-			});
+			
 
 		return JSON.parse(JSON.stringify(appointment));
 	} catch (error: any) {
@@ -107,13 +101,7 @@ export const updateAppointment = async (
 			.findByIdAndUpdate(appointment._id, appointment, { new: true })
 			.populate({ path: "patient", populate: "user" })
 			.populate({ path: "doctor", populate: "user" })
-			.populate({
-				path: "referrals",
-				populate: [
-					{ path: "from", populate: "user" },
-					{ path: "to", populate: "user" },
-				],
-			});
+			
 
 		// ? Conditionally trigger Real-time
 		if (pathname) {

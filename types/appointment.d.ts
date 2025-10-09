@@ -22,9 +22,4 @@ interface IPrescription {
 	prescribedAt: string;
 }
 
-export interface IReferral extends Base {
-	from: string | IDoctor;
-	to: string | IDoctor;
-	reason: string;
-	status?: eReferralStatus;
-}
+
