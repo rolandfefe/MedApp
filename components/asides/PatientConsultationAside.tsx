@@ -91,10 +91,7 @@ export default function PatientConsultationAside({
 					</div>
 				</div>
 
-				{/* Diagnosis */}
-				{/* Referral */}
-				{/* recurrence */}
-				{/* Online */}
+			
 			</section>
 		</div>
 	);

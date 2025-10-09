@@ -1,8 +1,8 @@
 "use client";
 
 import { getAppointmentById } from "@/lib/actions/appointment.actions";
-import { Notebook } from "lucide-react";
-import { useParams } from "next/navigation";
+import { ArrowUpRightFromSquare, Notebook, Stethoscope } from "lucide-react";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import PatientConsultationAside from "../asides/PatientConsultationAside";
 import DoctorCard from "../cards/DoctorCard";
@@ -15,7 +15,13 @@ import {
 	SidebarHeader,
 } from "../ui/sidebar";
 import { Skeleton } from "../ui/skeleton";
+import { ButtonGroup } from "../ui/button-group";
 import { getHistory } from "@/lib/actions/history.action";
+import { getIsAppointmentDoctor } from "@/lib/utils";
+import { pusherClient } from "@/lib/pusher";
+import Link from "next/link";
+import { DiagnosisFormPanel } from "../forms/DiagnosisForm";
+import PatientFooter from "./PatientFooter";
 
 export default function ConsultationSidebar({
 	currentUser,
@@ -26,10 +32,10 @@ export default function ConsultationSidebar({
 
 	const [appointment, setAppointment] = useState<IAppointment>();
 	const [patientHistory, setPatientHistory] = useState<IHistory>();
-	const isAppointmentDoctor = appointment?.doctor!.user._id == currentUser._id;
+	const isAppointmentDoctor = getIsAppointmentDoctor(appointment!, currentUser);
 
 	useEffect(() => {
-		// Fetch patient data
+		// Fetch appointment data
 		(async () => {
 			const _appointment = await getAppointmentById(appointmentId as string);
 
@@ -38,9 +44,22 @@ export default function ConsultationSidebar({
 				await getHistory({ patientId: _appointment.patient!._id as string })
 			);
 		})();
+
+		// Pusher
+		pusherClient
+			.subscribe(`appointment-${appointmentId}`)
+			.bind(
+				`appointment-${appointmentId}-updated`,
+				(updatedAppointment: IAppointment) => {
+					console.log("Appointment updated via Pusher:", updatedAppointment);
+					setAppointment(updatedAppointment);
+				}
+			);
+
+		return () => pusherClient.unsubscribe(`appointment-${appointmentId}`);
 	}, [appointmentId]);
 
-	console.log(patientHistory);
+	// console.log(patientHistory);
 
 	return (
 		<Sidebar variant="sidebar" className="!w[50rem]">
@@ -63,15 +82,12 @@ export default function ConsultationSidebar({
 					<LoadingCard />
 				)}
 			</SidebarContent>
+
 			<SidebarFooter>
-				{appointment ? (
-					<DoctorNotesFormPanel appointment={appointment}>
-						<MyBtn className="w-full">
-							Medical Notes <Notebook />
-						</MyBtn>
-					</DoctorNotesFormPanel>
+				{isAppointmentDoctor ? (
+					<PatientFooter appointment={appointment!} currentUser={currentUser} />
 				) : (
-					<Skeleton className="w-full h-9 rounded-xl" />
+					<DoctorFooter appointment={appointment!} currentUser={currentUser} />
 				)}
 			</SidebarFooter>
 		</Sidebar>
@@ -99,4 +115,16 @@ const LoadingCard = () => {
 			<Skeleton className="w-full h-18 rounded-lg mt-3	" />
 		</div>
 	);
+};
+
+const DoctorFooter = ({
+	appointment,
+	currentUser,
+}: {
+	appointment: IAppointment;
+	currentUser: IUser;
+}) => {
+	if (!appointment) return <Skeleton className="w-full h-9 rounded-xl" />;
+
+	return <p>Doctor footer.</p>;
 };

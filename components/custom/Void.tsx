@@ -14,6 +14,7 @@ export default function Void({
 				alt="Void"
 				height={999}
 				width={999}
+				priority
 				className="w-2/3 mx-auto "
 			/>
 

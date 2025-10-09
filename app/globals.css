@@ -142,7 +142,7 @@
 	}
 
 	.glass-primary {
-		@apply bg-primary/70 backdrop-blur-md backdrop-saturate-150 border-secondary;
+		@apply bg-primary/90 dark:bg-primary/70  backdrop-blur-md backdrop-saturate-150 border-secondary;
 	}
 
 	.glass-bg {
@@ -155,5 +155,9 @@
 
 	.collapsible-tabs [data-state="inactive"] span {
 		@apply hidden sm:inline;
+	}
+
+	.responsive-w {
+		@apply w-2/3 sm:w-1/2 md:w-1/3;
 	}
 }

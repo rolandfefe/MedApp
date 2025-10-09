@@ -16,7 +16,16 @@ export default function UserCard({
 	variant: "xs" | "sm" | "md";
 	className?: string;
 }) {
-	if (variant === "sm") {
+	if (variant === "xs") {
+		return (
+			<Avatar className="size-8">
+				<AvatarImage src={currentUser.imageUrl} />
+				<AvatarFallback className="bg-fuchsia-400 dark:bg-fuchsia-600">
+					{currentUser.username[0].toUpperCase()}
+				</AvatarFallback>
+			</Avatar>
+		);
+	} else if (variant === "sm") {
 		return (
 			<div className={cn("flex items-center gap-x-1", className)}>
 				<Avatar>

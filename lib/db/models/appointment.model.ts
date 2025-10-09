@@ -1,9 +1,25 @@
+import { IReferral } from "@/types/appointment";
 import {
 	eAppointmentStatus,
 	eAppointmentTypes,
 	ePatientConsent,
+	eReferralStatus,
 } from "@/types/enums/enums";
 import { model, models, Schema } from "mongoose";
+
+const referralSchema = new Schema<IReferral>(
+	{
+		from: { type: Schema.Types.ObjectId, ref: "Doctor" },
+		to: { type: Schema.Types.ObjectId, ref: "Doctor" },
+		reason: { type: String, required: true, trim: true },
+		status: {
+			type: String,
+			enum: eReferralStatus,
+			default: eReferralStatus.PENDING,
+		},
+	},
+	{ timestamps: true }
+);
 
 const appointmentSchema = new Schema<IAppointment>(
 	{
@@ -31,13 +47,7 @@ const appointmentSchema = new Schema<IAppointment>(
 		// 	ref: "RecurrencePlan",
 		// 	// required: true
 		// },
-		referrals: [
-			{
-				from: { type: Schema.Types.ObjectId, ref: "Doctor" },
-				to: { type: Schema.Types.ObjectId, ref: "Doctor" },
-				reason: { type: String, required: true, trim: true },
-			},
-		],
+		referrals: [referralSchema],
 		reminders: [
 			{
 				type: Schema.Types.ObjectId,
@@ -49,7 +59,6 @@ const appointmentSchema = new Schema<IAppointment>(
 			type: String,
 			required: true,
 		},
-		followUpInstructions: String,
 
 		type: {
 			type: String,
@@ -78,6 +87,8 @@ const appointmentSchema = new Schema<IAppointment>(
 		// Consultation details
 		patientNotes: String,
 		doctorNotes: String,
+		followUpInstructions: String,
+
 		consentLevels: [
 			{
 				type: String,

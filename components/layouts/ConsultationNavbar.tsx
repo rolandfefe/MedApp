@@ -1,8 +1,6 @@
 "use client";
 
-import {
-	getAppointmentById
-} from "@/lib/actions/appointment.actions";
+import { getAppointmentById } from "@/lib/actions/appointment.actions";
 import { cn } from "@/lib/utils";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import { useParams, usePathname } from "next/navigation";
@@ -11,6 +9,7 @@ import BackBtn from "../btns/BackBtn";
 import { ThemeBtn } from "../btns/ThemeBtn";
 import MyBtn from "../custom/MyBtn";
 import { SidebarTrigger } from "../ui/sidebar";
+import Heading from "../custom/Heading";
 
 export default function ConsultationNavbar({
 	className,
@@ -40,6 +39,10 @@ export default function ConsultationNavbar({
 				<SidebarTrigger className=" md:hidden" />
 				<BackBtn />
 			</div>
+
+			<Heading className="text-xl md:text-2xl">
+				{pathname.split("/")[3] || "Consultation"}
+			</Heading>
 
 			<div className="flex items-center gap-x-2">
 				<ThemeBtn />

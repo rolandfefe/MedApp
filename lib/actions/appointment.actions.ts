@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { connectDb } from "../db/db";
 import appointmentModel from "../db/models/appointment.model";
 import { eAppointmentStatus, eAppointmentTypes } from "@/types/enums/enums";
+import { pusherServer } from "../pusher";
 
 export const createAppointment = async (
 	appointment: IAppointment,
@@ -40,6 +41,7 @@ export const getAppointments = async ({
 			.populate({ path: "patient", populate: "user" })
 			.populate({ path: "doctor", populate: "user" })
 			.populate("healthStatus")
+			// .populate({ path: "referrals", populate: ["from", "to"] });
 			.sort({ createdAt: -1 });
 
 		return JSON.parse(JSON.stringify(appointments));
@@ -79,7 +81,14 @@ export const getAppointmentById = async (id: string): Promise<IAppointment> => {
 		const appointment = await appointmentModel
 			.findById(id)
 			.populate({ path: "patient", populate: "user" })
-			.populate({ path: "doctor", populate: "user" });
+			.populate({ path: "doctor", populate: "user" })
+			.populate({
+				path: "referrals",
+				populate: [
+					{ path: "from", populate: "user" },
+					{ path: "to", populate: "user" },
+				],
+			});
 
 		return JSON.parse(JSON.stringify(appointment));
 	} catch (error: any) {
@@ -88,18 +97,29 @@ export const getAppointmentById = async (id: string): Promise<IAppointment> => {
 };
 
 export const updateAppointment = async (
-	updatedAppointment: IAppointment,
-	pathname: string
+	appointment: IAppointment,
+	pathname?: string
 ) => {
 	try {
 		await connectDb();
 
-		await appointmentModel.findByIdAndUpdate(
-			updatedAppointment._id,
-			updatedAppointment
-		);
+		const updatedAppointment = await appointmentModel
+			.findByIdAndUpdate(appointment._id, appointment, { new: true })
+			.populate({ path: "patient", populate: "user" })
+			.populate({ path: "doctor", populate: "user" })
+			.populate({ path: "referrals", populate: ["from", "to"] });
 
-		revalidatePath(pathname);
+		// ? Conditionally trigger Real-time
+		if (pathname) {
+			revalidatePath(pathname);
+		} else {
+			// ? Pusher
+			pusherServer.trigger(
+				`appointment-${appointment._id}`,
+				`appointment-${appointment._id}-updated`,
+				updatedAppointment
+			);
+		}
 	} catch (error: any) {
 		throw new Error(error);
 	}
@@ -116,3 +136,8 @@ export const deleteAppointment = async (_id: string, pathname: string) => {
 		throw new Error(error);
 	}
 };
+
+/**
+ * @Realtime
+ *
+ */

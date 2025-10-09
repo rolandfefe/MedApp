@@ -38,7 +38,10 @@ import {
 } from "../custom/motion-stepper";
 import { ShineBorder } from "../ui/shine-border";
 import { ScrollArea } from "../ui/scroll-area";
-import { createAppointment, updateAppointment } from "@/lib/actions/appointment.actions";
+import {
+	createAppointment,
+	updateAppointment,
+} from "@/lib/actions/appointment.actions";
 
 export default function AppointmentForm({
 	action,
@@ -207,9 +210,9 @@ export const AppointmentPanel = ({
 			</MorphingDialogTrigger>
 
 			<MorphingDialogContainer>
-				<MorphingDialogContent className=" sm:max-w-[80vw]  md:min-w-lg">
+				<MorphingDialogContent className=" sm:max-w-[80vw]  md:min-w-lg lg:min-w-md">
 					<AppointmentForm {...props} />
-					 <MorphingDialogClose className='text-foreground' />
+					<MorphingDialogClose className="text-foreground" />
 				</MorphingDialogContent>
 			</MorphingDialogContainer>
 		</MorphingDialog>

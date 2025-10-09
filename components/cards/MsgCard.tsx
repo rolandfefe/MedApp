@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import moment from "moment";
 import { eMessageStatus } from "@/types/enums/enums";
 import { Check, CheckCheck } from "lucide-react";
+import UserCard from "./UserCard";
 
 export default function MsgCard({
 	className,
@@ -25,35 +26,49 @@ export default function MsgCard({
 				className
 			)}
 		>
-			<CardContent
+			<div
 				className={cn(
-					"glass-shadow p-2 rounded-xl  w-fit max-w-3/4 sm:max-w-2/3 lg:max-w-1/2",
-					isAuthor
-						? "glass-primary rounded-br-sm ml-auto text-primary-foreground"
-						: "glass rounded-bl-sm"
+					"flex items-start gap-x-1 w-full",
+					isAuthor ? "ml-auto flex-row-reverse" : ""
 				)}
 			>
-				{/* Main Body */}
-				<div>
-					<p className={cn("text-sm", isAuthor && "")}>{msg.body}</p>
-				</div>
+				<UserCard
+					user={msg.from as IUser}
+					currentUser={currentUser}
+					variant="xs"
+				/>
+				<CardContent
+					className={cn(
+						"glass-shadow p-2 rounded-xl w-fit max-w-3/4 sm:max-w-2/3 lg:max-w-1/2",
+						isAuthor
+							? "glass-primary rounded-br-sm  text-primary-foreground"
+							: "glass rounded-bl-sm"
+					)}
+				>
+					{/* Main Body */}
+					<div>
+						<p className={cn("text-sm", isAuthor && "")}>{msg.body}</p>
+					</div>
 
-				<div className="flex items-center mt-2 justify-between gap-x-4">
-					<p className={cn("text-xs", isAuthor ? "" : "text-muted-foreground")}>
-						{moment(msg.createdAt).fromNow(true)}
-					</p>
+					<div className="flex items-center mt-2 justify-between gap-x-4">
+						<p
+							className={cn("text-xs", isAuthor ? "" : "text-muted-foreground")}
+						>
+							{moment(msg.createdAt).fromNow(true)}
+						</p>
 
-					{isAuthor ? (
-						msg.status === eMessageStatus.SENT ? (
-							<Check size={17} />
-						) : msg.status === eMessageStatus.RECEIVED ? (
-							<CheckCheck size={17} />
-						) : (
-							<CheckCheck size={17} className="text-blue-500" />
-						)
-					) : null}
-				</div>
-			</CardContent>
+						{isAuthor ? (
+							msg.status === eMessageStatus.SENT ? (
+								<Check size={17} />
+							) : msg.status === eMessageStatus.RECEIVED ? (
+								<CheckCheck size={17} />
+							) : (
+								<CheckCheck size={17} className="text-blue-500" />
+							)
+						) : null}
+					</div>
+				</CardContent>
+			</div>
 		</Card>
 	);
 }

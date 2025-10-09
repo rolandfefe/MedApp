@@ -1,4 +1,5 @@
 import { ePaymentMethods, ePaymentStatus } from "./enums/currencies.enum";
+import { eReferralStatus } from "./enums/enums";
 
 export interface IPaymentInfo {
 	amount: number;
@@ -21,8 +22,9 @@ interface IPrescription {
 	prescribedAt: string;
 }
 
-export interface IReferral {
+export interface IReferral extends Base {
 	from: string | IDoctor;
 	to: string | IDoctor;
 	reason: string;
+	status?: eReferralStatus;
 }

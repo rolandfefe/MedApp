@@ -37,6 +37,16 @@ export const getDoctors = async (): Promise<IDoctor[]> => {
 	}
 };
 
+// export const getDoctorsAdvanced = async ({}: {}) => {
+// 	try {
+// 		await connectDb()
+
+// 		const doctors = await doctorModel.find()
+// 	} catch (error:any) {
+// 		throw new Error(error)
+// 	}
+// }
+
 export const getDoctorsBySpecialty = async (
 	specialty: string
 ): Promise<IDoctor[]> => {

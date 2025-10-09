@@ -13,7 +13,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export const getNavItem = (
 	pathname: string,
-	variant: "Patient" | "Doctor" | "Admin",
+	variant: "Patient" | "Doctor" | "Admin" | "Consultation",
 	id?: string
 ) => {
 	const navItems =
@@ -45,4 +45,12 @@ const fuzzyMatchRegex = (query: string): RegExp => {
 
 export const getAge = (DOB: Date): string => {
 	return `${new Date().getFullYear() - new Date(DOB).getFullYear()}yrs`;
+};
+
+// todo get whether
+export const getIsAppointmentDoctor = (
+	appointment: IAppointment,
+	currentUser: IUser
+): boolean => {
+	return appointment?.doctor!.user._id == currentUser._id;
 };

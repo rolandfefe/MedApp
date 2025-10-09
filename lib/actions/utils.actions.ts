@@ -35,3 +35,4 @@ export const getAllocatedAutoAppointments = async (): Promise<
 
 	return autoAppointments;
 };
+

@@ -262,12 +262,15 @@ declare global {
 			accessCode?: string;
 		};
 
-		followUpInstructions?: string[]; // Notes to patient
+		followUpInstructions?: string; // Notes to patient
 		doctorNotes?: string; // ONly visible to doctors.
 		patientNotes?: string;
+
 		isEmergency?: boolean;
 		consentLevels: ePatientConsent[];
 		imgs: string[];
+
+		// appointment Activity
 	}
 
 	// ! Forms Basis of patient follow up
@@ -310,6 +313,7 @@ declare global {
 		// occurrenceCount?: number;
 		exceptions?: Date[] | string[];
 	}
+
 	interface IReminder extends Base {
 		user: IUser | string;
 

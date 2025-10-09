@@ -201,6 +201,14 @@ export enum eAppointmentStatus {
 	RESCHEDULED = "Rescheduled",
 }
 
+export enum eReferralStatus {
+	PENDING = "Pending",
+	ACTIVE = "Active",
+	REJECTED = "Rejected",
+	COMPLETED = "Completed",
+	CANCELLED = "Cancelled",
+}
+
 export enum eMessageStatus {
 	SENT = "Sent",
 	RECEIVED = "Received",
@@ -232,7 +240,7 @@ export enum eDiagnosisStatus {
 	RuledOut = "Ruled-out",
 	Confirmed = "Confirmed",
 	Resolved = "Resolved",
-	Pending = "Pending"
+	Pending = "Pending",
 }
 
 export enum eLifeStyleStatus {

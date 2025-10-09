@@ -3,6 +3,7 @@ import {
 	eAppointmentStatus,
 	eAppointmentTypes,
 	ePatientConsent,
+	eReferralStatus,
 } from "@/types/enums/enums";
 
 const onlineFormSchema = z.object({
@@ -38,6 +39,21 @@ export const appointmentFormSchema = z
 			path: ["endTime"],
 		}
 	);
+
+export const appointmentNotesFormSchema = z.object({
+	patientNotes: z.string().optional(),
+	doctorNotes: z.string().optional(),
+	followUpInstructions: z.string().optional(),
+});
+
+export const appointmentOnlineSchema = z.object({
+	url: z.string().url("Invalid url"),
+	accessCode: z.string().optional(),
+});
+
+export const appointmentReferralSchema = z.object({
+	reason: z.string().min(1, "Referral reason is required"),
+});
 
 // Schema for scheduling an appointment
 export const appointmentScheduleSchema = z
@@ -97,7 +113,13 @@ export type AppointmentStatusUpdateData = z.infer<
 export type AppointmentRescheduleData = z.infer<
 	typeof appointmentRescheduleSchema
 >;
-
+export type appointmentNotesFormData = z.infer<
+	typeof appointmentNotesFormSchema
+>;
+export type appointmentOnlineFormData = z.infer<typeof appointmentOnlineSchema>;
+export type appointmentReferralFormData = z.infer<
+	typeof appointmentReferralSchema
+>;
 // Validation helpers
 export const validateAppointmentTime = (startTime: Date, endTime?: Date) => {
 	if (!endTime) return true;

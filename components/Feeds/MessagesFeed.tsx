@@ -44,11 +44,11 @@ export default function MessagesFeed({
 			});
 
 		return () => pusherClient.unsubscribe(`chat-${appointment._id!}-channel`);
-	}, [appointment]);
+	}, [appointment, lastMsgRef]);
 
 	return (
 		<ScrollArea hideScrollbar className="h-[89vh]">
-			<section className={cn("space-y-2 pb-40", className)}>
+			<section className={cn("space-y-2 pb-40 pt-10", className)}>
 				<AnimatePresence>
 					{msgs.map((msg) => (
 						<motion.div
