@@ -1,10 +1,27 @@
-import React, {
+import { updateAppointment } from "@/lib/actions/appointment.actions";
+import { getDoctors } from "@/lib/actions/doctor.actions";
+import {
+	ReferralFormData,
+	referralSchema,
+} from "@/lib/formSchemas/referral.schema";
+import { cn } from "@/lib/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ArrowBigRightDash } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
+import { usePathname } from "next/navigation";
+import {
 	ComponentProps,
 	ReactNode,
 	useEffect,
 	useState,
 	useTransition,
 } from "react";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import DoctorSearchBox from "../DoctorSearchBox";
+import DoctorCard from "../cards/DoctorCard";
+import Heading from "../custom/Heading";
+import MyBtn from "../custom/MyBtn";
 import {
 	MorphingDialog,
 	MorphingDialogClose,
@@ -14,14 +31,7 @@ import {
 	MorphingDialogTitle,
 	MorphingDialogTrigger,
 } from "../motion-primitives/morphing-dialog";
-import Heading from "../custom/Heading";
-import { ArrowBigRightDash, Loader } from "lucide-react";
-import { useForm } from "react-hook-form";
-import {
-	appointmentReferralSchema,
-	appointmentReferralFormData,
-} from "@/lib/formSchemas/appointment.schema";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { errHandler } from "../toastErr";
 import {
 	Form,
 	FormControl,
@@ -31,31 +41,22 @@ import {
 	FormLabel,
 	FormMessage,
 } from "../ui/form";
-import { Textarea } from "../ui/textarea";
-import MyBtn from "../custom/MyBtn";
-import { IReferral } from "@/types/appointment";
-import { updateAppointment } from "@/lib/actions/appointment.actions";
-import DoctorSearchBox from "../DoctorSearchBox";
-import DoctorCard from "../cards/DoctorCard";
-import { AnimatePresence, motion } from "motion/react";
-import { getDoctors } from "@/lib/actions/doctor.actions";
-import { cn } from "@/lib/utils";
-import { Separator } from "../ui/separator";
 import { ScrollArea } from "../ui/scroll-area";
+import { Separator } from "../ui/separator";
 import { Spinner } from "../ui/spinner";
-import { errHandler } from "../toastErr";
-import toast from "react-hot-toast";
+import { Textarea } from "../ui/textarea";
+import { createReferral, updateReferral } from "@/lib/actions/referral.actions";
 
 export default function ReferralForm({
-	appointment,
 	action,
 	referral,
+	appointment,
 }: {
-	appointment: IAppointment;
 	action: "Create" | "Update";
 	referral?: IReferral;
+	appointment?: IAppointment;
 }) {
-	const appointmentDoctor = appointment.doctor as IDoctor;
+	const appointmentDoctor = appointment?.doctor as IDoctor;
 
 	const [selectedDoctor, setSelectedDoctor] = useState<IDoctor | undefined>(
 		referral ? (referral.to as IDoctor) : undefined
@@ -64,38 +65,34 @@ export default function ReferralForm({
 	const [doctors, setDoctors] = useState<IDoctor[]>([]);
 	const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
+	const pathname = usePathname();
 	useEffect(() => {
 		(async () => setDoctors(await getDoctors()))();
 	}, []);
 
-	const form = useForm<appointmentReferralFormData>({
-		resolver: zodResolver(appointmentReferralSchema),
+	const form = useForm<ReferralFormData>({
+		resolver: zodResolver(referralSchema),
 		defaultValues: {
 			reason: referral?.reason || "",
 		},
 	});
 
-	const submitHandler = (data: appointmentReferralFormData) => {
+	const submitHandler = (data: ReferralFormData) => {
 		if (!selectedDoctor) {
 			errHandler(["Please Select Doctor you are referring the patient to!"]);
 			return;
 		}
 
-		if (action === "Create") {
-			const newReferralData = {
-				...appointment,
-				referrals: [
-					...(appointment.referrals || []),
-					{
-						...data,
-						from: appointmentDoctor._id!,
-						to: selectedDoctor._id!,
-					},
-				],
+		if (action === "Create" && appointment) {
+			const newReferralData: IReferral = {
+				...data,
+				from: appointmentDoctor._id!,
+				to: selectedDoctor._id!,
+				appointment: appointment._id!,
 			};
 
 			startTransition(async () => {
-				await updateAppointment(newReferralData);
+				await createReferral(newReferralData, pathname);
 
 				form.reset();
 				setIsSuccess(true);
@@ -103,22 +100,15 @@ export default function ReferralForm({
 				toast.success("Referral registered.⏩");
 			});
 		} else if (action === "Update" && referral) {
-			const _referrals = appointment.referrals?.filter(
-				(r) => r._id != referral._id
-			);
-
 			startTransition(async () => {
-				await updateAppointment({
-					...appointment,
-					referrals: [
-						...(_referrals || []),
-						{
-							...data,
-							from: appointmentDoctor._id!,
-							to: selectedDoctor._id!,
-						},
-					],
-				});
+				await updateReferral(
+					{
+						...referral,
+						...data,
+						to: selectedDoctor._id!,
+					},
+					pathname
+				);
 
 				form.reset();
 				setIsSuccess(true);
@@ -147,7 +137,11 @@ export default function ReferralForm({
 								<FormItem>
 									<FormLabel>Reason for Referral</FormLabel>
 									<FormControl>
-										<Textarea {...field} autoFocus placeholder="Reason for referral" />
+										<Textarea
+											{...field}
+											autoFocus
+											placeholder="Reason for referral"
+										/>
 									</FormControl>
 									<FormDescription>
 										Provide clear reason for the referral.

@@ -9,11 +9,13 @@ import MyBtn from "../custom/MyBtn";
 import { ReferralFormDialog } from "../forms/ReferralForm";
 
 export default function ReferralsAside({
+	referrals,
 	appointment,
 }: {
-	appointment: IAppointment;
+	referrals: IReferral[];
+	appointment?: IAppointment;
 }) {
-	const referrals = appointment.referrals;
+	// const referrals = appointment.referrals;
 
 	return (
 		<div>
@@ -34,11 +36,7 @@ export default function ReferralsAside({
 							exit={{ opacity: 0, y: 100 }}
 							className="mb-2"
 						>
-							<ReferralCard
-								appointment={appointment}
-								referral={referral}
-								variant="sm"
-							/>
+							<ReferralCard referral={referral} variant="sm" />
 						</motion.div>
 					))
 				) : (

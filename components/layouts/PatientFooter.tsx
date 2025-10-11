@@ -18,7 +18,7 @@ import { ButtonGroup } from "../ui/button-group";
 import { Skeleton } from "../ui/skeleton";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import Heading from "../custom/Heading";
-import { ReactNode, useState, useTransition } from "react";
+import { ReactNode, useEffect, useState, useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import {
@@ -48,6 +48,7 @@ import {
 import ReferralsAside from "../asides/ReferralsAside";
 import ReferralForm, { ReferralFormDialog } from "../forms/ReferralForm";
 import { useMediaQuery } from "@uidotdev/usehooks";
+import { getReferrals } from "@/lib/actions/referral.actions";
 
 export default function PatientFooter({
 	appointment,
@@ -58,7 +59,14 @@ export default function PatientFooter({
 }) {
 	const router = useRouter();
 
-	if (!appointment) return <Skeleton className="w-full h-9 rounded-xl" />;
+	if (!appointment)
+		return (
+			<div className="space-y-2">
+				{[...Array(4)].map((_, i) => (
+					<Skeleton key={i} className="w-full h-9 rounded-xl" />
+				))}
+			</div>
+		);
 
 	// Reminder
 	// Referral
@@ -101,6 +109,13 @@ export default function PatientFooter({
 }
 
 const ReferralBtn = ({ appointment }: { appointment: IAppointment }) => {
+	const [referrals, setReferrals] = useState<IReferral[]>();
+
+	useEffect(() => {
+		(async () =>
+			setReferrals(await getReferrals({ appointment: appointment._id! })))();
+	}, [appointment]);
+
 	return (
 		<ButtonGroup className="!w-full">
 			<FormPanel>
@@ -110,7 +125,7 @@ const ReferralBtn = ({ appointment }: { appointment: IAppointment }) => {
 					</MyBtn>
 				</FormPanelTrigger>
 				<FormPanelContent>
-					<ReferralsAside appointment={appointment} />
+					<ReferralsAside referrals={referrals!} appointment={appointment} />
 				</FormPanelContent>
 			</FormPanel>
 

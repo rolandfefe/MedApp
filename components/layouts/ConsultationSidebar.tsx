@@ -1,13 +1,13 @@
 "use client";
 
 import { getAppointmentById } from "@/lib/actions/appointment.actions";
-import { ArrowUpRightFromSquare, Notebook, Stethoscope } from "lucide-react";
-import { useParams, useRouter } from "next/navigation";
+import { getHistory } from "@/lib/actions/history.action";
+import { pusherClient } from "@/lib/pusher";
+import { getIsAppointmentDoctor } from "@/lib/utils";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import PatientConsultationAside from "../asides/PatientConsultationAside";
 import DoctorCard from "../cards/DoctorCard";
-import MyBtn from "../custom/MyBtn";
-import { DoctorNotesFormPanel } from "../forms/DoctorNotesForm";
 import {
 	Sidebar,
 	SidebarContent,
@@ -15,51 +15,16 @@ import {
 	SidebarHeader,
 } from "../ui/sidebar";
 import { Skeleton } from "../ui/skeleton";
-import { ButtonGroup } from "../ui/button-group";
-import { getHistory } from "@/lib/actions/history.action";
-import { getIsAppointmentDoctor } from "@/lib/utils";
-import { pusherClient } from "@/lib/pusher";
-import Link from "next/link";
-import { DiagnosisFormPanel } from "../forms/DiagnosisForm";
 import PatientFooter from "./PatientFooter";
+import { useConsultation } from "@/contexts/consultation.context";
 
 export default function ConsultationSidebar({
 	currentUser,
 }: {
 	currentUser: IUser;
 }) {
-	const { appointmentId } = useParams();
-
-	const [appointment, setAppointment] = useState<IAppointment>();
-	const [patientHistory, setPatientHistory] = useState<IHistory>();
-	const isAppointmentDoctor = getIsAppointmentDoctor(appointment!, currentUser);
-
-	useEffect(() => {
-		// Fetch appointment data
-		(async () => {
-			const _appointment = await getAppointmentById(appointmentId as string);
-
-			setAppointment(_appointment);
-			setPatientHistory(
-				await getHistory({ patientId: _appointment.patient!._id as string })
-			);
-		})();
-
-		// Pusher
-		pusherClient
-			.subscribe(`appointment-${appointmentId}`)
-			.bind(
-				`appointment-${appointmentId}-updated`,
-				(updatedAppointment: IAppointment) => {
-					console.log("Appointment updated via Pusher:", updatedAppointment);
-					setAppointment(updatedAppointment);
-				}
-			);
-
-		return () => pusherClient.unsubscribe(`appointment-${appointmentId}`);
-	}, [appointmentId]);
-
-	// console.log(patientHistory);
+	const { appointment, patientHistory } = useConsultation();
+	const isAppointmentDoctor = getIsAppointmentDoctor(appointment, currentUser);
 
 	return (
 		<Sidebar variant="sidebar" className="!w[50rem]">

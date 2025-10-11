@@ -1,33 +1,32 @@
-import { IReferral } from "@/types/appointment";
-import React, { ComponentProps, useTransition } from "react";
-import { Card, CardContent } from "../ui/card";
+import { deleteReferral } from "@/lib/actions/referral.actions";
 import { cn } from "@/lib/utils";
-import CopyBadge from "../custom/CopyBadge";
-import { Separator } from "../ui/separator";
-import { ButtonGroup } from "../ui/button-group";
-import MyBtn from "../custom/MyBtn";
 import { ArrowBigRightDash, Edit3, Trash2 } from "lucide-react";
-import toast from "react-hot-toast";
-import { Spinner } from "../ui/spinner";
-import { updateAppointment } from "@/lib/actions/appointment.actions";
-import { ReferralFormDialog } from "../forms/ReferralForm";
-import DoctorCard from "./DoctorCard";
 import moment from "moment";
+import { usePathname } from "next/navigation";
+import { ComponentProps, useTransition } from "react";
+import toast from "react-hot-toast";
+import CopyBadge from "../custom/CopyBadge";
 import Heading from "../custom/Heading";
-import { Badge } from "../ui/badge";
+import MyBtn from "../custom/MyBtn";
+import { ReferralFormDialog } from "../forms/ReferralForm";
 import ConfirmationDialog from "../panels/ConfirmationDialog";
+import { Badge } from "../ui/badge";
+import { ButtonGroup } from "../ui/button-group";
+import { Card, CardContent } from "../ui/card";
+import { Separator } from "../ui/separator";
+import { Spinner } from "../ui/spinner";
+import DoctorCard from "./DoctorCard";
 
 export default function ReferralCard({
 	referral,
-	appointment,
 	variant = "md",
 	className,
 	...props
 }: {
 	referral: IReferral;
-	appointment: IAppointment;
 	variant?: "sm" | "md" | "lg";
 } & ComponentProps<typeof Card>) {
+	const appointment = referral.appointment as IAppointment;
 	console.log(referral);
 
 	if (variant === "sm") {
@@ -45,11 +44,7 @@ export default function ReferralCard({
 								{referral._id!}
 							</CopyBadge>
 						</Heading>
-						<ActionBtns
-							appointment={appointment}
-							referral={referral}
-							className="flex"
-						/>
+						<ActionBtns referral={referral} className="flex" />
 					</div>
 					<Separator className="my-2" />
 
@@ -97,31 +92,22 @@ export default function ReferralCard({
 }
 
 const ActionBtns = ({
-	appointment,
 	referral,
 	...props
 }: {
-	appointment: IAppointment;
 	referral: IReferral;
 } & ComponentProps<typeof ButtonGroup>) => {
 	const [isDeleting, startDeleting] = useTransition();
+	const pathname = usePathname();
 
-	const deleteHandler = async () => {
-		const cleanData: IAppointment = {
-			...appointment,
-			referrals: appointment.referrals?.filter((r) => r._id !== referral._id),
-		};
-
+	const deleteHandler = async () =>
 		startDeleting(async () => {
-			await updateAppointment(cleanData);
-			toast.success("Referral deleted.🗑️");
+			await deleteReferral(referral._id!, pathname);
 		});
-	};
 
 	return (
 		<ButtonGroup {...props}>
 			<ReferralFormDialog
-				appointment={appointment}
 				action="Update"
 				referral={referral}
 				className="rounded-e-none"
@@ -134,13 +120,9 @@ const ActionBtns = ({
 			<ConfirmationDialog
 				action={deleteHandler}
 				msg={`Are you sure you want to PERMANENTLY delete referral 🆔: ${referral._id!}?`}
-				successMsg={`Referral of 🆔: ${referral._id!} Deleted🗑️.`}
+				successMsg={`Referral deleted.🗑️`}
 			>
-				<MyBtn
-					size="icon"
-					variant="outline"
-					className="text-destructive"
-				>
+				<MyBtn size="icon" variant="outline" className="text-destructive">
 					{isDeleting ? <Spinner /> : <Trash2 />}
 				</MyBtn>
 			</ConfirmationDialog>

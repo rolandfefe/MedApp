@@ -1,10 +1,9 @@
-import { z } from "zod";
 import {
 	eAppointmentStatus,
 	eAppointmentTypes,
-	ePatientConsent,
-	eReferralStatus,
+	ePatientConsent
 } from "@/types/enums/enums";
+import z from "zod";
 
 const onlineFormSchema = z.object({
 	url: z.string().url("Invalid url").optional(),
@@ -49,10 +48,6 @@ export const appointmentNotesFormSchema = z.object({
 export const appointmentOnlineSchema = z.object({
 	url: z.string().url("Invalid url"),
 	accessCode: z.string().optional(),
-});
-
-export const appointmentReferralSchema = z.object({
-	reason: z.string().min(1, "Referral reason is required"),
 });
 
 // Schema for scheduling an appointment
@@ -117,9 +112,7 @@ export type appointmentNotesFormData = z.infer<
 	typeof appointmentNotesFormSchema
 >;
 export type appointmentOnlineFormData = z.infer<typeof appointmentOnlineSchema>;
-export type appointmentReferralFormData = z.infer<
-	typeof appointmentReferralSchema
->;
+
 // Validation helpers
 export const validateAppointmentTime = (startTime: Date, endTime?: Date) => {
 	if (!endTime) return true;

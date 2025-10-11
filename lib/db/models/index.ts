@@ -9,4 +9,4 @@ export * from "./recurrencePlan.model";
 export * from "./reminder.model";
 export * from "./message.model";
 export * from "./diagnosis.model";
-export * from "./recurrencePlan.model";
+export * from "./referral.model";

@@ -7,8 +7,9 @@ const referralSchema = new Schema<IReferral>(
 			type: Schema.Types.ObjectId,
 			ref: "Appointment",
 			required: true,
+			immutable: true,
 		},
-		from: { type: Schema.Types.ObjectId, ref: "Doctor" },
+		from: { type: Schema.Types.ObjectId, ref: "Doctor", immutable: true },
 		to: { type: Schema.Types.ObjectId, ref: "Doctor" },
 		reason: { type: String, required: true, trim: true },
 		status: {
