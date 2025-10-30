@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { JSX } from "react";
 import { SidebarMenuButton, SidebarMenuItem } from "../ui/sidebar";
+import { DynamicIcon, IconName } from "lucide-react/dynamic";
 
 export default function NavItem({
 	name,
@@ -15,13 +16,14 @@ export default function NavItem({
 }: {
 	name: string;
 	link: string;
-	icon: JSX.Element;
+	icon: IconName;
 	className?: string;
 }) {
 	const pathname = usePathname();
 
 	const isActive =
-		pathname === link || ((link !== "/" || pathname !== link ) && pathname.startsWith(link + "/"));
+		pathname === link ||
+		((link !== "/" || pathname !== link) && pathname.startsWith(link + "/"));
 
 	return (
 		<SidebarMenuItem>
@@ -35,7 +37,7 @@ export default function NavItem({
 							"text-primary hover:text-primary bg-primary/30 dark:bg-primary/10 font-medium glass-shadow"
 					)}
 				>
-					{icon}
+					<DynamicIcon name={icon} size={20} />
 					<motion.span whileHover={{ x: 5 }} whileTap={{ scale: 0.97 }}>
 						{name}
 					</motion.span>

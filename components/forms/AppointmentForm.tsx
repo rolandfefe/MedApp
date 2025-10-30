@@ -5,7 +5,7 @@ import {
 	appointmentFormSchema,
 } from "@/lib/formSchemas/appointment.schema";
 import { cn } from "@/lib/utils";
-import { ePatientConsent } from "@/types/enums/enums";
+import { eConfidenceLevel, ePatientConsent } from "@/types/enums/enums";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Headset, X } from "lucide-react";
 import { usePathname } from "next/navigation";
@@ -42,6 +42,7 @@ import {
 	createAppointment,
 	updateAppointment,
 } from "@/lib/actions/appointment.actions";
+import { Appointment } from "@/types/payload";
 
 export default function AppointmentForm({
 	action,
@@ -57,11 +58,10 @@ export default function AppointmentForm({
 	const [isPending, startTransition] = useTransition();
 	const [activeStep, setActiveStep] = useState<number>(1);
 	const [isSuccess, setIsSuccess] = useState<boolean>(false);
-	const [selectedConsent, setSelectedConsent] = useState<ePatientConsent[]>([
-		ePatientConsent.HEALTH_STATUSES,
-	]);
+	const [selectedConsent, setSelectedConsent] = useState<
+		IAppointment["consentLevels"]
+	>([ePatientConsent.HEALTH_STATUSES]);
 	const [selectedDoctor, setSelectedDoctor] = useState<IDoctor>();
-	const pathname = usePathname();
 
 	console.log("selected Doc:", selectedDoctor);
 
@@ -70,23 +70,23 @@ export default function AppointmentForm({
 		defaultValues: {
 			reason: appointment?.reason,
 			type: appointment?.type,
-			endTime: appointment?.endTime as Date,
-			startTime: appointment?.startTime as Date,
+			endTime: appointment?.endTime,
+			startTime: appointment?.startTime,
 		},
 	});
 
 	const submitHandler = async (data: AppointmentFormData) => {
-		const cleanData: IAppointment = {
+		const cleanData = {
 			...data,
 			consentLevels: selectedConsent,
 			doctor: selectedDoctor,
-			patient: patient._id!,
+			patient: patient.id!,
 		};
 		console.log(data);
 
 		if (action === "Create") {
 			startTransition(async () => {
-				await createAppointment({ ...cleanData }, pathname);
+				await createAppointment({ ...cleanData });
 				toast.success(
 					"Appointment Placed. \n You notified once it's confirmed."
 				);
@@ -96,7 +96,7 @@ export default function AppointmentForm({
 			});
 		} else if (action === "Update" && appointment) {
 			startTransition(async () => {
-				await updateAppointment({ ...appointment, ...cleanData }, pathname);
+				await updateAppointment({ ...appointment, ...cleanData });
 				toast.success("Appointment Updated.");
 				// form.reset();
 				setIsSuccess(true);

@@ -26,7 +26,7 @@ export default function ReferralCard({
 	referral: IReferral;
 	variant?: "sm" | "md" | "lg";
 } & ComponentProps<typeof Card>) {
-	const appointment = referral.appointment as IAppointment;
+	const appointment = referral.appointment as Appointment;
 	console.log(referral);
 
 	if (variant === "sm") {
@@ -38,10 +38,10 @@ export default function ReferralCard({
 							<span className="text-primary hidden sm:inline">Referred </span>
 							<CopyBadge
 								variant={"secondary"}
-								content={appointment._id!}
+								content={appointment.id!}
 								className="text-primary sm:text-secondary-foreground"
 							>
-								{referral._id!}
+								{referral.id!}
 							</CopyBadge>
 						</Heading>
 						<ActionBtns referral={referral} className="flex" />
@@ -102,7 +102,7 @@ const ActionBtns = ({
 
 	const deleteHandler = async () =>
 		startDeleting(async () => {
-			await deleteReferral(referral._id!, pathname);
+			await deleteReferral(referral.id!);
 		});
 
 	return (
@@ -119,7 +119,7 @@ const ActionBtns = ({
 
 			<ConfirmationDialog
 				action={deleteHandler}
-				msg={`Are you sure you want to PERMANENTLY delete referral 🆔: ${referral._id!}?`}
+				msg={`Are you sure you want to PERMANENTLY delete referral 🆔: ${referral.id!}?`}
 				successMsg={`Referral deleted.🗑️`}
 			>
 				<MyBtn size="icon" variant="outline" className="text-destructive">

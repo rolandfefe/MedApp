@@ -46,9 +46,9 @@ export default function MessageForm({
 		if (body) {
 			startSending(async () => {
 				await createMsg({
-					appointment: appointment._id!,
+					appointment: appointment.id!,
 					body,
-					from: currentUser._id!,
+					from: currentUser.id!,
 				});
 
 				setBody("");

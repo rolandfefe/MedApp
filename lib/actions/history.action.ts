@@ -1,65 +1,82 @@
 "use server";
 
-import { after } from "next/server";
+import config from "@/payload.config";
+import { updateTag, unstable_cache as cache } from "next/cache";
+import { getPayload } from "payload";
 import historyModel from "../db/models/history.model";
-import { revalidatePath } from "next/cache";
-import { connectDb } from "../db/db";
 
-export const createHistory = async (history: IHistory, pathname: string) => {
+const payload = await getPayload({ config });
+
+/**
+ * @Mutation
+ */
+export const createHistory = async (data: IHistory) => {
 	try {
-		await connectDb();
-		await historyModel.create(history);
+		await payload.create({
+			collection: "histories",
+			data,
+		});
 
-		revalidatePath(pathname);
+		updateTag("histories");
 	} catch (error: any) {
 		throw new Error(error);
 	}
 };
 
-export const getHistory = async ({
-	patientId,
-	id,
-}: {
-	patientId?: string;
-	id?: string;
-}): Promise<IHistory> => {
+export const updateHistory = async (data: IHistory) => {
 	try {
-		await connectDb();
+		await payload.update({
+			collection: "histories",
+			id: data.id,
+			data,
+		});
 
-		const history = await historyModel
-			.findOne()
-			.or([{ _id: id }, { patient: patientId }])
-			.populate({ path: "patient", populate: "user" });
-
-		return JSON.parse(JSON.stringify(history));
+		updateTag("histories");
 	} catch (error: any) {
 		throw new Error(error);
 	}
 };
 
-export const updateHistory = async (
-	updatedHistory: IHistory,
-	pathname: string
-) => {
+export const deleteHistory = async (id: string) => {
 	try {
-		await connectDb();
-
-		await historyModel.findByIdAndUpdate(updatedHistory._id, updatedHistory);
-
-		revalidatePath(pathname);
+		await payload.delete({
+			collection: "histories",
+			id,
+		});
+		updateTag("histories");
 	} catch (error: any) {
 		throw new Error(error);
 	}
 };
 
-export const deleteHistory = async (id: string, pathname: string) => {
-	try {
-		await connectDb();
+/**
+ * @Fetches
+ */
+export const getHistory = cache(
+	async ({
+		patientId,
+		id,
+	}: {
+		patientId?: string;
+		id?: string;
+	}): Promise<IHistory> => {
+		try {
+			const { docs } = await payload.find({
+				collection: "histories",
+				where: {
+					or: [{ id: { equals: id } }, { patientId: { equals: patientId } }],
+				},
+				limit: 1,
+			});
 
-		await historyModel.findByIdAndDelete(id);
-
-		revalidatePath(pathname);
-	} catch (error: any) {
-		throw new Error(error);
+			return docs[0];
+		} catch (error: any) {
+			throw new Error(error);
+		}
+	},
+	[],
+	{
+		tags: ["histories"],
+		revalidate: 60 * 15,
 	}
-};
+);

@@ -14,6 +14,7 @@ import React, { JSX, useRef, useState } from "react";
 import MyBtn from "../custom/MyBtn";
 import { useRouter } from "next/navigation";
 import LogoText from "../layouts/LogoText";
+import { DynamicIcon, IconName } from "lucide-react/dynamic";
 
 interface NavbarProps {
 	children: React.ReactNode;
@@ -30,7 +31,7 @@ interface NavItemsProps {
 	items: {
 		name: string;
 		link: string;
-		icon: JSX.Element;
+		icon: IconName;
 	}[];
 	showIcons?: boolean;
 	className?: string;
@@ -152,7 +153,7 @@ export const NavItems = ({
 						/>
 					)}
 					{showIcons && (
-						<span className="relative z-20 text-sm">{item.icon}</span>
+						<span className="relative z-20 text-sm"><DynamicIcon name={item.icon} /></span>
 					)}
 					<span className="relative z-20">{item.name}</span>
 				</Link>

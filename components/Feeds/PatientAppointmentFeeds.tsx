@@ -70,7 +70,7 @@ export default function PatientAppointmentFeeds({
 					{filterResults.length > 0 ? (
 						filterResults.map((appointment) => (
 							<motion.div
-								key={appointment._id}
+								key={appointment.id}
 								layout
 								initial={{ opacity: 0, y: 100 }}
 								animate={{ opacity: 1, y: 0 }}

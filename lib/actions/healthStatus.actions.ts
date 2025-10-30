@@ -1,88 +1,109 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
-import { connectDb } from "../db/db";
+import config from "@/payload.config";
+import { updateTag, unstable_cache as cache } from "next/cache";
+import { getPayload } from "payload";
 import healthStatusModel from "../db/models/healthStatus.model";
 
-export const createHealthStatus = async (
-	status: IHealthStatus,
-	pathname: string
-) => {
+const payload = await getPayload({ config });
+
+/**
+ * @Mutations
+ */
+
+export const createHealthStatus = async (data: IHealthStatus) => {
 	try {
-		await connectDb();
-
-		await healthStatusModel.create(status);
-
-		revalidatePath(pathname);
+		await payload.create({
+			collection: "healthStatuses",
+			data,
+		});
+		updateTag("healthStatuses");
 	} catch (error: any) {
 		throw new Error(error);
 	}
 };
 
-export const getHealthStatuses = async ({
-	patient,
-	latest,
-}: {
-	patient: string;
-	latest?: boolean;
-}): Promise<IHealthStatus[] | IHealthStatus> => {
+export const updateHealthStatus = async (data: IHealthStatus) => {
 	try {
-		await connectDb();
+		await payload.update({
+			collection: "healthStatuses",
+			id: data.id,
+			data,
+		});
 
-		const _statuses = await healthStatusModel
-			.find()
-			.or([{ patient }])
-			.populate({ path: "patient", populate: "user" })
-			.sort({ createdAt: -1 });
-
-		const result = latest ? _statuses[_statuses.length + 1] : _statuses;
-
-		return JSON.parse(JSON.stringify(result));
+		updateTag("healthStatuses");
 	} catch (error: any) {
 		throw new Error(error);
 	}
 };
 
-export const getHealthStatus = async (_id: string): Promise<IHealthStatus> => {
+export const deleteHealthStatus = async (id: string) => {
 	try {
-		await connectDb();
-
-		const status = await healthStatusModel
-			.findById(_id)
-			.populate({ path: "patient", populate: "user" });
-
-		return JSON.parse(JSON.stringify(status));
+		await payload.delete({
+			collection: "healthStatuses",
+			id,
+		});
+		updateTag("healthStatuses");
 	} catch (error: any) {
 		throw new Error(error);
 	}
 };
 
-export const updateHealthStatus = async (
-	updatedHealthStatus: IHealthStatus,
-	pathname: string
-) => {
-	try {
-		await connectDb();
+/**
+ * @Fetches
+ */
 
-		await healthStatusModel.findByIdAndUpdate(
-			updatedHealthStatus._id,
-			updatedHealthStatus
-		);
+export const getHealthStatuses = cache(
+	async ({
+		patient,
+		page = 1,
+		limit,
+	}: {
+		patient: string;
+		page?: number;
+		limit?: number;
+	}): Promise<{ healthStatuses: IHealthStatus[]; nextPg: number }> => {
+		try {
+			const {
+				docs: healthStatuses,
+				hasNextPage,
+				nextPage,
+			} = await payload.find({
+				collection: "healthStatuses",
+				where: {
+					patient: { equals: patient },
+				},
+				page,
+				limit,
+			});
 
-		revalidatePath(pathname);
-	} catch (error: any) {
-		throw new Error(error);
+			return { healthStatuses, nextPg: hasNextPage ? nextPage! : page };
+		} catch (error: any) {
+			throw new Error(error);
+		}
+	},
+	[],
+	{
+		tags: ["healthStatuses"],
+		revalidate: 30 * 60,
 	}
-};
+);
 
-export const deleteHealthStatus = async (_id: string, pathname: string) => {
-	try {
-		await connectDb();
-
-		await healthStatusModel.findByIdAndDelete(_id);
-
-		revalidatePath(pathname);
-	} catch (error: any) {
-		throw new Error(error);
+export const getHealthStatus = cache(
+	async (id: string, latest?: boolean): Promise<IHealthStatus> => {
+		try {
+			return await payload.findByID({
+				collection: "healthStatuses",
+				id,
+				depth: 1,
+			});
+		} catch (error: any) {
+			throw new Error(error);
+		}
+	},
+	[],
+	{
+		tags: ["healthStatuses"],
+		revalidate: 15 * 60,
 	}
-};
+);

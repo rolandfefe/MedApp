@@ -4,6 +4,7 @@ import { cn, getAge } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Languages } from "lucide-react";
 import { Badge } from "../ui/badge";
+import { Doctor, Patient, User } from "@/types/payload";
 
 export default function PatientCard({
 	patient,
@@ -11,12 +12,12 @@ export default function PatientCard({
 	className,
 	variant = "sm",
 }: {
-	patient: IPatient;
-	currentDoctor: IDoctor;
+	patient: Patient;
+	currentDoctor: Doctor;
 	className?: string;
 	variant?: "sm" | "md" | "lg";
 }) {
-	const user = patient.user as IUser;
+	const user = patient.user as User;
 
 	if (variant === "sm") {
 		return (
@@ -39,7 +40,7 @@ export default function PatientCard({
 
 						<div className="flex items-center gap-x-2">
 							<Badge variant={"secondary"}>{patient.gender}</Badge>
-							<Badge variant={"secondary"}>{getAge(patient.DOB as Date)}</Badge>
+							<Badge variant={"secondary"}>{getAge(patient.DOB)}</Badge>
 						</div>
 					</div>
 				</CardContent>

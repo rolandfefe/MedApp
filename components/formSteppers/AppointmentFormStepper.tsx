@@ -245,7 +245,7 @@ export default function getAppointmentFormStepper(
 					<AnimatePresence>
 						{selectedDoctor && (
 							<motion.div
-								key={selectedDoctor._id}
+								key={selectedDoctor.id}
 								layout
 								initial={{ opacity: 0, y: 100 }}
 								animate={{ opacity: 1, y: 0 }}

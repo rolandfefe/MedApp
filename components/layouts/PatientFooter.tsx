@@ -91,7 +91,7 @@ export default function PatientFooter({
 					variant={"secondary"}
 					size="icon"
 					onClick={() =>
-						router.push(`/consultation/${appointment._id!}/diagnosis`)
+						router.push(`/consultation/${appointment.id!}/diagnosis`)
 					}
 					className="text-primary"
 				>
@@ -113,7 +113,7 @@ const ReferralBtn = ({ appointment }: { appointment: IAppointment }) => {
 
 	useEffect(() => {
 		(async () =>
-			setReferrals(await getReferrals({ appointment: appointment._id! })))();
+			setReferrals(await getReferrals({ appointment: appointment.id! })))();
 	}, [appointment]);
 
 	return (

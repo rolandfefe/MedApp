@@ -1,105 +1,105 @@
-import {
-	ArrowBigRightDash,
-	ArrowDownRightFromCircle,
-	BotMessageSquare,
-	Headset,
-	HeartPulse,
-	Home,
-	LayoutDashboard,
-	NotebookText,
-	PanelsTopBottom,
-	Pill,
-	Star,
-	UserCircle,
-	UserPlus,
-} from "lucide-react";
+import { IconName } from "lucide-react/dynamic";
 
-export const LANDING_NAV_ITEMS = [
+export const LANDING_NAV_ITEMS: {
+	name: string;
+	link: string;
+	icon: IconName;
+}[] = [
 	{
 		name: "Home",
 		link: "/home",
-		icon: <Home size={20} />,
+		icon: "home",
 	},
 	{
 		name: "Reviews",
 		link: "#Reviews",
-		icon: <Star size={20} />,
+		icon: "star",
 	},
 	{
 		name: "Feedback",
 		link: "#Feedback",
-		icon: <BotMessageSquare size={20} />,
+		icon: "bot-message-square",
 	},
 	{
 		name: "Support",
 		link: "#Support",
-		icon: <Headset size={20} />,
+		icon: "headset",
 	},
 ];
 
-export const getDoctorNavItems = (id: IDoctor["_id"]) => [
+export const getDoctorNavItems = (
+	id: IDoctor["id"]
+): {
+	name: string;
+	link: string;
+	icon: IconName;
+}[] => [
 	{
 		name: "Dashboard",
 		link: `/doctor/${id}`,
-		icon: <LayoutDashboard size={20} />,
+		icon: "layout-dashboard",
 	},
 	{
 		name: "Appointments",
 		link: `/doctor/${id}/appointments`,
-		icon: <Headset size={20} />,
+		icon: "headset",
 	},
 	{
 		name: "Profile",
 		link: `/doctor/${id}/profile`,
-		icon: <UserCircle size={20} />,
+		icon: "user-circle",
 	},
 	{
 		name: "Referrals",
 		link: `/doctor/${id}/referrals`,
-		icon: <ArrowBigRightDash size={20} />,
+		icon: "arrow-big-right-dash",
 	},
 	{
 		name: "Follow ups",
 		link: `/doctor/${id}/follow-ups`,
-		icon: <ArrowDownRightFromCircle size={20} />,
+		icon: "arrow-down-right-from-circle",
 	},
 ];
 
-export const PATIENT_NAV_ITEMS = [
+export const PATIENT_NAV_ITEMS: {
+	name: string;
+	link: string;
+	icon: IconName;
+}[] = [
 	{
 		name: "Home",
 		link: "/home",
-		icon: <Home size={20} />,
+		icon: "home",
 	},
 	{
 		name: "Doctors",
 		link: "/doctors",
-		icon: <UserPlus size={20} />,
+		icon: "user-plus",
 	},
 	{
 		name: "Appointments",
 		link: "/appointments",
-		icon: <Headset size={20} />,
+		icon: "headset",
 	},
 	{
 		name: "Follow ups",
 		link: "/follow-ups",
-		icon: <ArrowDownRightFromCircle size={20} />,
+		icon: "arrow-down-right-from-circle",
 	},
 	{
 		name: "History",
 		link: "/history",
-		icon: <NotebookText size={20} />,
+		icon: "notebook-text",
 	},
 	{
 		name: "Medications",
 		link: "/medications",
-		icon: <Pill size={20} />,
+		icon: "pill",
 	},
 	{
 		name: "Health Status",
 		link: "/health-status",
-		icon: <HeartPulse size={20} />,
+		icon: "heart-pulse",
 	},
 	// {
 	// 	name: "Profile",
@@ -109,7 +109,7 @@ export const PATIENT_NAV_ITEMS = [
 	{
 		name: "Referrals",
 		link: "/referrals",
-		icon: <ArrowBigRightDash size={20} />,
+		icon: "arrow-big-right-dash",
 	},
 ];
 
@@ -117,6 +117,6 @@ export const ADMIN_NAV_ITEMS = [
 	{
 		name: "Appointments",
 		link: "",
-		icon: <Headset size={20} />,
+		icon: "headset",
 	},
 ];

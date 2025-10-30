@@ -1,75 +1,121 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
-import { connectDb } from "../db/db";
+import config from "@/payload.config";
+import { updateTag, unstable_cache as cache } from "next/cache";
+import { getPayload } from "payload";
 import recurrencePlanModel from "../db/models/recurrencePlan.model";
 
-export const createPlan = async (plan: IRecurrencePlan, pathname: string) => {
+const payload = await getPayload({ config });
+
+/**
+ * @Mutations
+ */
+export const createPlan = async (data: IRecurrencePlan) => {
 	try {
-		await connectDb();
+		await payload.create({
+			collection: "recurrencePlans",
+			data,
+		});
 
-		await recurrencePlanModel.create(plan);
-
-		revalidatePath(pathname);
+		updateTag("plans");
 	} catch (error: any) {
 		throw new Error(error);
 	}
 };
 
-export const getPlan = async ({
-	// supervisor,
-	_id,
-}: {
-	// supervisor?: string;
-	_id?: string;
-}): Promise<IRecurrencePlan> => {
+export const updatePlan = async (data: IRecurrencePlan) => {
 	try {
-		await connectDb();
-
-		const plan = await recurrencePlanModel.findOne().or([{ _id }]);
-
-		return JSON.parse(JSON.stringify(plan));
+		await payload.update({
+			collection: "recurrencePlans",
+			id: data.id,
+			data,
+		});
+		updateTag("plans");
 	} catch (error: any) {
 		throw new Error(error);
 	}
 };
 
-export const getPlans = async ({
-	supervisor,
-}: {
-	supervisor?: string;
-}): Promise<IRecurrencePlan[]> => {
+export const deletePlan = async (id: string) => {
 	try {
-		await connectDb();
+		await payload.delete({
+			collection: "recurrencePlans",
+			id,
+		});
 
-		const plans = await recurrencePlanModel.findOne().or([{ supervisor }]);
-
-		return JSON.parse(JSON.stringify(plans));
+		updateTag("plans");
 	} catch (error: any) {
 		throw new Error(error);
 	}
 };
 
-export const updatePlan = async (plan: IRecurrencePlan, pathname: string) => {
-	try {
-		await connectDb();
+/**
+ * @Fetches
+ */
+export const getPlan = cache(
+	async ({
+		id,
+		appointment,
+	}: {
+		id?: string;
+		appointment?: string;
+	}): Promise<IRecurrencePlan> => {
+		try {
+			const { docs: plans } = await payload.find({
+				collection: "recurrencePlans",
+				where: {
+					or: [
+						{ id: { equals: id } },
+						{ appointment: { equals: appointment } },
+					],
+				},
+				limit: 1,
+			});
 
-		await recurrencePlanModel.findByIdAndUpdate(plan._id, plan);
-
-		revalidatePath(pathname);
-	} catch (error: any) {
-		throw new Error(error);
+			return plans[0];
+		} catch (error: any) {
+			throw new Error(error);
+		}
+	},
+	[],
+	{
+		tags: ["plans"],
+		revalidate: 15 * 60,
 	}
-};
+);
 
-export const deletePlan = async (id: string, pathname: string) => {
-	try {
-		await connectDb();
+export const getPlans = cache(
+	async ({
+		supervisor,
+		page = 1,
+		limit,
+	}: {
+		supervisor?: string;
+		page?: number;
+		limit?: number;
+	}): Promise<{ plans: IRecurrencePlan[]; nextPg: number }> => {
+		try {
+			const {
+				docs: plans,
+				hasNextPage,
+				nextPage,
+			} = await payload.find({
+				collection: "recurrencePlans",
+				where: {
+					supervisor: { equals: supervisor },
+				},
+				page,
+				limit,
+			});
 
-		await recurrencePlanModel.findByIdAndDelete(id);
-
-		revalidatePath(pathname);
-	} catch (error: any) {
-		throw new Error(error);
+			return { plans, nextPg: hasNextPage ? nextPage! : page };
+		} catch (error: any) {
+			throw new Error(error);
+		}
+	},
+	[],
+	{
+		tags: ["plans"],
+		revalidate: 15 * 60,
 	}
-};
+);

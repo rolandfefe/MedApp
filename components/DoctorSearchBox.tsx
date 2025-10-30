@@ -167,11 +167,11 @@ export default function DoctorSearchBox({
 									<AnimatePresence>
 										{results.length > 0 ? (
 											results.map((doctor) => {
-												const isSelected = selectedDoctor?._id == doctor._id;
+												const isSelected = selectedDoctor?.id == doctor.id;
 
 												return (
 													<motion.div
-														key={doctor._id}
+														key={doctor.id}
 														layout
 														initial={{ opacity: 0, y: 100 }}
 														animate={{ opacity: 1, y: 0 }}

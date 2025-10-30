@@ -66,7 +66,7 @@ export default function DoctorNotesForm({
 				: form.watch("patientNotes")
 		) {
 			startTransition(async () => {
-				await updateAppointment({ ...appointment, ...data }, pathname);
+				await updateAppointment({ ...appointment, ...data });
 
 				toast.success("Notes updated posted successfully📒");
 				form.reset();

@@ -49,10 +49,10 @@ const differentialDiagnosisSchema = new Schema({
 		enum: eSeverity,
 	},
 
-	stage: {
-		type: String,
-		trim: true,
-	},
+	// stage: {
+	// 	type: String,
+	// 	trim: true,
+	// },
 
 	dateConfirmed: {
 		type: Date,
@@ -123,7 +123,7 @@ const diagnosisSchema = new Schema<IDiagnosis>(
 		},
 		dateResolved: {
 			type: Date,
-			required: false,
+			// required: false,
 		},
 
 		// Clinical information

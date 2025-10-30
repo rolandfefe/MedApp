@@ -29,81 +29,103 @@ import {
 } from "./doctor";
 import { IAllergy, ISocialHistory } from "./history";
 import { IPaymentInfo, IReferral } from "./appointment";
+import {
+	Appointment,
+	Doctor,
+	HealthStatus,
+	History,
+	Message,
+	Patient,
+	RecurrencePlan,
+	Referral,
+	User,
+} from "./payload";
 
 export {};
 
 declare global {
 	interface Base {
-		_id?: string;
+		id?: string;
 		createdAt?: Date | string;
 		updatedAt?: Date | string;
 	}
 
-	interface IUser extends Base {
-		clerkId: string;
-		username: string;
-		fname?: string;
-		lname?: string;
-		email: string;
-		imageUrl?: string;
-	}
+	type IUser = User;
+	type IPatient = Patient;
+	type IDoctor = Doctor;
+	type IAppointment = Appointment;
+	type IReferral = Referral;
+	type IMessage = Message;
+	type IHistory = History;
+	type IDiagnosis = Diagnosis;
+	type IRecurrencePlan = RecurrencePlan;
+	type IHealthStatus = HealthStatus
 
-	interface IPatient extends Base {
-		user: IUser | string;
-		DOB: Date | string;
-		gender: eGender;
-		maritalStatus?: eMaritalStatus;
-		occupation?: string;
-		race?: string;
-		languages?: eLanguages[];
+	// interface IUser extends Base {
+	// 	clerkId: string;
+	// 	username: string;
+	// 	fname?: string;
+	// 	lname?: string;
+	// 	email: string;
+	// 	imageUrl?: string;
+	// }
 
-		emergencyContacts: {
-			name: string;
-			relationship: string;
-			phone: string;
-			priority: eRating;
-		}[];
-	}
+	// interface IPatient extends Base {
+	// 	user: IUser | string;
+	// 	DOB: Date | string;
+	// 	gender: eGender;
+	// 	maritalStatus?: eMaritalStatus;
+	// 	occupation?: string;
+	// 	race?: string;
+	// 	languages?: eLanguages[];
 
-	interface IDoctor extends Base {
-		user: IUser | string;
-		DOB: Date | string;
-		gender: eGender;
-		bio?: string;
-		languages: eLanguages[];
+	// 	emergencyContacts: {
+	// 		name: string;
+	// 		relationship: string;
+	// 		phone: string;
+	// 		priority: eRating;
+	// 	}[];
+	// }
 
-		credentials: {
-			medicalCertifications: Array<{
-				type: eMedicalCertificationTypes;
-				institution: string;
-				name: string;
-				date: Date | string;
-			}>;
-			licenses: IMedicalLicense[];
-			boardCertifications?: IBoardCertification[];
-			hospitalAffiliations: IHospitalAffiliation[];
-			isVerified?: boolean;
-		};
+	// interface IDoctor extends Base {
+	// 	user: IUser | string;
+	// 	DOB: Date | string;
+	// 	gender: eGender;
+	// 	bio?: string;
+	// 	languages: eLanguages[];
 
-		specialties: Array<{
-			primary: eMedicalSpecialties;
-			secondary?: eMedicalSpecialties;
-			procedures: string[];
-		}>;
+	// 	credentials: {
+	// 		medicalCertifications: Array<{
+	// 			type: eMedicalCertificationTypes;
+	// 			institution: string;
+	// 			name: string;
+	// 			date: Date | string;
+	// 		}>;
+	// 		licenses: IMedicalLicense[];
+	// 		boardCertifications?: IBoardCertification[];
+	// 		hospitalAffiliations: IHospitalAffiliation[];
+	// 		isVerified?: boolean;
+	// 	};
 
-		contact: {
-			officePhone: string;
-			officeEmail: string;
-			mobilePhone?: string;
-		};
+	// 	specialties: Array<{
+	// 		primary: eMedicalSpecialties;
+	// 		secondary?: eMedicalSpecialties;
+	// 		procedures: string[];
+	// 	}>;
 
-		metrics?: {
-			ratings?: { user: IUser | string; rating: eRating }[]; // 0-100 scale
-			numberOfPatients?: number;
-			experience?: number;
-			readmissionRate?: number;
-		};
-	}
+	// 	contact: {
+	// 		officePhone: string;
+	// 		officeEmail: string;
+	// 		mobilePhone?: string;
+	// 	};
+
+	// 	metrics?: {
+	// 		ratings?: { user: IUser | string; rating: eRating }[]; // 0-100 scale
+	// 		numberOfPatients?: number;
+	// 		experience?: number;
+	// 		readmissionRate?: number;
+	// 	};
+	// }
 
 	interface ISchedule extends Base {
 		doctor: IDoctor | string;
@@ -118,32 +140,32 @@ declare global {
 		nextAvailableAppointmentDate?: Date | string;
 	}
 
-	interface IHistory extends Base {
-		patient: IPatient | string;
+	// interface IHistory extends Base {
+	// 	patient: IPatient | string;
 
-		diseaseHistory: Array<{
-			name: string;
-			diagnosisDate: Date | string;
-			resolved: boolean;
-			resolutionDate?: Date | string;
-		}>;
-		surgicalHistory: Array<{
-			procedure: string;
-			date: Date | string;
-			facility: string;
-		}>;
-		familyHistory: Array<{
-			condition: string;
-			relation: string;
-			notes?: string;
-		}>;
-		socialHistory: ISocialHistory;
-		allergies: IAllergy[];
+	// 	diseaseHistory: Array<{
+	// 		name: string;
+	// 		diagnosisDate: Date | string;
+	// 		resolved: boolean;
+	// 		resolutionDate?: Date | string;
+	// 	}>;
+	// 	surgicalHistory: Array<{
+	// 		procedure: string;
+	// 		date: Date | string;
+	// 		facility: string;
+	// 	}>;
+	// 	familyHistory: Array<{
+	// 		condition: string;
+	// 		relation: string;
+	// 		notes?: string;
+	// 	}>;
+	// 	socialHistory: ISocialHistory;
+	// 	allergies: IAllergy[];
 
-		exercise?: string; // e.g., "3 times per week"
-		diet?: string; // e.g., "vegetarian", "Mediterranean"
-		notes?: string;
-	}
+	// 	exercise?: string; // e.g., "3 times per week"
+	// 	diet?: string; // e.g., "vegetarian", "Mediterranean"
+	// 	notes?: string;
+	// }
 
 	interface IMedication extends Base {
 		name: string;
@@ -172,7 +194,7 @@ declare global {
 	}
 
 	interface IArticle extends Base {
-		_id: string;
+		id: string;
 		title: string;
 		subtitle?: string;
 		authors: IDoctor[];
@@ -226,88 +248,88 @@ declare global {
 		};
 	}
 
-	interface IAppointment extends Base {
-		// ? Optional since we want to allow Open appointments
-		patient?: IPatient | string;
-		doctor?: IDoctor | string;
-		diagnosis?: IDiagnosis;
+	// interface IAppointment extends Base {
+	// 	// ? Optional since we want to allow Open appointments
+	// 	patient?: IPatient | string;
+	// 	doctor?: IDoctor | string;
+	// 	diagnosis?: IDiagnosis;
 
-		recurrencePlan?: IRecurrencePlan | string;
-		
-		reminders?: IReminder[];
-		healthStatus?: IHealthStatus; // Current reviewed status.
+	// 	recurrencePlan?: IRecurrencePlan | string;
 
-		reason: string;
-		type: eAppointmentTypes;
-		status?: eAppointmentStatus;
+	// 	reminders?: IReminder[];
+	// 	healthStatus?: IHealthStatus; // Current reviewed status.
 
-		confirmation?: {
-			isConfirmed: boolean;
-			confirmedAt?: Date | string;
-			confirmedBy?: IUser | string;
-		};
+	// 	reason: string;
+	// 	type: eAppointmentTypes;
+	// 	status?: eAppointmentStatus;
 
-		cancellation?: {
-			cancelledAt: Date | string;
-			cancelledBy: IUser | string;
-			reason: string;
-		};
+	// 	confirmation?: {
+	// 		isConfirmed: boolean;
+	// 		confirmedAt?: Date | string;
+	// 		confirmedBy?: IUser | string;
+	// 	};
 
-		startTime?: Date | string; // ? Optional to Allow flexibility
-		endTime?: Date | string;
+	// 	cancellation?: {
+	// 		cancelledAt: Date | string;
+	// 		cancelledBy: IUser | string;
+	// 		reason: string;
+	// 	};
 
-		payment?: IPaymentInfo;
-		online?: {
-			url: string;
-			accessCode?: string;
-		};
+	// 	startTime?: Date | string; // ? Optional to Allow flexibility
+	// 	endTime?: Date | string;
 
-		followUpInstructions?: string; // Notes to patient
-		doctorNotes?: string; // ONly visible to doctors.
-		patientNotes?: string;
+	// 	payment?: IPaymentInfo;
+	// 	online?: {
+	// 		url: string;
+	// 		accessCode?: string;
+	// 	};
 
-		isEmergency?: boolean;
-		consentLevels: ePatientConsent[];
-		imgs: string[];
+	// 	followUpInstructions?: string; // Notes to patient
+	// 	doctorNotes?: string; // ONly visible to doctors.
+	// 	patientNotes?: string;
 
-		// appointment Activity
-	}
+	// 	isEmergency?: boolean;
+	// 	consentLevels: ePatientConsent[];
+	// 	imgs: string[];
 
-	interface IReferral extends Base {
-		appointment: IAppointment | string;
-		from: string | IDoctor;
-		to: string | IDoctor;
-		reason: string;
-		status?: eReferralStatus;
-	}
+	// 	// appointment Activity
+	// }
+
+	// interface IReferral extends Base {
+	// 	appointment: IAppointment | string;
+	// 	from: string | IDoctor;
+	// 	to: string | IDoctor;
+	// 	reason: string;
+	// 	status?: eReferralStatus;
+	// }
 
 	// ! Forms Basis of patient follow up
 	/**
 	 * Ensure Health Status & Vitals is at least 2week upto date lest retest
 	 */
-	interface IHealthStatus extends Base {
-		patient: IPatient | string;
-		vitals: IVitals;
+	// interface IHealthStatus extends Base {
+	// 	patient: IPatient | string;
+	// 	vitals: IVitals;
 
-		complaint?: string;
-		symptoms?: Array<{
-			description: string;
-			onset: Date | string;
-			severity: eTenScale; // 10 scale
-			duration?: string;
-		}>;
+	// 	complaint?: string;
+	// 	symptoms?: Array<{
+	// 		description: string;
+	// 		onset: Date | string;
+	// 		severity: eTenScale; // 10 scale
+	// 		duration?: string;
+	// 	}>;
 
-		pain?: Array<{
-			location: string;
-			intensity: eTenScale; // 0-10 scale
-			type: ePainType;
-			aggravatingFactors?: string[];
-			relievingFactors?: string[];
-		}>;
-	}
+	// 	pain?: Array<{
+	// 		location: string;
+	// 		intensity: eTenScale; // 0-10 scale
+	// 		type: ePainType;
+	// 		aggravatingFactors?: string[];
+	// 		relievingFactors?: string[];
+	// 	}>;
+	// }
 
 	// ? Allow constant follow up on the patients
-	interface IRecurrencePlan extends Base {
+	// interface IRecurrencePlan extends Base {
 		supervisor: IPatient | IDoctor | string;
 		name: string;
 		frequency: eRecurrenceFrequency;
@@ -334,29 +356,29 @@ declare global {
 		status?: "pending" | "sent" | "failed";
 	}
 
-	interface IDiagnosis extends Base {
-		appointment: IAppointment | string;
-		patient: IPatient | string;
-		doctor: IDoctor | string;
+	// interface IDiagnosis extends Base {
+	// 	appointment: IAppointment | string;
+	// 	patient: IPatient | string;
+	// 	doctor: IDoctor | string;
 
-		chiefComplaint?: string; // More formal medical description
+	// 	chiefComplaint?: string; // More formal medical description
 
-		preAppointmentNotes?: string;
-		medicationsReviewed?: boolean;
-		templateUsed?: string; // EHR template name
+	// 	preAppointmentNotes?: string;
+	// 	medicationsReviewed?: boolean;
+	// 	templateUsed?: string; // EHR template name
 
-		onsetDate: Date | string;
-		dateResolved?: Date | string;
+	// 	onsetDate: Date | string;
+	// 	dateResolved?: Date | string;
 
-		healthStatus: IHealthStatus | string;
+	// 	healthStatus: IHealthStatus | string;
 
-		history: IHistory | string;
+	// 	history: IHistory | string;
 
-		differentialDiagnosis: IDifferentialDiagnosis[];
-		status: eDiagnosticStatus;
+	// 	differentialDiagnosis: IDifferentialDiagnosis[];
+	// 	status: eDiagnosticStatus;
 
-		updatedBy?: IDoctor | string;
-	}
+	// 	updatedBy?: IDoctor | string;
+	// }
 
 	interface IDifferentialDiagnosis {
 		condition: string;
@@ -420,13 +442,13 @@ declare global {
 		updatedBy: IDoctor | string;
 	}
 
-	interface IMessage extends Base {
-		appointment: IAppointment | string;
-		body: string;
-		status?: eMessageStatus;
-		refMessage?: IMessage | string;
-		from: IUser | string;
-	}
+	// interface IMessage extends Base {
+	// 	appointment: IAppointment | string;
+	// 	body: string;
+	// 	status?: eMessageStatus;
+	// 	refMessage?: IMessage | string;
+	// 	from: IUser | string;
+	// }
 
 	interface CustomJwtSessionClaims extends Base {
 		metadata: {

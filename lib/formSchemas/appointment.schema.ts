@@ -1,7 +1,7 @@
 import {
 	eAppointmentStatus,
 	eAppointmentTypes,
-	ePatientConsent
+	ePatientConsent,
 } from "@/types/enums/enums";
 import z from "zod";
 
@@ -16,10 +16,13 @@ export const appointmentFormSchema = z
 		reason: z.string().min(1, "Appointment reason is required"),
 		type: z.nativeEnum(eAppointmentTypes),
 		startTime: z.coerce
-			.date()
-			.refine((date) => date > new Date(), "Start time must be in the future")
+			.string()
+			.refine(
+				(date) => new Date(date) > new Date(),
+				"Start time must be in the future"
+			)
 			.optional(),
-		endTime: z.coerce.date().optional(),
+		endTime: z.coerce.string().optional(),
 		online: onlineFormSchema.optional(),
 		isEmergency: z.boolean().optional(),
 		consentLevels: z
@@ -29,7 +32,7 @@ export const appointmentFormSchema = z
 	.refine(
 		(data) => {
 			if (data.startTime && data.endTime) {
-				return data.endTime > data.startTime;
+				return new Date(data.endTime) > new Date(data.startTime);
 			}
 			return true;
 		},

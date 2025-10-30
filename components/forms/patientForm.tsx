@@ -68,7 +68,7 @@ export default function PatientForm({
 				await createPatient(
 					{
 						...data,
-						user: currentUser._id!,
+						user: currentUser.id!,
 						languages: data.languages?.split(", "),
 					},
 					pathname

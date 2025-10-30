@@ -19,7 +19,7 @@ export default function ConsultationNavbar({
 	const pathname = usePathname();
 	const { appointmentId } = useParams();
 
-	const [appointment, setAppointment] = useState<IAppointment>();
+	const [appointment, setAppointment] = useState<Appointment>();
 
 	useEffect(() => {
 		const fetchAppointment = async () =>

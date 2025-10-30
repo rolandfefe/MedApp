@@ -52,8 +52,8 @@ export default function AppSidebarFooter({
 
 	useEffect(() => {
 		const fetchData = async () => {
-			setDoctor(await getDoctor({ userId: currentUser._id! }));
-			setPatient(await getPatient({ userId: currentUser._id! }));
+			setDoctor(await getDoctor({ userId: currentUser.id! }));
+			setPatient(await getPatient({ userId: currentUser.id! }));
 		};
 		fetchData();
 	}, []);
@@ -108,7 +108,7 @@ export default function AppSidebarFooter({
 						<DropdownMenuItem
 							disabled={isDoctorMode}
 							onClick={() =>
-								router.push(`/doctor/${encodeURIComponent(doctor._id!)}`)
+								router.push(`/doctor/${encodeURIComponent(doctor.id!)}`)
 							}
 						>
 							<Hospital />

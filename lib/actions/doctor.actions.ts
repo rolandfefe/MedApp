@@ -1,37 +1,26 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { updateTag, unstable_cache as cache } from "next/cache";
 import { connectDb } from "../db/db";
 import doctorModel from "../db/models/doctor.model";
-import { after } from "next/server";
+import { getPayload } from "payload";
+import config from "@/payload.config";
 
-export const createDoctor = async (
-	doctor: IDoctor,
-	pathname: string
-): Promise<IDoctor> => {
+const payload = await getPayload({ config });
+
+/**
+ * @Mutations
+ */
+
+export const createDoctor = async (data: IDoctor): Promise<IDoctor> => {
 	try {
-		await connectDb();
+		const doctor = await payload.create({
+			collection: "doctors",
+			data,
+		});
+		updateTag("doctors");
 
-		const newDoctor = await doctorModel.create(doctor);
-
-		revalidatePath(pathname);
-
-		return JSON.parse(JSON.stringify(newDoctor));
-	} catch (error: any) {
-		throw new Error(error);
-	}
-};
-
-export const getDoctors = async (): Promise<IDoctor[]> => {
-	try {
-		await connectDb();
-
-		const doctors = await doctorModel
-			.find()
-			.populate("user")
-			.sort({ createdAt: -1 });
-
-		return JSON.parse(JSON.stringify(doctors));
+		return doctor;
 	} catch (error: any) {
 		throw new Error(error);
 	}
@@ -47,67 +36,106 @@ export const getDoctors = async (): Promise<IDoctor[]> => {
 // 	}
 // }
 
-export const getDoctorsBySpecialty = async (
-	specialty: string
-): Promise<IDoctor[]> => {
+export const updateDoctor = async (data: IDoctor) => {
 	try {
-		await connectDb();
-
-		const doctors = await doctorModel
-			.find({ specialties: specialty })
-			.populate("user")
-			.sort({ createdAt: -1 });
-
-		return JSON.parse(JSON.stringify(doctors));
+		await payload.update({
+			collection: "doctors",
+			id: data.id,
+			data,
+		});
+		updateTag("doctors");
 	} catch (error: any) {
 		throw new Error(error);
 	}
 };
 
-export const getDoctor = async ({
-	userId,
-	id,
-}: {
-	userId?: string;
-	id?: string;
-}): Promise<IDoctor> => {
+export const deleteDoctor = async (id: string) => {
 	try {
-		await connectDb();
-
-		const doctor = await doctorModel
-			.findOne()
-			.or([{ _id: id }, { user: userId }])
-			.populate("user");
-
-		return JSON.parse(JSON.stringify(doctor));
+		await payload.delete({
+			collection: "doctors",
+			id,
+		});
+		updateTag("doctors");
 	} catch (error: any) {
 		throw new Error(error);
 	}
 };
 
-export const updateDoctor = async (
-	updatedDoctor: IDoctor,
-	pathname: string
-) => {
-	try {
-		await connectDb();
+/**
+ * @Fetches
+ */
+export const getDoctors = cache(
+	async ({
+		page = 1,
+		limit,
+	}: {
+		page?: number;
+		limit?: number;
+	}): Promise<{ doctors: IDoctor[]; nextPg: number }> => {
+		try {
+			const {
+				docs: doctors,
+				hasNextPage,
+				nextPage,
+			} = await payload.find({
+				collection: "doctors",
+				page,
+				limit,
+			});
 
-		await doctorModel.findByIdAndUpdate(updatedDoctor._id, updatedDoctor);
-
-		revalidatePath(pathname);
-	} catch (error: any) {
-		throw new Error(error);
+			return { doctors, nextPg: hasNextPage ? nextPage! : page };
+		} catch (error: any) {
+			throw new Error(error);
+		}
+	},
+	[],
+	{
+		tags: ["doctors"],
+		revalidate: 15 * 60,
 	}
-};
+);
 
-export const deleteDoctor = async (id: string, pathname: string) => {
-	try {
-		await connectDb();
+export const getDoctorsBySpecialty = cache(
+	async (specialty: string): Promise<IDoctor[]> => {
+		try {
+			const { docs: doctors } = await payload.find({
+				collection: "doctors",
+				where: {
+					specialty: { equals: specialty },
+				},
+			});
 
-		await doctorModel.findByIdAndDelete(id);
-
-		revalidatePath(pathname);
-	} catch (error: any) {
-		throw new Error(error);
+			return doctors;
+		} catch (error: any) {
+			throw new Error(error);
+		}
+	},
+	[],
+	{
+		tags: ["doctors"],
+		revalidate: 15 * 60,
 	}
-};
+);
+
+export const getDoctor = cache(
+	async ({ user, id }: { user?: string; id?: string }): Promise<IDoctor> => {
+		try {
+			const { docs } = await payload.find({
+				collection: "doctors",
+				where: {
+					or: [{ id: { equals: id } }, { user: { equals: user } }],
+				},
+				limit: 1,
+			});
+
+			return docs[0];
+		} catch (error: any) {
+			throw new Error(error);
+		}
+	},
+	[],
+	{
+		tags: ["doctors"],
+		revalidate: 30 * 60,
+	}
+);

@@ -1,137 +1,130 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
-import { connectDb } from "../db/db";
-import appointmentModel from "../db/models/appointment.model";
+import config from "@/payload.config";
 import { eAppointmentStatus, eAppointmentTypes } from "@/types/enums/enums";
+import { unstable_cache as cache, updateTag } from "next/cache";
+import { getPayload } from "payload";
 import { pusherServer } from "../pusher";
 
+const payload = await getPayload({ config });
+
+/**
+ * @Mutations
+ */
 export const createAppointment = async (
-	appointment: IAppointment,
-	pathname: string
+	data: Omit<IAppointment, "id" | "createdAt" | "updatedAt">
 ) => {
 	try {
-		await connectDb();
+		await payload.create({
+			collection: "appointments",
+			data,
+		});
 
-		await appointmentModel.create(appointment);
-
-		revalidatePath(pathname);
+		updateTag("appointments");
 	} catch (error: any) {
 		throw new Error(error);
 	}
 };
 
-export const getAppointments = async ({
-	patientId,
-	doctorId,
-	type,
-	status,
-}: {
-	patientId?: string;
-	doctorId?: string;
-	type?: eAppointmentTypes;
-	status?: eAppointmentStatus;
-}): Promise<IAppointment[]> => {
+export const updateAppointment = async (data: IAppointment) => {
 	try {
-		await connectDb();
+		const appointment = await payload.update({
+			collection: "appointments",
+			id: data.id,
+			data,
+			depth: 1,
+		});
 
-		const appointments = await appointmentModel
-			.find()
-			.or([{ patient: patientId }, { doctor: doctorId }, { type }, { status }])
-			.populate({ path: "patient", populate: "user" })
-			.populate({ path: "doctor", populate: "user" })
-			.populate("healthStatus")
-			// .populate({ path: "referrals", populate: ["from", "to"] });
-			.sort({ createdAt: -1 });
+		updateTag("appointments");
 
-		return JSON.parse(JSON.stringify(appointments));
+		pusherServer.trigger(
+			`appointment-${appointment.id}`,
+			`appointment-${appointment.id}-updated`,
+			appointment
+		);
 	} catch (error: any) {
 		throw new Error(error);
 	}
 };
 
-// export const getAppointment = async ({
-// 	_id,
-// 	referral = "REFERRAL_DUMMY_ID",
-// }: {
-// 	_id?: string;
-// 	referral?: string;
-// }): Promise<IAppointment> => {
-// 	try {
-// 		await connectDb();
-
-// 		const appointment = await appointmentModel
-// 			.findOne()
-// 			// .or([{ _id }, { referral }])
-// 			.or([{ _id }])
-// 			.populate({ path: "patient", populate: "user" })
-// 			.populate({ path: "doctor", populate: "user" })
-// 			.populate("healthStatus");
-
-// 		return JSON.parse(JSON.stringify(appointment));
-// 	} catch (error: any) {
-// 		throw new Error(error);
-// 	}
-// };
-
-export const getAppointmentById = async (id: string): Promise<IAppointment> => {
+export const deleteAppointment = async (id: string) => {
 	try {
-		await connectDb();
+		await payload.delete({
+			collection: "appointments",
+			id,
+		});
 
-		const appointment = await appointmentModel
-			.findById(id)
-			.populate({ path: "patient", populate: "user" })
-			.populate({ path: "doctor", populate: "user" })
-			
-
-		return JSON.parse(JSON.stringify(appointment));
-	} catch (error: any) {
-		throw new Error(error);
-	}
-};
-
-export const updateAppointment = async (
-	appointment: IAppointment,
-	pathname?: string
-) => {
-	try {
-		await connectDb();
-
-		const updatedAppointment = await appointmentModel
-			.findByIdAndUpdate(appointment._id, appointment, { new: true })
-			.populate({ path: "patient", populate: "user" })
-			.populate({ path: "doctor", populate: "user" })
-			
-
-		// ? Conditionally trigger Real-time
-		if (pathname) {
-			revalidatePath(pathname);
-		} else {
-			// ? Pusher
-			pusherServer.trigger(
-				`appointment-${appointment._id}`,
-				`appointment-${appointment._id}-updated`,
-				updatedAppointment
-			);
-		}
-	} catch (error: any) {
-		throw new Error(error);
-	}
-};
-
-export const deleteAppointment = async (_id: string, pathname: string) => {
-	try {
-		await connectDb();
-
-		await appointmentModel.findByIdAndDelete(_id);
-
-		revalidatePath(pathname);
+		updateTag("appointments");
 	} catch (error: any) {
 		throw new Error(error);
 	}
 };
 
 /**
- * @Realtime
- *
+ * @Fetches
  */
+export const getAppointments = cache(
+	async ({
+		patient,
+		doctor,
+		type,
+		status,
+		page = 1,
+		limit,
+	}: {
+		patient?: string;
+		doctor?: string;
+		type?: eAppointmentTypes;
+		status?: eAppointmentStatus;
+		page?: number;
+		limit?: number;
+	}): Promise<{ appointments: IAppointment[]; nextPg: number }> => {
+		try {
+			const {
+				docs: appointments,
+				hasNextPage,
+				nextPage,
+			} = await payload.find({
+				collection: "appointments",
+				where: {
+					or: [
+						{ doctor: { equals: doctor } },
+						{ patient: { equals: patient } },
+						{ type: { equals: type } },
+						{ status: { equals: status } },
+					],
+				},
+				page,
+				limit,
+			});
+
+			return { appointments, nextPg: hasNextPage ? nextPage! : page };
+		} catch (error: any) {
+			throw new Error(error);
+		}
+	},
+	[],
+	{
+		revalidate: 15 * 60,
+		tags: ["appointments"],
+	}
+);
+
+export const getAppointmentById = cache(
+	async (id: string): Promise<IAppointment> => {
+		try {
+			return await payload.findByID({
+				collection: "appointments",
+				id,
+				depth: 1,
+			});
+		} catch (error: any) {
+			throw new Error(error);
+		}
+	},
+	[],
+	{
+		tags: ["appointments"],
+		revalidate: 15 * 60,
+	}
+);

@@ -34,17 +34,14 @@ export default function DoctorsFeed({
 						results?.map((doctor) => {
 							return (
 								<motion.div
-									key={doctor._id}
+									key={doctor.id}
 									layout
 									initial={{ opacity: 0, y: 100 }}
 									animate={{ opacity: 1, y: 0 }}
 									exit={{ opacity: 0, y: 100 }}
 									className="mb-3"
 								>
-									<DoctorCard
-										doctor={doctor}
-										className={cn("w-full")}
-									/>
+									<DoctorCard doctor={doctor} className={cn("w-full")} />
 									{/* {doctor.user.username} */}
 								</motion.div>
 							);

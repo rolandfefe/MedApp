@@ -63,21 +63,21 @@ export default function DiagnosisForm({
 	const submitHandler = (data: DiagnosisFormData) => {
 		const cleanData: IDiagnosis = {
 			// ...data,
-			// appointment: appointment._id!,
-			// patient: patient._id!,
-			// doctor: doctor._id!,
+			// appointment: appointment.id!,
+			// patient: patient.id!,
+			// doctor: doctor.id!,
 		};
 
 		if (action === "Create") {
 			startTransition(async () => {
-				// await createDiagnosis(cleanData, pathname);
+				// await createDiagnosis(cleanData);
 				toast.success("Diagnosis created successfully🧑‍⚕️");
 				// form.reset();
 				// setIsSuccess(true);
 			});
 		} else if (action === "Update" && diagnosis) {
 			startTransition(async () => {
-				// await updateDiagnosis({ ...diagnosis, ...cleanData }, pathname);
+				// await updateDiagnosis({ ...diagnosis, ...cleanData });
 				toast.success("Diagnosis updated successfully🧑‍⚕️");
 				// form.reset();
 				// setIsSuccess(true);

@@ -1,84 +1,121 @@
 "use server";
 
-import { after } from "next/server";
-import { connectDb } from "../db/db";
-import patientModel from "../db/models/patient.model";
-import { revalidatePath } from "next/cache";
+import config from "@/payload.config";
+import { eGender, eMaritalStatus } from "@/types/enums/enums";
+import { unstable_cache as cache, updateTag } from "next/cache";
+import { getPayload } from "payload";
 
-export const createPatient = async (patient: IPatient, pathname: string) => {
+const payload = await getPayload({ config });
+/**
+ * @Mutations
+ */
+
+export const createPatient = async (data: IPatient) => {
 	try {
-		await connectDb();
+		await payload.create({
+			collection: "patients",
+			data,
+		});
 
-		await patientModel.create(patient);
-
-		revalidatePath(pathname);
+		updateTag("patients");
 	} catch (error: any) {
 		throw new Error(error);
 	}
 };
 
-
-
-export const getPatients = async (): Promise<IPatient[]> => {
+export const updatePatient = async (data: IPatient) => {
 	try {
-		await connectDb();
+		await payload.update({
+			collection: "patients",
+			id: data.id,
+			data,
+		});
 
-		const patients = await patientModel
-			.find()
-			.populate("user")
-			.sort({ createdAt: -1 });
-
-		return JSON.parse(JSON.stringify(patients));
-	} catch (error: any) {
-		throw new Error();
-	}
-};
-
-export const getPatient = async ({
-	id,
-	userId,
-}: {
-	id?: string;
-	userId?: string;
-}): Promise<IPatient> => {
-	try {
-		await connectDb();
-
-		const patient = await patientModel
-			.findOne()
-			.or([{ _id: id }, { user: userId }])
-			.populate("user")
-			.sort({ createdAt: -1 });
-
-		return JSON.parse(JSON.stringify(patient));
+		updateTag("patients");
 	} catch (error: any) {
 		throw new Error(error);
 	}
 };
 
-export const updatePatient = async (
-	updatedPatient: IPatient,
-	pathname: string
-) => {
+export const deletePatient = async (id: string) => {
 	try {
-		await connectDb();
+		await payload.delete({
+			collection: "patients",
+			id,
+		});
 
-		await patientModel.findByIdAndUpdate(updatedPatient._id, updatedPatient);
-
-		revalidatePath(pathname);
+		updateTag("patients");
 	} catch (error: any) {
 		throw new Error(error);
 	}
 };
 
-export const deletePatient = async (id: string, pathname: string) => {
-	try {
-		await connectDb();
+/**
+ * @Fetches
+ */
 
-		await patientModel.findByIdAndDelete(id);
+export const getPatients = cache(
+	async ({
+		gender,
+		maritalStatus,
+		page = 1,
+		limit,
+	}: {
+		gender?: eGender;
+		maritalStatus?: eMaritalStatus;
+		page?: number;
+		limit?: number;
+	}): Promise<{ patients: IPatient[]; nextPg: number }> => {
+		try {
+			const {
+				docs: patients,
+				hasNextPage,
+				nextPage,
+			} = await payload.find({
+				collection: "patients",
+				where: {
+					or: [
+						{ gender: { equals: gender } },
+						{ maritalStatus: { equals: maritalStatus } },
+					],
+				},
+				depth: 1,
+				page,
+				limit,
+			});
 
-		revalidatePath(pathname);
-	} catch (error: any) {
-		throw new Error(error);
+			return { patients, nextPg: hasNextPage ? nextPage! : page };
+		} catch (error: any) {
+			throw new Error();
+		}
+	},
+	["patients"],
+	{
+		tags: ["patients"],
+		revalidate: 15 * 60,
 	}
-};
+);
+
+export const getPatient = cache(
+	async ({ id, user }: { id?: string; user?: string }): Promise<IPatient> => {
+		try {
+			const { docs } = await payload.find({
+				collection: "patients",
+				where: {
+					or: [{ id: { equals: id } }, { user: { equals: user } }],
+				},
+				depth: 1,
+				limit: 1,
+			});
+
+			return docs[0];
+		} catch (error: any) {
+			throw new Error(error);
+		}
+	},
+	[],
+	{
+		tags: ["patients"],
+		revalidate: 30 * 60,
+	}
+);

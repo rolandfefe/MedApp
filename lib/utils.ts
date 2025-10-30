@@ -4,6 +4,7 @@ import {
 	LANDING_NAV_ITEMS,
 	PATIENT_NAV_ITEMS,
 } from "@/constants";
+import { Appointment } from "@/types/payload";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -12,7 +13,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const getNavItem = (
-	pathname: string,
+	,
 	variant: "Patient" | "Doctor" | "Admin" | "Consultation",
 	id?: string
 ) => {
@@ -43,7 +44,7 @@ const fuzzyMatchRegex = (query: string): RegExp => {
 	return new RegExp(pattern, "i");
 };
 
-export const getAge = (DOB: Date): string => {
+export const getAge = (DOB: string | Date): string => {
 	return `${new Date().getFullYear() - new Date(DOB).getFullYear()}yrs`;
 };
 
@@ -52,5 +53,5 @@ export const getIsAppointmentDoctor = (
 	appointment: IAppointment,
 	currentUser: IUser
 ): boolean => {
-	return appointment?.doctor!.user._id == currentUser._id;
+	return appointment?.doctor!.user.id == currentUser.id;
 };

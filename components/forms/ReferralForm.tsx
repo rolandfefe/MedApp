@@ -13,6 +13,7 @@ import {
 	ComponentProps,
 	ReactNode,
 	useEffect,
+	useEffectEvent,
 	useState,
 	useTransition,
 } from "react";
@@ -66,9 +67,14 @@ export default function ReferralForm({
 	const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
 	const pathname = usePathname();
+
+	const fetchDoctors = useEffectEvent(async () =>
+		setDoctors((await getDoctors({})).doctors)
+	);
+
 	useEffect(() => {
-		(async () => setDoctors(await getDoctors()))();
-	}, []);
+		fetchDoctors();
+	}, [fetchDoctors]);
 
 	const form = useForm<ReferralFormData>({
 		resolver: zodResolver(referralSchema),
@@ -84,15 +90,16 @@ export default function ReferralForm({
 		}
 
 		if (action === "Create" && appointment) {
-			const newReferralData: IReferral = {
-				...data,
-				from: appointmentDoctor._id!,
-				to: selectedDoctor._id!,
-				appointment: appointment._id!,
-			};
+			const newReferralData: Omit<IReferral, "id" | "createdAt" | "updatedAt"> =
+				{
+					...data,
+					from: appointmentDoctor.id!,
+					to: selectedDoctor.id!,
+					appointment: appointment.id!,
+				};
 
 			startTransition(async () => {
-				await createReferral(newReferralData, pathname);
+				await createReferral(newReferralData);
 
 				form.reset();
 				setIsSuccess(true);
@@ -105,7 +112,7 @@ export default function ReferralForm({
 					{
 						...referral,
 						...data,
-						to: selectedDoctor._id!,
+						to: selectedDoctor.id!,
 					},
 					pathname
 				);
@@ -166,7 +173,7 @@ export default function ReferralForm({
 							<AnimatePresence>
 								{selectedDoctor && (
 									<motion.div
-										key={selectedDoctor._id}
+										key={selectedDoctor.id}
 										layout
 										initial={{ opacity: 0, y: 100 }}
 										animate={{ opacity: 1, y: 0 }}

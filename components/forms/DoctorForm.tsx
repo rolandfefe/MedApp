@@ -61,7 +61,7 @@ export default function DoctorForm({
 	const submitHandler = async (data: DoctorFormData) => {
 		const cleanData: IDoctor = {
 			...data,
-			user: currentUser._id!,
+			user: currentUser.id!,
 			languages: data.languages!.split(", "),
 			specialties: data.specialties.map(({ procedures, ...specialty }) => ({
 				...specialty,
@@ -80,17 +80,17 @@ export default function DoctorForm({
 
 		if (action === "Create") {
 			startTransition(async () => {
-				const { _id } = await createDoctor(cleanData, pathname);
+				const { id } = await createDoctor(cleanData);
 				form.reset();
 				toast.success(
 					"Application submitted for verification🤙. \n Feedback will be notified🤗"
 				);
 				setIsSuccess(true);
-				router.push(`/doctor/${encodeURIComponent(_id!)}`);
+				router.push(`/doctor/${encodeURIComponent(id!)}`);
 			});
 		} else if (action === "Update" && doctor) {
 			startTransition(async () => {
-				await updateDoctor({ ...doctor, ...cleanData }, pathname);
+				await updateDoctor({ ...doctor, ...cleanData });
 				form.reset();
 				toast.success("Doctor Profile updated.");
 				setIsSuccess(true);

@@ -23,7 +23,8 @@ export default function PatientConsultationAside({
 	appointment: IAppointment;
 	history: IHistory;
 }) {
-	const [consentTab, setConsentTab] = useState<ePatientConsent>();
+	const [consentTab, setConsentTab] =
+		useState<NonNullable<IAppointment["consentLevels"]>[number]>();
 	const patient = appointment.patient as IPatient;
 	const doctor = appointment.doctor as IDoctor;
 
@@ -63,7 +64,7 @@ export default function PatientConsultationAside({
 											variant={"secondary"}
 											onClick={() =>
 												setConsentTab((prev) =>
-													prev === consent ? undefined : consent
+													prev === consent ? undefined : prev
 												)
 											}
 											className={cn(
@@ -76,22 +77,20 @@ export default function PatientConsultationAside({
 									</FormPanelTrigger>
 									<FormPanelContent>
 										{consent === ePatientConsent.HISTORY ? (
-											<PatientHistorySection history={history}  />
+											<PatientHistorySection history={history} />
 										) : (
 											"Other Panels"
 										)}
 									</FormPanelContent>
 								</FormPanel>
 							))}
-						{appointment.consentLevels.length < 5 && (
+						{appointment.consentLevels!.length < 5 && (
 							<MyBtn size="sm" className="!py-0 h-6 rounded-lg">
 								Request <PlusCircle />
 							</MyBtn>
 						)}
 					</div>
 				</div>
-
-			
 			</section>
 		</div>
 	);

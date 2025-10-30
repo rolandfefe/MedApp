@@ -1,65 +1,95 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
-import { connectDb } from "../db/db";
-import messageModel from "../db/models/message.model";
+import { unstable_cache as cache, updateTag } from "next/cache";
+import { getPayload } from "payload";
 import { pusherServer } from "../pusher";
 
-export const createMsg = async (msg: IMessage) => {
-	try {
-		await connectDb();
+import config from "@/payload.config";
 
-		const newMsg = await (await messageModel.create(msg)).populate(["from"]);
+const payload = await getPayload({ config });
+
+/**
+ * @Mutations
+ *
+ * */
+export const createMsg = async (data: IMessage) => {
+	try {
+		const msg = await payload.create({
+			collection: "messages",
+			data,
+		});
 
 		// ? 1. Pusher trigger.
 		await pusherServer.trigger(
-			`chat-${msg.appointment}-channel`,
-			`new-${msg.appointment}-msg`,
-			JSON.parse(JSON.stringify(newMsg))
+			`chat-${data.appointment}-channel`,
+			`new-${data.appointment}-msg`,
+			JSON.parse(JSON.stringify(msg))
 		);
 
-		// revalidatePath(pathname);
+		updateTag("msgs");
 	} catch (error: any) {
 		throw new Error(error);
 	}
 };
 
-export const getMsgsByAppointment = async ({
-	appointment,
-}: {
-	appointment: string;
-}): Promise<IMessage[]> => {
+export const updateMsg = async (data: IMessage) => {
 	try {
-		await connectDb();
+		await payload.update({
+			collection: "messages",
+			id: data.id,
+			data,
+		});
 
-		const msgs = await messageModel.find({ appointment }).populate(["from"]);
-
-		return JSON.parse(JSON.stringify(msgs));
+		updateTag("msgs");
 	} catch (error: any) {
 		throw new Error(error);
 	}
 };
 
-export const updateMsg = async (msg: IMessage, pathname: string) => {
+export const deleteMsg = async (id: string) => {
 	try {
-		await connectDb();
+		await payload.delete({
+			collection: "messages",
+			id,
+		});
 
-		await messageModel.findByIdAndUpdate(msg._id, msg);
-
-		revalidatePath(pathname);
+		updateTag("msgs");
 	} catch (error: any) {
 		throw new Error(error);
 	}
 };
 
-export const deleteMsg = async (id: string, pathname: string) => {
-	try {
-		await connectDb();
+/**
+ * @Fetches
+ */
+export const getMsgs = cache(
+	async ({
+		appointment,
+		page = 1,
+	}: {
+		appointment: string;
+		page?: number;
+	}): Promise<{ msgs: IMessage[]; nextPg: number }> => {
+		try {
+			const {
+				docs: msgs,
+				hasNextPage,
+				nextPage,
+			} = await payload.find({
+				collection: "messages",
+				where: { appointment: { equals: appointment } },
+				depth: 1,
+				page,
+			});
 
-		await messageModel.findByIdAndDelete(id);
-
-		revalidatePath(pathname);
-	} catch (error: any) {
-		throw new Error(error);
+			return { msgs, nextPg: hasNextPage ? nextPage! : page! };
+		} catch (error: any) {
+			throw new Error(error);
+		}
+	},
+	[],
+	{
+		tags: ["msgs"],
+		revalidate: 60,
 	}
-};
+);

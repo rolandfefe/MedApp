@@ -15,7 +15,7 @@ export default function Navbar({ className }: { className?: string }) {
 	return (
 		<nav
 			className={cn(
-				"glass p-2 h-[7vh] sticky top-3 right-0 z-30 w-[97%] sm:w-[99%] mx-auto flex items-center justify-between gap-x-2 rounded-xl glass-shadow",
+				"glass p-2 h-[7vh] sticky top-3 right-0 z-40 w-[97%] sm:w-[99%] mx-auto flex items-center justify-between gap-x-2 rounded-xl glass-shadow",
 				className
 			)}
 		>

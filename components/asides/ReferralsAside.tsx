@@ -7,6 +7,7 @@ import { AnimatePresence, motion } from "motion/react";
 import Void from "../custom/Void";
 import MyBtn from "../custom/MyBtn";
 import { ReferralFormDialog } from "../forms/ReferralForm";
+import { Appointment } from "@/types/payload";
 
 export default function ReferralsAside({
 	referrals,

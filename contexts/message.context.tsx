@@ -11,6 +11,8 @@ import {
 } from "react";
 
 interface Props {
+	msgs: IMessage[];
+	setMsgs: (msgs: IMessage[]) => void;
 	refMsg?: IMessage;
 	setRefMsg: (msg: IMessage) => void;
 	updateMsg?: IMessage;
@@ -32,10 +34,12 @@ export const useMsg = () => {
 
 export const MsgProvider = ({
 	children,
+	msgsInit,
 	...props
-}: { children: ReactNode } & ComponentProps<"div">) => {
-	const [_refMsg, _setRefMsg] = useState<IMessage>();
-	const [_updateMsg, _setUpdateMsg] = useState<IMessage>();
+}: { children: ReactNode; msgsInit: IMessage[] } & ComponentProps<"div">) => {
+	const [msgs, _setMsgs] = useState<IMessage[]>(msgsInit);
+	const [refMsg, _setRefMsg] = useState<IMessage>();
+	const [updateMsg, _setUpdateMsg] = useState<IMessage>();
 
 	const setRefMsg = useCallback(
 		(msg: IMessage) => _setRefMsg(msg),
@@ -47,15 +51,16 @@ export const MsgProvider = ({
 		[_setUpdateMsg]
 	);
 
-	const contextValues = useMemo<Props>(
-		() => ({
-			refMsg: _refMsg,
-			setRefMsg,
-			updateMsg: _updateMsg,
-			setUpdateMsg,
-		}),
-		[_refMsg, _updateMsg, setRefMsg, setUpdateMsg]
-	);
+	const setMsgs = (m: IMessage[]) => _setMsgs(m);
+
+	const contextValues: Props = {
+		msgs,
+		setMsgs,
+		refMsg,
+		setRefMsg,
+		updateMsg,
+		setUpdateMsg,
+	};
 
 	return (
 		<MsgContext.Provider value={contextValues}>

@@ -49,13 +49,14 @@ export default function DoctorAppointmentFeeds({
 		auto: false,
 	});
 	const [filterResults, setFilterResults] =
-		useState<IAppointment[]>(appointments);
+		useState<Appointment[]>(appointments);
 
 	const { state: sidebarState } = useSidebar();
 
 	useEffect(() => {
 		if (filters.auto) {
 			setFilterResults(autoAppointments);
+			P;
 		} else {
 			setFilterResults(
 				appointments.filter(
@@ -66,7 +67,7 @@ export default function DoctorAppointmentFeeds({
 				)
 			);
 		}
-	}, [filters, `${appointments}`, `${autoAppointments}`]);
+	}, [filters, appointments, autoAppointments]);
 
 	return (
 		<div className="space-y-2 ">
@@ -78,7 +79,7 @@ export default function DoctorAppointmentFeeds({
 						filterResults.map((appointment) => {
 							return (
 								<motion.div
-									key={appointment._id}
+									key={appointment.id}
 									layout
 									initial={{ opacity: 0, y: 100 }}
 									animate={{ opacity: 1, y: 0 }}

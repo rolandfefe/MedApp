@@ -1,24 +1,9 @@
-import React, { ReactNode, useTransition } from "react";
-import {
-	DynamicPanel,
-	DynamicPanelContent,
-	DynamicPanelTrigger,
-} from "../custom/DynamicPanel";
-import Heading from "../custom/Heading";
-import { Badge } from "../ui/badge";
-import CopyBadge from "../custom/CopyBadge";
-import moment from "moment";
-import { AppointmentStatusBadge } from "../cards/AppointmentCard";
-import { Separator } from "../ui/separator";
-import { usePathname, useRouter } from "next/navigation";
 import {
 	deleteAppointment,
 	updateAppointment,
 } from "@/lib/actions/appointment.actions";
-import DoctorCard from "../cards/DoctorCard";
-import PatientCard from "../cards/patientCard";
+import { eAppointmentStatus } from "@/types/enums/enums";
 import {
-	Check,
 	CircleCheck,
 	CircleX,
 	Loader,
@@ -26,12 +11,26 @@ import {
 	Sparkles,
 	Trash2,
 } from "lucide-react";
-import { eAppointmentStatus } from "@/types/enums/enums";
+import moment from "moment";
+import { usePathname, useRouter } from "next/navigation";
+import { ReactNode, useTransition } from "react";
 import toast from "react-hot-toast";
+import { AppointmentStatusBadge } from "../cards/AppointmentCard";
+import DoctorCard from "../cards/DoctorCard";
+import PatientCard from "../cards/patientCard";
+import CopyBadge from "../custom/CopyBadge";
+import {
+	DynamicPanel,
+	DynamicPanelContent,
+	DynamicPanelTrigger,
+} from "../custom/DynamicPanel";
+import Heading from "../custom/Heading";
 import MyBtn from "../custom/MyBtn";
+import { HoverBorderGradient } from "../ui/hover-border-gradient";
+import { Separator } from "../ui/separator";
 import { ShineBorder } from "../ui/shine-border";
 import ConfirmationDialog from "./ConfirmationDialog";
-import { HoverBorderGradient } from "../ui/hover-border-gradient";
+import LinkBtn from "../btns/LinkBtn";
 
 export default function AppointmentDynamicPanel({
 	appointment,
@@ -52,71 +51,61 @@ export default function AppointmentDynamicPanel({
 	const [isConfirming, startConfirmation] = useTransition();
 	const [isOpeningConsultation, startOpeningConsultation] = useTransition();
 
-	const isAppointmentDoctor = currentDoctor?._id == appointment.doctor?._id;
+	const isAppointmentDoctor = currentDoctor?.id == appointment.doctor?.id;
 	const isAutoMode =
 		!appointment.doctor ||
 		(appointment.status === eAppointmentStatus.CANCELLED &&
 			!isAppointmentDoctor);
 
 	const cancelHandler = async () => {
-		await updateAppointment(
-			{
-				...appointment,
-				cancellation: {
-					cancelledAt: new Date(),
-					cancelledBy:
-						mode === "Patient" ? currentPatient?._id : currentDoctor?._id,
-					reason: "",
-				},
-				confirmation: undefined,
-				status: eAppointmentStatus.CANCELLED,
+		await updateAppointment({
+			...appointment,
+			cancellation: {
+				cancelledAt: new Date(),
+				cancelledBy:
+					mode === "Patient" ? currentPatient?.id : currentDoctor?.id,
+				reason: "",
 			},
-			pathname
-		);
+			confirmation: undefined,
+			status: eAppointmentStatus.CANCELLED,
+		});
 	};
 
 	const confirmHandler = async () =>
 		startConfirmation(
 			async () =>
-				await updateAppointment(
-					{
-						...appointment,
-						confirmation: {
-							confirmedAt: new Date(),
-							isConfirmed: true,
-							confirmedBy: currentDoctor?._id,
-						},
-						cancellation: undefined,
-						status: eAppointmentStatus.CONFIRMED,
+				await updateAppointment({
+					...appointment,
+					confirmation: {
+						confirmedAt: new Date(),
+						isConfirmed: true,
+						confirmedBy: currentDoctor?.id,
 					},
-					pathname
-				)
+					cancellation: undefined,
+					status: eAppointmentStatus.CONFIRMED,
+				})
 		);
 
-	const deleteHandler = async () =>
-		await deleteAppointment(appointment._id!, pathname);
+	const deleteHandler = async () => await deleteAppointment(appointment.id!);
 
 	const takeAppointmentHandler = () =>
 		startTransition(async () => {
 			// ? Assigned & Confirm appointment
 
-			await updateAppointment(
-				{
-					...appointment,
-					doctor: currentDoctor?._id,
-					confirmation: {
-						confirmedAt: new Date(),
-						isConfirmed: true,
-						confirmedBy: currentDoctor?._id,
-					},
-					cancellation: undefined,
-					status: eAppointmentStatus.CONFIRMED,
+			await updateAppointment({
+				...appointment,
+				doctor: currentDoctor?.id,
+				confirmation: {
+					confirmedAt: new Date(),
+					isConfirmed: true,
+					confirmedBy: currentDoctor?.id,
 				},
-				pathname
-			);
+				cancellation: undefined,
+				status: eAppointmentStatus.CONFIRMED,
+			});
 
 			toast.success(
-				`You have now been assigned appointment 🆔:'${appointment._id!}'`
+				`You have now been assigned appointment 🆔:'${appointment.id!}'`
 			);
 		});
 
@@ -135,8 +124,8 @@ export default function AppointmentDynamicPanel({
 					<Heading className="text-xl sm:text-2xl text-primary">
 						<span>Appointment</span>
 
-						<CopyBadge variant={"secondary"} content={appointment._id!}>
-							{appointment._id}
+						<CopyBadge variant={"secondary"} content={appointment.id!}>
+							{appointment.id}
 						</CopyBadge>
 					</Heading>
 				</section>
@@ -263,19 +252,25 @@ export default function AppointmentDynamicPanel({
 							</>
 						) : (
 							appointment.status === eAppointmentStatus.CONFIRMED && (
-								<HoverBorderGradient
-									containerClassName="rounded-full"
-									as="button"
-									onClick={() =>
-										router.push(
-											`/consultation/${encodeURIComponent(appointment._id!)}`
-										)
-									}
-									className="cursor-pointer w-full bg-background text-foreground  inline-flex items-center space-x-2 text-center"
+								<LinkBtn
+									link={{
+										href: `/consultation/${encodeURIComponent(
+											appointment.id!
+										)}`,
+									}}
+									variant={"ghost"}
+									asChild
+									className="p-0! "
 								>
-									<MessageCircleMore />
-									<span>Consultation</span>
-								</HoverBorderGradient>
+									<HoverBorderGradient
+										containerClassName="rounded-full"
+										as="div"
+										className="cursor-pointer w-full bg-background text-foreground  inline-flex items-center space-x-2 text-center"
+									>
+										<MessageCircleMore />
+										<span>Consultation</span>
+									</HoverBorderGradient>
+								</LinkBtn>
 							)
 						)}
 					</div>

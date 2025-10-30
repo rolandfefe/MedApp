@@ -76,7 +76,7 @@ export default function HistoryForm({
 
 		if (action === "Create") {
 			startTransition(async () => {
-				await createHistory({ ...cleanData, patient: patient._id! }, pathname);
+				await createHistory({ ...cleanData, patient: patient.id! });
 
 				toast.success("Patient history created👍");
 				form.reset();
@@ -84,7 +84,7 @@ export default function HistoryForm({
 			});
 		} else if (action === "Update" && history) {
 			startTransition(async () => {
-				await updateHistory({ ...history, ...cleanData }, pathname);
+				await updateHistory({ ...history, ...cleanData });
 				toast.success("Patient history updated🔃");
 				form.reset();
 				setIsSuccess(true);
@@ -176,7 +176,7 @@ export const HistoryFormPanel = ({
 			<FormPanelTrigger asChild>{children}</FormPanelTrigger>
 
 			<FormPanelContent>
-				<HistoryForm {...props}	 />
+				<HistoryForm {...props} />
 			</FormPanelContent>
 		</FormPanel>
 	);

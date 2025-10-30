@@ -1,91 +1,127 @@
 "use server";
 
+import config from "@/payload.config";
 import { eReferralStatus } from "@/types/enums/enums";
-import { revalidatePath } from "next/cache";
-import { connectDb } from "../db/db";
+import { updateTag, unstable_cache as cache } from "next/cache";
+import { getPayload } from "payload";
 import referralModel from "../db/models/referral.model";
 
-export const createReferral = async (referral: IReferral, pathname: string) => {
+const payload = await getPayload({ config });
+
+/**
+ * @Mutations
+ */
+export const createReferral = async (
+	data: Omit<IReferral, "id" | "createdAt" | "updatedAt">
+) => {
 	try {
-		await connectDb();
+		await payload.create({
+			collection: "referrals",
+			data,
+		});
 
-		await referralModel.create(referral);
-
-		revalidatePath(pathname);
+		updateTag("referrals");
 	} catch (error: any) {
 		throw new Error(error.message);
 	}
 };
 
-export const getReferrals = async ({
-	appointment,
-	from,
-	to,
-	status,
-}: {
-	appointment?: string;
-	from?: string;
-	to?: string;
-	status?: eReferralStatus;
-}): Promise<IReferral[]> => {
+export const updateReferral = async (data: IReferral) => {
 	try {
-		await connectDb();
-
-		const referrals = await referralModel
-			.find()
-			.or([{ appointment }, { from }, { to }, { status }])
-			.populate([
-				{ path: "from", populate: "user" },
-				{ path: "to", populate: "user" },
-			])
-			.populate({ path: "appointment", populate: ["patient", "doctor"] })
-			.sort({ createdAt: -1 });
-
-		return JSON.parse(JSON.stringify(referrals));
-	} catch (error: any) {
-		throw new Error(error.message);
-	}
-};
-
-export const getReferral = async (id: string): Promise<IReferral> => {
-	try {
-		await connectDb();
-
-		const referral = await referralModel
-			.findById(id)
-			.populate([
-				{ path: "from", populate: "user" },
-				{ path: "to", populate: "user" },
-			])
-			.populate({ path: "appointment", populate: ["patient", "doctor"] });
-
-		return JSON.parse(JSON.stringify(referral));
-	} catch (error: any) {
-		throw new Error(error.message);
-	}
-};
-
-export const updateReferral = async (referral: IReferral, pathname: string) => {
-	try {
-		await connectDb();
-
-		await referralModel.findByIdAndUpdate(referral._id, referral, {
-			new: true,
+		await payload.update({
+			collection: "referrals",
+			id: data.id,
+			data,
 		});
 
 		// ? Conditionally trigger Real-time
-		revalidatePath(pathname);
+		updateTag("referrals");
 	} catch (error: any) {
 		throw new Error(error);
 	}
 };
 
-export const deleteReferral = async (id: string, pathname: string) => {
+export const deleteReferral = async (id: string) => {
 	try {
-		await connectDb();
-		await referralModel.findByIdAndDelete(id);
-		revalidatePath(pathname);
+		await payload.delete({
+			collection: "referrals",
+			id,
+		});
+
+		updateTag("referrals");
 	} catch (error: any) {
 		throw new Error(error.message);
 	}
 };
+
+/**
+ * @Fetches
+ */
+export const getReferrals = cache(
+	async ({
+		appointment,
+		from,
+		to,
+		status,
+		page = 1,
+		limit = 0,
+	}: {
+		appointment?: string;
+		from?: string;
+		to?: string;
+		status?: eReferralStatus;
+		page?: number;
+		limit?: number;
+	}): Promise<{ referrals: IReferral[]; nextPg: number }> => {
+		try {
+			const {
+				docs: referrals,
+				hasNextPage,
+				nextPage,
+			} = await payload.find({
+				collection: "referrals",
+				where: {
+					or: [
+						{ appointment: { equals: appointment } },
+						{ from: { equals: from } },
+						{ to: { equals: to } },
+						{ status: { equals: status } },
+					],
+				},
+				depth: 2,
+				page,
+				limit,
+			});
+
+			return { referrals, nextPg: hasNextPage ? nextPage! : page };
+		} catch (error: any) {
+			throw new Error(error.message);
+		}
+	},
+	[],
+	{
+		tags: ["referrals"],
+		revalidate: 15 * 60,
+	}
+);
+
+export const getReferral = cache(
+	async (id: string): Promise<IReferral> => {
+		try {
+			const referral = await payload.findByID({
+				collection: "referrals",
+				id,
+				depth: 2,
+			});
+
+			return referral;
+		} catch (error: any) {
+			throw new Error(error.message);
+		}
+	},
+	[],
+	{
+		tags: ["referrals"],
+		revalidate: 15 * 60,
+	}
+);

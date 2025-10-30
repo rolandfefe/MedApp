@@ -16,7 +16,7 @@ export default function MsgCard({
 	currentUser: IUser;
 } & ComponentProps<typeof Card>) {
 	const author = msg.from as IUser;
-	const isAuthor = author._id === currentUser._id;
+	const isAuthor = author.id === currentUser.id;
 
 	return (
 		<Card

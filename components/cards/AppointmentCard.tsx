@@ -8,6 +8,7 @@ import PatientCard from "./patientCard";
 import DoctorCard from "./DoctorCard";
 import moment from "moment";
 import AppointmentDynamicPanel from "../panels/AppointmentDynamicPanel";
+import { Appointment } from "@/types/payload";
 
 export default function AppointmentCard({
 	appointment,
@@ -113,7 +114,7 @@ export const AppointmentStatusBadge = ({
 	status,
 	className,
 	...props
-}: { status: eAppointmentStatus } & ComponentProps<typeof Badge>) => (
+}: { status: IAppointment["status"] } & ComponentProps<typeof Badge>) => (
 	<Badge
 		{...props}
 		className={cn(

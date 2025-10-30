@@ -30,15 +30,24 @@ export function ThemeBtn({ className }: { className?: string }) {
 				</MyBtn>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align="end">
-				<DropdownMenuItem onClick={() => setTheme("light")}>
+				<DropdownMenuItem
+					disabled={theme === "light"}
+					onClick={() => setTheme("light")}
+				>
 					<Sun size={20} />
 					Light
 				</DropdownMenuItem>
-				<DropdownMenuItem onClick={() => setTheme("dark")}>
+				<DropdownMenuItem
+					disabled={theme === "dark"}
+					onClick={() => setTheme("dark")}
+				>
 					<Moon size={20} />
 					Dark
 				</DropdownMenuItem>
-				<DropdownMenuItem onClick={() => setTheme("system")}>
+				<DropdownMenuItem
+					disabled={theme === "system"}
+					onClick={() => setTheme("system")}
+				>
 					<Monitor size={20} />
 					System
 				</DropdownMenuItem>

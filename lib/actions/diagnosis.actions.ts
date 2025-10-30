@@ -1,80 +1,38 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
-import { connectDb } from "../db/db";
+import { updateTag, unstable_cache as cache } from "next/cache";
 import diagnosisModel from "../db/models/diagnosis.model";
 import { eDiagnosisStatus } from "@/types/enums/enums";
+import { getPayload } from "payload";
+import config from "@/payload.config";
 
-export const createDiagnosis = async (
-	diagnosis: IDiagnosis,
-	pathname: string
-) => {
+const payload = await getPayload({ config });
+
+/**
+ * @Mutation
+ */
+
+export const createDiagnosis = async (data: IDiagnosis) => {
 	try {
-		await connectDb();
+		await payload.create({
+			collection: "diagnoses",
+			data,
+		});
 
-		await diagnosisModel.create(diagnosis);
-
-		revalidatePath(pathname);
+		updateTag("diagnoses");
 	} catch (error: any) {
 		throw new Error(error);
 	}
 };
 
-export const getDiagnosis = async ({
-	appointment,
-	_id,
-}: {
-	appointment?: string;
-	_id?: string;
-}): Promise<IAppointment[]> => {
+export const updateDiagnosis = async (data: IDiagnosis) => {
 	try {
-		await connectDb();
-
-		const diagnosis = await diagnosisModel
-			.findOne()
-			.or([{ appointment }, { _id }])
-			.populate(["appointment", "patient", "doctor", "healthStatus"]);
-
-		return JSON.parse(JSON.stringify(diagnosis));
-	} catch (error: any) {
-		throw new Error(error);
-	}
-};
-
-export const getDiagnoses = async ({
-	patient,
-	doctor,
-	status,
-}: {
-	patient?: string;
-	doctor?: string;
-	status?: eDiagnosisStatus;
-}): Promise<IDiagnosis[]> => {
-	try {
-		await connectDb();
-
-		const diagnoses = await diagnosisModel
-			.find()
-			.or([{ patient }, { doctor }, { status }])
-			.populate(["appointment", "patient", "doctor", "healthStatus"])
-			.sort({ createdAt: -1 });
-
-		return JSON.parse(JSON.stringify(diagnoses));
-	} catch (error: any) {
-		throw new Error(error);
-	}
-};
-
-export const updateDiagnosis = async (
-	diagnosis: IDiagnosis,
-	pathname: string
-) => {
-	try {
-		await connectDb();
-
-		await diagnosisModel.findByIdAndUpdate(diagnosis._id, diagnosis);
-
-		revalidatePath(pathname);
+		await payload.update({
+			collection: "diagnoses",
+			id: data.id,
+			data,
+		});
+		updateTag("diagnoses");
 	} catch (error: any) {
 		throw new Error(error);
 	}
@@ -84,13 +42,86 @@ export const updateDiagnosis = async (
  * ! DANGER ZONE
  * @danger Restrict access to users who can use this action.
  */
-export const deleteDiagnosis = async (id: string, pathname: string) => {
+export const deleteDiagnosis = async (id: string) => {
 	try {
-		await connectDb();
+		await payload.delete({
+			collection: "diagnoses",
+			id,
+		});
+		updateTag("diagnoses");
+	} catch (error: any) {
+		throw new Error(error);
+	}
+};
 
-		await diagnosisModel.findByIdAndDelete(id);
+/**
+ * @Fetches
+ */
 
-		revalidatePath(pathname);
+export const getDiagnosis = cache(
+	async ({
+		appointment,
+		id,
+	}: {
+		appointment?: string;
+		id?: string;
+	}): Promise<IDiagnosis> => {
+		try {
+			const { docs: diagnosis } = await payload.find({
+				collection: "diagnoses",
+				where: {
+					or: [
+						{ id: { equals: id } },
+						{ appointment: { equals: appointment } },
+					],
+				},
+				limit: 1,
+			});
+
+			return diagnosis[0];
+		} catch (error: any) {
+			throw new Error(error);
+		}
+	},
+	[],
+	{
+		tags: ["diagnoses"],
+		revalidate: 15 * 60,
+	}
+);
+
+export const getDiagnoses = async ({
+	patient,
+	doctor,
+	status,
+	page = 1,
+	limit,
+}: {
+	patient?: string;
+	doctor?: string;
+	status?: eDiagnosisStatus;
+	page?: number;
+	limit?: number;
+}): Promise<{ diagnoses: IDiagnosis[]; nextPg: number }> => {
+	try {
+		const {
+			docs: diagnoses,
+			hasNextPage,
+			nextPage,
+		} = await payload.find({
+			collection: "diagnoses",
+			where: {
+				or: [
+					{ patient: { equals: patient } },
+					{ doctor: { equals: doctor } },
+					{ status: { equals: status } },
+				],
+			},
+			page,
+			limit,
+		});
+
+		return { diagnoses, nextPg: hasNextPage ? nextPage! : page };
 	} catch (error: any) {
 		throw new Error(error);
 	}
