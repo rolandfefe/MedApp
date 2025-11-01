@@ -7,28 +7,35 @@ import { getPatient } from "./patient.actions";
 import { getCurrentUser } from "./user.actions";
 
 export const getCurrentPatient = async (): Promise<IPatient> => {
-	const { id: userId } = await getCurrentUser();
-	return await getPatient({ userId });
+	const { id: user } = await getCurrentUser();
+	return await getPatient({ user });
 };
 
 export const getCurrentDoctor = async (): Promise<IDoctor> => {
-	const { id: userId } = await getCurrentUser();
-	return await getDoctor({ userId });
+	const { id: user } = await getCurrentUser();
+	return await getDoctor({ user });
 };
 
-export const getCurrentPatientHealStatuses = async (latest?: boolean) => {
+export const getCurrentPatientHealStatuses = async ({
+	limit,
+}: {
+	limit?: number;
+}) => {
 	const { id } = await getCurrentPatient();
-	return await getHealthStatuses({ patient: id!, latest });
+	return await getHealthStatuses({ patient: id!, limit });
 };
 
-export const getCurrentPatientAppointments = async (latest?: boolean) => {
+export const getCurrentPatientAppointments = async () => {
 	const { id } = await getCurrentPatient();
 	return await getAppointments({ patient: id! });
 };
 
-export const getAllocatedAutoAppointments = async (): Promise<
-	Appointment[]
-> => {
+export const getCurrentDoctorAppointments = async () => {
+	const { id } = await getCurrentDoctor();
+	return await getAppointments({ patient: id! });
+};
+
+export const getAllocatedAutoAppointments = async () => {
 	const autoAppointments = await getAppointments({ doctor: undefined });
 
 	const _appointments = autoAppointments.filter((a) => {});

@@ -1,23 +1,19 @@
 "use client";
 
+import { useCurrent } from "@/contexts/Current.context";
+import { usePagination } from "@/contexts/Pagination.context";
 import { cn } from "@/lib/utils";
 import { eAppointmentStatus, eAppointmentTypes } from "@/types/enums/enums";
-import { AnimatePresence, motion } from "motion/react";
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
-import Void from "../custom/Void";
-import { AppointmentPanel } from "../forms/AppointmentForm";
-import MyBtn from "../custom/MyBtn";
 import {
-	ArrowBigRightDash,
 	ChevronsUpDown,
-	Headset,
 	Sparkles,
-	TriangleAlert,
+	TriangleAlert
 } from "lucide-react";
-import { ShineBorder } from "../ui/shine-border";
-import { MorphingDialogTitle } from "../motion-primitives/morphing-dialog";
+import { AnimatePresence, motion } from "motion/react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import AppointmentCard from "../cards/AppointmentCard";
-import { Preahvihear } from "next/font/google";
+import MyBtn from "../custom/MyBtn";
+import Void from "../custom/Void";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -25,8 +21,6 @@ import {
 	DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { useSidebar } from "../ui/sidebar";
-import { filter } from "lodash-es";
-import AppointmentDynamicPanel from "../panels/AppointmentDynamicPanel";
 
 interface Filters {
 	auto?: boolean;
@@ -36,27 +30,25 @@ interface Filters {
 }
 
 export default function DoctorAppointmentFeeds({
-	appointments,
-	currentDoctor,
 	autoAppointments,
 }: {
-	appointments: IAppointment[];
 	autoAppointments: IAppointment[];
-	currentDoctor: IDoctor;
 }) {
+	const currentDoctor = useCurrent().currentDoctor as IDoctor;
+	const { appointments } = usePagination();
+
 	const [filters, setFilters] = useState<Filters>({
 		emergency: false,
 		auto: false,
 	});
 	const [filterResults, setFilterResults] =
-		useState<Appointment[]>(appointments);
+		useState<IAppointment[]>(appointments);
 
 	const { state: sidebarState } = useSidebar();
 
 	useEffect(() => {
 		if (filters.auto) {
 			setFilterResults(autoAppointments);
-			P;
 		} else {
 			setFilterResults(
 				appointments.filter(
@@ -93,7 +85,6 @@ export default function DoctorAppointmentFeeds({
 									<AppointmentCard
 										appointment={appointment}
 										variant="md"
-										currentDoctor={currentDoctor}
 										mode="Doctor"
 									/>
 								</motion.div>

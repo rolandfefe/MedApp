@@ -1,6 +1,5 @@
 import Heading from "@/components/custom/Heading";
 import HealthStatusDashboard from "@/components/HealthStatusDashboard";
-import { getCurrentUser } from "@/lib/actions/user.actions";
 import {
 	getCurrentPatient,
 	getCurrentPatientHealStatuses,
@@ -8,8 +7,9 @@ import {
 import Image from "next/image";
 
 export default async function page() {
-	const currentUser = await getCurrentUser();
-	const statuses = (await getCurrentPatientHealStatuses()) as IHealthStatus[];
+	const { healthStatuses: statuses } = await getCurrentPatientHealStatuses({
+		limit: 0,
+	});
 	const patient = await getCurrentPatient();
 
 	console.log("statuses: ", statuses);

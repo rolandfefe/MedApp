@@ -99,6 +99,7 @@ export const Appointments: CollectionConfig = {
 		{
 			name: "online",
 			type: "group",
+			required: false,
 			fields: [
 				{ name: "url", type: "text", required: true },
 				{ name: "accessCode", type: "text" },

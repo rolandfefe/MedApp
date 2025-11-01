@@ -1,31 +1,31 @@
 import { IconName } from "lucide-react/dynamic";
 
-export const LANDING_NAV_ITEMS: {
-	name: string;
-	link: string;
-	icon: IconName;
-}[] = [
-	{
-		name: "Home",
-		link: "/home",
-		icon: "home",
-	},
-	{
-		name: "Reviews",
-		link: "#Reviews",
-		icon: "star",
-	},
-	{
-		name: "Feedback",
-		link: "#Feedback",
-		icon: "bot-message-square",
-	},
-	{
-		name: "Support",
-		link: "#Support",
-		icon: "headset",
-	},
-];
+// export const LANDING_NAV_ITEMS: {
+// 	name: string;
+// 	link: string;
+// 	icon: IconName;
+// }[] = [
+// 	{
+// 		name: "Home",
+// 		link: "/home",
+// 		icon: "home",
+// 	},
+// 	{
+// 		name: "Reviews",
+// 		link: "#Reviews",
+// 		icon: "star",
+// 	},
+// 	{
+// 		name: "Feedback",
+// 		link: "#Feedback",
+// 		icon: "bot-message-square",
+// 	},
+// 	{
+// 		name: "Support",
+// 		link: "#Support",
+// 		icon: "headset",
+// 	},
+// ];
 
 // export const getDoctorNavItems = (
 // 	id: IDoctor["id"]

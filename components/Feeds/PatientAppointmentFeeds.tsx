@@ -23,6 +23,8 @@ import {
 } from "../ui/dropdown-menu";
 import { ShineBorder } from "../ui/shine-border";
 import { useSidebar } from "../ui/sidebar";
+import { useCurrent } from "@/contexts/Current.context";
+import { usePagination } from "@/contexts/Pagination.context";
 
 interface Filters {
 	referred?: boolean;
@@ -31,15 +33,11 @@ interface Filters {
 	emergency?: boolean;
 }
 
-export default function PatientAppointmentFeeds({
-	appointments,
-	currentPatient,
-	doctors,
-}: {
-	appointments: IAppointment[];
-	currentPatient: IPatient;
-	doctors: IDoctor[];
-}) {
+export default function PatientAppointmentFeeds() {
+	const currentPatient = useCurrent().currentPatient as IPatient;
+	const { doctors, appointments, setAppointments, setDoctors } =
+		usePagination();
+
 	const [filters, setFilters] = useState<Filters>({
 		emergency: false,
 		referred: false,
@@ -54,12 +52,12 @@ export default function PatientAppointmentFeeds({
 			appointments.filter(
 				(a) =>
 					filters.emergency == a.isEmergency! ||
-					filters.referred == !!a.referral ||
+					// filters.referred == !!a.referral ||
 					filters.status == a.status ||
 					filters.type == a.type
 			)
 		);
-	}, [filters, `${appointments}`]);
+	}, [filters, appointments]);
 
 	return (
 		<div className="space-y-2 ">
@@ -83,7 +81,6 @@ export default function PatientAppointmentFeeds({
 								<AppointmentCard
 									appointment={appointment}
 									variant="md"
-									currentPatient={currentPatient}
 									mode="Patient"
 								/>
 							</motion.div>
@@ -98,11 +95,7 @@ export default function PatientAppointmentFeeds({
 								}
 							/>
 
-							<AppointmentPanel
-								action="Create"
-								doctors={doctors}
-								patient={currentPatient}
-							>
+							<AppointmentPanel action="Create">
 								<MyBtn
 									size="lg"
 									variant={"secondary"}

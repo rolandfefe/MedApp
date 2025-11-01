@@ -9,23 +9,26 @@ import DoctorCard from "./DoctorCard";
 import moment from "moment";
 import AppointmentDynamicPanel from "../panels/AppointmentDynamicPanel";
 import { Appointment } from "@/types/payload";
+import { useCurrent } from "@/contexts/Current.context";
+import { usePagination } from "@/contexts/Pagination.context";
 
 export default function AppointmentCard({
 	appointment,
-	currentDoctor,
-	currentPatient,
 	variant = "md",
 	mode,
 	className,
 }: {
 	appointment: IAppointment;
-	currentPatient?: IPatient;
-	currentDoctor?: IDoctor;
 	variant: "sm" | "md" | "lg";
 	mode: "Patient" | "Doctor";
 	className?: string;
 }) {
 	// const {} = appointment.doctor
+	const currentPatient = useCurrent().currentPatient as IPatient;
+	const currentDoctor = useCurrent().currentDoctor as IDoctor;
+
+	const { doctors, appointments, setAppointments, setDoctors } =
+		usePagination();
 
 	if (variant === "sm") {
 		return (

@@ -1,19 +1,18 @@
 "use client";
 
-import React, { useState } from "react";
-import DoctorSearchBox from "../DoctorSearchBox";
-import { AnimatePresence, motion } from "motion/react";
-import Void from "../custom/Void";
-import DoctorCard from "../cards/DoctorCard";
+import { useCurrent } from "@/contexts/Current.context";
 import { cn } from "@/lib/utils";
+import { AnimatePresence, motion } from "motion/react";
+import { useState } from "react";
+import DoctorCard from "../cards/DoctorCard";
+import Void from "../custom/Void";
+import DoctorSearchBox from "../DoctorSearchBox";
+import { usePagination } from "@/contexts/Pagination.context";
 
-export default function DoctorsFeed({
-	currentPatient,
-	doctors,
-}: {
-	currentPatient: IPatient;
-	doctors: IDoctor[];
-}) {
+export default function DoctorsFeed() {
+	const currentPatient = useCurrent().currentPatient as IPatient;
+	const { doctors } = usePagination();
+
 	const [results, setResults] = useState<IDoctor[]>(doctors);
 	const [selected, setSelected] = useState<IDoctor>();
 

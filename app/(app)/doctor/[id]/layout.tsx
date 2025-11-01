@@ -8,15 +8,28 @@ import { getCurrentUser } from "@/lib/actions/user.actions";
 import { getDoctor } from "@/lib/actions/doctor.actions";
 import DoctorNavbar from "@/components/layouts/DoctorNavbar";
 import { getDoctorNav } from "@/lib/actions/globals.actions";
+import { CurrentProvider } from "@/contexts/Current.context";
+import { getCurrentDoctor } from "@/lib/actions/utils.actions";
+import { redirect } from "next/navigation";
 
-export default async function layout({ children }: { children: ReactNode }) {
-	const [currentUser, doctorNav] = await Promise.all([
+export default async function layout({
+	children,
+	params,
+}: {
+	children: ReactNode;
+	params: Promise<{ id: string }>;
+}) {
+	const { id } = await params;
+	const [currentUser, currentDoctor, doctorNav] = await Promise.all([
 		getCurrentUser(),
+		getCurrentDoctor(),
 		getDoctorNav(),
 	]);
 
+	if (!currentDoctor) redirect("/home"); // ? Redirect uf user has no Doctor account.
+
 	return (
-		<>
+		<CurrentProvider user={currentUser} doctor={currentDoctor}>
 			<SidebarProvider defaultOpen>
 				<DoctorSidebar doctorNav={doctorNav} currentUser={currentUser} />
 				<SidebarInset>
@@ -27,6 +40,6 @@ export default async function layout({ children }: { children: ReactNode }) {
 					</ScrollArea>
 				</SidebarInset>
 			</SidebarProvider>
-		</>
+		</CurrentProvider>
 	);
 }

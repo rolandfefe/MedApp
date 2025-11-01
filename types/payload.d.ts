@@ -636,7 +636,7 @@ export interface Appointment {
   } | null;
   consentLevels?: ('Health statuses' | 'Vitals' | 'History' | 'Patient profile' | 'User profile')[] | null;
   isEmergency?: boolean | null;
-  online: {
+  online?: {
     url: string;
     accessCode?: string | null;
   };

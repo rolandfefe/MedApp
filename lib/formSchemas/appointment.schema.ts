@@ -6,8 +6,8 @@ import {
 import z from "zod";
 
 const onlineFormSchema = z.object({
-	url: z.string().url("Invalid url").optional(),
-	accessCode: z.string(),
+	url: z.string().url("Invalid url"),
+	accessCode: z.string().optional(),
 });
 
 // Main Appointment Form Schema

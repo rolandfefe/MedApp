@@ -12,7 +12,7 @@ import Image from "next/image";
 
 export default async function page() {
 	const currentUser = await getCurrentUser();
-	const patient = await getPatient({ userId: currentUser.id! });
+	const patient = await getPatient({ user: currentUser.id! });
 	const history = await getHistory({ patientId: patient.id! });
 	console.log("hist", history);
 

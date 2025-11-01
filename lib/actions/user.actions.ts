@@ -76,8 +76,7 @@ export const deleteUser = async (clerkId: string): Promise<void> => {
 /**
  * @Fetches
  */
-export const getCurrentUser = cache(
-	async (): Promise<IUser> => {
+export const getCurrentUser = async (): Promise<IUser> => {
 		try {
 			let clerkId: string;
 
@@ -99,13 +98,7 @@ export const getCurrentUser = cache(
 		} catch (error: any) {
 			throw new Error(error);
 		}
-	},
-	["currentUser"],
-	{
-		tags: ["users"],
-		revalidate: 60 * 60,
-	}
-);
+	};
 
 export const getUser = cache(
 	async ({

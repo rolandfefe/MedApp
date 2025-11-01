@@ -1,7 +1,10 @@
 import DoctorAppointmentFeeds from "@/components/Feeds/DoctorAppointmentsFeed";
+import { CurrentProvider } from "@/contexts/Current.context";
+import { PaginationProvider } from "@/contexts/Pagination.context";
 import { getAppointments } from "@/lib/actions/appointment.actions";
 import { getDoctor } from "@/lib/actions/doctor.actions";
 import { getCurrentUser } from "@/lib/actions/user.actions";
+import { getCurrentDoctorAppointments } from "@/lib/actions/utils.actions";
 import { eAppointmentStatus } from "@/types/enums/enums";
 
 export default async function page({
@@ -10,27 +13,27 @@ export default async function page({
 	params: Promise<{ id: string }>;
 }) {
 	const { id } = await params;
-	const doctor = await getDoctor({ id: decodeURIComponent(id) });
-	const [currentUser, doctorAppointments, autoAppointments] = await Promise.all(
-		[
-			await getCurrentUser(),
-			await getAppointments({ doctor: doctor.id }),
-			await getAppointments({
-				doctor: undefined,
-				status: eAppointmentStatus.CANCELLED,
-			}),
-		]
-	);
+	const [
+		currentUser,
+		{ appointments: doctorAppointments },
+		{ appointments: autoAppointments },
+	] = await Promise.all([
+		getCurrentUser(),
+		getCurrentDoctorAppointments(),
+		getAppointments({
+			doctor: undefined,
+			status: eAppointmentStatus.CANCELLED,
+		}),
+	]);
 
-	console.log(doctor.user, currentUser);
+	console.log(currentUser);
 
 	return (
-		<div className="sm:p-3">
-			<DoctorAppointmentFeeds
-				appointments={doctorAppointments}
-				currentDoctor={doctor}
-				autoAppointments={autoAppointments}
-			/>
-		</div>
+		<PaginationProvider
+			appointmentsInit={doctorAppointments}
+			className="sm:p-3"
+		>
+			<DoctorAppointmentFeeds autoAppointments={autoAppointments} />
+		</PaginationProvider>
 	);
 }

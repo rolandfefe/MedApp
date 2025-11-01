@@ -24,7 +24,7 @@ export const Referrals: CollectionConfig = {
 			options: Object.entries(eReferralStatus).map(([label, value]) => ({
 				label,
 				value,
-			})),		
+			})),
 		},
 	],
 };

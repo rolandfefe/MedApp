@@ -12,6 +12,8 @@ import { MorphingDialogTitle } from "@/components/motion-primitives/morphing-dia
 import { ShineBorder } from "@/components/ui/shine-border";
 import { getDoctors } from "@/lib/actions/doctor.actions";
 import { getPatientNav } from "@/lib/actions/globals.actions";
+import { CurrentProvider } from "@/contexts/Current.context";
+import { PaginationProvider } from "@/contexts/Pagination.context";
 
 export default async function layout({ children }: { children: ReactNode }) {
 	const [currentUser, patient, { doctors }, patientNav] = await Promise.all([
@@ -22,7 +24,7 @@ export default async function layout({ children }: { children: ReactNode }) {
 	]);
 
 	return (
-		<>
+		<CurrentProvider user={currentUser} patient={patient}>
 			<SidebarProvider defaultOpen>
 				<AppSidebar currentUser={currentUser} />
 				<SidebarInset>
@@ -33,25 +35,28 @@ export default async function layout({ children }: { children: ReactNode }) {
 					</ScrollArea>
 				</SidebarInset>
 			</SidebarProvider>
-			<AppointmentPanel
-				doctors={doctors}
-				action="Create"
-				patient={patient}
-				className="fixed bottom-3 right-3 size"
-			>
-				<MyBtn
-					asChild
-					size="icon"
-					variant={"secondary"}
-					className="size-12 sm:size-16 rounded-full glass glass-shadow text-primary"
-				>
-					<ShineBorder shineColor={["#A07CFE", "#FE8FB5", "#FFBE7B"]} />
 
-					<MorphingDialogTitle>
-						<Headset size={23} />
-					</MorphingDialogTitle>
-				</MyBtn>
-			</AppointmentPanel>
-		</>
+			<PaginationProvider doctorsInit={doctors}>
+				<CurrentProvider patient={patient}>
+					<AppointmentPanel
+						action="Create"
+						className="fixed bottom-3 right-3 size"
+					>
+						<MyBtn
+							asChild
+							size="icon"
+							variant={"secondary"}
+							className="size-12 sm:size-16 rounded-full glass glass-shadow text-primary"
+						>
+							<ShineBorder shineColor={["#A07CFE", "#FE8FB5", "#FFBE7B"]} />
+
+							<MorphingDialogTitle>
+								<Headset size={23} />
+							</MorphingDialogTitle>
+						</MyBtn>
+					</AppointmentPanel>
+				</CurrentProvider>
+			</PaginationProvider>
+		</CurrentProvider>
 	);
 }

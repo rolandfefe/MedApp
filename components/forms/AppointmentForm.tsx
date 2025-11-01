@@ -5,10 +5,9 @@ import {
 	appointmentFormSchema,
 } from "@/lib/formSchemas/appointment.schema";
 import { cn } from "@/lib/utils";
-import { eConfidenceLevel, ePatientConsent } from "@/types/enums/enums";
+import { ePatientConsent } from "@/types/enums/enums";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Headset, X } from "lucide-react";
-import { usePathname } from "next/navigation";
 import { ComponentProps, ReactNode, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import Heading from "../custom/Heading";
@@ -27,6 +26,12 @@ import { Card, CardContent } from "../ui/card";
 import { Form } from "../ui/form";
 import { Separator } from "../ui/separator";
 
+import { useCurrent } from "@/contexts/Current.context";
+import { usePagination } from "@/contexts/Pagination.context";
+import {
+	createAppointment,
+	updateAppointment,
+} from "@/lib/actions/appointment.actions";
 import { PatientFormData } from "@/lib/formSchemas/patient.schema";
 import { FieldErrors } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -36,25 +41,18 @@ import {
 	StepperContent,
 	StepperTrigger,
 } from "../custom/motion-stepper";
-import { ShineBorder } from "../ui/shine-border";
 import { ScrollArea } from "../ui/scroll-area";
-import {
-	createAppointment,
-	updateAppointment,
-} from "@/lib/actions/appointment.actions";
-import { Appointment } from "@/types/payload";
 
 export default function AppointmentForm({
 	action,
 	appointment,
-	patient,
-	doctors,
 }: {
 	action: "Create" | "Update";
 	appointment?: IAppointment;
-	patient: IPatient;
-	doctors: IDoctor[];
 }) {
+	const patient = useCurrent().currentPatient as IPatient;
+	const { doctors } = usePagination();
+
 	const [isPending, startTransition] = useTransition();
 	const [activeStep, setActiveStep] = useState<number>(1);
 	const [isSuccess, setIsSuccess] = useState<boolean>(false);
