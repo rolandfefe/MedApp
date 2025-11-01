@@ -1,16 +1,14 @@
 import { ourFileRouter } from "@/app/(payload)/api/uploadthing/core";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import "@/lib/db/models";
-import { ClerkProvider } from "@clerk/nextjs";
-import { shadcn } from "@clerk/themes";
+import AuthProvider from "@/Providers/AuthProvider";
+import BProgressProvider from "@/Providers/BProgressProvider";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import type { Metadata } from "next";
 import { Geist_Mono, Poppins } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import { extractRouterConfig } from "uploadthing/server";
 import "./globals.css";
-import BProgressProvider from "@/Providers/BProgressProvider";
 
 const poppinsFont = Poppins({
 	weight: ["100", "200", "300", "400", "500", "600", "700"],
@@ -36,11 +34,7 @@ export default async function RootLayout({
 }>) {
 	return (
 		<html lang="en" suppressHydrationWarning>
-			<ClerkProvider
-				dynamic
-				afterSignOutUrl="/"
-				appearance={{ baseTheme: shadcn }}
-			>
+			<AuthProvider>
 				<body
 					className={`${poppinsFont.className} ${geistMono.variable} antialiased`}
 				>
@@ -61,7 +55,7 @@ export default async function RootLayout({
 						</BProgressProvider>
 					</ThemeProvider>
 				</body>
-			</ClerkProvider>
+			</AuthProvider>
 		</html>
 	);
 }

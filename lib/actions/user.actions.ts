@@ -10,14 +10,16 @@ const payload = await getPayload({ config });
 /**
  * @Mutations
  */
-export const createUser = async (data: IUser) => {
+export const createUser = async (data: IUser): Promise<IUser> => {
 	try {
-		await payload.create({
+		const user = await payload.create({
 			collection: "users",
 			data,
 		});
 
 		updateTag("users");
+
+		return user;
 	} catch (error: any) {
 		throw new Error(error);
 	}
@@ -106,14 +108,23 @@ export const getCurrentUser = cache(
 );
 
 export const getUser = cache(
-	async (id: string): Promise<IUser> => {
+	async ({
+		id,
+		clerkId,
+	}: {
+		id?: string;
+		clerkId?: string;
+	}): Promise<IUser> => {
 		try {
-			const user = await payload.findByID({
+			const { docs } = await payload.find({
 				collection: "users",
-				id,
+				where: {
+					or: [{ id: { equals: id } }, { clerkId: { equals: clerkId } }],
+				},
+				limit: 1,
 			});
 
-			return user;
+			return docs[0];
 		} catch (error: any) {
 			throw new Error(error);
 		}

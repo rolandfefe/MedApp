@@ -48,7 +48,7 @@ export const POST = async (req: Request) => {
 				lname: lname!,
 				imageUrl,
 				email: email_addresses[0].email_address,
-			}, "/");
+			});
 
 			return NextResponse.json({ msg: "User Created." }, { status: 200 });
 		} catch (error: any) {

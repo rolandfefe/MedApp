@@ -1,4 +1,3 @@
-// storage-adapter-import-placeholder
 import { mongooseAdapter } from "@payloadcms/db-mongodb";
 import { payloadCloudPlugin } from "@payloadcms/payload-cloud";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
@@ -20,6 +19,10 @@ import { Appointments } from "./lib/collections/Appointments.collection";
 import { Messages } from "./lib/collections/Messages.collection";
 import { Referrals } from "./lib/collections/Referrals.collection";
 import { RecurrencePlan } from "./lib/collections/RecurrencePlan.collection";
+import { LandingNav } from "./lib/collections/globals/LandingNav.global";
+import { Verdict } from "./lib/collections/Verdict.collection";
+import { PatientNav } from "./lib/collections/globals/PatientNav.global";
+import { DoctorNav } from "./lib/collections/globals/DoctorNav.global";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -30,7 +33,11 @@ export default buildConfig({
 		importMap: {
 			baseDir: path.resolve(dirname),
 		},
+		components: {
+			providers: ["@/Providers/AuthProvider#AuthProvider"],
+		},
 	},
+	globals: [LandingNav, PatientNav, DoctorNav],
 	collections: [
 		Users,
 		Media,
@@ -44,6 +51,7 @@ export default buildConfig({
 		Messages,
 		Referrals,
 		RecurrencePlan,
+		Verdict,
 	],
 	editor: lexicalEditor(),
 	secret: process.env.PAYLOAD_SECRET || "",
@@ -56,7 +64,6 @@ export default buildConfig({
 	sharp,
 	plugins: [
 		payloadCloudPlugin(),
-		// storage-adapter-placeholder
 		uploadthingStorage({
 			collections: { media: true },
 			options: {
