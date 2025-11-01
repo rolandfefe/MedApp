@@ -8,6 +8,7 @@ export const LandingNav: GlobalConfig = {
 		{
 			name: "items",
 			type: "array",
+			minRows: 1,
 			fields: [
 				{ name: "name", type: "text", required: true },
 				{ name: "link", type: "text", required: true },

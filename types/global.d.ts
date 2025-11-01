@@ -32,10 +32,13 @@ import { IPaymentInfo, IReferral } from "./appointment";
 import {
 	Appointment,
 	Doctor,
+	DoctorNav,
 	HealthStatus,
 	History,
+	LandingNav,
 	Message,
 	Patient,
+	PatientNav,
 	RecurrencePlan,
 	Referral,
 	User,
@@ -60,6 +63,10 @@ declare global {
 	type IDiagnosis = Diagnosis;
 	type IRecurrencePlan = RecurrencePlan;
 	type IHealthStatus = HealthStatus
+
+	type ILandingNav = LandingNav
+	type IPatientNav = PatientNav
+	type IDoctorNav = DoctorNav
 
 	// interface IUser extends Base {
 	// 	clerkId: string;
@@ -330,19 +337,19 @@ declare global {
 
 	// ? Allow constant follow up on the patients
 	// interface IRecurrencePlan extends Base {
-		supervisor: IPatient | IDoctor | string;
-		name: string;
-		frequency: eRecurrenceFrequency;
-		interval: number;
-		weekDays?: eWeekDays[];
-		// dayOfMonth?: number;
-		startDate: Date | string;
-		endDate?: Date | string;
-		startTime: Date | string;
-		endTime?: Date | string;
-		// occurrenceCount?: number;
-		exceptions?: Date[] | string[];
-	}
+		// supervisor: IPatient | IDoctor | string;
+	// 	name: string;
+	// 	frequency: eRecurrenceFrequency;
+	// 	interval: number;
+	// 	weekDays?: eWeekDays[];
+	// 	// dayOfMonth?: number;
+	// 	startDate: Date | string;
+	// 	endDate?: Date | string;
+	// 	startTime: Date | string;
+	// 	endTime?: Date | string;
+	// 	// occurrenceCount?: number;
+	// 	exceptions?: Date[] | string[];
+	// }
 
 	interface IReminder extends Base {
 		user: IUser | string;

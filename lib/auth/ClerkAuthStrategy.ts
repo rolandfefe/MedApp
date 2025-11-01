@@ -1,6 +1,5 @@
 import { currentUser } from "@clerk/nextjs/server";
 import { AuthStrategy, Payload } from "payload";
-import { createUser, getUser } from "../actions/user.actions";
 
 export async function getDbUser(payload: Payload): Promise<IUser | null> {
 	// const { user.id }: { user.id: string | null } = await auth();
@@ -21,24 +20,25 @@ export async function getDbUser(payload: Payload): Promise<IUser | null> {
 		limit: 1,
 	});
 
-	// ? Working if no user
-	if (!dbUser) {
-		currentPayloadUser = await payload.create({
-			collection: "users",
-			data: {
-				clerkId: user.id,
-				email: user.emailAddresses[0].emailAddress,
-				fname: user.firstName!,
-				lname: user.lastName!,
-				username: user.username!,
-				imageUrl: user.imageUrl,
-			},
-		});
-	} else {
-		currentPayloadUser = dbUser;
-	}
+	// // ? Working if no user
+	// if (!dbUser) {
+	// 	currentPayloadUser = await payload.create({
+	// 		collection: "users",
+	// 		data: {
+	// 			clerkId: user.id,
+	// 			email: user.emailAddresses[0].emailAddress,
+	// 			fname: user.firstName!,
+	// 			lname: user.lastName!,
+	// 			username: user.username!,
+	// 			imageUrl: user.imageUrl,
+	// 		},
+	// 	});
+	// } else {
+	// 	currentPayloadUser = dbUser;
+	// }
 
-	return currentPayloadUser;
+	// return currentPayloadUser;
+	return dbUser;
 }
 
 export const ClerkAuthStrategy: AuthStrategy = {

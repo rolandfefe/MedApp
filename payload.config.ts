@@ -34,7 +34,7 @@ export default buildConfig({
 			baseDir: path.resolve(dirname),
 		},
 		components: {
-			providers: ["@/Providers/AuthProvider#AuthProvider"],
+			providers: ["@/Providers/AuthProvider"],
 		},
 	},
 	globals: [LandingNav, PatientNav, DoctorNav],

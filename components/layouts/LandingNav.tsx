@@ -1,4 +1,5 @@
 "use client";
+
 import {
 	MobileNav,
 	MobileNavHeader,
@@ -10,13 +11,18 @@ import {
 	NavBody,
 	NavItems,
 } from "@/components/ui/resizable-navbar";
-import { LANDING_NAV_ITEMS } from "@/constants";
 import { cn } from "@/lib/utils";
-import { SignInButton } from "@clerk/nextjs";
+import { SignedOut, SignInButton } from "@clerk/nextjs";
 import { useTheme } from "next-themes";
 import { useState } from "react";
 
-export default function LandingNav({ className }: { className?: string }) {
+export default function LandingNav({
+	className,
+	landingNav,
+}: {
+	className?: string;
+	landingNav: ILandingNav;
+}) {
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
 
 	const { setTheme } = useTheme();
@@ -29,7 +35,7 @@ export default function LandingNav({ className }: { className?: string }) {
 				<NavBody>
 					<NavbarLogo />
 
-					<NavItems items={LANDING_NAV_ITEMS} />
+					<NavItems items={landingNav.items!} />
 
 					<div className="flex items-center gap-x-1">
 						{/* <NavbarButton href="#" variant="secondary" className=" p-0">
@@ -38,11 +44,13 @@ export default function LandingNav({ className }: { className?: string }) {
 						<NavbarButton href="/home" variant={"gradient"}>
 							Get started✨
 						</NavbarButton>
-						<SignInButton mode="modal" withSignUp >
-							<NavbarButton href="#" variant={"primary"}>
-								Login
-							</NavbarButton>
-						</SignInButton>
+						<SignedOut>
+							<SignInButton mode="modal" withSignUp>
+								<NavbarButton href="#" variant={"primary"}>
+									Login
+								</NavbarButton>
+							</SignInButton>
+						</SignedOut>
 					</div>
 				</NavBody>
 
@@ -55,11 +63,13 @@ export default function LandingNav({ className }: { className?: string }) {
 							{/* <NavbarButton href="#" variant="secondary" className=" p-0">
 								<ThemeBtn className="bg-transparent border-none " />
 							</NavbarButton> */}
-							<SignInButton mode="modal">
-								<NavbarButton href="#" variant={"primary"} className="flex-1">
-									Login
-								</NavbarButton>
-							</SignInButton>
+							<SignedOut>
+								<SignInButton mode="modal">
+									<NavbarButton href="#" variant={"primary"} className="flex-1">
+										Login
+									</NavbarButton>
+								</SignInButton>
+							</SignedOut>
 
 							<MobileNavToggle
 								isOpen={isMobileMenuOpen}
@@ -74,7 +84,7 @@ export default function LandingNav({ className }: { className?: string }) {
 					>
 						<NavItems
 							showIcons
-							items={LANDING_NAV_ITEMS}
+							items={landingNav.items}
 							className="relative w-full mb-2 p-2 !flex flex-col"
 						/>
 

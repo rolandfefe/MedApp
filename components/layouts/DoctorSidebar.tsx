@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { useParams } from "next/navigation";
 import {
 	Sidebar,
 	SidebarContent,
@@ -8,15 +8,18 @@ import {
 	SidebarHeader,
 	SidebarMenu,
 	SidebarRail,
-	SidebarSeparator,
 } from "../ui/sidebar";
-import AppSidebarHeader from "./AppSidebarHeader";
 import AppSidebarFooter from "./AppSidebarFooter";
-import { useParams } from "next/navigation";
-import { getDoctorNavItems } from "@/constants";
+import AppSidebarHeader from "./AppSidebarHeader";
 import NavItem from "./NavItem";
 
-export default function DoctorSidebar({ currentUser }: { currentUser: IUser }) {
+export default function DoctorSidebar({
+	currentUser,
+	doctorNav,
+}: {
+	currentUser: IUser;
+	doctorNav: IDoctorNav;
+}) {
 	const { id } = useParams();
 
 	return (
@@ -26,8 +29,13 @@ export default function DoctorSidebar({ currentUser }: { currentUser: IUser }) {
 			</SidebarHeader>
 			<SidebarContent className="p-1">
 				<SidebarMenu>
-					{getDoctorNavItems(id as string).map(({ icon, name, link }, i) => (
-						<NavItem key={i} icon={icon} name={name} link={link} />
+					{doctorNav.items!.map(({ icon, name, link }, i) => (
+						<NavItem
+							key={i}
+							icon={icon}
+							name={name}
+							link={`/doctor/${id}/${link}`}
+						/>
 					))}
 				</SidebarMenu>
 			</SidebarContent>

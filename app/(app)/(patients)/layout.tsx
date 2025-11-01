@@ -11,12 +11,14 @@ import { getCurrentPatient } from "@/lib/actions/utils.actions";
 import { MorphingDialogTitle } from "@/components/motion-primitives/morphing-dialog";
 import { ShineBorder } from "@/components/ui/shine-border";
 import { getDoctors } from "@/lib/actions/doctor.actions";
+import { getPatientNav } from "@/lib/actions/globals.actions";
 
 export default async function layout({ children }: { children: ReactNode }) {
-	const [currentUser, patient, { doctors }] = await Promise.all([
+	const [currentUser, patient, { doctors }, patientNav] = await Promise.all([
 		getCurrentUser(),
 		getCurrentPatient(),
-		getDoctors({limit: 0}),
+		getDoctors({ limit: 0 }),
+		getPatientNav(),
 	]);
 
 	return (
@@ -25,7 +27,7 @@ export default async function layout({ children }: { children: ReactNode }) {
 				<AppSidebar currentUser={currentUser} />
 				<SidebarInset>
 					<ScrollArea className="h-screen">
-						<Navbar />
+						<Navbar patientNav={patientNav} />
 						<main className="overflow-x-hidden p-3">{children}</main>
 						<ScrollBar />
 					</ScrollArea>

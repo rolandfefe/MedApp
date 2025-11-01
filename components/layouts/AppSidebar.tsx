@@ -1,4 +1,4 @@
-import React from "react";
+import { getPatientNav } from "@/lib/actions/globals.actions";
 import {
 	Sidebar,
 	SidebarContent,
@@ -7,12 +7,13 @@ import {
 	SidebarMenu,
 	SidebarRail,
 } from "../ui/sidebar";
-import AppSidebarHeader from "./AppSidebarHeader";
 import AppSidebarFooter from "./AppSidebarFooter";
-import { PATIENT_NAV_ITEMS } from "@/constants";
+import AppSidebarHeader from "./AppSidebarHeader";
 import NavItem from "./NavItem";
 
-export default function AppSidebar({ currentUser }: { currentUser: IUser }) {
+export default async function AppSidebar({ currentUser }: { currentUser: IUser }) {
+	const patientNav = await getPatientNav()
+
 	return (
 		<Sidebar variant="floating" collapsible="icon">
 			<SidebarHeader>
@@ -20,7 +21,7 @@ export default function AppSidebar({ currentUser }: { currentUser: IUser }) {
 			</SidebarHeader>
 			<SidebarContent className="p-1">
 				<SidebarMenu>
-					{PATIENT_NAV_ITEMS.map(({ icon, name, link }, i) => (
+					{patientNav.items!.map(({ icon, name, link }, i) => (
 						<NavItem key={i} icon={icon} name={name} link={link} />
 					))}
 				</SidebarMenu>

@@ -1,10 +1,3 @@
-import {
-	ADMIN_NAV_ITEMS,
-	getDoctorNavItems,
-	LANDING_NAV_ITEMS,
-	PATIENT_NAV_ITEMS,
-} from "@/constants";
-import { Appointment } from "@/types/payload";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -13,21 +6,15 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const getNavItem = (
-	,
-	variant: "Patient" | "Doctor" | "Admin" | "Consultation",
-	id?: string
-) => {
-	const navItems =
-		variant === "Admin"
-			? ADMIN_NAV_ITEMS
-			: variant === "Doctor"
-			? getDoctorNavItems(id!)
-			: PATIENT_NAV_ITEMS;
-
-	return navItems.find(
-		(item) => item.link === pathname || item.link.startsWith(pathname)
+	pathname: string,
+	items: NonNullable<IPatientNav["items"]>
+) =>
+	items.find(
+		(item) =>
+			item.link === pathname ||
+			item.link.startsWith(pathname) ||
+			item.link.endsWith(pathname)
 	);
-};
 
 export const containsRegex = (query: string): RegExp => {
 	const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");

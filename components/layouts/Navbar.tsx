@@ -2,14 +2,20 @@
 
 import { cn, getNavItem } from "@/lib/utils";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
-import { useParams, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import BackBtn from "../btns/BackBtn";
 import { ThemeBtn } from "../btns/ThemeBtn";
 import Heading from "../custom/Heading";
 import MyBtn from "../custom/MyBtn";
 import { SidebarTrigger } from "../ui/sidebar";
 
-export default function Navbar({ className }: { className?: string }) {
+export default function Navbar({
+	className,
+	patientNav,
+}: {
+	className?: string;
+	patientNav: IPatientNav;
+}) {
 	const pathname = usePathname();
 
 	return (
@@ -25,7 +31,7 @@ export default function Navbar({ className }: { className?: string }) {
 			</div>
 
 			<Heading className="text-xl md:text-2xl">
-				{getNavItem(pathname, "Patient")?.name}
+				{getNavItem(pathname, patientNav.items!)?.name}
 			</Heading>
 
 			<div className="flex items-center gap-x-2">

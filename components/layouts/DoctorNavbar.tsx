@@ -1,19 +1,21 @@
 "use client";
 
 import { cn, getNavItem } from "@/lib/utils";
-import Image from "next/image";
-import React from "react";
-import LogoText from "./LogoText";
 import { SignedIn, UserButton } from "@clerk/nextjs";
+import { useParams, usePathname } from "next/navigation";
+import BackBtn from "../btns/BackBtn";
 import { ThemeBtn } from "../btns/ThemeBtn";
 import Heading from "../custom/Heading";
 import { SidebarTrigger } from "../ui/sidebar";
-import BackBtn from "../btns/BackBtn";
-import { useParams, usePathname } from "next/navigation";
 // import { SignedIn } from "@clerk/clerk-react";
 
-export default function DoctorNavbar({ className }: { className?: string }) {
-	const { id } = useParams();
+export default function DoctorNavbar({
+	className,
+	doctorNav,
+}: {
+	className?: string;
+	doctorNav: IDoctorNav;
+}) {
 	const pathname = usePathname();
 
 	return (
@@ -29,7 +31,7 @@ export default function DoctorNavbar({ className }: { className?: string }) {
 			</div>
 
 			<Heading className="text-xl md:text-2xl">
-				{getNavItem(pathname, "Doctor", id as string)?.name}
+				{getNavItem(pathname, doctorNav.items!)?.name}
 			</Heading>
 
 			<div className="flex items-center gap-x-2">
