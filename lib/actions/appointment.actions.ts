@@ -110,13 +110,12 @@ export const getAppointments = cache(
 	}
 );
 
-export const getAppointmentById = cache(
+export const getAppointment = cache(
 	async (id: string): Promise<IAppointment> => {
 		try {
 			return await payload.findByID({
 				collection: "appointments",
 				id,
-				depth: 1,
 			});
 		} catch (error: any) {
 			throw new Error(error);

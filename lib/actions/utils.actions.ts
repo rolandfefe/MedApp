@@ -32,7 +32,7 @@ export const getCurrentPatientAppointments = async () => {
 
 export const getCurrentDoctorAppointments = async () => {
 	const { id } = await getCurrentDoctor();
-	return await getAppointments({ patient: id! });
+	return await getAppointments({ doctor: id! });
 };
 
 export const getAllocatedAutoAppointments = async () => {

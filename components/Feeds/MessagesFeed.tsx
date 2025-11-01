@@ -1,12 +1,15 @@
 "use client";
 
+import { useConsultation } from "@/contexts/consultation.context";
+import { useCurrent } from "@/contexts/Current.context";
 import { pusherClient } from "@/lib/pusher";
 import { cn } from "@/lib/utils";
 import { uniqBy } from "lodash-es";
 import { AnimatePresence, motion, Variants } from "motion/react";
-import { useEffect, useEffectEvent, useRef, useState } from "react";
+import { useEffect, useEffectEvent, useLayoutEffect, useRef, useState } from "react";
 import MsgCard from "../cards/MsgCard";
-import { ScrollArea, ScrollBar } from "../ui/scroll-area";
+import { ScrollArea } from "../ui/scroll-area";
+import { useMsg } from "@/contexts/message.context";
 
 const msgVariants: Variants = {
 	hidden: { opacity: 0, y: 100 },
@@ -16,18 +19,27 @@ const msgVariants: Variants = {
 
 export default function MessagesFeed({
 	initMsgs,
-	currentUser,
-	appointment,
 	className,
 }: {
 	initMsgs: IMessage[];
-	currentUser: IUser;
-	appointment: IAppointment;
 	className?: string;
 }) {
-	const [msgs, setMsgs] = useState<IMessage[]>(initMsgs);
+	const currentUser = useCurrent().currentUser as IUser;
+	const { appointment } = useConsultation();
+	const {msgs, setMsgs} = useMsg()
+	// const [msgs, setMsgs] = useState<IMessage[]>(initMsgs);
+
+	console.log(msgs)
 
 	const lastMsgRef = useRef<HTMLDivElement>(null);
+
+	const loadMore = async () => {
+		
+	}
+
+	const sync = async () => {
+		
+	}
 
 	const pusherHandler = useEffectEvent(() => {
 		pusherClient.subscribe(`chat-${appointment.id!}-channel`).bind(
@@ -39,14 +51,19 @@ export default function MessagesFeed({
 	});
 
 	useEffect(() => {
+		
+		pusherHandler();
+	}, [appointment, pusherHandler]);
+
+	
+	useLayoutEffect(() => {
 		if (lastMsgRef)
 			lastMsgRef.current?.scrollIntoView({
 				behavior: "smooth",
 				block: "center",
 			});
 
-		pusherHandler();
-	}, [appointment, lastMsgRef]);
+	}, [lastMsgRef])
 
 	return (
 		<ScrollArea hideScrollbar className="h-[89vh]">

@@ -54,18 +54,18 @@ export default function PatientHistorySection({
 
 	return (
 		<div className={cn("", className)}>
-			<DiseaseHistorySection diseaseHistory={diseaseHistory} />
+			<DiseaseHistorySection diseaseHistory={diseaseHistory ?? []} />
 			<Separator className="my-4" />
-			<SurgicalHistorySection surgicalHistory={surgicalHistory} />
-			<Separator className="my-4" />
-
-			<FamilyHistorySection familyHistory={familyHistory} />
+			<SurgicalHistorySection surgicalHistory={surgicalHistory ?? []} />
 			<Separator className="my-4" />
 
-			<AllergiesSection allergies={allergies} />
+			<FamilyHistorySection familyHistory={familyHistory ?? []} />
 			<Separator className="my-4" />
 
-			<SocialHistorySection socialHistory={socialHistory} />
+			<AllergiesSection allergies={allergies ?? []} />
+			<Separator className="my-4" />
+
+			<SocialHistorySection socialHistory={socialHistory ?? []} />
 			<Separator className="my-4" />
 
 			<section>
@@ -108,7 +108,8 @@ export default function PatientHistorySection({
 									<span>Notes</span>
 								</h6>
 								<p className="text-sm font-medium text-muted-foreground">
-									{notes}
+									{/* {notes} */}
+									Add Lexical notes.
 								</p>
 							</CardContent>
 						</Card>

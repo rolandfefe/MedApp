@@ -49,6 +49,7 @@ import ReferralsAside from "../asides/ReferralsAside";
 import ReferralForm, { ReferralFormDialog } from "../forms/ReferralForm";
 import { useMediaQuery } from "@uidotdev/usehooks";
 import { getReferrals } from "@/lib/actions/referral.actions";
+import { useConsultation } from "@/contexts/consultation.context";
 
 export default function PatientFooter({
 	appointment,
@@ -67,9 +68,6 @@ export default function PatientFooter({
 				))}
 			</div>
 		);
-
-	// Reminder
-	// Referral
 
 	return (
 		<div className="space-y-3">
@@ -109,12 +107,7 @@ export default function PatientFooter({
 }
 
 const ReferralBtn = ({ appointment }: { appointment: IAppointment }) => {
-	const [referrals, setReferrals] = useState<IReferral[]>();
-
-	useEffect(() => {
-		(async () =>
-			setReferrals(await getReferrals({ appointment: appointment.id! })))();
-	}, [appointment]);
+	const { referrals } = useConsultation();
 
 	return (
 		<ButtonGroup className="!w-full">
@@ -125,7 +118,7 @@ const ReferralBtn = ({ appointment }: { appointment: IAppointment }) => {
 					</MyBtn>
 				</FormPanelTrigger>
 				<FormPanelContent>
-					<ReferralsAside referrals={referrals!} appointment={appointment} />
+					<ReferralsAside referrals={referrals} appointment={appointment} />
 				</FormPanelContent>
 			</FormPanel>
 

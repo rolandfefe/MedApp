@@ -1,4 +1,5 @@
 "use client";
+
 import { createContext, ReactNode, useContext, useMemo } from "react";
 
 interface ContextProps {
@@ -24,7 +25,7 @@ export const ConsultationProvider = ({
 	children,
 	...props
 }: { children: ReactNode } & ContextProps) => {
-	const contextValue = useMemo<ContextProps>(() => ({ ...props }), [props]);
+	const contextValue = props;
 
 	return (
 		<ConsultationContext.Provider value={contextValue}>

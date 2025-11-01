@@ -1,20 +1,22 @@
-import React, { ComponentProps } from "react";
-import { Card, CardContent } from "../ui/card";
+"use client";
+
+import { useCurrent } from "@/contexts/Current.context";
 import { cn } from "@/lib/utils";
-import moment from "moment";
 import { eMessageStatus } from "@/types/enums/enums";
 import { Check, CheckCheck } from "lucide-react";
+import moment from "moment";
+import { ComponentProps } from "react";
+import { Card, CardContent } from "../ui/card";
 import UserCard from "./UserCard";
 
 export default function MsgCard({
 	className,
 	msg,
-	currentUser,
 	...props
 }: {
 	msg: IMessage;
-	currentUser: IUser;
 } & ComponentProps<typeof Card>) {
+	const currentUser = useCurrent().currentUser as IUser;
 	const author = msg.from as IUser;
 	const isAuthor = author.id === currentUser.id;
 

@@ -39,6 +39,4 @@ export const getAge = (DOB: string | Date): string => {
 export const getIsAppointmentDoctor = (
 	appointment: IAppointment,
 	currentUser: IUser
-): boolean => {
-	return appointment?.doctor!.user.id == currentUser.id;
-};
+): boolean => appointment?.doctor!.user.id == currentUser.id;

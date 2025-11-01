@@ -43,7 +43,7 @@ export enum eSeverity {
 	SEVERE = "Severe",
 }
 
-export enum eMethodOfDrugAdministration {
+export enum eRouteOfAdministration {
 	ORAL = "Oral",
 	TOPICAL = "Topical",
 	INJECTION = "Injection",

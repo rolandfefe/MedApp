@@ -4,11 +4,7 @@ import { useCurrent } from "@/contexts/Current.context";
 import { usePagination } from "@/contexts/Pagination.context";
 import { cn } from "@/lib/utils";
 import { eAppointmentStatus, eAppointmentTypes } from "@/types/enums/enums";
-import {
-	ChevronsUpDown,
-	Sparkles,
-	TriangleAlert
-} from "lucide-react";
+import { ChevronsUpDown, Sparkles, TriangleAlert } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import AppointmentCard from "../cards/AppointmentCard";

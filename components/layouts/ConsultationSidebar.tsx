@@ -1,11 +1,7 @@
 "use client";
 
-import { getAppointmentById } from "@/lib/actions/appointment.actions";
-import { getHistory } from "@/lib/actions/history.action";
-import { pusherClient } from "@/lib/pusher";
+import { useConsultation } from "@/contexts/consultation.context";
 import { getIsAppointmentDoctor } from "@/lib/utils";
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
 import PatientConsultationAside from "../asides/PatientConsultationAside";
 import DoctorCard from "../cards/DoctorCard";
 import {
@@ -16,14 +12,12 @@ import {
 } from "../ui/sidebar";
 import { Skeleton } from "../ui/skeleton";
 import PatientFooter from "./PatientFooter";
-import { useConsultation } from "@/contexts/consultation.context";
+import { useCurrent } from "@/contexts/Current.context";
 
-export default function ConsultationSidebar({
-	currentUser,
-}: {
-	currentUser: IUser;
-}) {
-	const { appointment, patientHistory } = useConsultation();
+export default function ConsultationSidebar() {
+	const currentUser = useCurrent().currentUser as IUser;
+
+	const { appointment } = useConsultation();
 	const isAppointmentDoctor = getIsAppointmentDoctor(appointment, currentUser);
 
 	return (
@@ -32,10 +26,7 @@ export default function ConsultationSidebar({
 			<SidebarContent className="p-2">
 				{appointment ? (
 					isAppointmentDoctor ? (
-						<PatientConsultationAside
-							history={patientHistory!}
-							appointment={appointment}
-						/>
+						<PatientConsultationAside />
 					) : (
 						<DoctorCard
 							doctor={appointment.doctor as IDoctor}

@@ -1,6 +1,6 @@
 "use client";
 
-import { getAppointmentById } from "@/lib/actions/appointment.actions";
+import { getAppointment } from "@/lib/actions/appointment.actions";
 import { cn } from "@/lib/utils";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import { useParams, usePathname } from "next/navigation";
@@ -23,7 +23,7 @@ export default function ConsultationNavbar({
 
 	useEffect(() => {
 		const fetchAppointment = async () =>
-			setAppointment(await getAppointmentById(appointmentId as string));
+			setAppointment(await getAppointment(appointmentId as string));
 
 		fetchAppointment();
 	}, [appointmentId]);

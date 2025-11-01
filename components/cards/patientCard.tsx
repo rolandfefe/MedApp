@@ -1,23 +1,24 @@
-import React from "react";
-import { Card, CardContent } from "../ui/card";
+"use client"
+
+import { useCurrent } from "@/contexts/Current.context";
 import { cn, getAge } from "@/lib/utils";
+import { Patient, User } from "@/types/payload";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { Languages } from "lucide-react";
 import { Badge } from "../ui/badge";
-import { Doctor, Patient, User } from "@/types/payload";
+import { Card, CardContent } from "../ui/card";
 
 export default function PatientCard({
 	patient,
-	currentDoctor,
 	className,
 	variant = "sm",
 }: {
 	patient: Patient;
-	currentDoctor: Doctor;
 	className?: string;
 	variant?: "sm" | "md" | "lg";
 }) {
 	const user = patient.user as User;
+	const currentPatient = useCurrent().currentPatient as IPatient;
+	const currentDoctor = useCurrent().currentDoctor as IDoctor;
 
 	if (variant === "sm") {
 		return (
@@ -67,7 +68,7 @@ export default function PatientCard({
 
 						<div className="flex items-center gap-x-1 justify-center">
 							<Badge variant={"secondary"}>{patient.gender}</Badge>
-							<Badge variant={"secondary"}>{getAge(patient.DOB as Date)}</Badge>
+							<Badge variant={"secondary"}>{getAge(patient.DOB)}</Badge>
 							<Badge variant={"secondary"}>{patient.maritalStatus}</Badge>
 						</div>
 					</div>

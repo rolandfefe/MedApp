@@ -8,7 +8,7 @@ export default async function page({
 }) {
 	const { id } = await params;
 	const currentUser = await getCurrentUser();
-	const doctor = await getDoctor({ id: decodeURIComponent(id) });
+	const doctor = await getCurrentDoctor();
 
 	return <div>page</div>;
 }

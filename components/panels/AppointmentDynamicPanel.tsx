@@ -31,22 +31,23 @@ import { Separator } from "../ui/separator";
 import { ShineBorder } from "../ui/shine-border";
 import ConfirmationDialog from "./ConfirmationDialog";
 import LinkBtn from "../btns/LinkBtn";
+import { useCurrent } from "@/contexts/Current.context";
 
 export default function AppointmentDynamicPanel({
 	appointment,
-	currentPatient,
-	currentDoctor,
 	mode,
 	children,
 }: {
 	appointment: IAppointment;
-	currentPatient?: IPatient;
-	currentDoctor?: IDoctor;
 	mode: "Patient" | "Doctor";
 	children?: ReactNode;
 }) {
 	const pathname = usePathname();
 	const router = useRouter();
+
+	const currentPatient = useCurrent().currentPatient as IPatient;
+	const currentDoctor = useCurrent().currentDoctor as IDoctor;
+
 	const [isPending, startTransition] = useTransition();
 	const [isConfirming, startConfirmation] = useTransition();
 	const [isOpeningConsultation, startOpeningConsultation] = useTransition();
@@ -54,14 +55,14 @@ export default function AppointmentDynamicPanel({
 	const isAppointmentDoctor = currentDoctor?.id == appointment.doctor?.id;
 	const isAutoMode =
 		!appointment.doctor ||
-		(appointment.status === eAppointmentStatus.CANCELLED &&
+		(appointment.status == eAppointmentStatus.CANCELLED &&
 			!isAppointmentDoctor);
 
 	const cancelHandler = async () => {
 		await updateAppointment({
 			...appointment,
 			cancellation: {
-				cancelledAt: new Date(),
+				cancelledAt: `${new Date()}`,
 				cancelledBy:
 					mode === "Patient" ? currentPatient?.id : currentDoctor?.id,
 				reason: "",
@@ -77,7 +78,7 @@ export default function AppointmentDynamicPanel({
 				await updateAppointment({
 					...appointment,
 					confirmation: {
-						confirmedAt: new Date(),
+						confirmedAt: `${new Date()}`,
 						isConfirmed: true,
 						confirmedBy: currentDoctor?.id,
 					},
@@ -96,7 +97,7 @@ export default function AppointmentDynamicPanel({
 				...appointment,
 				doctor: currentDoctor?.id,
 				confirmation: {
-					confirmedAt: new Date(),
+					confirmedAt: `${new Date()}`,
 					isConfirmed: true,
 					confirmedBy: currentDoctor?.id,
 				},
@@ -170,6 +171,7 @@ export default function AppointmentDynamicPanel({
 								currentDoctor={currentDoctor!}
 								variant="sm"
 							/>
+
 							{isAutoMode && (
 								<div className="p-2 border rounded-xl">
 									<p className="flex items-center gap-x-2 justify-center text-blue-500 font-medium">

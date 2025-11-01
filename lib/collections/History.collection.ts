@@ -109,7 +109,7 @@ export const Histories: CollectionConfig = {
 							),
 						},
 						{ name: "quiteDate", type: "date" },
-						{ name: "lastUser", type: "date" },
+						{ name: "lastUse", type: "date" },
 					],
 				},
 			],

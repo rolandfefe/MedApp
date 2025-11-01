@@ -2,7 +2,7 @@ import MessagesFeed from "@/components/Feeds/MessagesFeed";
 import MessageForm from "@/components/forms/MessageForm";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { MsgProvider } from "@/contexts/message.context";
-import { getAppointmentById } from "@/lib/actions/appointment.actions";
+import { getAppointment } from "@/lib/actions/appointment.actions";
 import { getMsgs } from "@/lib/actions/message.actions";
 import { getCurrentUser } from "@/lib/actions/user.actions";
 import Image from "next/image";
@@ -17,7 +17,7 @@ export default async function page({
 	const [currentUser, { msgs }, appointment] = await Promise.all([
 		getCurrentUser(),
 		getMsgs({ appointment: decodeURIComponent(appointmentId) }),
-		getAppointmentById(decodeURIComponent(appointmentId)),
+		getAppointment(decodeURIComponent(appointmentId)),
 	]);
 
 	// console.log("MSGS: ", msgs);
@@ -35,9 +35,7 @@ export default async function page({
 				/>
 
 				<MessagesFeed
-					currentUser={currentUser}
 					initMsgs={msgs}
-					appointment={appointment}
 					className="w-full z-20"
 				/>
 

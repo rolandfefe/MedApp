@@ -1,32 +1,29 @@
 "use client";
 
+import { useConsultation } from "@/contexts/consultation.context";
 import { cn } from "@/lib/utils";
 import { ePatientConsent } from "@/types/enums/enums";
-import { Notebook, PlusCircle } from "lucide-react";
+import { PlusCircle } from "lucide-react";
 import { useState } from "react";
 import { AppointmentStatusBadge } from "../cards/AppointmentCard";
 import PatientCard from "../cards/patientCard";
-import MyBtn from "../custom/MyBtn";
-import { DoctorNotesFormPanel } from "../forms/DoctorNotesForm";
-import { Badge } from "../ui/badge";
 import {
 	FormPanel,
 	FormPanelContent,
 	FormPanelTrigger,
 } from "../custom/form-panel";
+import MyBtn from "../custom/MyBtn";
 import PatientHistorySection from "../PatientHistorySection";
+import { Badge } from "../ui/badge";
 
-export default function PatientConsultationAside({
-	appointment,
-	history,
-}: {
-	appointment: IAppointment;
-	history: IHistory;
-}) {
+export default function PatientConsultationAside() {
+	const { appointment, patientHistory } = useConsultation();
+
 	const [consentTab, setConsentTab] =
 		useState<NonNullable<IAppointment["consentLevels"]>[number]>();
 	const patient = appointment.patient as IPatient;
 	const doctor = appointment.doctor as IDoctor;
+
 
 	return (
 		<div className="">
@@ -40,8 +37,7 @@ export default function PatientConsultationAside({
 				<Badge variant={"secondary"}>{appointment.type}</Badge>
 			</div>
 			<PatientCard
-				patient={appointment.patient as IPatient}
-				currentDoctor={appointment.doctor as IDoctor}
+				patient={patient}
 				variant="md"
 				className="border-0 bg-transparent"
 			/>
@@ -77,7 +73,7 @@ export default function PatientConsultationAside({
 									</FormPanelTrigger>
 									<FormPanelContent>
 										{consent === ePatientConsent.HISTORY ? (
-											<PatientHistorySection history={history} />
+											<PatientHistorySection history={patientHistory} />
 										) : (
 											"Other Panels"
 										)}

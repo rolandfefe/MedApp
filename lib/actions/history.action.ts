@@ -1,9 +1,8 @@
 "use server";
 
 import config from "@/payload.config";
-import { updateTag, unstable_cache as cache } from "next/cache";
+import { unstable_cache as cache, updateTag } from "next/cache";
 import { getPayload } from "payload";
-import historyModel from "../db/models/history.model";
 
 const payload = await getPayload({ config });
 
@@ -54,22 +53,24 @@ export const deleteHistory = async (id: string) => {
  */
 export const getHistory = cache(
 	async ({
-		patientId,
+		patient,
 		id,
 	}: {
-		patientId?: string;
+		patient?: string;
 		id?: string;
 	}): Promise<IHistory> => {
 		try {
-			const { docs } = await payload.find({
+			const {
+				docs: [history],
+			} = await payload.find({
 				collection: "histories",
 				where: {
-					or: [{ id: { equals: id } }, { patientId: { equals: patientId } }],
+					or: [{ id: { equals: id } }, { patient: { equals: patient } }],
 				},
 				limit: 1,
 			});
 
-			return docs[0];
+			return history;
 		} catch (error: any) {
 			throw new Error(error);
 		}

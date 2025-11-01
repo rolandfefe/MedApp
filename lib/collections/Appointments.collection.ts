@@ -31,7 +31,7 @@ export const Appointments: CollectionConfig = {
 			type: "relationship",
 			relationTo: "healthStatuses",
 		},
-
+		// !Could be removed in future
 		{
 			name: "reminders",
 			type: "relationship",
@@ -70,7 +70,7 @@ export const Appointments: CollectionConfig = {
 			name: "cancellation",
 			type: "group",
 			fields: [
-				{ name: "cancelledAt", type: "checkbox", defaultValue: false },
+				{ name: "cancelledAt", type: "date", defaultValue: new Date() },
 				{ name: "cancelledBy", type: "relationship", relationTo: "users" },
 				{ name: "reason", type: "textarea" },
 			],
@@ -99,9 +99,9 @@ export const Appointments: CollectionConfig = {
 		{
 			name: "online",
 			type: "group",
-			required: false,
+			defaultValue: {},
 			fields: [
-				{ name: "url", type: "text", required: true },
+				{ name: "url", type: "text" }, // ! should be required
 				{ name: "accessCode", type: "text" },
 			],
 		},

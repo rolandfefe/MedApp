@@ -79,7 +79,7 @@ export interface Config {
     messages: Message;
     referrals: Referral;
     recurrencePlans: RecurrencePlan;
-    verdicts: Verdict;
+    Verdict: Verdict;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -98,7 +98,7 @@ export interface Config {
     messages: MessagesSelect<false> | MessagesSelect<true>;
     referrals: ReferralsSelect<false> | ReferralsSelect<true>;
     recurrencePlans: RecurrencePlansSelect<false> | RecurrencePlansSelect<true>;
-    verdicts: VerdictsSelect<false> | VerdictsSelect<true>;
+    Verdict: VerdictSelect<false> | VerdictSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -467,7 +467,7 @@ export interface History {
       substances: string[];
       status?: ('Never' | 'Occasional' | 'Regular' | 'Former') | null;
       quiteDate?: string | null;
-      lastUser?: string | null;
+      lastUse?: string | null;
     };
   };
   exercise?: string | null;
@@ -583,7 +583,7 @@ export interface Appointment {
     confirmedBy?: (string | null) | User;
   };
   cancellation?: {
-    cancelledAt?: boolean | null;
+    cancelledAt?: string | null;
     cancelledBy?: (string | null) | User;
     reason?: string | null;
   };
@@ -637,7 +637,7 @@ export interface Appointment {
   consentLevels?: ('Health statuses' | 'Vitals' | 'History' | 'Patient profile' | 'User profile')[] | null;
   isEmergency?: boolean | null;
   online?: {
-    url: string;
+    url?: string | null;
     accessCode?: string | null;
   };
   updatedAt: string;
@@ -721,12 +721,81 @@ export interface RecurrencePlan {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "verdicts".
+ * via the `definition` "Verdict".
  */
 export interface Verdict {
   id: string;
+  diagnosis: string | Diagnosis;
+  doctor: (string | Doctor)[];
+  prognosis?: {
+    outlook?: ('excellent' | 'good' | 'fair' | 'poor' | 'guarded') | null;
+    estimatedRecoveryTime?: string | null;
+  };
+  patientNotes: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  isConfirmed?: boolean | null;
+  treatmentPlan: {
+    plan: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    };
+    procedures?:
+      | {
+          type?: string | null;
+          scheduledDate?: string | null;
+          status?: ('recommended' | 'scheduled' | 'completed') | null;
+          id?: string | null;
+        }[]
+      | null;
+    therapies?:
+      | {
+          type?: string | null;
+          frequency?: string | null;
+          duration?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    medications?:
+      | {
+          name: string;
+          dosage: string;
+          instructions?: string | null;
+          sideEffects?: string | null;
+          reason?: string | null;
+          route?: ('Oral' | 'Topical' | 'Injection' | 'Inhalation' | 'Other') | null;
+          startDate: string;
+          endDate?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
   updatedAt: string;
   createdAt: string;
+  deletedAt?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -784,7 +853,7 @@ export interface PayloadLockedDocument {
         value: string | RecurrencePlan;
       } | null)
     | ({
-        relationTo: 'verdicts';
+        relationTo: 'Verdict';
         value: string | Verdict;
       } | null);
   globalSlug?: string | null;
@@ -1080,7 +1149,7 @@ export interface HistoriesSelect<T extends boolean = true> {
               substances?: T;
               status?: T;
               quiteDate?: T;
-              lastUser?: T;
+              lastUse?: T;
             };
       };
   exercise?: T;
@@ -1226,11 +1295,56 @@ export interface RecurrencePlansSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "verdicts_select".
+ * via the `definition` "Verdict_select".
  */
-export interface VerdictsSelect<T extends boolean = true> {
+export interface VerdictSelect<T extends boolean = true> {
+  diagnosis?: T;
+  doctor?: T;
+  prognosis?:
+    | T
+    | {
+        outlook?: T;
+        estimatedRecoveryTime?: T;
+      };
+  patientNotes?: T;
+  isConfirmed?: T;
+  treatmentPlan?:
+    | T
+    | {
+        plan?: T;
+        procedures?:
+          | T
+          | {
+              type?: T;
+              scheduledDate?: T;
+              status?: T;
+              id?: T;
+            };
+        therapies?:
+          | T
+          | {
+              type?: T;
+              frequency?: T;
+              duration?: T;
+              id?: T;
+            };
+        medications?:
+          | T
+          | {
+              name?: T;
+              dosage?: T;
+              instructions?: T;
+              sideEffects?: T;
+              reason?: T;
+              route?: T;
+              startDate?: T;
+              endDate?: T;
+              id?: T;
+            };
+      };
   updatedAt?: T;
   createdAt?: T;
+  deletedAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

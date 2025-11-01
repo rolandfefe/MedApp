@@ -1,16 +1,15 @@
-import React, { ComponentProps } from "react";
-import { Card, CardContent } from "../ui/card";
-import { cn } from "@/lib/utils";
-import { Badge } from "../ui/badge";
-import { eAppointmentStatus } from "@/types/enums/enums";
-import { Dot, Sparkles } from "lucide-react";
-import PatientCard from "./patientCard";
-import DoctorCard from "./DoctorCard";
-import moment from "moment";
-import AppointmentDynamicPanel from "../panels/AppointmentDynamicPanel";
-import { Appointment } from "@/types/payload";
 import { useCurrent } from "@/contexts/Current.context";
 import { usePagination } from "@/contexts/Pagination.context";
+import { cn } from "@/lib/utils";
+import { eAppointmentStatus } from "@/types/enums/enums";
+import { Dot, Sparkles } from "lucide-react";
+import moment from "moment";
+import { ComponentProps } from "react";
+import AppointmentDynamicPanel from "../panels/AppointmentDynamicPanel";
+import { Badge } from "../ui/badge";
+import { Card, CardContent } from "../ui/card";
+import DoctorCard from "./DoctorCard";
+import PatientCard from "./patientCard";
 
 export default function AppointmentCard({
 	appointment,
@@ -38,17 +37,12 @@ export default function AppointmentCard({
 		);
 	} else if (variant === "md") {
 		return (
-			<AppointmentDynamicPanel
-				mode="Doctor"
-				appointment={appointment}
-				currentDoctor={currentDoctor}
-			>
+			<AppointmentDynamicPanel mode="Doctor" appointment={appointment}>
 				<Card className={cn("bg-popover hover:bg-muted/50 h-56", className)}>
 					<CardContent className="space-y-3">
 						{mode === "Doctor" ? (
 							<PatientCard
 								patient={appointment.patient as IPatient}
-								currentDoctor={currentDoctor!}
 								variant="sm"
 							/>
 						) : appointment.doctor ? (

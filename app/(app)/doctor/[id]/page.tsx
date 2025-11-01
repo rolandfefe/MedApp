@@ -1,13 +1,7 @@
-import { getDoctor } from "@/lib/actions/doctor.actions";
-import React from "react";
+import { getCurrentDoctor } from "@/lib/actions/utils.actions";
 
-export default async function page({
-	params,
-}: {
-	params: Promise<{ id: string }>;
-}) {
-	const { id } = await params;
-	const doctor = await getDoctor({ id: decodeURIComponent(id) });
+export default async function page() {
+	const doctor = await getCurrentDoctor();
 
 	console.log("doctor:", doctor);
 

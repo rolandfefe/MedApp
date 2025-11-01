@@ -11,7 +11,7 @@ export default function LinkBtn({
 } & ComponentProps<typeof MyBtn>) {
 	return (
 		<Link {...link}>
-			<MyBtn {...props}>{children}</MyBtn>;
+			<MyBtn {...props}>{children}</MyBtn>
 		</Link>
 	);
 }
