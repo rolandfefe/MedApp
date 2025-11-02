@@ -12,7 +12,9 @@ const payload = await getPayload({ config });
  * @Mutations
  *
  * */
-export const createMsg = async (data: IMessage) => {
+export const createMsg = async (
+	data: Omit<IMessage, "id" | "createdAt" | "updatedAt">
+) => {
 	try {
 		const msg = await payload.create({
 			collection: "messages",
@@ -79,6 +81,7 @@ export const getMsgs = cache(
 				collection: "messages",
 				where: { appointment: { equals: appointment } },
 				depth: 1,
+				sort: "createdAt",
 				page,
 			});
 

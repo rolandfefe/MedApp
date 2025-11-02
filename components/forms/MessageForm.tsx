@@ -1,6 +1,6 @@
 "use client";
 
-import { createMsg } from "@/lib/actions/message.actions";
+import { createMsg, updateMsg } from "@/lib/actions/message.actions";
 import { cn } from "@/lib/utils";
 import { Loader, Plus, Send, X } from "lucide-react";
 import { usePathname } from "next/navigation";
@@ -23,40 +23,54 @@ import {
 } from "../ui/input-group";
 import { Separator } from "../ui/separator";
 import { useMsg } from "@/contexts/message.context";
+import { useConsultation } from "@/contexts/consultation.context";
+import { useCurrent } from "@/contexts/Current.context";
 
 export default function MessageForm({
-	action,
-	msg,
-	currentUser,
 	className,
-	appointment,
 	...props
-}: {
-	action: "Create" | "Update";
-	msg?: IMessage;
-	currentUser: IUser;
-	appointment: IAppointment;
-} & ComponentProps<"div">) {
-	const [body, setBody] = useState<string>("");
+}: ComponentProps<"div">) {
+	const currentUser = useCurrent().currentUser as IUser;
+	const { appointment } = useConsultation();
+	const { refMsg, setRefMsg, editMsg, setEditMsg } = useMsg();
+
+	const [body, setBody] = useState<string>(editMsg?.body ?? "");
 	const [isSending, startSending] = useTransition();
 	const [isUploadMode, setIsUploadMode] = useState<boolean>(false);
-	const { refMsg, updateMsg } = useMsg();
 
-	const submitHandler = useCallback(() => {
-		if (body) {
+	const submitHandler = () => {
+		const cleanData = {
+			appointment: appointment.id!,
+			body,
+			from: currentUser.id!,
+			refMessage: refMsg?.id,
+		};
+
+		if (editMsg) {
+			// Update Msg
 			startSending(async () => {
-				await createMsg({
-					appointment: appointment.id!,
-					body,
-					from: currentUser.id!,
-				});
+				await updateMsg({ ...editMsg, ...cleanData });
 
+				setEditMsg(undefined);
 				setBody("");
+				setRefMsg(undefined)
+				toast("Message Updated✍️");
 			});
 		} else {
-			errHandler(["Cannot send empty Message!"]);
+			if (body) {
+				startSending(async () => {
+					await createMsg({
+						...cleanData,
+					});
+
+					setBody("");
+					setRefMsg(undefined);
+				});
+			} else {
+				errHandler(["Cannot send empty Message!"]);
+			}
 		}
-	}, [currentUser, appointment, body]);
+	};
 
 	const errHandler = async (msgs: string[]) => {
 		toast.custom(
@@ -95,31 +109,75 @@ export default function MessageForm({
 
 		window.addEventListener("keydown", handleKeyDown);
 		return () => window.removeEventListener("keydown", handleKeyDown);
-	}, [submitHandler]);
+	}, []);
+
+	useEffect(() => {
+		if (editMsg) setBody(editMsg.body);
+	}, [editMsg]);
 
 	return (
-		<div className={cn("w-full", className)} {...props}>
+		<div
+			className={cn(
+				"w-full",
+				className,
+				refMsg && "-bottom-[15%] sm:-bottom-[13%]"
+			)}
+			{...props}
+		>
 			<div className="flex items-center gap-4">
-				<InputGroup className="glass">
+				<InputGroup className="glass bg-secondary/80!">
 					<InputGroupInput
 						placeholder="Enter message..."
 						onChange={(e) => setBody(e.target.value)}
 						value={body}
 					/>
+					{refMsg && (
+						<InputGroupAddon align="block-start" className={"p-2"}>
+							<div className="border-l-3 border-primary/50 bg-secondary rounded-r-lg p-1 pl-2 text-xs w-full">
+								{refMsg?.body}
+							</div>
+						</InputGroupAddon>
+					)}
 
 					<InputGroupAddon align={"block-end"}>
-						<InputGroupButton
-							variant={"outline"}
-							size={"icon-xs"}
-							onClick={() => setIsUploadMode((prev) => !prev)}
-							className={cn(
-								"rounded-full",
-								isUploadMode &&
-									"text-primary hover:text-primary rotate-45 transition-all delay-150"
+						<div className="flex items-center gap-x-1">
+							<InputGroupButton
+								variant={"outline"}
+								size={"icon-xs"}
+								onClick={() => setIsUploadMode((prev) => !prev)}
+								className={cn(
+									"rounded-full",
+									isUploadMode &&
+										"text-primary hover:text-primary rotate-45 transition-all delay-150"
+								)}
+							>
+								<Plus />
+							</InputGroupButton>
+
+							{editMsg && (
+								<InputGroupButton
+									onClick={() => {
+										setEditMsg(undefined);
+										setBody("");
+									}}
+									variant={"outline"}
+									className="text-primary rounded-2xl"
+								>
+									Edit <X />
+								</InputGroupButton>
 							)}
-						>
-							<Plus />
-						</InputGroupButton>
+							{refMsg && (
+								<InputGroupButton
+									onClick={() => {
+										setRefMsg(undefined);
+									}}
+									variant={"outline"}
+									className="text-primary rounded-2xl"
+								>
+									Reply <X />
+								</InputGroupButton>
+							)}
+						</div>
 						<InputGroupButton
 							asChild
 							disabled={isSending}

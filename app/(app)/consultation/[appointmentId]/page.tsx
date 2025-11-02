@@ -23,29 +23,23 @@ export default async function page({
 	// console.log("MSGS: ", msgs);
 
 	return (
-		<MsgProvider msgsInit={msgs}>
-			<section className="h-[calc(89.4vh)] w-full relative">
-				<Image
-					src="/assets/logo_transparent.png"
-					alt="logo"
-					width={999}
-					height={999}
-					priority
-					className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 opacity-40 dark:opacity-25 w-[40%] sm:w-1/2"
-				/>
+		<MsgProvider
+			msgsInit={msgs}
+			appointment={appointment}
+			className="h-[calc(89.4vh)] w-full relative"
+		>
+			<Image
+				src="/assets/logo_transparent.png"
+				alt="logo"
+				width={999}
+				height={999}
+				priority
+				className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 opacity-40 dark:opacity-25 w-[40%] sm:w-1/2"
+			/>
 
-				<MessagesFeed
-					initMsgs={msgs}
-					className="w-full z-20"
-				/>
+			<MessagesFeed initMsgs={msgs} className="w-full z-20" />
 
-				<MessageForm
-					action="Create"
-					currentUser={currentUser}
-					appointment={appointment}
-					className="absolute -bottom-14 left-1/2 -translate-1/2 z-30"
-				/>
-			</section>
+			<MessageForm className="absolute -bottom-14 left-1/2 -translate-1/2 z-30" />
 		</MsgProvider>
 	);
 }

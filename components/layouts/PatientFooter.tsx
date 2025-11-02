@@ -1,5 +1,11 @@
 "use client";
 
+import { updateAppointment } from "@/lib/actions/appointment.actions";
+import {
+	appointmentOnlineFormData,
+	appointmentOnlineSchema,
+} from "@/lib/formSchemas/appointment.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
 	ArrowBigRightDash,
 	ArrowUpRightFromSquare,
@@ -11,45 +17,38 @@ import {
 	Video,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState, useTransition } from "react";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import Heading from "../custom/Heading";
 import MyBtn from "../custom/MyBtn";
 import { DiagnosisFormPanel } from "../forms/DiagnosisForm";
 import { DoctorNotesFormPanel } from "../forms/DoctorNotesForm";
-import { ButtonGroup } from "../ui/button-group";
-import { Skeleton } from "../ui/skeleton";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import Heading from "../custom/Heading";
-import { ReactNode, useEffect, useState, useTransition } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import {
-	appointmentOnlineFormData,
-	appointmentOnlineSchema,
-} from "@/lib/formSchemas/appointment.schema";
-import { updateAppointment } from "@/lib/actions/appointment.actions";
 import { errHandler } from "../toastErr";
+import { ButtonGroup } from "../ui/button-group";
 import {
+	Form,
 	FormControl,
 	FormField,
 	FormItem,
 	FormLabel,
 	FormMessage,
-	Form,
 } from "../ui/form";
 import { Input } from "../ui/input";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Separator } from "../ui/separator";
-import { set } from "mongoose";
-import toast from "react-hot-toast";
+import { Skeleton } from "../ui/skeleton";
 
+import { useConsultation } from "@/contexts/consultation.context";
+import { useMediaQuery } from "@uidotdev/usehooks";
+import ReferralsAside from "../asides/ReferralsAside";
+import LinkBtn from "../btns/LinkBtn";
 import {
 	FormPanel,
 	FormPanelContent,
 	FormPanelTrigger,
 } from "../custom/form-panel";
-import ReferralsAside from "../asides/ReferralsAside";
-import ReferralForm, { ReferralFormDialog } from "../forms/ReferralForm";
-import { useMediaQuery } from "@uidotdev/usehooks";
-import { getReferrals } from "@/lib/actions/referral.actions";
-import { useConsultation } from "@/contexts/consultation.context";
+import { ReferralFormDialog } from "../forms/ReferralForm";
 
 export default function PatientFooter({
 	appointment,
@@ -85,16 +84,16 @@ export default function PatientFooter({
 					</MyBtn>
 				</DiagnosisFormPanel>
 
-				<MyBtn
+				<LinkBtn
 					variant={"secondary"}
 					size="icon"
-					onClick={() =>
-						router.push(`/consultation/${appointment.id!}/diagnosis`)
-					}
-					className="text-primary"
+					link={{
+						href: `/consultation/${appointment.id!}/diagnosis`,
+					}}
+					className="text-primary rounded-l-none"
 				>
 					<ArrowUpRightFromSquare />
-				</MyBtn>
+				</LinkBtn>
 			</ButtonGroup>
 
 			<DoctorNotesFormPanel currentUser={currentUser} appointment={appointment}>
