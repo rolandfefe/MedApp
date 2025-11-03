@@ -6,17 +6,15 @@ import {
 	DrawerContent,
 	DrawerDescription,
 	DrawerHeader,
-	DrawerOverlay,
-	DrawerPortal,
 	DrawerTitle,
-	DrawerTrigger,
+	DrawerTrigger
 } from "@/components/ui/drawer";
 import { cn } from "@/lib/utils";
 import { useMediaQuery } from "@uidotdev/usehooks";
 import { X } from "lucide-react";
-import { ComponentProps, Dispatch, SetStateAction, useState } from "react";
-import MyBtn from "./MyBtn";
+import { ComponentProps } from "react";
 import { ScrollArea } from "../ui/scroll-area";
+import MyBtn from "./MyBtn";
 
 export function FormPanel({
 	children,

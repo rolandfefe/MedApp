@@ -1,15 +1,16 @@
-import React, { ComponentProps } from "react";
-import { Badge } from "../ui/badge";
+"use client";
+
 import { Form } from "@/components/ui/form";
+import { useConsultation } from "@/contexts/consultation.context";
 import {
-	DoctorFormData,
-	doctorFormSchema,
-} from "@/lib/formSchemas/doctor.schema";
-import { PatientFormData } from "@/lib/formSchemas/patient.schema";
+	DiagnosisFormData,
+	diagnosisFormSchema,
+} from "@/lib/formSchemas/diagnosis.schema";
+import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Hospital, X } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
-import { ReactNode, useState, useTransition } from "react";
+import { ComponentProps, ReactNode, useState, useTransition } from "react";
 import { FieldErrors, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import {
@@ -25,30 +26,20 @@ import {
 	StepperTrigger,
 } from "../custom/motion-stepper";
 import MyBtn from "../custom/MyBtn";
-import getDoctorFormStepper from "../formSteppers/doctorFormStepper";
+import getDiagnosisFormStepper from "../formSteppers/DiagnosisFormStepper";
+import { Badge } from "../ui/badge";
 import { Card, CardContent } from "../ui/card";
 import { Separator } from "../ui/separator";
-import { createDoctor, updateDoctor } from "@/lib/actions/doctor.actions";
-import getDiagnosisFormStepper from "../formSteppers/DiagnosisFormStepper";
-import {
-	DiagnosisFormData,
-	diagnosisFormSchema,
-} from "@/lib/formSchemas/diagnosis.schema";
-import {
-	createDiagnosis,
-	updateDiagnosis,
-} from "@/lib/actions/diagnosis.actions";
-import { cn } from "@/lib/utils";
 
 export default function DiagnosisForm({
 	action,
 	diagnosis,
-	appointment,
 }: {
 	action: "Create" | "Update";
 	diagnosis?: IDiagnosis;
-	appointment: IAppointment;
 }) {
+	const { appointment } = useConsultation();
+
 	const [activeStep, setActiveStep] = useState<number>(1);
 	const [isPending, startTransition] = useTransition();
 	const [isSuccess, setIsSuccess] = useState<boolean>(false);
@@ -123,15 +114,6 @@ export default function DiagnosisForm({
 		isPending
 	);
 
-	{
-		/* Referral */
-	}
-	{
-		/* recurrence */
-	}
-	{
-		/* Online */
-	}
 	return (
 		<div className="">
 			<div className="px-2 sticky top-0 bg-background/40 backdrop-blur-2xl backdrop-saturate-150">

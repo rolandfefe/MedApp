@@ -1,46 +1,11 @@
-import { DoctorFormData } from "@/lib/formSchemas/doctor.schema";
+import { DiagnosisFormData } from "@/lib/formSchemas/diagnosis.schema";
 import {
-	eCertificationStatus,
-	eGender,
-	eLicenseStatus,
-	eLicenseType,
-	eMedicalCertificationTypes,
-	eMedicalSpecialties,
-} from "@/types/enums/enums";
-import {
-	Building2,
-	CreditCard,
-	GraduationCap,
-	Link2,
-	Loader,
-	Plus,
-	ToolCase,
-	Trash2,
+	Loader
 } from "lucide-react";
 import Image from "next/image";
 import { JSX } from "react";
-import { FieldErrors, useFieldArray, useForm } from "react-hook-form";
+import { FieldErrors, useForm } from "react-hook-form";
 import MyBtn from "../custom/MyBtn";
-import {
-	FormControl,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
-} from "../ui/form";
-import { Input } from "../ui/input";
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "../ui/select";
-import { Textarea } from "../ui/textarea";
-import { Card, CardContent } from "../ui/card";
-import { motion } from "motion/react";
-import { Separator } from "../ui/separator";
-import { DiagnosisFormData } from "@/lib/formSchemas/diagnosis.schema";
 
 export default function getDiagnosisFormStepper(
 	form: ReturnType<typeof useForm<DiagnosisFormData>>,
@@ -53,6 +18,17 @@ export default function getDiagnosisFormStepper(
 	readonly isComplete: boolean;
 }[] {
 	return [
+		{
+			title: "Notes",
+			body: (
+				<section>
+					Really cool editor
+				</section>
+			),
+			get isComplete(): boolean {
+				return false;
+			},
+		},
 		{
 			title: "Complete application✨",
 			body: (

@@ -9,10 +9,11 @@ import { cn } from "@/lib/utils";
 import { uniqBy } from "lodash-es";
 import { AnimatePresence, motion, Variants } from "motion/react";
 import {
+	ComponentProps,
 	useEffect,
 	useEffectEvent,
 	useLayoutEffect,
-	useRef
+	useRef,
 } from "react";
 import MsgCard from "../cards/MsgCard";
 import { ScrollArea } from "../ui/scroll-area";
@@ -24,19 +25,14 @@ const msgVariants: Variants = {
 };
 
 export default function MessagesFeed({
-	initMsgs,
 	className,
-}: {
-	initMsgs: IMessage[];
-	className?: string;
-}) {
+	...props
+}: ComponentProps<"section">) {
 	const { appointment } = useConsultation();
 	const { msgs, setMsgs, nextPg, setNextPg } = useMsg();
 
 	const lastMsgRef = useRef<HTMLDivElement>(null);
 	// const [msgs, setMsgs] = useState<IMessage[]>(initMsgs);
-
-	console.log(msgs);
 
 	const loadMore = async () => {
 		const { msgs, nextPg: nextPage } = await getMsgs({
@@ -48,14 +44,15 @@ export default function MessagesFeed({
 		setMsgs((prev) => uniqBy([...prev, ...msgs], "id"));
 	};
 
-	const { ref } = useLoadMore({ loader: loadMore });
-
+	const { ref, isLoading } = useLoadMore({ loader: loadMore });
+	console.log("isLoading: ", isLoading, msgs);
 
 	const pusherHandler = useEffectEvent(() => {
-		pusherClient.subscribe(`chat-${appointment.id!}-channel`).bind(
-			`new-${appointment.id!}-msg`,
-			(newMsg: IMessage) => setMsgs((prev) => uniqBy([...prev, newMsg], "id"))
-		);
+		pusherClient
+			.subscribe(`chat-${appointment.id!}-channel`)
+			.bind(`new-${appointment.id!}-msg`, (newMsg: IMessage) =>
+				setMsgs((prev) => uniqBy([...prev, newMsg], "id"))
+			);
 
 		return () => pusherClient.unsubscribe(`chat-${appointment.id!}-channel`);
 	});
@@ -74,7 +71,7 @@ export default function MessagesFeed({
 
 	return (
 		<ScrollArea hideScrollbar className="h-[89vh]">
-			<section className={cn("space-y-2 pb-40 pt-10", className)}>
+			<section {...props} className={cn("space-y-2 pb-40 pt-10", className)}>
 				<AnimatePresence>
 					{msgs.map((msg) => (
 						<motion.div
@@ -88,7 +85,7 @@ export default function MessagesFeed({
 						>
 							<MsgCard
 								msg={msg}
-								ref={msgs[0].id === msg.id ? ref : null}
+								ref={msgs[msgs.length - 1].id === msg.id ? ref : null}
 								className=""
 							/>
 						</motion.div>

@@ -1,4 +1,8 @@
-import React from "react";
+import ConsultationGuideBtn from "@/components/btns/ConsultationGuideBtn";
+import LinkBtn from "@/components/btns/LinkBtn";
+import DiagnosisForm from "@/components/forms/DiagnosisForm";
+import { getCurrentDoctor } from "@/lib/actions/utils.actions";
+import { ArrowRightCircle } from "lucide-react";
 
 export default async function page({
 	params,
@@ -6,5 +10,16 @@ export default async function page({
 	params: Promise<{ appointmentId: string }>;
 }) {
 	const { appointmentId } = await params;
-	return <div>page</div>;
+	const [currentDoctor] = await Promise.all([getCurrentDoctor()]);
+
+	return (
+		<div className="mt-10">
+			<DiagnosisForm action="Create" />
+
+			<ConsultationGuideBtn  />
+			<LinkBtn link={{ href: `/consultation/${appointmentId}/verdict` }}>
+				Verdict <ArrowRightCircle />
+			</LinkBtn>
+		</div>
+	);
 }

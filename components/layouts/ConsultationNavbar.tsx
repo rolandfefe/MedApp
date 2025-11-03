@@ -1,15 +1,14 @@
 "use client";
 
-import { getAppointment } from "@/lib/actions/appointment.actions";
 import { cn } from "@/lib/utils";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
-import { useParams, usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import BackBtn from "../btns/BackBtn";
 import { ThemeBtn } from "../btns/ThemeBtn";
+import ChatContainer from "../ChatContainer";
+import Heading from "../custom/Heading";
 import MyBtn from "../custom/MyBtn";
 import { SidebarTrigger } from "../ui/sidebar";
-import Heading from "../custom/Heading";
 
 export default function ConsultationNavbar({
 	className,
@@ -17,16 +16,6 @@ export default function ConsultationNavbar({
 	className?: string;
 }) {
 	const pathname = usePathname();
-	const { appointmentId } = useParams();
-
-	const [appointment, setAppointment] = useState<Appointment>();
-
-	useEffect(() => {
-		const fetchAppointment = async () =>
-			setAppointment(await getAppointment(appointmentId as string));
-
-		fetchAppointment();
-	}, [appointmentId]);
 
 	return (
 		<nav
@@ -40,12 +29,14 @@ export default function ConsultationNavbar({
 				<BackBtn />
 			</div>
 
-			<Heading className="text-xl md:text-2xl">
+			<Heading className="text-xl md:text-2xl capitalize">
 				{pathname.split("/")[3] || "Consultation"}
 			</Heading>
 
 			<div className="flex items-center gap-x-2">
 				<ThemeBtn />
+
+				{pathname.split("/")[3] && <ChatContainer.Panel />}
 				<SignedIn>
 					<UserButton />
 				</SignedIn>

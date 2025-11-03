@@ -30,6 +30,7 @@ export default function MsgCard({
 	const currentUser = useCurrent().currentUser as IUser;
 	const author = msg.from as IUser;
 	const isAuthor = author.id === currentUser.id;
+	const refMsg = msg.refMessage as IMessage | undefined;
 
 	return (
 		<Card
@@ -60,9 +61,9 @@ export default function MsgCard({
 						)}
 					>
 						{/* Reply msg */}
-						{msg.refMessage && (
+						{refMsg && (
 							<div className="mb-3 border-l-3 border-primary/50 bg-muted/30 rounded-r-md p-1 pl-2 text-xs w-full">
-								{msg.refMessage.body}
+								{refMsg.body}
 							</div>
 						)}
 

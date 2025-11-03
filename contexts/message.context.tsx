@@ -57,6 +57,8 @@ export const MsgProvider = ({
 	// const seteditMsg = (msg: IMessage) => _seteditMsg(msg);
 	// const setMsgs = (m: IMessage[]) => _setMsgs(m);
 
+	console.log("PAGE: ",nextPg);
+
 	const sync = useEffectEvent(async () => {
 		const [..._m] = await Promise.all(
 			[...Array(nextPg)].map(

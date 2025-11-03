@@ -71,7 +71,7 @@ export const getMsgs = cache(
 	}: {
 		appointment: string;
 		page?: number;
-	}): Promise<{ msgs: IMessage[]; nextPg: number }> => {
+	}): Promise<{ msgs: IMessage[]; nextPg: number; hasNextPage: boolean }> => {
 		try {
 			const {
 				docs: msgs,
@@ -85,7 +85,7 @@ export const getMsgs = cache(
 				page,
 			});
 
-			return { msgs, nextPg: hasNextPage ? nextPage! : page! };
+			return { msgs, nextPg: hasNextPage ? nextPage! : page!, hasNextPage };
 		} catch (error: any) {
 			throw new Error(error);
 		}

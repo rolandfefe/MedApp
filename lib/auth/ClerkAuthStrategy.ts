@@ -7,8 +7,6 @@ export async function getDbUser(payload: Payload): Promise<IUser | null> {
 
 	if (!user) return null;
 
-	let currentPayloadUser;
-
 	// const dbUser = await getUser({ clerkId: user.id });
 	const {
 		docs: [dbUser],

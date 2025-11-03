@@ -186,11 +186,6 @@ export default function getAppointmentFormStepper(
 						/>
 					</div>
 
-					{/* <MultiSelectPicker
-						enumObj={ePatientConsent}
-						setSelected={setSelectedConsent}
-						selected={selectedConsent}
-					/> */}
 					<section>
 						<h5 className="font-medium">Consent Level</h5>
 						<p className="text-xs text-muted-foreground">
