@@ -18,24 +18,6 @@ export async function getDbUser(payload: Payload): Promise<IUser | null> {
 		limit: 1,
 	});
 
-	// // ? Working if no user
-	// if (!dbUser) {
-	// 	currentPayloadUser = await payload.create({
-	// 		collection: "users",
-	// 		data: {
-	// 			clerkId: user.id,
-	// 			email: user.emailAddresses[0].emailAddress,
-	// 			fname: user.firstName!,
-	// 			lname: user.lastName!,
-	// 			username: user.username!,
-	// 			imageUrl: user.imageUrl,
-	// 		},
-	// 	});
-	// } else {
-	// 	currentPayloadUser = dbUser;
-	// }
-
-	// return currentPayloadUser;
 	return dbUser;
 }
 
