@@ -42,9 +42,6 @@ export default function AppointmentDynamicPanel({
 	mode: "Patient" | "Doctor";
 	children?: ReactNode;
 }) {
-	const pathname = usePathname();
-	const router = useRouter();
-
 	const currentPatient = useCurrent().currentPatient as IPatient;
 	const currentDoctor = useCurrent().currentDoctor as IDoctor;
 
@@ -57,9 +54,6 @@ export default function AppointmentDynamicPanel({
 		!appointment.doctor ||
 		(appointment.status == eAppointmentStatus.CANCELLED &&
 			!isAppointmentDoctor);
-
-
-		console.log("active:",appointment)
 
 	const cancelHandler = async () => {
 		await updateAppointment({

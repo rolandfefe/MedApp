@@ -11,7 +11,9 @@ import DoctorSearchBox from "../DoctorSearchBox";
 
 export default function DoctorsFeed() {
 	const currentPatient = useCurrent().currentPatient as IPatient;
-	const { doctors } = useDoctors();
+	const { doctors, isLoading, loadRef } = useDoctors();
+
+	console.log("Loading doctors", isLoading);
 
 	const [results, setResults] = useState<IDoctor[]>(doctors);
 	const [selected, setSelected] = useState<IDoctor>();
@@ -19,7 +21,6 @@ export default function DoctorsFeed() {
 	return (
 		<div className="space-y-3 sm:p-3">
 			<DoctorSearchBox
-				doctors={doctors}
 				selectedDoctor={selected}
 				setSelectedDoctor={setSelected}
 				setSearchResults={setResults}
@@ -31,6 +32,7 @@ export default function DoctorsFeed() {
 				<AnimatePresence>
 					{results.length > 0 ? (
 						results?.map((doctor) => {
+							const isLastItem = doctors[doctors.length - 1].id === doctor.id;
 							return (
 								<motion.div
 									key={doctor.id}
@@ -38,6 +40,7 @@ export default function DoctorsFeed() {
 									initial={{ opacity: 0, y: 100 }}
 									animate={{ opacity: 1, y: 0 }}
 									exit={{ opacity: 0, y: 100 }}
+									ref={isLastItem ? loadRef : null}
 									className="mb-3"
 								>
 									<DoctorCard doctor={doctor} className={cn("w-full")} />

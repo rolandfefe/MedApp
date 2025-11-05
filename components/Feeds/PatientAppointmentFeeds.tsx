@@ -35,7 +35,10 @@ interface Filters {
 
 export default function PatientAppointmentFeeds() {
 	const currentPatient = useCurrent().currentPatient!;
-	const { appointments } = useAppointments();
+	const { state: sidebarState } = useSidebar();
+	const { appointments, loadRef, isLoading } = useAppointments();
+
+	console.log("loading Appointments:", isLoading);
 
 	const [filters, setFilters] = useState<Filters>({
 		emergency: false,
@@ -43,8 +46,6 @@ export default function PatientAppointmentFeeds() {
 	});
 	const [filterResults, setFilterResults] =
 		useState<IAppointment[]>(appointments);
-
-	const { state: sidebarState } = useSidebar();
 
 	useEffect(() => {
 		setFilterResults(
@@ -65,25 +66,32 @@ export default function PatientAppointmentFeeds() {
 			<section className="flex gap-3 flex-col sm:flex-row flex-wrap">
 				<AnimatePresence>
 					{filterResults.length > 0 ? (
-						filterResults.map((appointment) => (
-							<motion.div
-								key={appointment.id}
-								layout
-								initial={{ opacity: 0, y: 100 }}
-								animate={{ opacity: 1, y: 0 }}
-								exit={{ opacity: 0, y: 100 }}
-								className={cn(
-									"mb-3 basis-full sm:basis-[47%] flex-1",
-									sidebarState === "expanded" && "sm:basis-full lg:basis-[47%]"
-								)}
-							>
-								<AppointmentCard
-									appointment={appointment}
-									variant="md"
-									mode="Patient"
-								/>
-							</motion.div>
-						))
+						filterResults.map((appointment) => {
+							const isLastItem =
+								appointments[appointments.length - 1].id === appointment.id;
+
+							return (
+								<motion.div
+									key={appointment.id}
+									layout
+									initial={{ opacity: 0, y: 100 }}
+									animate={{ opacity: 1, y: 0 }}
+									exit={{ opacity: 0, y: 100 }}
+									className={cn(
+										"mb-3 basis-full sm:basis-[47%] flex-1",
+										sidebarState === "expanded" &&
+											"sm:basis-full lg:basis-[47%]"
+									)}
+									ref={isLastItem ? loadRef : null}
+								>
+									<AppointmentCard
+										appointment={appointment}
+										variant="md"
+										mode="Patient"
+									/>
+								</motion.div>
+							);
+						})
 					) : (
 						<div>
 							<Void

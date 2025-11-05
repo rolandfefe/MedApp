@@ -16,7 +16,7 @@ export default function useLoadMore({
 	);
 
 	useEffect(() => {
-		console.log("isIntersecting: ", entry?.isIntersecting);
+		console.log("isIntersecting: ", entry?.isIntersecting, hasNextPg);
 		if (entry?.isIntersecting && hasNextPg) loadHandler();
 	}, [entry?.isIntersecting, hasNextPg]);
 

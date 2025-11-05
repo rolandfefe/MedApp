@@ -12,7 +12,7 @@ export default async function page() {
 		{ appointments: autoAppointments },
 	] = await Promise.all([
 		getCurrentUser(),
-		getCurrentDoctorAppointments(),
+		getCurrentDoctorAppointments({}),
 		getAppointments({
 			doctor: undefined,
 			status: eAppointmentStatus.CANCELLED,
@@ -22,6 +22,7 @@ export default async function page() {
 	return (
 		<AppointmentsProvider
 			appointmentsInit={doctorAppointments}
+			fetchAction={getCurrentDoctorAppointments}
 			className="sm:p-3"
 		>
 			<DoctorAppointmentFeeds autoAppointments={autoAppointments} />

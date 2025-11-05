@@ -1,27 +1,21 @@
+import { AppointmentFormData } from "@/lib/formSchemas/appointment.schema";
+import { cn } from "@/lib/utils";
 import {
 	eAppointmentTypes,
-	eCertificationStatus,
-	eGender,
-	eLicenseStatus,
-	eLicenseType,
-	eMedicalCertificationTypes,
-	eMedicalSpecialties,
-	ePatientConsent,
+	ePatientConsent
 } from "@/types/enums/enums";
 import {
-	Building2,
-	CreditCard,
-	GraduationCap,
-	Link2,
-	Loader,
-	Plus,
-	ToolCase,
-	Trash2,
+	Loader
 } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
 import { Dispatch, JSX, SetStateAction } from "react";
-import { FieldErrors, useFieldArray, useForm } from "react-hook-form";
+import { FieldErrors, useForm } from "react-hook-form";
+import DoctorSearchBox from "../DoctorSearchBox";
+import DoctorCard from "../cards/DoctorCard";
 import MyBtn from "../custom/MyBtn";
+import { Badge } from "../ui/badge";
+import { Checkbox } from "../ui/checkbox";
 import {
 	FormControl,
 	FormField,
@@ -38,15 +32,6 @@ import {
 	SelectValue,
 } from "../ui/select";
 import { Textarea } from "../ui/textarea";
-import { Card, CardContent } from "../ui/card";
-import { AnimatePresence, motion } from "motion/react";
-import { Separator } from "../ui/separator";
-import { AppointmentFormData } from "@/lib/formSchemas/appointment.schema";
-import { Checkbox } from "../ui/checkbox";
-import { Badge } from "../ui/badge";
-import DoctorSearchBox from "../DoctorSearchBox";
-import DoctorCard from "../cards/DoctorCard";
-import { cn } from "@/lib/utils";
 
 export default function getAppointmentFormStepper(
 	form: ReturnType<typeof useForm<AppointmentFormData>>,
@@ -56,7 +41,6 @@ export default function getAppointmentFormStepper(
 	selectedConsent: ePatientConsent[],
 	setSelectedConsent: Dispatch<SetStateAction<ePatientConsent[]>>,
 	setSelectedDoctor: Dispatch<SetStateAction<IDoctor | undefined>>,
-	doctors: IDoctor[],
 	selectedDoctor?: IDoctor
 ): {
 	title: string;
@@ -253,7 +237,6 @@ export default function getAppointmentFormStepper(
 					</AnimatePresence>
 
 					<DoctorSearchBox
-						doctors={doctors}
 						setSelectedDoctor={setSelectedDoctor}
 						selectedDoctor={selectedDoctor}
 					/>

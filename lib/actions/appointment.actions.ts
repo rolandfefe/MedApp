@@ -98,7 +98,7 @@ export const getAppointments = cache(
 				limit,
 			});
 
-			return { appointments, hasNextPage, nextPage };
+			return { appointments, hasNextPage, nextPage: nextPage ?? page };
 		} catch (error: any) {
 			throw new Error(error);
 		}

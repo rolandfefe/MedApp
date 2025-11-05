@@ -86,7 +86,7 @@ export const getPatients = cache(
 				limit,
 			});
 
-			return { patients, hasNextPage, nextPage };
+			return { patients, hasNextPage, nextPage: nextPage ?? page };
 		} catch (error: any) {
 			throw new Error();
 		}

@@ -61,23 +61,27 @@ export default function MessagesFeed({
 		<ScrollArea hideScrollbar className="h-[89vh]">
 			<section {...props} className={cn("space-y-2 pb-40 pt-10", className)}>
 				<AnimatePresence>
-					{msgs.map((msg) => (
-						<motion.div
-							variants={msgVariants}
-							initial="hidden"
-							animate="visible"
-							exit="exit"
-							layout
-							key={msg.id}
-							ref={msgs[msgs.length - 1].id === msg.id ? lastMsgRef : null}
-						>
-							<MsgCard
-								msg={msg}
-								ref={msgs[msgs.length - 1].id === msg.id ? loadRef : null}
-								className=""
-							/>
-						</motion.div>
-					))}
+					{msgs.map((msg) => {
+						const isLastItem = msgs[msgs.length - 1].id === msg.id;
+
+						return (
+							<motion.div
+								variants={msgVariants}
+								initial="hidden"
+								animate="visible"
+								exit="exit"
+								layout
+								key={msg.id}
+								ref={isLastItem ? lastMsgRef : null}
+							>
+								<MsgCard
+									msg={msg}
+									ref={isLastItem ? loadRef : null}
+									className=""
+								/>
+							</motion.div>
+						);
+					})}
 				</AnimatePresence>
 			</section>
 		</ScrollArea>

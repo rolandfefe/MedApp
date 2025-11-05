@@ -25,14 +25,26 @@ export const getCurrentPatientHealStatuses = async ({
 	return await getHealthStatuses({ patient: id!, limit });
 };
 
-export const getCurrentPatientAppointments = async () => {
+export const getCurrentPatientAppointments = async ({
+	page,
+	limit,
+}: {
+	page?: number;
+	limit?: number;
+}) => {
 	const { id } = await getCurrentPatient();
-	return await getAppointments({ patient: id! });
+	return await getAppointments({ patient: id!, page, limit });
 };
 
-export const getCurrentDoctorAppointments = async () => {
+export const getCurrentDoctorAppointments = async ({
+	page,
+	limit,
+}: {
+	page?: number;
+	limit?: number;
+}) => {
 	const { id } = await getCurrentDoctor();
-	return await getAppointments({ doctor: id! });
+	return await getAppointments({ doctor: id!, limit, page });
 };
 
 export const getAllocatedAutoAppointments = async () => {

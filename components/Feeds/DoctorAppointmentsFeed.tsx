@@ -31,7 +31,8 @@ export default function DoctorAppointmentFeeds({
 	autoAppointments: IAppointment[];
 }) {
 	const currentDoctor = useCurrent().currentDoctor as IDoctor;
-	const { appointments } = useAppointments();
+	const { appointments, isLoading, loadRef } = useAppointments();
+	console.log("loading Appointments:", isLoading);
 
 	const [filters, setFilters] = useState<Filters>({
 		emergency: false,
@@ -65,6 +66,9 @@ export default function DoctorAppointmentFeeds({
 				<AnimatePresence>
 					{filterResults.length > 0 ? (
 						filterResults.map((appointment) => {
+							const isLastItem =
+								appointments[appointments.length - 1].id === appointment.id;
+
 							return (
 								<motion.div
 									key={appointment.id}
@@ -77,6 +81,7 @@ export default function DoctorAppointmentFeeds({
 										sidebarState === "expanded" &&
 											"sm:basis-full lg:basis-[47%] "
 									)}
+									ref={isLastItem ? loadRef : null}
 								>
 									<AppointmentCard
 										appointment={appointment}

@@ -2,6 +2,7 @@
 
 import useLoadMore from "@/hooks/useLoadMore";
 import { getAppointments } from "@/lib/actions/appointment.actions";
+import { getCurrentPatientAppointments } from "@/lib/actions/utils.actions";
 import { eAppointmentStatus, eAppointmentTypes } from "@/types/enums/enums";
 import { flattenDeep, uniqBy } from "lodash-es";
 import {
@@ -30,18 +31,13 @@ export const useAppointments = () => {
 
 export const AppointmentsProvider = ({
 	appointmentsInit,
-	patient,
-	doctor,
-	type,
-	status,
+	fetchAction,
 	children,
 	...props
 }: {
 	appointmentsInit: IAppointment[];
-	patient?: string;
-	doctor?: string;
-	type?: eAppointmentTypes;
-	status?: eAppointmentStatus;
+	fetchAction: typeof getCurrentPatientAppointments;
+	// fetchAction: () => Promise<ReturnType<typeof getAppointments>>;
 } & ComponentProps<"div">) => {
 	const [appointments, setAppointments] =
 		useState<IAppointment[]>(appointmentsInit);
@@ -53,7 +49,7 @@ export const AppointmentsProvider = ({
 			appointments: _a,
 			hasNextPage,
 			nextPage: _npg,
-		} = await getAppointments({ patient, doctor, type, status, page: nextPg });
+		} = await fetchAction({ page: nextPg });
 
 		setAppointments((prev) => uniqBy([...prev, ..._a], "id"));
 		setHasNextPg(hasNextPage);
@@ -74,11 +70,7 @@ export const AppointmentsProvider = ({
 			[...Array(nextPg)].map(
 				async (_, i) =>
 					(
-						await getAppointments({
-							patient,
-							doctor,
-							type,
-							status,
+						await fetchAction({
 							page: i + 1,
 						})
 					).appointments

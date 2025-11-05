@@ -53,13 +53,7 @@ export const deleteDoctor = async (id: string) => {
  * @Fetches
  */
 export const getDoctors = cache(
-	async ({
-		page = 1,
-		limit,
-	}: {
-		page?: number;
-		limit?: number;
-	}) => {
+	async ({ page, limit }: { page?: number; limit?: number }) => {
 		try {
 			const {
 				docs: doctors,
@@ -71,7 +65,7 @@ export const getDoctors = cache(
 				limit,
 			});
 
-			return { doctors, hasNextPage, nextP };
+			return { doctors, hasNextPage, nextPage: nextPage ?? page };
 		} catch (error: any) {
 			throw new Error(error);
 		}

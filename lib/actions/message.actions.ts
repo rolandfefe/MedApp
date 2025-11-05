@@ -65,7 +65,7 @@ export const deleteMsg = async (id: string) => {
  * @Fetches
  */
 export const getMsgs = cache(
-	async ({ appointment, page = 1 }: { appointment: string; page?: number }) => {
+	async ({ appointment, page }: { appointment: string; page?: number }) => {
 		try {
 			const {
 				docs: msgs,
@@ -79,7 +79,7 @@ export const getMsgs = cache(
 				page,
 			});
 
-			return { msgs, hasNextPage, nextPage };
+			return { msgs, hasNextPage, nextPage: nextPage ?? page };
 		} catch (error: any) {
 			throw new Error(error);
 		}

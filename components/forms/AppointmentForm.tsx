@@ -51,7 +51,6 @@ export default function AppointmentForm({
 	appointment?: IAppointment;
 }) {
 	const patient = useCurrent().currentPatient as IPatient;
-	const { doctors } = useDoctors();
 
 	const [isPending, startTransition] = useTransition();
 	const [activeStep, setActiveStep] = useState<number>(1);
@@ -141,7 +140,6 @@ export default function AppointmentForm({
 		selectedConsent,
 		setSelectedConsent,
 		setSelectedDoctor,
-		doctors,
 		selectedDoctor
 	);
 

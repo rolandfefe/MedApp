@@ -38,6 +38,7 @@ import {
 	InputGroupInput,
 } from "./ui/input-group";
 import { ScrollArea, ScrollBar } from "./ui/scroll-area";
+import { useDoctors } from "@/contexts/Doctors.context";
 
 interface DoctorFilters {
 	specialties?: eMedicalSpecialties;
@@ -49,14 +50,12 @@ interface DoctorFilters {
 }
 
 export default function DoctorSearchBox({
-	doctors = [],
 	setSelectedDoctor,
 	selectedDoctor,
 	mode = "Inset",
 	setSearchResults,
 	className,
 }: {
-	doctors: IDoctor[];
 	setSelectedDoctor: Dispatch<SetStateAction<IDoctor | undefined>>;
 	selectedDoctor: IDoctor | undefined;
 	mode?: "Inset" | "Node";
@@ -67,6 +66,7 @@ export default function DoctorSearchBox({
 	const [q, setQ] = useState<string>("");
 	const [filters, setFilters] = useState<DoctorFilters>();
 	const [isSearching, startTransition] = useTransition();
+	const { doctors } = useDoctors();
 
 	const handleSearch = () => {
 		const regex = containsRegex(q);

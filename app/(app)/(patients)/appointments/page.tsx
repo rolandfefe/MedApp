@@ -6,12 +6,12 @@ import { getCurrentPatientAppointments } from "@/lib/actions/utils.actions";
 
 export default async function page() {
 	const [{ appointments }, { doctors }] = await Promise.all([
-		getCurrentPatientAppointments(),
+		getCurrentPatientAppointments({}),
 		getDoctors({ limit: 0 }),
 	]);
 
 	return (
-		<AppointmentsProvider appointmentsInit={appointments}>
+		<AppointmentsProvider appointmentsInit={appointments} fetchAction={getCurrentPatientAppointments}>
 			<DoctorsProvider doctorsInit={doctors}>
 				<PatientAppointmentFeeds />
 			</DoctorsProvider>
