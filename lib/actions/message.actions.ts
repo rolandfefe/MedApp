@@ -65,13 +65,7 @@ export const deleteMsg = async (id: string) => {
  * @Fetches
  */
 export const getMsgs = cache(
-	async ({
-		appointment,
-		page = 1,
-	}: {
-		appointment: string;
-		page?: number;
-	}): Promise<{ msgs: IMessage[]; nextPg: number; hasNextPage: boolean }> => {
+	async ({ appointment, page = 1 }: { appointment: string; page?: number }) => {
 		try {
 			const {
 				docs: msgs,
@@ -85,7 +79,7 @@ export const getMsgs = cache(
 				page,
 			});
 
-			return { msgs, nextPg: hasNextPage ? nextPage! : page!, hasNextPage };
+			return { msgs, hasNextPage, nextPage };
 		} catch (error: any) {
 			throw new Error(error);
 		}

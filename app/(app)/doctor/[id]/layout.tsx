@@ -12,21 +12,14 @@ import { CurrentProvider } from "@/contexts/Current.context";
 import { getCurrentDoctor } from "@/lib/actions/utils.actions";
 import { redirect } from "next/navigation";
 
-export default async function layout({
-	children,
-	params,
-}: {
-	children: ReactNode;
-	params: Promise<{ id: string }>;
-}) {
-	const { id } = await params;
+export default async function layout({ children }: { children: ReactNode }) {
 	const [currentUser, currentDoctor, doctorNav] = await Promise.all([
 		getCurrentUser(),
 		getCurrentDoctor(),
 		getDoctorNav(),
 	]);
 
-	if (!currentDoctor) redirect("/home"); // ? Redirect uf user has no Doctor account.
+	if (!currentDoctor) redirect("/home"); // ? Redirect if user has no Doctor account.
 
 	return (
 		<CurrentProvider user={currentUser} doctor={currentDoctor}>

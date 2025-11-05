@@ -30,21 +30,20 @@ import getDoctorFormStepper from "../formSteppers/doctorFormStepper";
 import { Card, CardContent } from "../ui/card";
 import { Separator } from "../ui/separator";
 import { createDoctor, updateDoctor } from "@/lib/actions/doctor.actions";
+import { useCurrent } from "@/contexts/Current.context";
 
 export default function DoctorForm({
-	currentUser,
 	action,
-	doctor,
 }: {
-	currentUser: IUser;
 	action: "Create" | "Update";
-	doctor?: IDoctor;
 }) {
 	const [activeStep, setActiveStep] = useState<number>(1);
 	const [isPending, startTransition] = useTransition();
 	const [isSuccess, setIsSuccess] = useState<boolean>(false);
 	const pathname = usePathname();
 	const router = useRouter();
+	const currentUser = useCurrent().currentUser as IUser;
+	const doctor = useCurrent().currentDoctor as IDoctor;
 
 	const form = useForm<DoctorFormData>({
 		resolver: zodResolver(doctorFormSchema),
@@ -52,7 +51,7 @@ export default function DoctorForm({
 			bio: doctor?.bio,
 			DOB: doctor?.DOB as string,
 			gender: doctor?.gender,
-			languages: doctor?.languages.join(", "),
+			languages: doctor?.languages!.join(", "),
 			contact: doctor?.contact,
 			// credentials: doctor?.credentials,
 		},
@@ -176,10 +175,8 @@ export default function DoctorForm({
 export const DoctorFormPanel = ({
 	action = "Create",
 	children,
-	currentUser,
 }: {
 	action?: "Update" | "Create";
-	currentUser: IUser;
 	children: ReactNode;
 }) => {
 	return (
@@ -187,7 +184,7 @@ export const DoctorFormPanel = ({
 			<FormPanelTrigger asChild>{children}</FormPanelTrigger>
 
 			<FormPanelContent>
-				<DoctorForm action={action} currentUser={currentUser} />
+				<DoctorForm action={action} />
 			</FormPanelContent>
 		</FormPanel>
 	);

@@ -11,8 +11,8 @@ import AppSidebarFooter from "./AppSidebarFooter";
 import AppSidebarHeader from "./AppSidebarHeader";
 import NavItem from "./NavItem";
 
-export default async function AppSidebar({ currentUser }: { currentUser: IUser }) {
-	const patientNav = await getPatientNav()
+export default async function AppSidebar() {
+	const patientNav = await getPatientNav();
 
 	return (
 		<Sidebar variant="floating" collapsible="icon">
@@ -27,7 +27,7 @@ export default async function AppSidebar({ currentUser }: { currentUser: IUser }
 				</SidebarMenu>
 			</SidebarContent>
 			<SidebarFooter>
-				<AppSidebarFooter currentUser={currentUser} />
+				<AppSidebarFooter />
 			</SidebarFooter>
 			<SidebarRail />
 		</Sidebar>

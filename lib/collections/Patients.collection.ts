@@ -25,7 +25,7 @@ export const Patients: CollectionConfig = {
 		},
 		{ name: "occupation", type: "text" },
 		{ name: "race", type: "text" },
-		{ name: "language", type: "text", hasMany: true },
+		{ name: "languages", type: "text", hasMany: true },
 		{
 			name: "emergencyContacts",
 			type: "array",

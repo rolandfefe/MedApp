@@ -31,21 +31,20 @@ import MyBtn from "../custom/MyBtn";
 import getPatientFormStepper from "../formSteppers/patientFormStepper";
 import { Card, CardContent } from "../ui/card";
 import { Separator } from "../ui/separator";
+import { useCurrent } from "@/contexts/Current.context";
 
 export default function PatientForm({
 	action = "create",
-	patient,
-	currentUser,
 }: {
 	action: "update" | "create";
-	patient?: IPatient;
-	currentUser: IUser;
 }) {
 	const [activeStep, setActiveStep] = useState<number>(1);
 	const pathname = usePathname();
 	const [isPending, startTransition] = useTransition();
 	const [isSuccess, setIsSuccess] = useState<boolean>(false);
 	const router = useRouter();
+	const patient = useCurrent().currentPatient;
+	const currentUser = useCurrent().currentUser!;
 
 	const form = useForm<PatientFormData>({
 		resolver: zodResolver(patientZodSchema),
@@ -65,14 +64,11 @@ export default function PatientForm({
 
 		if (action === "create") {
 			startTransition(async () => {
-				await createPatient(
-					{
-						...data,
-						user: currentUser.id!,
-						languages: data.languages?.split(", "),
-					},
-					pathname
-				);
+				await createPatient({
+					...data,
+					user: currentUser.id!,
+					languages: data.languages!.split(", "),
+				});
 
 				await updateOnBoardingStatus(true);
 
@@ -83,14 +79,11 @@ export default function PatientForm({
 			});
 		} else if (action === "update" && patient) {
 			startTransition(async () => {
-				await updatePatient(
-					{
-						...patient,
-						...data,
-						languages: data.languages?.split(", "),
-					},
-					pathname
-				);
+				await updatePatient({
+					...patient,
+					...data,
+					languages: data.languages?.split(", "),
+				});
 			});
 
 			form.reset();
@@ -179,15 +172,11 @@ export default function PatientForm({
 }
 
 export function PatientFormPanel({
-	currentUser,
 	children,
 	action = "create",
-	patient,
 }: {
-	currentUser: IUser;
 	children: ReactNode;
 	action?: "create" | "update";
-	patient?: IPatient;
 }) {
 	// const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -197,11 +186,7 @@ export function PatientFormPanel({
 			<FormPanelTrigger asChild>{children}</FormPanelTrigger>
 
 			<FormPanelContent>
-				<PatientForm
-					action={action}
-					currentUser={currentUser}
-					patient={patient}
-				/>
+				<PatientForm action={action} />
 			</FormPanelContent>
 		</FormPanel>
 	);

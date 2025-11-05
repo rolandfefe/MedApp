@@ -10,7 +10,9 @@ const payload = await getPayload({ config });
  * @Mutations
  */
 
-export const createPatient = async (data: IPatient) => {
+export const createPatient = async (
+	data: Omit<IPatient, "id" | "createdAt" | "updatedAt">
+) => {
 	try {
 		await payload.create({
 			collection: "patients",
@@ -65,7 +67,7 @@ export const getPatients = cache(
 		maritalStatus?: eMaritalStatus;
 		page?: number;
 		limit?: number;
-	}): Promise<{ patients: IPatient[]; nextPg: number }> => {
+	}) => {
 		try {
 			const {
 				docs: patients,
@@ -84,7 +86,7 @@ export const getPatients = cache(
 				limit,
 			});
 
-			return { patients, nextPg: hasNextPage ? nextPage! : page };
+			return { patients, hasNextPage, nextPage };
 		} catch (error: any) {
 			throw new Error();
 		}

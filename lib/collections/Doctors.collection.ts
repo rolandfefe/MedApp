@@ -22,7 +22,7 @@ export const Doctors: CollectionConfig = {
 				value,
 			})),
 		},
-		{ name: "language", type: "text", hasMany: true },
+		{ name: "languages", type: "text", hasMany: true },
 		{ name: "bio", type: "text", maxLength: 5000 },
 		{
 			name: "specialties",

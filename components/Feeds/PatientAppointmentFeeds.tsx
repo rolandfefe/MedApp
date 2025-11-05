@@ -1,5 +1,7 @@
 "use client";
 
+import { useAppointments } from "@/contexts/Appointments.context";
+import { useCurrent } from "@/contexts/Current.context";
 import { cn } from "@/lib/utils";
 import { eAppointmentStatus, eAppointmentTypes } from "@/types/enums/enums";
 import {
@@ -23,8 +25,6 @@ import {
 } from "../ui/dropdown-menu";
 import { ShineBorder } from "../ui/shine-border";
 import { useSidebar } from "../ui/sidebar";
-import { useCurrent } from "@/contexts/Current.context";
-import { usePagination } from "@/contexts/Pagination.context";
 
 interface Filters {
 	referred?: boolean;
@@ -34,9 +34,8 @@ interface Filters {
 }
 
 export default function PatientAppointmentFeeds() {
-	const currentPatient = useCurrent().currentPatient as IPatient;
-	const { doctors, appointments, setAppointments, setDoctors } =
-		usePagination();
+	const currentPatient = useCurrent().currentPatient!;
+	const { appointments } = useAppointments();
 
 	const [filters, setFilters] = useState<Filters>({
 		emergency: false,

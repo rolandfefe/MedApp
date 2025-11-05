@@ -1,32 +1,43 @@
-import Navbar from "@/components/layouts/Navbar";
-import { ReactNode } from "react";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import AppSidebar from "@/components/layouts/AppSidebar";
-import { getCurrentUser } from "@/lib/actions/user.actions";
-import { AppointmentPanel } from "@/components/forms/AppointmentForm";
 import MyBtn from "@/components/custom/MyBtn";
-import { Headset } from "lucide-react";
-import { getCurrentPatient } from "@/lib/actions/utils.actions";
+import { AppointmentPanel } from "@/components/forms/AppointmentForm";
+import AppSidebar from "@/components/layouts/AppSidebar";
+import Navbar from "@/components/layouts/Navbar";
 import { MorphingDialogTitle } from "@/components/motion-primitives/morphing-dialog";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { ShineBorder } from "@/components/ui/shine-border";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { CurrentProvider } from "@/contexts/Current.context";
+import { DoctorsProvider } from "@/contexts/Doctors.context";
 import { getDoctors } from "@/lib/actions/doctor.actions";
 import { getPatientNav } from "@/lib/actions/globals.actions";
-import { CurrentProvider } from "@/contexts/Current.context";
-import { PaginationProvider } from "@/contexts/Pagination.context";
+import { getCurrentUser } from "@/lib/actions/user.actions";
+import {
+	getCurrentDoctor,
+	getCurrentPatient,
+} from "@/lib/actions/utils.actions";
+import { Headset } from "lucide-react";
+import { redirect } from "next/navigation";
+import { ReactNode } from "react";
 
 export default async function layout({ children }: { children: ReactNode }) {
-	const [currentUser, patient, { doctors }, patientNav] = await Promise.all([
-		getCurrentUser(),
-		getCurrentPatient(),
-		getDoctors({ limit: 0 }),
-		getPatientNav(),
-	]);
+	const [currentUser, patient, currentDoctor, { doctors }, patientNav] =
+		await Promise.all([
+			getCurrentUser(),
+			getCurrentPatient(),
+			getCurrentDoctor(),
+			getDoctors({ limit: 0 }),
+			getPatientNav(),
+		]);
+
+	console.log(currentUser, patient, currentDoctor);
+
+	// ? Redirect to doctor mode if no patient account found
+	if (!patient && currentDoctor) redirect(`/doctor/${currentDoctor.id}`);
 
 	return (
 		<CurrentProvider user={currentUser} patient={patient}>
 			<SidebarProvider defaultOpen>
-				<AppSidebar currentUser={currentUser} />
+				<AppSidebar />
 				<SidebarInset>
 					<ScrollArea className="h-screen">
 						<Navbar patientNav={patientNav} />
@@ -36,7 +47,7 @@ export default async function layout({ children }: { children: ReactNode }) {
 				</SidebarInset>
 			</SidebarProvider>
 
-			<PaginationProvider doctorsInit={doctors}>
+			<DoctorsProvider doctorsInit={doctors}>
 				<CurrentProvider patient={patient}>
 					<AppointmentPanel
 						action="Create"
@@ -56,7 +67,7 @@ export default async function layout({ children }: { children: ReactNode }) {
 						</MyBtn>
 					</AppointmentPanel>
 				</CurrentProvider>
-			</PaginationProvider>
+			</DoctorsProvider>
 		</CurrentProvider>
 	);
 }

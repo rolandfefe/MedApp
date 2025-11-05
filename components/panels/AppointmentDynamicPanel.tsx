@@ -58,6 +58,9 @@ export default function AppointmentDynamicPanel({
 		(appointment.status == eAppointmentStatus.CANCELLED &&
 			!isAppointmentDoctor);
 
+
+		console.log("active:",appointment)
+
 	const cancelHandler = async () => {
 		await updateAppointment({
 			...appointment,
@@ -73,19 +76,20 @@ export default function AppointmentDynamicPanel({
 	};
 
 	const confirmHandler = async () =>
-		startConfirmation(
-			async () =>
-				await updateAppointment({
-					...appointment,
-					confirmation: {
-						confirmedAt: `${new Date()}`,
-						isConfirmed: true,
-						confirmedBy: currentDoctor?.id,
-					},
-					cancellation: undefined,
-					status: eAppointmentStatus.CONFIRMED,
-				})
-		);
+		startConfirmation(async () => {
+			await updateAppointment({
+				...appointment,
+				confirmation: {
+					confirmedAt: `${new Date()}`,
+					isConfirmed: true,
+					confirmedBy: currentDoctor?.id,
+				},
+				cancellation: undefined,
+				status: eAppointmentStatus.CONFIRMED,
+			});
+
+			toast.success("Confirmed");
+		});
 
 	const deleteHandler = async () => await deleteAppointment(appointment.id!);
 

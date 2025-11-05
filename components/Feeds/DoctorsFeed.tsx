@@ -1,17 +1,17 @@
 "use client";
 
 import { useCurrent } from "@/contexts/Current.context";
+import { useDoctors } from "@/contexts/Doctors.context";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import DoctorCard from "../cards/DoctorCard";
 import Void from "../custom/Void";
 import DoctorSearchBox from "../DoctorSearchBox";
-import { usePagination } from "@/contexts/Pagination.context";
 
 export default function DoctorsFeed() {
 	const currentPatient = useCurrent().currentPatient as IPatient;
-	const { doctors } = usePagination();
+	const { doctors } = useDoctors();
 
 	const [results, setResults] = useState<IDoctor[]>(doctors);
 	const [selected, setSelected] = useState<IDoctor>();

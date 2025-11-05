@@ -1,10 +1,8 @@
 "use server";
 
-import { updateTag, unstable_cache as cache } from "next/cache";
-import { connectDb } from "../db/db";
-import doctorModel from "../db/models/doctor.model";
-import { getPayload } from "payload";
 import config from "@/payload.config";
+import { unstable_cache as cache, updateTag } from "next/cache";
+import { getPayload } from "payload";
 
 const payload = await getPayload({ config });
 
@@ -25,16 +23,6 @@ export const createDoctor = async (data: IDoctor): Promise<IDoctor> => {
 		throw new Error(error);
 	}
 };
-
-// export const getDoctorsAdvanced = async ({}: {}) => {
-// 	try {
-// 		await connectDb()
-
-// 		const doctors = await doctorModel.find()
-// 	} catch (error:any) {
-// 		throw new Error(error)
-// 	}
-// }
 
 export const updateDoctor = async (data: IDoctor) => {
 	try {
@@ -71,7 +59,7 @@ export const getDoctors = cache(
 	}: {
 		page?: number;
 		limit?: number;
-	}): Promise<{ doctors: IDoctor[]; nextPg: number }> => {
+	}) => {
 		try {
 			const {
 				docs: doctors,
@@ -83,7 +71,7 @@ export const getDoctors = cache(
 				limit,
 			});
 
-			return { doctors, nextPg: hasNextPage ? nextPage! : page };
+			return { doctors, hasNextPage, nextP };
 		} catch (error: any) {
 			throw new Error(error);
 		}

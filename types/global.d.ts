@@ -23,6 +23,7 @@ import {
 	User,
 	Verdict,
 } from "./payload";
+import { IntersectingRef } from "@/hooks/useLoadMore";
 
 export {};
 
@@ -31,6 +32,14 @@ declare global {
 		id?: string;
 		createdAt?: Date | string;
 		updatedAt?: Date | string;
+	}
+
+	interface IPagination {
+		nextPg: number; // ? Might not be needed
+		isLoading: boolean;
+		loadRef: IntersectingRef;
+		// setNextPg: Dispatch<SetStateAction<number>>;
+		// setIsLoading: Dispatch<SetStateAction<booleans>>;
 	}
 
 	type IUser = User;

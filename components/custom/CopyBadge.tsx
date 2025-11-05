@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { ComponentProps } from "react";
 import { Badge } from "../ui/badge";
@@ -7,6 +7,7 @@ import { useCopyToClipboard } from "@uidotdev/usehooks";
 import toast from "react-hot-toast";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { cn } from "@/lib/utils";
+import { motion } from "motion/react";
 
 export default function CopyBadge({
 	tooltipMsg = "Copy to clipboard📋",
@@ -29,14 +30,19 @@ export default function CopyBadge({
 	return (
 		<Tooltip>
 			<TooltipTrigger>
-				<Badge
-					{...props}
-					onClick={copyHandler}
-					className={cn("flex items-center gap-x-1 cursor-pointer", className)}
-				>
-					<Copy size={18} />
-					<span>{content}</span>
-				</Badge>
+				<motion.div whileTap={{ scale: 0.98 }}>
+					<Badge
+						{...props}
+						onClick={copyHandler}
+						className={cn(
+							"flex items-center gap-x-1 cursor-pointer",
+							className
+						)}
+					>
+						<Copy size={18} />
+						<span>{content}</span>
+					</Badge>
+				</motion.div>
 			</TooltipTrigger>
 
 			<TooltipContent>{tooltipMsg}</TooltipContent>

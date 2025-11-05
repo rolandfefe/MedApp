@@ -69,7 +69,7 @@ export const getAppointments = cache(
 		doctor,
 		type,
 		status,
-		page = 1,
+		page,
 		limit,
 	}: {
 		patient?: string;
@@ -78,7 +78,7 @@ export const getAppointments = cache(
 		status?: eAppointmentStatus;
 		page?: number;
 		limit?: number;
-	}): Promise<{ appointments: IAppointment[]; nextPg: number }> => {
+	}) => {
 		try {
 			const {
 				docs: appointments,
@@ -98,7 +98,7 @@ export const getAppointments = cache(
 				limit,
 			});
 
-			return { appointments, nextPg: hasNextPage ? nextPage! : page };
+			return { appointments, hasNextPage, nextPage };
 		} catch (error: any) {
 			throw new Error(error);
 		}

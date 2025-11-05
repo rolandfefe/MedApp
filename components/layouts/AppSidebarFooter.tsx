@@ -1,72 +1,43 @@
 "use client";
 
-import { SignedIn, UserButton } from "@clerk/nextjs";
-import React, { useEffect, useState } from "react";
-import {
-	Sidebar,
-	SidebarMenu,
-	SidebarMenuButton,
-	useSidebar,
-} from "../ui/sidebar";
+import { useCurrent } from "@/contexts/Current.context";
+import { useMediaQuery } from "@uidotdev/usehooks";
+import { AlarmClock, ChevronsUpDown, Hospital, UserPlus2 } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
+import MyBtn from "../custom/MyBtn";
+import { DoctorFormPanel } from "../forms/DoctorForm";
+import { PatientFormPanel } from "../forms/patientForm";
 import RemindersPanel from "../panels/RemindersPanel";
-import {
-	AlarmClock,
-	ChevronsUpDown,
-	Hospital,
-	UserCircle,
-	UserPlus2,
-} from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import UserCard from "../cards/UserCard";
-import NavItem from "./NavItem";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { cn } from "@/lib/utils";
-import { getDoctor } from "@/lib/actions/doctor.actions";
-import { getPatient } from "@/lib/actions/patient.actions";
-import { DoctorFormPanel } from "../forms/DoctorForm";
-import MyBtn from "../custom/MyBtn";
-import { PatientFormPanel } from "../forms/patientForm";
-import { useMediaQuery } from "@uidotdev/usehooks";
-import { usePathname, useRouter } from "next/navigation";
+import { SidebarMenuButton, useSidebar } from "../ui/sidebar";
+import NavItem from "./NavItem";
+import Link from "next/link";
 
-export default function AppSidebarFooter({
-	currentUser,
-}: {
-	currentUser: IUser;
-}) {
+export default function AppSidebarFooter() {
 	const { state: sidebarState } = useSidebar();
 	const [reminders, setReminders] = useState<IReminder[]>([]);
-	const [doctor, setDoctor] = useState<IDoctor>();
-	const [patient, setPatient] = useState<IPatient>();
+	const { currentDoctor: doctor, currentPatient: patient } = useCurrent();
 
 	const isSmScreen = useMediaQuery("(width <= 640px )");
-	const router = useRouter();
 	const pathname = usePathname();
-
 	const isDoctorMode = pathname.split("/")[1] === "doctor";
-
-	useEffect(() => {
-		const fetchData = async () => {
-			setDoctor(await getDoctor({ userId: currentUser.id! }));
-			setPatient(await getPatient({ userId: currentUser.id! }));
-		};
-		fetchData();
-	}, []);
 
 	return (
 		<div className="space-y-2">
 			<NavItem
-				icon={<UserCircle />}
+				icon={"user-circle"}
 				link="/profile"
 				name="Profile"
 				className="border"
 			/>
-			<RemindersPanel currentUser={currentUser} reminders={reminders}>
+
+			<RemindersPanel reminders={reminders}>
 				<SidebarMenuButton tooltip={"Reminders"} className="border">
 					<AlarmClock />
 					<span>Reminders</span>
@@ -75,27 +46,24 @@ export default function AppSidebarFooter({
 
 			<DropdownMenu>
 				<DropdownMenuTrigger asChild>
-					{(doctor || patient) && (
-						<SidebarMenuButton
-							tooltip={"Choose mode"}
-							// size="lg"
-							variant={"outline"}
-							className="h-12"
-						>
-							{isDoctorMode ? (
-								<>
-									<Hospital />
-									<span>Doctor mode</span>
-								</>
-							) : (
-								<>
-									<UserPlus2 />
-									<span>Patient mode</span>
-								</>
-							)}
-							<ChevronsUpDown />
-						</SidebarMenuButton>
-					)}
+					<SidebarMenuButton
+						tooltip={"Choose mode"}
+						variant={"outline"}
+						className="h-12"
+					>
+						{isDoctorMode ? (
+							<>
+								<Hospital />
+								<span>Doctor mode</span>
+							</>
+						) : (
+							<>
+								<UserPlus2 />
+								<span>Patient mode</span>
+							</>
+						)}
+						<ChevronsUpDown />
+					</SidebarMenuButton>
 				</DropdownMenuTrigger>
 
 				<DropdownMenuContent
@@ -105,17 +73,14 @@ export default function AppSidebarFooter({
 					className="min-w-56"
 				>
 					{doctor ? (
-						<DropdownMenuItem
-							disabled={isDoctorMode}
-							onClick={() =>
-								router.push(`/doctor/${encodeURIComponent(doctor.id!)}`)
-							}
-						>
-							<Hospital />
-							Doctor mode
+						<DropdownMenuItem disabled={isDoctorMode}>
+							<Link href={`/home`} className="flex item-center gap-x-1">
+								<UserPlus2 />
+								Patient mode
+							</Link>
 						</DropdownMenuItem>
 					) : (
-						<DoctorFormPanel currentUser={currentUser} action="Create">
+						<DoctorFormPanel action="Create">
 							<MyBtn size="sm" className="w-full">
 								Apply as Doctor <Hospital />
 							</MyBtn>
@@ -123,15 +88,17 @@ export default function AppSidebarFooter({
 					)}
 
 					{patient ? (
-						<DropdownMenuItem
-							disabled={!isDoctorMode}
-							onClick={() => router.push(`/home`)}
-						>
-							<UserPlus2 />
-							Patient mode
+						<DropdownMenuItem disabled={!isDoctorMode}>
+							<Link
+								href={`/doctor/${doctor.id!}`}
+								className="flex item-center gap-x-1"
+							>
+								<Hospital />
+								Doctor mode
+							</Link>
 						</DropdownMenuItem>
 					) : (
-						<PatientFormPanel currentUser={currentUser} action="create">
+						<PatientFormPanel action="create">
 							<MyBtn size="sm" className="w-full">
 								Apply as Patient
 								<UserPlus2 />

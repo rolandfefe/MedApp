@@ -1,4 +1,9 @@
-import React, { ReactNode } from "react";
+import { AlarmClock, Headset, Pill, PlusCircle, User } from "lucide-react";
+import { ReactNode } from "react";
+import Heading from "../custom/Heading";
+import MyBtn from "../custom/MyBtn";
+import { ScrollArea } from "../ui/scroll-area";
+import { Separator } from "../ui/separator";
 import {
 	Sheet,
 	SheetContent,
@@ -7,19 +12,12 @@ import {
 	SheetTitle,
 	SheetTrigger,
 } from "../ui/sheet";
-import MyBtn from "../custom/MyBtn";
-import { AlarmClock, Headset, Pill, PlusCircle, User } from "lucide-react";
-import { ScrollArea } from "../ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
-import Heading from "../custom/Heading";
-import { Separator } from "../ui/separator";
 
 export default function RemindersPanel({
-	currentUser,
 	children,
 	reminders,
 }: {
-	currentUser: IUser;
 	children: ReactNode;
 	reminders: IReminder[];
 }) {

@@ -191,7 +191,7 @@ export interface Patient {
   maritalStatus?: ('Single' | 'Married' | 'Divorced' | 'Widowed' | 'Separated') | null;
   occupation?: string | null;
   race?: string | null;
-  language?: string[] | null;
+  languages?: string[] | null;
   emergencyContacts?:
     | {
         name: string;
@@ -214,7 +214,7 @@ export interface Doctor {
   user: string | User;
   DOB: string;
   gender?: ('Male' | 'Female' | 'Other') | null;
-  language?: string[] | null;
+  languages?: string[] | null;
   bio?: string | null;
   specialties?:
     | {
@@ -943,7 +943,7 @@ export interface PatientsSelect<T extends boolean = true> {
   maritalStatus?: T;
   occupation?: T;
   race?: T;
-  language?: T;
+  languages?: T;
   emergencyContacts?:
     | T
     | {
@@ -965,7 +965,7 @@ export interface DoctorsSelect<T extends boolean = true> {
   user?: T;
   DOB?: T;
   gender?: T;
-  language?: T;
+  languages?: T;
   bio?: T;
   specialties?:
     | T

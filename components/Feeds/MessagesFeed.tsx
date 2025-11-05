@@ -29,22 +29,10 @@ export default function MessagesFeed({
 	...props
 }: ComponentProps<"section">) {
 	const { appointment } = useConsultation();
-	const { msgs, setMsgs, nextPg, setNextPg } = useMsg();
+	const { msgs, setMsgs, loadRef, isLoading } = useMsg();
 
 	const lastMsgRef = useRef<HTMLDivElement>(null);
-	// const [msgs, setMsgs] = useState<IMessage[]>(initMsgs);
 
-	const loadMore = async () => {
-		const { msgs, nextPg: nextPage } = await getMsgs({
-			appointment: appointment.id,
-			page: nextPg,
-		});
-
-		setNextPg(nextPage);
-		setMsgs((prev) => uniqBy([...prev, ...msgs], "id"));
-	};
-
-	const { ref, isLoading } = useLoadMore({ loader: loadMore });
 	console.log("isLoading: ", isLoading, msgs);
 
 	const pusherHandler = useEffectEvent(() => {
@@ -59,7 +47,7 @@ export default function MessagesFeed({
 
 	useEffect(() => {
 		pusherHandler();
-	}, [appointment, pusherHandler]);
+	}, [appointment]);
 
 	useLayoutEffect(() => {
 		if (lastMsgRef)
@@ -85,7 +73,7 @@ export default function MessagesFeed({
 						>
 							<MsgCard
 								msg={msg}
-								ref={msgs[msgs.length - 1].id === msg.id ? ref : null}
+								ref={msgs[msgs.length - 1].id === msg.id ? loadRef : null}
 								className=""
 							/>
 						</motion.div>

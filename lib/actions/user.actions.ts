@@ -6,6 +6,7 @@ import { unstable_cache as cache, updateTag } from "next/cache";
 import { getPayload } from "payload";
 
 const payload = await getPayload({ config });
+const isDevMode = process.env.MY_ENV === "dev";
 
 /**
  * @Mutations
@@ -77,28 +78,26 @@ export const deleteUser = async (clerkId: string): Promise<void> => {
  * @Fetches
  */
 export const getCurrentUser = async (): Promise<IUser> => {
-		try {
-			let clerkId: string;
+	try {
+		const clerkId = isDevMode
+			? "user_44Ep69eYVSnVJI1XSnkXxkyFbkE"
+			: (await currentUser())!.id;
 
-			if (process.env.MY_ENV === "dev") {
-				clerkId = "user_33IYoE4ONaznKJn53RfVyPslr2t";
-			} else {
-				clerkId = (await currentUser())!.id;
-			}
+		const {
+			docs: [user],
+		} = await payload.find({
+			collection: "users",
+			limit: 1,
+			where: {
+				clerkId: { equals: clerkId },
+			},
+		});
 
-			const { docs } = await payload.find({
-				collection: "users",
-				limit: 1,
-				where: {
-					clerkId: { equals: clerkId },
-				},
-			});
-
-			return docs[0];
-		} catch (error: any) {
-			throw new Error(error);
-		}
-	};
+		return user;
+	} catch (error: any) {
+		throw new Error(error);
+	}
+};
 
 export const getUser = cache(
 	async ({
@@ -109,7 +108,9 @@ export const getUser = cache(
 		clerkId?: string;
 	}): Promise<IUser> => {
 		try {
-			const { docs } = await payload.find({
+			const {
+				docs: [user],
+			} = await payload.find({
 				collection: "users",
 				where: {
 					or: [{ id: { equals: id } }, { clerkId: { equals: clerkId } }],
@@ -117,7 +118,7 @@ export const getUser = cache(
 				limit: 1,
 			});
 
-			return docs[0];
+			return user;
 		} catch (error: any) {
 			throw new Error(error);
 		}

@@ -1,9 +1,8 @@
 import PatientAppointmentFeeds from "@/components/Feeds/PatientAppointmentFeeds";
-import { PaginationProvider } from "@/contexts/Pagination.context";
+import { AppointmentsProvider } from "@/contexts/Appointments.context";
+import { DoctorsProvider } from "@/contexts/Doctors.context";
 import { getDoctors } from "@/lib/actions/doctor.actions";
-import {
-	getCurrentPatientAppointments
-} from "@/lib/actions/utils.actions";
+import { getCurrentPatientAppointments } from "@/lib/actions/utils.actions";
 
 export default async function page() {
 	const [{ appointments }, { doctors }] = await Promise.all([
@@ -12,8 +11,10 @@ export default async function page() {
 	]);
 
 	return (
-		<PaginationProvider appointmentsInit={appointments} doctorsInit={doctors}>
-			<PatientAppointmentFeeds />
-		</PaginationProvider>
+		<AppointmentsProvider appointmentsInit={appointments}>
+			<DoctorsProvider doctorsInit={doctors}>
+				<PatientAppointmentFeeds />
+			</DoctorsProvider>
+		</AppointmentsProvider>
 	);
 }

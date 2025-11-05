@@ -27,7 +27,7 @@ import { Form } from "../ui/form";
 import { Separator } from "../ui/separator";
 
 import { useCurrent } from "@/contexts/Current.context";
-import { usePagination } from "@/contexts/Pagination.context";
+import { useDoctors } from "@/contexts/Doctors.context";
 import {
 	createAppointment,
 	updateAppointment,
@@ -51,7 +51,7 @@ export default function AppointmentForm({
 	appointment?: IAppointment;
 }) {
 	const patient = useCurrent().currentPatient as IPatient;
-	const { doctors } = usePagination();
+	const { doctors } = useDoctors();
 
 	const [isPending, startTransition] = useTransition();
 	const [activeStep, setActiveStep] = useState<number>(1);

@@ -1,5 +1,5 @@
 import DoctorAppointmentFeeds from "@/components/Feeds/DoctorAppointmentsFeed";
-import { PaginationProvider } from "@/contexts/Pagination.context";
+import { AppointmentsProvider } from "@/contexts/Appointments.context";
 import { getAppointments } from "@/lib/actions/appointment.actions";
 import { getCurrentUser } from "@/lib/actions/user.actions";
 import { getCurrentDoctorAppointments } from "@/lib/actions/utils.actions";
@@ -20,11 +20,11 @@ export default async function page() {
 	]);
 
 	return (
-		<PaginationProvider
+		<AppointmentsProvider
 			appointmentsInit={doctorAppointments}
 			className="sm:p-3"
 		>
 			<DoctorAppointmentFeeds autoAppointments={autoAppointments} />
-		</PaginationProvider>
+		</AppointmentsProvider>
 	);
 }

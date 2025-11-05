@@ -1,5 +1,4 @@
 import { useCurrent } from "@/contexts/Current.context";
-import { usePagination } from "@/contexts/Pagination.context";
 import { cn } from "@/lib/utils";
 import { eAppointmentStatus } from "@/types/enums/enums";
 import { Dot, Sparkles } from "lucide-react";
@@ -26,8 +25,6 @@ export default function AppointmentCard({
 	const currentPatient = useCurrent().currentPatient as IPatient;
 	const currentDoctor = useCurrent().currentDoctor as IDoctor;
 
-	const { doctors, appointments, setAppointments, setDoctors } =
-		usePagination();
 
 	if (variant === "sm") {
 		return (

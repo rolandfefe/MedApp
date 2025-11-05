@@ -1,7 +1,7 @@
 "use client";
 
+import { useAppointments } from "@/contexts/Appointments.context";
 import { useCurrent } from "@/contexts/Current.context";
-import { usePagination } from "@/contexts/Pagination.context";
 import { cn } from "@/lib/utils";
 import { eAppointmentStatus, eAppointmentTypes } from "@/types/enums/enums";
 import { ChevronsUpDown, Sparkles, TriangleAlert } from "lucide-react";
@@ -31,7 +31,7 @@ export default function DoctorAppointmentFeeds({
 	autoAppointments: IAppointment[];
 }) {
 	const currentDoctor = useCurrent().currentDoctor as IDoctor;
-	const { appointments } = usePagination();
+	const { appointments } = useAppointments();
 
 	const [filters, setFilters] = useState<Filters>({
 		emergency: false,
