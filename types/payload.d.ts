@@ -497,12 +497,28 @@ export interface History {
 export interface Diagnosis {
   id: string;
   appointment: string | Appointment;
-  patient: string | Patient;
   doctor: string | Doctor;
-  healthStatus: string | HealthStatus;
   history: string | History;
-  chiefComplaint?: string | null;
-  preAppointmentNotes?: {
+  healthStatus?: (string | null) | HealthStatus;
+  templateUsed?: string | null;
+  onsetDate: string;
+  dateResolved?: string | null;
+  chiefComplaint?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  notes?: {
     root: {
       type: string;
       children: {
@@ -518,35 +534,18 @@ export interface Diagnosis {
     [k: string]: unknown;
   } | null;
   medicationsReviewed?: boolean | null;
-  templateUsed?: string | null;
-  onsetDate: string;
-  dateResolved?: string | null;
   status?: ('Active' | 'Provisional' | 'Ruled-out' | 'Confirmed' | 'Resolved' | 'Pending') | null;
   updatedBy?: (string | null) | Doctor;
+  dateConfirmed?: string | null;
   differentialDiagnosis?:
     | {
         condition: string;
         icd10Code?: string | null;
-        reasoning: {
-          root: {
-            type: string;
-            children: {
-              type: any;
-              version: number;
-              [k: string]: unknown;
-            }[];
-            direction: ('ltr' | 'rtl') | null;
-            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-            indent: number;
-            version: number;
-          };
-          [k: string]: unknown;
-        };
+        reasoning: string;
         isPrimary?: boolean | null;
         confidence: 'Ruled-out' | 'Low' | 'Medium' | 'High' | 'Confirmed';
-        laterality?: ('Left' | 'Right' | 'Bilateral') | null;
         severity: 'Mild' | 'Moderate' | 'Severe';
-        dateConfirmed: string;
+        laterality?: ('Left' | 'Right' | 'Bilateral') | null;
         id?: string | null;
       }[]
     | null;
@@ -561,8 +560,6 @@ export interface Appointment {
   id: string;
   patient: string | Patient;
   doctor?: (string | null) | Doctor;
-  diagnosis?: (string | null) | Diagnosis;
-  healthStatus?: (string | null) | HealthStatus;
   reminders?: (string | Reminder)[] | null;
   reason: string;
   type:
@@ -605,21 +602,6 @@ export interface Appointment {
     [k: string]: unknown;
   } | null;
   doctorNotes?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  followUpInstructions?: {
     root: {
       type: string;
       children: {
@@ -1164,18 +1146,18 @@ export interface HistoriesSelect<T extends boolean = true> {
  */
 export interface DiagnosesSelect<T extends boolean = true> {
   appointment?: T;
-  patient?: T;
   doctor?: T;
-  healthStatus?: T;
   history?: T;
-  chiefComplaint?: T;
-  preAppointmentNotes?: T;
-  medicationsReviewed?: T;
+  healthStatus?: T;
   templateUsed?: T;
   onsetDate?: T;
   dateResolved?: T;
+  chiefComplaint?: T;
+  notes?: T;
+  medicationsReviewed?: T;
   status?: T;
   updatedBy?: T;
+  dateConfirmed?: T;
   differentialDiagnosis?:
     | T
     | {
@@ -1184,9 +1166,8 @@ export interface DiagnosesSelect<T extends boolean = true> {
         reasoning?: T;
         isPrimary?: T;
         confidence?: T;
-        laterality?: T;
         severity?: T;
-        dateConfirmed?: T;
+        laterality?: T;
         id?: T;
       };
   updatedAt?: T;
@@ -1207,8 +1188,6 @@ export interface RemindersSelect<T extends boolean = true> {
 export interface AppointmentsSelect<T extends boolean = true> {
   patient?: T;
   doctor?: T;
-  diagnosis?: T;
-  healthStatus?: T;
   reminders?: T;
   reason?: T;
   type?: T;
@@ -1231,7 +1210,6 @@ export interface AppointmentsSelect<T extends boolean = true> {
   endTime?: T;
   patientNotes?: T;
   doctorNotes?: T;
-  followUpInstructions?: T;
   consentLevels?: T;
   isEmergency?: T;
   online?:

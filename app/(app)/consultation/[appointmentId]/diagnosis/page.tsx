@@ -1,8 +1,7 @@
-import ConsultationGuideBtn from "@/components/btns/ConsultationGuideBtn";
-import LinkBtn from "@/components/btns/LinkBtn";
 import DiagnosisForm from "@/components/forms/DiagnosisForm";
+import DiagnosisSection from "@/components/Sections/DiagnosisSection";
+import { getDiagnosis } from "@/lib/actions/diagnosis.actions";
 import { getCurrentDoctor } from "@/lib/actions/utils.actions";
-import { ArrowRightCircle } from "lucide-react";
 
 export default async function page({
 	params,
@@ -10,16 +9,26 @@ export default async function page({
 	params: Promise<{ appointmentId: string }>;
 }) {
 	const { appointmentId } = await params;
-	const [currentDoctor] = await Promise.all([getCurrentDoctor()]);
+
+	const [currentDoctor, diagnosis] = await Promise.all([
+		getCurrentDoctor(),
+		getDiagnosis({ appointment: appointmentId }),
+	]);
+
+	console.log("Diagnosis:", diagnosis);
 
 	return (
 		<div className="mt-10">
-			<DiagnosisForm action="Create" />
+			{diagnosis ? (
+				<DiagnosisSection diagnosis={diagnosis} />
+			) : (
+				<DiagnosisForm action="Create" />
+			)}
 
-			<ConsultationGuideBtn  />
-			<LinkBtn link={{ href: `/consultation/${appointmentId}/verdict` }}>
+			{/* <ConsultationGuideBtn  /> */}
+			{/* <LinkBtn link={{ href: `/consultation/${appointmentId}/verdict` }}>
 				Verdict <ArrowRightCircle />
-			</LinkBtn>
+			</LinkBtn> */}
 		</div>
 	);
 }

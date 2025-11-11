@@ -16,10 +16,10 @@ export default async function page({
 	// ]);
 
 	// console.log("MSGS: ", msgs);
-	
+
 	return (
 		// <MsgProvider msgsInit={msgs} appointment={appointment}>
-			<ChatContainer />
+		<ChatContainer />
 		// </MsgProvider>
 	);
 }

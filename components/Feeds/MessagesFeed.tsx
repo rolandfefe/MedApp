@@ -2,52 +2,22 @@
 
 import { useConsultation } from "@/contexts/consultation.context";
 import { useMsg } from "@/contexts/message.context";
-import useLoadMore from "@/hooks/useLoadMore";
-import { getMsgs } from "@/lib/actions/message.actions";
-import { pusherClient } from "@/lib/pusher";
 import { cn } from "@/lib/utils";
-import { uniqBy } from "lodash-es";
 import { AnimatePresence, motion, Variants } from "motion/react";
-import {
-	ComponentProps,
-	useEffect,
-	useEffectEvent,
-	useLayoutEffect,
-	useRef,
-} from "react";
+import { ComponentProps, useLayoutEffect, useRef } from "react";
 import MsgCard from "../cards/MsgCard";
 import { ScrollArea } from "../ui/scroll-area";
-
-const msgVariants: Variants = {
-	hidden: { opacity: 0, y: 100 },
-	visible: { opacity: 1, y: 0 },
-	exit: { opacity: 0, y: 100 },
-};
 
 export default function MessagesFeed({
 	className,
 	...props
 }: ComponentProps<"section">) {
 	const { appointment } = useConsultation();
-	const { msgs, setMsgs, loadRef, isLoading } = useMsg();
+	const { msgs, loadRef, isLoading } = useMsg();
 
 	const lastMsgRef = useRef<HTMLDivElement>(null);
 
 	console.log("isLoading: ", isLoading, msgs);
-
-	const pusherHandler = useEffectEvent(() => {
-		pusherClient
-			.subscribe(`chat-${appointment.id!}-channel`)
-			.bind(`new-${appointment.id!}-msg`, (newMsg: IMessage) =>
-				setMsgs((prev) => uniqBy([...prev, newMsg], "id"))
-			);
-
-		return () => pusherClient.unsubscribe(`chat-${appointment.id!}-channel`);
-	});
-
-	useEffect(() => {
-		pusherHandler();
-	}, [appointment]);
 
 	useLayoutEffect(() => {
 		if (lastMsgRef)
@@ -57,12 +27,19 @@ export default function MessagesFeed({
 			});
 	}, [lastMsgRef]);
 
+	const msgVariants: Variants = {
+		hidden: { opacity: 0, y: 100 },
+		visible: { opacity: 1, y: 0 },
+		exit: { opacity: 0, y: 100 },
+	};
+
 	return (
 		<ScrollArea hideScrollbar className="h-[89vh]">
 			<section {...props} className={cn("space-y-2 pb-40 pt-10", className)}>
 				<AnimatePresence>
 					{msgs.map((msg) => {
 						const isLastItem = msgs[msgs.length - 1].id === msg.id;
+						const isFirstItem = msgs[0].id === msg.id;
 
 						return (
 							<motion.div
@@ -76,7 +53,7 @@ export default function MessagesFeed({
 							>
 								<MsgCard
 									msg={msg}
-									ref={isLastItem ? loadRef : null}
+									ref={isFirstItem ? loadRef : null}
 									className=""
 								/>
 							</motion.div>

@@ -8,9 +8,7 @@ import { CollectionConfig } from "payload";
 
 export const Diagnosis: CollectionConfig = {
 	slug: "diagnoses",
-
 	fields: [
-		// Relational
 		{
 			name: "appointment",
 			type: "relationship",
@@ -19,39 +17,31 @@ export const Diagnosis: CollectionConfig = {
 			required: true,
 		},
 		{
-			name: "patient",
-			type: "relationship",
-			relationTo: "patients",
-			required: true,
-		},
-		{
 			name: "doctor",
 			type: "relationship",
 			relationTo: "doctors",
 			required: true,
 		},
-		{
-			name: "healthStatus",
-			type: "relationship",
-			relationTo: "healthStatuses",
-			required: true,
-		},
+
 		{
 			name: "history",
 			type: "relationship",
 			relationTo: "histories",
 			required: true,
 		},
+		{
+			name: "healthStatus",
+			type: "relationship",
+			relationTo: "healthStatuses",
+		},
 
-		//
-		{ name: "chiefComplaint", type: "textarea" },
-		{ name: "preAppointmentNotes", type: "richText" },
-		{ name: "medicationsReviewed", type: "checkbox" },
 		{ name: "templateUsed", type: "text" },
-
-		// Date Fields
 		{ name: "onsetDate", type: "date", required: true },
 		{ name: "dateResolved", type: "date" },
+
+		{ name: "chiefComplaint", type: "richText" },
+		{ name: "notes", type: "richText" },
+		{ name: "medicationsReviewed", type: "checkbox", defaultValue: false },
 
 		{
 			name: "status",
@@ -64,6 +54,8 @@ export const Diagnosis: CollectionConfig = {
 		},
 		{ name: "updatedBy", type: "relationship", relationTo: "doctors" },
 
+		{ name: "dateConfirmed", type: "date"},
+		// { name: "isConfirmed", type: "checkbox", defaultValue: false },
 		// ? Differential Diagnosis.
 		{
 			name: "differentialDiagnosis",
@@ -72,22 +64,13 @@ export const Diagnosis: CollectionConfig = {
 			fields: [
 				{ name: "condition", type: "text", required: true },
 				{ name: "icd10Code", type: "text" }, // ! validate (especially at Form-level)
-				{ name: "reasoning", type: "richText", required: true },
+				{ name: "reasoning", type: "textarea", required: true },
 				{ name: "isPrimary", type: "checkbox", defaultValue: false },
 				{
 					name: "confidence",
 					type: "radio",
 					required: true,
 					options: Object.entries(eConfidenceLevel).map(([label, value]) => ({
-						label,
-						value,
-					})),
-				},
-				{
-					name: "laterality",
-					type: "radio",
-					// required: true,
-					options: Object.entries(eLaterality).map(([label, value]) => ({
 						label,
 						value,
 					})),
@@ -101,7 +84,15 @@ export const Diagnosis: CollectionConfig = {
 						value,
 					})),
 				},
-				{ name: "dateConfirmed", type: "date", required: true },
+				{
+					name: "laterality",
+					type: "radio",
+					// required: true,
+					options: Object.entries(eLaterality).map(([label, value]) => ({
+						label,
+						value,
+					})),
+				},
 			],
 		},
 	],

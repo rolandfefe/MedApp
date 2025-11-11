@@ -52,7 +52,7 @@ export const DoctorsProvider = ({
 
 	const { ref: loadRef, isLoading } = useLoadMore({ loader, hasNextPg });
 
-	const contextValue: Props = { doctors, nextPg, loadRef, isLoading };
+	const contextValue: Props = { doctors, loadRef, isLoading };
 
 	const syncHandler = useEffectEvent(async () => {
 		const _doctors = await Promise.all(
@@ -68,6 +68,10 @@ export const DoctorsProvider = ({
 
 		setDoctors(uniqBy(flattenDeep(_doctors), "id"));
 	});
+
+
+
+	
 
 	useEffect(() => {
 		console.log("🔃Doctors");

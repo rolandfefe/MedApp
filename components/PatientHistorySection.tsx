@@ -31,11 +31,9 @@ import moment from "moment";
 import { Separator } from "./ui/separator";
 
 export default function PatientHistorySection({
-	currentUser,
 	history,
 	className,
 }: {
-	currentUser?: IUser;
 	history: IHistory;
 	className?: string;
 }) {

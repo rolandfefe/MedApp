@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { ComponentProps } from "react";
 import MyBtn from "../custom/MyBtn";
@@ -18,17 +18,16 @@ export default function ConsultationGuideBtn({
 	// children,
 	...props
 }: ComponentProps<typeof DropdownMenuTrigger>) {
-
-  const pathname = usePathname()
+	const pathname = usePathname();
 
 	return (
 		<DropdownMenu>
-			<DropdownMenuTrigger {...props} className={cn("", className)}>
+			<DropdownMenuTrigger {...props} asChild className={cn("", className)}>
 				<MyBtn></MyBtn>
 			</DropdownMenuTrigger>
 
 			<DropdownMenuContent>
-				<LinkBtn link={{href: ``}} >
+				<LinkBtn link={{ href: `` }}>
 					Verdict <ArrowRightCircle />
 				</LinkBtn>
 				<DropdownMenuItem>

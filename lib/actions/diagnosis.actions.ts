@@ -67,7 +67,7 @@ export const getDiagnosis = cache(
 		id?: string;
 	}): Promise<IDiagnosis> => {
 		try {
-			const { docs: diagnosis } = await payload.find({
+			const { docs: [diagnosis] } = await payload.find({
 				collection: "diagnoses",
 				where: {
 					or: [
@@ -76,9 +76,10 @@ export const getDiagnosis = cache(
 					],
 				},
 				limit: 1,
+				depth: 2
 			});
 
-			return diagnosis[0];
+			return diagnosis;
 		} catch (error: any) {
 			throw new Error(error);
 		}

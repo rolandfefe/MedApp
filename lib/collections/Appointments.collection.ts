@@ -21,16 +21,18 @@ export const Appointments: CollectionConfig = {
 			relationTo: "doctors",
 			// required: true,
 		},
-		{
-			name: "diagnosis",
-			type: "relationship",
-			relationTo: "diagnoses",
-		},
-		{
-			name: "healthStatus",
-			type: "relationship",
-			relationTo: "healthStatuses",
-		},
+		// {
+		// 	name: "diagnosis",
+		// 	type: "relationship",
+		// 	relationTo: "diagnoses",
+		// },
+
+		// ! transferred to Diagnosis
+		// {
+		// 	name: "healthStatus",
+		// 	type: "relationship",
+		// 	relationTo: "healthStatuses",
+		// },
 		// !Could be removed in future
 		{
 			name: "reminders",
@@ -79,9 +81,9 @@ export const Appointments: CollectionConfig = {
 		{ name: "endTime", type: "date" },
 
 		// Consultation details.
-		{ name: "patientNotes", type: "richText" },
-		{ name: "doctorNotes", type: "richText" },
-		{ name: "followUpInstructions", type: "richText" },
+		{ name: "patientNotes", type: "richText" }, // ? Visible to patient
+		{ name: "doctorNotes", type: "richText" }, // ? Visible to Other doctors
+		// { name: "followUpInstructions", type: "richText" },
 
 		{
 			name: "consentLevels",

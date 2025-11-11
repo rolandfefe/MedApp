@@ -60,7 +60,6 @@ export const AppointmentsProvider = ({
 
 	const value: Props = {
 		appointments,
-		nextPg, // ? Might not be needed
 		isLoading,
 		loadRef,
 	};

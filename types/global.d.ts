@@ -10,6 +10,7 @@ import {
 } from "@/types/enums/enums";
 import {
 	Appointment,
+	Diagnosis,
 	Doctor,
 	DoctorNav,
 	HealthStatus,
@@ -35,11 +36,9 @@ declare global {
 	}
 
 	interface IPagination {
-		nextPg: number; // ? Might not be needed
+		// nextPg: number; // ? Might not be needed
 		isLoading: boolean;
 		loadRef: IntersectingRef;
-		// setNextPg: Dispatch<SetStateAction<number>>;
-		// setIsLoading: Dispatch<SetStateAction<booleans>>;
 	}
 
 	type IUser = User;

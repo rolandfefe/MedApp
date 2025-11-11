@@ -7,8 +7,6 @@ import { flattenDeep, uniqBy } from "lodash-es";
 import {
 	ComponentProps,
 	createContext,
-	Dispatch,
-	SetStateAction,
 	useContext,
 	useEffect,
 	useEffectEvent,
@@ -61,7 +59,6 @@ export const PatientProvider = ({
 
 	const contextValue: Props = {
 		patients,
-		nextPg,
 		loadRef,
 		isLoading,
 	};

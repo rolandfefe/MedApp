@@ -41,17 +41,6 @@ export default clerkMiddleware(async (auth, req: NextRequest) => {
 		// If the user is logged in and the route is protected, let them view.
 		if (isAuthenticated && !isPublicRoute(req)) return NextResponse.next();
 	}
-
-	if (isDoctorRoute(req)) {
-		// ! trying to apply security on doctor's file.
-		const id = req.nextUrl.pathname.split("/")[1];
-		// const { clerkId } = (await getDoctor({ id })).user as IUser;
-
-		// const redirectUrl = new URL("/home", req.url);
-		// console.log("📡Req: ", id, clerkId, userId, clerkId != userId);
-
-		// if (clerkId != userId) return NextResponse.redirect(redirectUrl);
-	}
 });
 
 export const config = {

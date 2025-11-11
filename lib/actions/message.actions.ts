@@ -7,10 +7,10 @@ import { pusherServer } from "../pusher";
 import config from "@/payload.config";
 
 const payload = await getPayload({ config });
+const { totalPages } = await payload.find({ collection: "messages" });
 
 /**
  * @Mutations
- *
  * */
 export const createMsg = async (
 	data: Omit<IMessage, "id" | "createdAt" | "updatedAt">
@@ -65,12 +65,20 @@ export const deleteMsg = async (id: string) => {
  * @Fetches
  */
 export const getMsgs = cache(
-	async ({ appointment, page }: { appointment: string; page?: number }) => {
+	async ({
+		appointment,
+		page = totalPages,
+	}: {
+		appointment: string;
+		page?: number;
+	}) => {
 		try {
 			const {
 				docs: msgs,
 				hasNextPage,
 				nextPage,
+				prevPage,
+				hasPrevPage,
 			} = await payload.find({
 				collection: "messages",
 				where: { appointment: { equals: appointment } },
@@ -79,7 +87,8 @@ export const getMsgs = cache(
 				page,
 			});
 
-			return { msgs, hasNextPage, nextPage: nextPage ?? page };
+			// return { msgs, hasNextPage, nextPage: nextPage ?? page };
+			return { msgs, hasPrevPage, prevPage: prevPage ?? totalPages };
 		} catch (error: any) {
 			throw new Error(error);
 		}

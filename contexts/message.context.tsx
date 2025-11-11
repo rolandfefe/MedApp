@@ -14,6 +14,7 @@ import {
 	useEffectEvent,
 	useState,
 } from "react";
+import { pusherClient } from "@/lib/pusher";
 
 interface Props extends IPagination {
 	msgs: IMessage[];
@@ -47,7 +48,7 @@ export const MsgProvider = ({
 	const [msgs, setMsgs] = useState<IMessage[]>(msgsInit);
 	const [refMsg, setRefMsg] = useState<IMessage>();
 	const [editMsg, setEditMsg] = useState<IMessage>();
-	const [nextPg, setNextPg] = useState<number>(2);
+	const [nextPg, setNextPg] = useState<number>();
 	const [hasNextPg, setHasNextPg] = useState<boolean>(true);
 
 	console.log("PAGE: ", nextPg);
@@ -55,16 +56,16 @@ export const MsgProvider = ({
 	const loader = async () => {
 		const {
 			msgs: _m,
-			hasNextPage,
-			nextPage,
+			hasPrevPage,
+			prevPage,
 		} = await getMsgs({
 			appointment: appointment.id,
 			page: nextPg,
 		});
 
-		setMsgs((prev) => uniqBy([...prev, ..._m], "id"));
-		setNextPg(nextPage!);
-		setHasNextPg(hasNextPage);
+		setMsgs((prev) => uniqBy([..._m, ...prev], "id"));
+		setNextPg(prevPage!);
+		setHasNextPg(hasPrevPage);
 	};
 
 	const { ref: loadRef, isLoading } = useLoadMore({ loader, hasNextPg });
@@ -85,9 +86,20 @@ export const MsgProvider = ({
 		setMsgs(uniqBy(flattenDeep(_m), "id"));
 	});
 
+	const pusherHandler = useEffectEvent(() => {
+		pusherClient
+			.subscribe(`chat-${appointment.id!}-channel`)
+			.bind(`new-${appointment.id!}-msg`, (newMsg: IMessage) =>
+				setMsgs((prev) => uniqBy([...prev, newMsg], "id"))
+			);
+
+		return () => pusherClient.unsubscribe(`chat-${appointment.id!}-channel`);
+	});
+
 	useEffect(() => {
 		console.log("🔃Msgs");
 		sync();
+		pusherHandler(); //! test
 	}, [msgsInit]);
 
 	const contextValues: Props = {
@@ -97,7 +109,6 @@ export const MsgProvider = ({
 		setRefMsg,
 		editMsg,
 		setEditMsg,
-		nextPg,
 		isLoading,
 		loadRef,
 	};
