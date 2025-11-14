@@ -79,7 +79,7 @@ export default function ReferralForm({
 	const form = useForm<ReferralFormData>({
 		resolver: zodResolver(referralSchema),
 		defaultValues: {
-			reason: referral?.reason || "",
+			// reason: referral?.reason || "",
 		},
 	});
 
@@ -113,8 +113,7 @@ export default function ReferralForm({
 						...referral,
 						...data,
 						to: selectedDoctor.id!,
-					},
-					pathname
+					}
 				);
 
 				form.reset();

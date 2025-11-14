@@ -25,7 +25,7 @@ export default function ConsultationNavbar({
 			)}
 		>
 			<div className="flex items-center gap-x-2">
-				<SidebarTrigger className=" md:hidden" />
+				<SidebarTrigger className=" " />
 				<BackBtn />
 			</div>
 

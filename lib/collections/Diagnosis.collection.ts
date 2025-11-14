@@ -16,13 +16,12 @@ export const Diagnosis: CollectionConfig = {
 			unique: true,
 			required: true,
 		},
-		{
-			name: "doctor",
-			type: "relationship",
-			relationTo: "doctors",
-			required: true,
-		},
-
+		// {
+		// 	name: "doctor",
+		// 	type: "relationship",
+		// 	relationTo: "doctors",
+		// 	required: true,
+		// },
 		{
 			name: "history",
 			type: "relationship",
@@ -54,7 +53,7 @@ export const Diagnosis: CollectionConfig = {
 		},
 		{ name: "updatedBy", type: "relationship", relationTo: "doctors" },
 
-		{ name: "dateConfirmed", type: "date"},
+		{ name: "dateConfirmed", type: "date" },
 		// { name: "isConfirmed", type: "checkbox", defaultValue: false },
 		// ? Differential Diagnosis.
 		{

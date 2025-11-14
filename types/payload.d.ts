@@ -497,7 +497,6 @@ export interface History {
 export interface Diagnosis {
   id: string;
   appointment: string | Appointment;
-  doctor: string | Doctor;
   history: string | History;
   healthStatus?: (string | null) | HealthStatus;
   templateUsed?: string | null;
@@ -708,7 +707,6 @@ export interface RecurrencePlan {
 export interface Verdict {
   id: string;
   diagnosis: string | Diagnosis;
-  doctor: (string | Doctor)[];
   prognosis?: {
     outlook?: ('excellent' | 'good' | 'fair' | 'poor' | 'guarded') | null;
     estimatedRecoveryTime?: string | null;
@@ -1146,7 +1144,6 @@ export interface HistoriesSelect<T extends boolean = true> {
  */
 export interface DiagnosesSelect<T extends boolean = true> {
   appointment?: T;
-  doctor?: T;
   history?: T;
   healthStatus?: T;
   templateUsed?: T;
@@ -1277,7 +1274,6 @@ export interface RecurrencePlansSelect<T extends boolean = true> {
  */
 export interface VerdictSelect<T extends boolean = true> {
   diagnosis?: T;
-  doctor?: T;
   prognosis?:
     | T
     | {

@@ -10,7 +10,7 @@ export const Histories: CollectionConfig = {
 			type: "relationship",
 			relationTo: "patients",
 			required: true,
-			unique: true,
+			// unique: true, // ! Allow patients to have multiple histories BY TIME
 		},
 		{
 			name: "diseaseHistory",

@@ -12,13 +12,13 @@ export const Verdict: CollectionConfig = {
 			required: true,
 			unique: true,
 		},
-		{
-			name: "doctor",
-			type: "relationship",
-			relationTo: "doctors",
-			hasMany: true, // ? Allow collaboration
-			required: true,
-		},
+		// {
+		// 	name: "doctor",
+		// 	type: "relationship",
+		// 	relationTo: "doctors",
+		// 	hasMany: true, // ? Allow collaboration
+		// 	required: true,
+		// },
 		// ? Confirmed Diagnoses fields
 
 		{
@@ -30,7 +30,7 @@ export const Verdict: CollectionConfig = {
 					type: "select",
 					options: ["excellent", "good", "fair", "poor", "guarded"],
 				},
-				{ name: "estimatedRecoveryTime", type: "textarea" },
+				{ name: "estimatedRecoveryTime", type: "text" },
 			],
 		},
 

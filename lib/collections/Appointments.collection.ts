@@ -15,24 +15,13 @@ export const Appointments: CollectionConfig = {
 			relationTo: "patients",
 			required: true,
 		},
+		// ? Not required to allow auto-matching
 		{
 			name: "doctor",
 			type: "relationship",
 			relationTo: "doctors",
-			// required: true,
 		},
-		// {
-		// 	name: "diagnosis",
-		// 	type: "relationship",
-		// 	relationTo: "diagnoses",
-		// },
 
-		// ! transferred to Diagnosis
-		// {
-		// 	name: "healthStatus",
-		// 	type: "relationship",
-		// 	relationTo: "healthStatuses",
-		// },
 		// !Could be removed in future
 		{
 			name: "reminders",
@@ -40,6 +29,7 @@ export const Appointments: CollectionConfig = {
 			relationTo: "reminders",
 			hasMany: true,
 		},
+		
 		{ name: "reason", type: "textarea", required: true },
 		{
 			name: "type",

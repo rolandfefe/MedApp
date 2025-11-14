@@ -81,3 +81,14 @@ export const getHistory = cache(
 		revalidate: 60 * 15,
 	}
 );
+
+export const getHistories = cache(async ({}:{}) => {
+	try {
+		
+	} catch (error:any) {
+		throw new Error(error)
+	}
+}, [], {
+	tags: ["histories"],
+	revalidate: 60 * 15,
+});

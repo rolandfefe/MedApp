@@ -1,10 +1,9 @@
 "use server";
 
-import { updateTag, unstable_cache as cache } from "next/cache";
-import diagnosisModel from "../db/models/diagnosis.model";
-import { eDiagnosisStatus } from "@/types/enums/enums";
-import { getPayload } from "payload";
 import config from "@/payload.config";
+import { eDiagnosisStatus } from "@/types/enums/enums";
+import { unstable_cache as cache, updateTag } from "next/cache";
+import { getPayload } from "payload";
 
 const payload = await getPayload({ config });
 
@@ -67,7 +66,9 @@ export const getDiagnosis = cache(
 		id?: string;
 	}): Promise<IDiagnosis> => {
 		try {
-			const { docs: [diagnosis] } = await payload.find({
+			const {
+				docs: [diagnosis],
+			} = await payload.find({
 				collection: "diagnoses",
 				where: {
 					or: [
@@ -76,7 +77,7 @@ export const getDiagnosis = cache(
 					],
 				},
 				limit: 1,
-				depth: 2
+				depth: 3,
 			});
 
 			return diagnosis;
