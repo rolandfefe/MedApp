@@ -53,7 +53,6 @@ export default function DiagnosisForm({
 	const [activeStep, setActiveStep] = useState<number>(1);
 	const [isPending, startTransition] = useTransition();
 	const [isSuccess, setIsSuccess] = useState<boolean>(false);
-	const router = useRouter();
 
 	const [complaintEditorState, setComplaintEditorState] =
 		useState<SerializedEditorState>();
@@ -73,7 +72,7 @@ export default function DiagnosisForm({
 			doctor: currentDoctor.id!,
 			chiefComplaint: complaintEditorState,
 			notes: notesEditorState,
-			history: patientHistory.id
+			history: patientHistory.id,
 		};
 
 		console.log(data, notesEditorState, complaintEditorState);
@@ -163,7 +162,7 @@ export default function DiagnosisForm({
 									activeStep={activeStep}
 									setActiveStep={setActiveStep}
 									isComplete={isComplete}
-								>	
+								>
 									{title}
 								</StepperTrigger>
 

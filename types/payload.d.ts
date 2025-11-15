@@ -707,11 +707,7 @@ export interface RecurrencePlan {
 export interface Verdict {
   id: string;
   diagnosis: string | Diagnosis;
-  prognosis?: {
-    outlook?: ('excellent' | 'good' | 'fair' | 'poor' | 'guarded') | null;
-    estimatedRecoveryTime?: string | null;
-  };
-  patientNotes: {
+  notes: {
     root: {
       type: string;
       children: {
@@ -725,6 +721,10 @@ export interface Verdict {
       version: number;
     };
     [k: string]: unknown;
+  };
+  prognosis?: {
+    outlook?: ('excellent' | 'good' | 'fair' | 'poor' | 'guarded') | null;
+    estimatedRecoveryTime?: string | null;
   };
   isConfirmed?: boolean | null;
   treatmentPlan: {
@@ -745,6 +745,7 @@ export interface Verdict {
     };
     procedures?:
       | {
+          name: string;
           type?: string | null;
           scheduledDate?: string | null;
           status?: ('recommended' | 'scheduled' | 'completed') | null;
@@ -753,6 +754,7 @@ export interface Verdict {
       | null;
     therapies?:
       | {
+          name: string;
           type?: string | null;
           frequency?: string | null;
           duration?: string | null;
@@ -1274,13 +1276,13 @@ export interface RecurrencePlansSelect<T extends boolean = true> {
  */
 export interface VerdictSelect<T extends boolean = true> {
   diagnosis?: T;
+  notes?: T;
   prognosis?:
     | T
     | {
         outlook?: T;
         estimatedRecoveryTime?: T;
       };
-  patientNotes?: T;
   isConfirmed?: T;
   treatmentPlan?:
     | T
@@ -1289,6 +1291,7 @@ export interface VerdictSelect<T extends boolean = true> {
         procedures?:
           | T
           | {
+              name?: T;
               type?: T;
               scheduledDate?: T;
               status?: T;
@@ -1297,6 +1300,7 @@ export interface VerdictSelect<T extends boolean = true> {
         therapies?:
           | T
           | {
+              name?: T;
               type?: T;
               frequency?: T;
               duration?: T;

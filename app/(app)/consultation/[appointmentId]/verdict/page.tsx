@@ -1,8 +1,9 @@
-import React from 'react'
+import VerdictSection from "@/components/Sections/VerdictSection";
 
-export default async function page({params}: {params: Promise<{appointmentId: string}>}) {
-  const { appointmentId } = await params;
-  return (
-    <div>page</div>
-  )
+export default async function page() {
+	return (
+		<div>
+			<VerdictSection />
+		</div>
+	);
 }

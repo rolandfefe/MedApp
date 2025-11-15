@@ -1,25 +1,22 @@
 "use client";
 
+import { useConsultation } from "@/contexts/consultation.context";
 import { ArrowRightCircle } from "lucide-react";
 import { Editor } from "../blocks/editor-00/editor";
+import LinkBtn from "../btns/LinkBtn";
 import DoctorCard from "../cards/DoctorCard";
 import PatientCard from "../cards/patientCard";
+import DiagnosisForm from "../forms/DiagnosisForm";
 import { Separator } from "../ui/separator";
-import Link from "next/link";
-import { useConsultation } from "@/contexts/consultation.context";
-import LinkBtn from "../btns/LinkBtn";
 
-export default function DiagnosisSection({
-	diagnosis,
-}: {
-	diagnosis: IDiagnosis;
-}) {
+export default function DiagnosisSection() {
+	const { appointment, diagnosis } = useConsultation();
 	// console.log("Diagnosis:",diagnosis);
-	const doctor = diagnosis.doctor as IDoctor;
-	const patient = diagnosis.appointment.patient as IPatient;
 
-	const { appointment } = useConsultation();
-	console.log("patient:", patient);
+	if (!diagnosis) return <DiagnosisForm action="Create" />;
+
+	const doctor = appointment.doctor as IDoctor;
+	const patient = appointment.patient as IPatient;
 
 	return (
 		<div className="space-y-4 mb-5">

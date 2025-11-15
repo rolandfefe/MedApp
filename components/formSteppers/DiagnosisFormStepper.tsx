@@ -463,7 +463,6 @@ const DifferentialDiagnosis = ({
 							condition: "",
 							confidence: eConfidenceLevel.MEDIUM,
 							isPrimary: false,
-							dateConfirmed: "",
 							severity: eSeverity.MILD,
 						})
 					}

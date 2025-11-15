@@ -1,10 +1,12 @@
 "use server";
 
 import { getAppointments } from "./appointment.actions";
+import { getDiagnosis } from "./diagnosis.actions";
 import { getDoctor } from "./doctor.actions";
 import { getHealthStatuses } from "./healthStatus.actions";
 import { getPatient } from "./patient.actions";
 import { getCurrentUser } from "./user.actions";
+import { getVerdict } from "./verdict.actions";
 
 export const getCurrentPatient = async (): Promise<IPatient> => {
 	const { id: user } = await getCurrentUser();
@@ -53,4 +55,10 @@ export const getAllocatedAutoAppointments = async () => {
 	const _appointments = autoAppointments.filter((a) => {});
 
 	return autoAppointments;
+};
+
+export const getVerdictByAppointment = async (appointment: string): Promise<IVerdict> => {
+	const { id: diagnosis } = await getDiagnosis({ appointment });
+
+	return await getVerdict({ diagnosis });
 };

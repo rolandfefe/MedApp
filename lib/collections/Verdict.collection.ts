@@ -19,7 +19,9 @@ export const Verdict: CollectionConfig = {
 		// 	hasMany: true, // ? Allow collaboration
 		// 	required: true,
 		// },
+
 		// ? Confirmed Diagnoses fields
+		{ name: "notes", type: "richText", required: true },
 
 		{
 			name: "prognosis",
@@ -34,23 +36,25 @@ export const Verdict: CollectionConfig = {
 			],
 		},
 
-		{ name: "patientNotes", type: "richText", required: true },
 		{ name: "isConfirmed", type: "checkbox", defaultValue: false },
 		{
 			name: "treatmentPlan",
 			type: "group",
+			required: true,
 			fields: [
 				{ name: "plan", type: "richText", required: true },
 				{
 					name: "procedures",
 					type: "array",
 					fields: [
+						{ name: "name", type: "text", required: true },
 						{ name: "type", type: "text" },
 						{ name: "scheduledDate", type: "date" },
 						{
 							name: "status",
 							type: "select",
 							options: ["recommended", "scheduled", "completed"],
+							defaultValue: "recommended",
 						},
 					],
 				},
@@ -58,6 +62,7 @@ export const Verdict: CollectionConfig = {
 					name: "therapies",
 					type: "array",
 					fields: [
+						{ name: "name", type: "text", required: true },
 						{ name: "type", type: "text" },
 						{ name: "frequency", type: "text" },
 						{ name: "duration", type: "text" },
