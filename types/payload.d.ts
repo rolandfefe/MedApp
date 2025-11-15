@@ -69,6 +69,7 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    Articles: Article;
     patients: Patient;
     doctors: Doctor;
     healthStatuses: HealthStatus;
@@ -88,6 +89,7 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    Articles: ArticlesSelect<false> | ArticlesSelect<true>;
     patients: PatientsSelect<false> | PatientsSelect<true>;
     doctors: DoctorsSelect<false> | DoctorsSelect<true>;
     healthStatuses: HealthStatusesSelect<false> | HealthStatusesSelect<true>;
@@ -181,29 +183,101 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "patients".
+ * via the `definition` "Articles".
  */
-export interface Patient {
+export interface Article {
   id: string;
-  user: string | User;
-  DOB: string;
-  gender?: ('Male' | 'Female' | 'Other') | null;
-  maritalStatus?: ('Single' | 'Married' | 'Divorced' | 'Widowed' | 'Separated') | null;
-  occupation?: string | null;
-  race?: string | null;
-  languages?: string[] | null;
-  emergencyContacts?:
-    | {
-        name: string;
-        relationship: string;
-        phone: string;
-        priority?: ('1' | '2' | '3' | '4' | '5') | null;
-        id?: string | null;
-      }[]
-    | null;
+  Title: string;
+  Description?: string | null;
+  authors?: (string | Doctor)[] | null;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  meta?: {
+    reads?: (string | User)[] | null;
+    likes?: (string | User)[] | null;
+    dislikes?: (string | User)[] | null;
+    type?:
+      | (
+          | 'Research'
+          | 'Review'
+          | 'Case-report'
+          | 'Editorial'
+          | 'Letter'
+          | 'News'
+          | 'Clinical Trial'
+          | 'Guideline'
+          | 'Case Series'
+          | 'Meta-analysis'
+          | 'Short Communication'
+          | 'Commentary'
+          | 'Brief Report'
+          | 'Perspective'
+          | 'Protocol'
+          | 'Technical Report'
+          | 'Consensus Statement'
+          | 'White Paper'
+          | 'Opinion'
+          | 'Educational'
+          | 'Interview'
+          | 'Obituary'
+        )
+      | null;
+    categories?:
+      | (
+          | 'Wellness & Prevention'
+          | 'Nutrition & Diet'
+          | 'Fitness & Exercise'
+          | 'Mental Health & Wellbeing'
+          | 'Common Illnesses'
+          | 'Chronic Disease Management'
+          | 'Preventive Care'
+          | 'Medication Guides'
+          | 'Healthy Aging & Life Stages'
+          | 'Maternal & Child Health'
+          | 'Sleep Health'
+          | 'Understanding Tests & Results'
+          | 'Patient Tips & Advice'
+          | 'Health Journeys & Stories'
+          | 'Health Myths & Facts'
+          | 'Safety & First Aid'
+          | 'Environment & Health'
+          | 'Digital Health & Telemedicine'
+          | 'Advance Care Planning'
+          | 'Social Determinants of Health'
+          | 'Pain Management'
+          | 'Alternative & Complementary Medicine'
+          | 'Travel Health'
+          | 'Inclusive Health'
+          | 'Screen Time & Digital Wellness'
+          | 'Health & Money'
+          | 'Seasonal Health Tips'
+          | 'Pets & Health'
+          | 'Work, Life & Health'
+          | 'How Your Body Works'
+        )[]
+      | null;
+  };
+  isVerified?: boolean | null;
+  licensing: {
+    copyright?: string | null;
+    licenseType?: string | null;
+    isOpenAccess?: boolean | null;
+  };
   updatedAt: string;
   createdAt: string;
-  deletedAt?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -368,6 +442,32 @@ export interface Doctor {
   };
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "patients".
+ */
+export interface Patient {
+  id: string;
+  user: string | User;
+  DOB: string;
+  gender?: ('Male' | 'Female' | 'Other') | null;
+  maritalStatus?: ('Single' | 'Married' | 'Divorced' | 'Widowed' | 'Separated') | null;
+  occupation?: string | null;
+  race?: string | null;
+  languages?: string[] | null;
+  emergencyContacts?:
+    | {
+        name: string;
+        relationship: string;
+        phone: string;
+        priority?: ('1' | '2' | '3' | '4' | '5') | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -795,6 +895,10 @@ export interface PayloadLockedDocument {
         value: string | Media;
       } | null)
     | ({
+        relationTo: 'Articles';
+        value: string | Article;
+      } | null)
+    | ({
         relationTo: 'patients';
         value: string | Patient;
       } | null)
@@ -913,6 +1017,35 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Articles_select".
+ */
+export interface ArticlesSelect<T extends boolean = true> {
+  Title?: T;
+  Description?: T;
+  authors?: T;
+  content?: T;
+  meta?:
+    | T
+    | {
+        reads?: T;
+        likes?: T;
+        dislikes?: T;
+        type?: T;
+        categories?: T;
+      };
+  isVerified?: T;
+  licensing?:
+    | T
+    | {
+        copyright?: T;
+        licenseType?: T;
+        isOpenAccess?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

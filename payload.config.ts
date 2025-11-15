@@ -23,6 +23,7 @@ import { Referrals } from "./lib/collections/Referrals.collection";
 import { Reminders } from "./lib/collections/Reminders.collection";
 import { Users } from "./lib/collections/Users.collection";
 import { Verdict } from "./lib/collections/Verdict.collection";
+import { Articles } from "./lib/collections/Article.collection";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -41,6 +42,7 @@ export default buildConfig({
 	collections: [
 		Users,
 		Media,
+		Articles,
 		Patients,
 		Doctors,
 		HealthStatus,

@@ -5,6 +5,7 @@ export const HealthStatus: CollectionConfig = {
 	slug: "healthStatuses",
 	// ! typescript:  { interface: "IHealthStatus" },
 	fields: [
+		// ! Allow Patients to take more than one health status with TIME.
 		{
 			name: "patient",
 			type: "relationship",
