@@ -49,15 +49,14 @@ export default function ReferralCard({
 					<Separator className="my-2" />
 
 					<section className="flex flex-col sm:flex-row gap-2 items-center mb-3">
-						<DoctorCard
+						<DoctorCard.XS
 							doctor={referral.from as IDoctor}
-							variant="xs"
+							
 							className="flex-1"
 						/>
 						<ArrowBigRightDash className="rotate-90 sm:rotate-0 text-primary" />
-						<DoctorCard
+						<DoctorCard.XS
 							doctor={referral.to as IDoctor}
-							variant="xs"
 							className="flex-1"
 						/>
 					</section>

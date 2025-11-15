@@ -76,6 +76,9 @@ Editor.Renderer = ({
 }: {
 	editorSerializedState: SerializedEditorState;
 } & ComponentProps<"div">) => {
+
+
+	
 	return (
 		<div
 			{...props}

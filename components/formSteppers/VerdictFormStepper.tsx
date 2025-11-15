@@ -69,6 +69,61 @@ export default function getVerdictFormStepper(
 				return false;
 			},
 		},
+
+		{
+			title: "Prognosis",
+			body: (
+				<section className="space-y-4">
+					<FormField
+						control={form.control}
+						name={`prognosis.outlook`}
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Outlook</FormLabel>
+
+								<Select
+									onValueChange={field.onChange}
+									defaultValue={field.value}
+								>
+									<FormControl>
+										<SelectTrigger>
+											<SelectValue placeholder="Select outlook..." />
+										</SelectTrigger>
+									</FormControl>
+
+									<SelectContent>
+										<SelectItem value="excellent">Excellent</SelectItem>
+										<SelectItem value="good">Good</SelectItem>
+										<SelectItem value="fair">Fair</SelectItem>
+										<SelectItem value="poor">Poor</SelectItem>
+										<SelectItem value="guarded">Guarded</SelectItem>
+									</SelectContent>
+								</Select>
+							</FormItem>
+						)}
+					/>
+
+					<FormField
+						control={form.control}
+						name="prognosis.estimatedRecoveryTime"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Estimated recovery time</FormLabel>
+
+								<FormControl>
+									<Input {...field} placeholder="Estimated recovery time...." />
+								</FormControl>
+
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+				</section>
+			),
+			get isComplete(): boolean {
+				return false;
+			},
+		},
 		{
 			title: "Complete Diagnosis🧑‍⚕️`",
 			body: (
@@ -123,7 +178,7 @@ export const PatientNotesSection = ({
 			<Editor
 				editorSerializedState={notesSerializedState}
 				onSerializedChange={setNotesSerializedState}
-				className="h-52"
+				className="min-h-52"
 			/>
 		</div>
 	);
@@ -132,13 +187,11 @@ export const PatientNotesSection = ({
 export const TreatmentPlanSection = ({
 	setPlanSerializedState,
 	planSerializedState,
-	form,
 }: {
 	planSerializedState?: SerializedEditorState<SerializedLexicalNode>;
 	setPlanSerializedState: Dispatch<
 		SetStateAction<SerializedEditorState<SerializedLexicalNode> | undefined>
 	>;
-	form: ReturnType<typeof useForm<VerdictFormData>>;
 }) => {
 	return (
 		<section>
@@ -153,7 +206,7 @@ export const TreatmentPlanSection = ({
 			<Editor
 				editorSerializedState={planSerializedState}
 				onSerializedChange={setPlanSerializedState}
-				className="h-52"
+				className="min-h-52"
 			/>
 		</section>
 	);
@@ -214,7 +267,7 @@ TreatmentPlanSection.Procedures = ({
 											<FormLabel>Type</FormLabel>
 
 											<FormControl>
-												<Input {...field} placeholder="Procedure name..." />
+												<Input {...field} placeholder="Procedure type..." />
 											</FormControl>
 
 											<FormMessage />
@@ -576,10 +629,10 @@ TreatmentPlanSection.Medications = ({
 								<div className="flex-1 flex gap-3 items-end">
 									<FormField
 										control={form.control}
-										name={`treatmentPlan.medications.${i}.startDate`}
+										name={`treatmentPlan.medications.${i}.endDate`}
 										render={({ field }) => (
 											<FormItem className="flex-1">
-												<FormLabel>Start Date</FormLabel>
+												<FormLabel>End date</FormLabel>
 												<FormControl>
 													<Input {...field} type="date" />
 												</FormControl>

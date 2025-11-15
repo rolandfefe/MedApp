@@ -28,11 +28,7 @@ export default function ConsultationSidebar() {
 					isAppointmentDoctor ? (
 						<PatientConsultationAside />
 					) : (
-						<DoctorCard
-							doctor={appointment.doctor as IDoctor}
-							currentUser={currentUser}
-							variant="md"
-						/>
+						<DoctorCard doctor={appointment.doctor as IDoctor} />
 					)
 				) : (
 					<LoadingCard />

@@ -26,9 +26,11 @@ import getVerdictFormStepper, {
 } from "../formSteppers/VerdictFormStepper";
 import { Card, CardContent } from "../ui/card";
 import { Separator } from "../ui/separator";
+import ToastErrCard from "../cards/ToastErrCard";
+import { createVerdict, updateVerdict } from "@/lib/actions/verdict.actions";
 
 export default function VerdictForm() {
-	const { verdict } = useConsultation();
+	const { verdict, diagnosis } = useConsultation();
 	const [activeStep, setActiveStep] = useState<number>(1);
 	const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
@@ -49,22 +51,34 @@ export default function VerdictForm() {
 	});
 
 	const submitHandler = async (data: VerdictFormData) => {
-		console.log(data);
-
 		const cleanData: IVerdict = {
 			...data,
 			notes: notesSerializedState,
+			treatmentPlan: {
+				plan: planSerializedState,
+				...data.treatmentPlan,
+			},
+			diagnosis: diagnosis!.id,
 		};
+		console.log(cleanData);
 
 		if (verdict) {
 			// ? Update
+
 			startTransition(async () => {
+				await updateVerdict({ ...verdict, ...cleanData });
+
+				toast("Verdict Updated✍️")
 				form.reset();
 				setIsSuccess(true);
 			});
 		} else {
 			// ? Create
 			startTransition(async () => {
+				await createVerdict(cleanData);
+
+				toast.success("Verdict Created");
+				// ! Add real-time notification to Patient
 				form.reset();
 				setIsSuccess(true);
 			});
@@ -75,28 +89,14 @@ export default function VerdictForm() {
 		console.log("err: ", err);
 		toast.custom(
 			(t) => (
-				<Card className="w-[95vw] sm:w-72 relative">
-					<MyBtn
-						size="icon"
-						variant={"secondary"}
-						onClick={() => toast.dismiss(t.id)}
-						className="size-7 rounded-xl hover:text-destructive absolute top-2 right-2 "
-					>
-						<X />
-					</MyBtn>
-					<CardContent className="px-2 py-1">
-						<Heading className="text-xl">🚨Form input error(s) </Heading>
-						<Separator className="my-1" />
-						<div>
-							{Object.entries(err).map(([k, v]) => (
-								<p key={k} className={"text-sm text-secondary-foreground"}>
-									<span className="font-medium text-destructive">{k}: </span>
-									<code>{v.message}</code>
-								</p>
-							))}
-						</div>
-					</CardContent>
-				</Card>
+				<ToastErrCard t={t}>
+					{Object.entries(err).map(([k, v]) => (
+						<p key={k} className={"text-sm text-secondary-foreground"}>
+							<span className="font-medium text-destructive">{k}: </span>
+							<code>{v.message}</code>
+						</p>
+					))}
+				</ToastErrCard>
 			),
 			{ id: "cn94839k" }
 		);

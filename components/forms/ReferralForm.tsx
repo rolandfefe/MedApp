@@ -108,13 +108,11 @@ export default function ReferralForm({
 			});
 		} else if (action === "Update" && referral) {
 			startTransition(async () => {
-				await updateReferral(
-					{
-						...referral,
-						...data,
-						to: selectedDoctor.id!,
-					}
-				);
+				await updateReferral({
+					...referral,
+					...data,
+					to: selectedDoctor.id!,
+				});
 
 				form.reset();
 				setIsSuccess(true);
@@ -188,7 +186,6 @@ export default function ReferralForm({
 							</AnimatePresence>
 
 							<DoctorSearchBox
-								doctors={doctors}
 								setSelectedDoctor={setSelectedDoctor}
 								selectedDoctor={selectedDoctor}
 							/>

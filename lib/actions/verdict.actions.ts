@@ -81,4 +81,3 @@ export const getVerdict = cache(
 		revalidate: 15 * 60,
 	}
 );
-

@@ -41,6 +41,7 @@ import { TABLE } from "@/components/editor/transformers/markdown-table-transform
 import { IMAGE } from "@/components/editor/transformers/markdown-image-transformer";
 import { HR } from "@/components/editor/transformers/markdown-hr-transformer";
 import { ImagesPlugin } from "@/components/editor/plugins/images-plugin";
+import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 
 export function Plugins() {
 	const [floatingAnchorElem, setFloatingAnchorElem] =
@@ -138,6 +139,10 @@ export function Plugins() {
 }
 
 Plugins.renderer = () => {
+	const [editor] = useLexicalComposerContext();
+
+	editor.setEditable(false);
+
 	return (
 		<div className="relative">
 			<div className="relative">
