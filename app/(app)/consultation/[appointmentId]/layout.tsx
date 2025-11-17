@@ -3,9 +3,11 @@ import ConsultationSidebar from "@/components/layouts/ConsultationSidebar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { ConsultationProvider } from "@/contexts/consultation.context";
 import { CurrentProvider } from "@/contexts/Current.context";
+import { DoctorsProvider } from "@/contexts/Doctors.context";
 import { MsgProvider } from "@/contexts/message.context";
 import { getAppointment } from "@/lib/actions/appointment.actions";
 import { getDiagnosis } from "@/lib/actions/diagnosis.actions";
+import { getDoctors } from "@/lib/actions/doctor.actions";
 import { getHistory } from "@/lib/actions/history.action";
 import { getMsgs } from "@/lib/actions/message.actions";
 import { getReferrals } from "@/lib/actions/referral.actions";
@@ -36,6 +38,7 @@ export default async function layout({
 		{ msgs },
 		diagnosis,
 		verdict,
+		{doctors},
 	] = await Promise.all([
 		getCurrentUser(),
 		getCurrentDoctor(),
@@ -45,6 +48,7 @@ export default async function layout({
 		getMsgs({ appointment: decodeURIComponent(appointmentId) }),
 		getDiagnosis({ appointment: appointmentId }),
 		getVerdictByAppointment(appointmentId),
+		getDoctors({}),
 	]);
 
 	return (
@@ -61,15 +65,17 @@ export default async function layout({
 				diagnosis={diagnosis}
 				verdict={verdict}
 			>
-				<MsgProvider msgsInit={msgs} appointment={appointment}>
-					<SidebarProvider defaultOpen>
-						<ConsultationSidebar />
-						<SidebarInset>
-							<ConsultationNavbar />
-							<main className="px-2 sm:px-5 mt-6">{children}</main>
-						</SidebarInset>
-					</SidebarProvider>
-				</MsgProvider>
+				<DoctorsProvider doctorsInit={doctors}>
+					<MsgProvider msgsInit={msgs} appointment={appointment}>
+						<SidebarProvider defaultOpen>
+							<ConsultationSidebar />
+							<SidebarInset>
+								<ConsultationNavbar />
+								<main className="px-2 sm:px-5 mt-6">{children}</main>
+							</SidebarInset>
+						</SidebarProvider>
+					</MsgProvider>
+				</DoctorsProvider>
 			</ConsultationProvider>
 		</CurrentProvider>
 	);

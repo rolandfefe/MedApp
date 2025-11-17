@@ -3,7 +3,7 @@
 import { getPayload } from "payload";
 import config from "@/payload.config";
 import { updateTag, unstable_cache as cache } from "next/cache";
-import { eArticleCategories } from "@/types/enums/enums";
+import { eArticleCategories, eArticleType } from "@/types/enums/enums";
 
 const payload = await getPayload({ config });
 /**
@@ -12,12 +12,13 @@ const payload = await getPayload({ config });
 
 export const createArticle = async (data: IArticle) => {
 	try {
-		await payload.create({
+		const article = await payload.create({
 			collection: "Articles",
 			data,
 		});
 
 		updateTag("articles");
+		return article;
 	} catch (error: any) {
 		throw new Error(error);
 	}
@@ -25,13 +26,14 @@ export const createArticle = async (data: IArticle) => {
 
 export const updateArticle = async (data: IArticle) => {
 	try {
-		await payload.update({
+		const article = await payload.update({
 			collection: "Articles",
 			id: data.id,
 			data,
 		});
 
 		updateTag("articles");
+		return article;
 	} catch (error: any) {
 		throw new Error(error);
 	}
@@ -63,7 +65,7 @@ export const getArticles = cache(
 	}: {
 		category?: eArticleCategories;
 		author?: string;
-		type?: string;
+		type?: eArticleType;
 		page?: number;
 		limit?: number;
 	}) => {
@@ -77,15 +79,15 @@ export const getArticles = cache(
 				where: {
 					or: [
 						{ authors: { equals: author } }, // ! test
-						{ type: { equals: type } }, // ! test
-						{ categories: { equals: category } }, // ! test
+						// { type: { equals: type } }, // ! test
+						// { categories: { equals: category } }, // ! test
 					],
 				},
 				page,
 				limit,
 			});
 
-			return { articles, hasNextPage, nextPage: nextPage ?? page };
+			return { articles, hasNextPage, nextPage: nextPage! ?? page };
 		} catch (error: any) {
 			throw new Error(error);
 		}

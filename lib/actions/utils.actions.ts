@@ -57,8 +57,14 @@ export const getAllocatedAutoAppointments = async () => {
 	return autoAppointments;
 };
 
-export const getVerdictByAppointment = async (appointment: string): Promise<IVerdict> => {
-	const { id: diagnosis } = await getDiagnosis({ appointment });
+export const getVerdictByAppointment = async (
+	appointment: string
+): Promise<IVerdict | undefined> => {
+	const diagnosis = await getDiagnosis({ appointment });
 
-	return await getVerdict({ diagnosis });
+	if (diagnosis) {
+		return await getVerdict({ diagnosis: diagnosis.id });
+	}
+
+	return;
 };

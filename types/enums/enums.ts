@@ -37,6 +37,12 @@ export enum eArticleType {
 	OBITUARY = "Obituary",
 }
 
+export enum eArticleStatus {
+	DRAFT = "draft",
+	PUBLISHED = "published",
+	BANNED = "banned",
+}
+
 export enum eSeverity {
 	MILD = "Mild",
 	MODERATE = "Moderate",

@@ -187,8 +187,8 @@ export interface Media {
  */
 export interface Article {
   id: string;
-  Title: string;
-  Description?: string | null;
+  title: string;
+  description?: string | null;
   authors?: (string | Doctor)[] | null;
   content: {
     root: {
@@ -235,6 +235,7 @@ export interface Article {
           | 'Obituary'
         )
       | null;
+    status?: ('draft' | 'published' | 'banned') | null;
     categories?:
       | (
           | 'Wellness & Prevention'
@@ -272,9 +273,9 @@ export interface Article {
   };
   isVerified?: boolean | null;
   licensing: {
-    copyright?: string | null;
+    copyright: string;
     licenseType?: string | null;
-    isOpenAccess?: boolean | null;
+    isPublic?: boolean | null;
   };
   updatedAt: string;
   createdAt: string;
@@ -1023,8 +1024,8 @@ export interface MediaSelect<T extends boolean = true> {
  * via the `definition` "Articles_select".
  */
 export interface ArticlesSelect<T extends boolean = true> {
-  Title?: T;
-  Description?: T;
+  title?: T;
+  description?: T;
   authors?: T;
   content?: T;
   meta?:
@@ -1034,6 +1035,7 @@ export interface ArticlesSelect<T extends boolean = true> {
         likes?: T;
         dislikes?: T;
         type?: T;
+        status?: T;
         categories?: T;
       };
   isVerified?: T;
@@ -1042,7 +1044,7 @@ export interface ArticlesSelect<T extends boolean = true> {
     | {
         copyright?: T;
         licenseType?: T;
-        isOpenAccess?: T;
+        isPublic?: T;
       };
   updatedAt?: T;
   createdAt?: T;

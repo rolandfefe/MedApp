@@ -10,6 +10,7 @@ import {
 } from "@/types/enums/enums";
 import {
 	Appointment,
+	Article,
 	Diagnosis,
 	Doctor,
 	DoctorNav,

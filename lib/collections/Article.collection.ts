@@ -1,11 +1,15 @@
-import { eArticleCategories, eArticleType } from "@/types/enums/enums";
+import {
+	eArticleCategories,
+	eArticleStatus,
+	eArticleType,
+} from "@/types/enums/enums";
 import { CollectionConfig } from "payload";
 
 export const Articles: CollectionConfig = {
 	slug: "Articles",
 	fields: [
-		{ name: "Title", type: "text", required: true },
-		{ name: "Description", type: "text" },
+		{ name: "title", type: "text", required: true },
+		{ name: "description", type: "text" },
 		// ? Allow collaborations.
 		{
 			name: "authors",
@@ -46,6 +50,15 @@ export const Articles: CollectionConfig = {
 					})),
 				},
 				{
+					name: "status",
+					type: "select",
+					options: Object.entries(eArticleStatus).map(([label, value]) => ({
+						label,
+						value,
+					})),
+					defaultValue: eArticleStatus.DRAFT,
+				},
+				{
 					name: "categories",
 					type: "select",
 					hasMany: true,
@@ -62,9 +75,9 @@ export const Articles: CollectionConfig = {
 			required: true,
 			type: "group",
 			fields: [
-				{ name: "copyright", type: "text" },
+				{ name: "copyright", type: "text", required: true },
 				{ name: "licenseType", type: "text" },
-				{ name: "isOpenAccess", type: "checkbox", defaultValue: true },
+				{ name: "isPublic", type: "checkbox", defaultValue: true },
 			],
 		},
 	],
