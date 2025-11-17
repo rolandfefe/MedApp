@@ -33,11 +33,17 @@ export const useArticles = () => {
 
 export const ArticleProvider = ({
 	articlesInit,
+	article,
 	children,
 	...props
-}: { articlesInit: IArticle[] } & ComponentProps<"div">) => {
+}: {
+	articlesInit: IArticle[];
+	article?: IArticle;
+} & ComponentProps<"div">) => {
 	const [articles, setArticles] = useState<IArticle[]>(articlesInit);
-	const [activeArticle, setActiveArticle] = useState<IArticle>();
+	const [activeArticle, setActiveArticle] = useState<IArticle | undefined>(
+		article
+	);
 	const [nextPg, setNextPg] = useState<number>(2);
 	const [hasNextPg, setHasNextPg] = useState<boolean>(true);
 

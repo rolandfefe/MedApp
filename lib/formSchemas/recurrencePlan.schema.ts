@@ -4,7 +4,6 @@ import { eRecurrenceFrequency, eWeekDays } from "@/types/enums/enums";
 // Recurrence Plan Zod Schema
 export const recurrencePlanFormSchema = z
 	.object({
-		supervisor: z.string().min(1, "Supervisor is required"),
 		name: z.string().min(1, "Name is required").trim(),
 		frequency: z.nativeEnum(eRecurrenceFrequency, {
 			required_error: "Frequency is required",
@@ -14,25 +13,27 @@ export const recurrencePlanFormSchema = z
 			.int("Interval must be a whole number")
 			.positive("Interval must be positive")
 			.min(1, "Interval must be at least 1"),
-		startDate: z.coerce.date({
+
+		startDate: z.string({
 			required_error: "Start date is required",
 		}),
-		endDate: z.coerce.date().optional(),
+		endDate: z.string().optional(),
 
 		// Time range
-		startTime: z.coerce.date({
+		startTime: z.string({
 			required_error: "Start time is required",
 		}),
-		endTime: z.coerce.date().optional(),
+		endTime: z.string().optional(),
 
+		
 		// Exceptions and week days
-		exceptions: z.array(z.coerce.date()).default([]),
+		exceptions: z.array(z.string()).default([]),
 		weekDays: z.array(z.nativeEnum(eWeekDays)).default([]),
 	})
 	.refine(
 		(data) => {
 			if (!data.endDate) return true;
-			return data.endDate >= data.startDate;
+			return new Date(data.endDate) >= new Date(data.startDate);
 		},
 		{
 			message: "End date cannot be before start date",
@@ -42,7 +43,7 @@ export const recurrencePlanFormSchema = z
 	.refine(
 		(data) => {
 			if (!data.endTime) return true;
-			return data.endTime > data.startTime;
+			return new Date(data.endTime) > new Date(data.startTime);
 		},
 		{
 			message: "End time must be after start time",

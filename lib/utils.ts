@@ -8,13 +8,25 @@ export function cn(...inputs: ClassValue[]) {
 export const getNavItem = (
 	pathname: string,
 	items: NonNullable<IPatientNav["items"]>
-) =>
-	items.find(
+) => {
+	// ! Fix
+	// const nav = items.find(
+	// 	(item) =>
+	// 		pathname.startsWith(item.link) ||
+	// 		pathname.endsWith(item.link) ||
+	// 		item.link === pathname
+	// );
+	const nav = items.find(
 		(item) =>
-			item.link === pathname ||
-			item.link.startsWith(pathname) ||
-			item.link.endsWith(pathname)
+			pathname === item.link ||
+			((item.link !== "/" || pathname !== item.link) &&
+				(pathname.startsWith(item.link) || pathname.endsWith(item.link)))
 	);
+
+	// console.log(nav);
+
+	return nav;
+};
 
 export const containsRegex = (query: string): RegExp => {
 	const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");

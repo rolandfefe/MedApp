@@ -5,6 +5,6 @@ export default async function layout({
 	children,
 	params,
 }: LayoutProps<"/doctor/[id]/articles">) {
-	const [{ articles }] = await Promise.all([getArticles({})]);
+	const [{ articles }] = await Promise.all([getArticles({limit: 0})]);
 	return <ArticleProvider articlesInit={articles}>{children}</ArticleProvider>;
 }

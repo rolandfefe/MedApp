@@ -42,6 +42,11 @@ import MyBtn from "../custom/MyBtn";
 import { Badge } from "../ui/badge";
 import { Checkbox } from "../ui/checkbox";
 import {
+	Collapsible,
+	CollapsibleContent,
+	CollapsibleTrigger,
+} from "../ui/collapsible";
+import {
 	Drawer,
 	DrawerContent,
 	DrawerDescription,
@@ -59,11 +64,6 @@ import {
 } from "../ui/form";
 import { Input } from "../ui/input";
 import {
-	Collapsible,
-	CollapsibleContent,
-	CollapsibleTrigger,
-} from "../ui/collapsible";
-import {
 	InputGroup,
 	InputGroupAddon,
 	InputGroupInput,
@@ -75,7 +75,9 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "../ui/select";
+import { ShineBorder } from "../ui/shine-border";
 import { Textarea } from "../ui/textarea";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
 export default function ArticleForm({}: {}) {
 	const currentDoctor = useCurrent().currentDoctor!;
@@ -119,7 +121,7 @@ export default function ArticleForm({}: {}) {
 				);
 				form.reset();
 				setIsSuccess(true);
-				router.push(`/doctors/${currentDoctor.id}/articles/${id}`);
+				router.push(`/article/${id}`);
 			});
 		} else {
 			startTransition(async () => {
@@ -128,17 +130,15 @@ export default function ArticleForm({}: {}) {
 					{
 						loading: "Creating Article...",
 						error: "Failed! Please try again🙏",
-						success: "Article Create🥳",
+						success: "Article Created🥳",
 					},
 					{ id: "034830j30" }
 				);
 				form.reset();
 				setIsSuccess(true);
-				router.push(`/doctors/${currentDoctor.id}/articles/${id}`);
+				router.push(`/article/${id}`);
 			});
-			// Create
 		}
-		console.log(cleanData);
 	};
 
 	const errHandler = async (err: FieldErrors<ArticleFormData>) => {
@@ -159,7 +159,7 @@ export default function ArticleForm({}: {}) {
 	};
 
 	return (
-		<Form {...form}>	
+		<Form {...form}>
 			<div className="space-y-4">
 				{isSmScreen ? (
 					<ArticleForm.Essentials
@@ -174,7 +174,7 @@ export default function ArticleForm({}: {}) {
 							className="cursor-pointer! hover:bg-primary/30 dark:hover:bg-primary/10"
 						>
 							<div className="relative p-2 rounded-xl border-2 border-primary">
-								<div className="leading-4">
+								<div className="space-y-2">
 									<p className="text-lg font-medium text-primary flex items-center gep-x-2">
 										<Stars />
 										<span>Essentials</span>
@@ -272,17 +272,28 @@ export default function ArticleForm({}: {}) {
 ArticleForm.Trigger = ({
 	className,
 	...props
-}: ComponentProps<typeof LinkBtn>) => {
+}: ComponentProps<typeof MyBtn>) => {
 	const currentDoctor = useCurrent().currentDoctor!;
 	return (
-		<LinkBtn
-			{...props}
-			link={{ href: `/doctors/${currentDoctor.id}/articles/new` }}
-			size={"icon"}
-			className={cn("size-12 rounded-xl", className)}
-		>
-			<PenTool />
-		</LinkBtn>
+		<Tooltip>
+			<TooltipTrigger asChild>
+				<LinkBtn
+					{...props}
+					link={{ href: `/doctor/${currentDoctor.id}/articles/new` }}
+					size={"icon"}
+					variant={"secondary"}
+					className={cn(
+						"rounded-xl",
+						"glass rounded-xl text-primary",
+						className
+					)}
+				>
+					<ShineBorder shineColor={["#A07CFE", "#FE8FB5", "#FFBE7B"]} />
+					<PenTool />
+				</LinkBtn>
+			</TooltipTrigger>
+			<TooltipContent>✍️Write article</TooltipContent>
+		</Tooltip>
 	);
 };
 

@@ -70,19 +70,23 @@ export const getArticles = cache(
 		limit?: number;
 	}) => {
 		try {
+			const isFilter = category || author || type;
+
 			const {
 				docs: articles,
 				hasNextPage,
 				nextPage,
 			} = await payload.find({
 				collection: "Articles",
-				where: {
-					or: [
-						{ authors: { equals: author } }, // ! test
-						// { type: { equals: type } }, // ! test
-						// { categories: { equals: category } }, // ! test
-					],
-				},
+				where: isFilter
+					? {
+							or: [
+								{ authors: { equals: author } }, // ! test
+								// { type: { equals: type } }, // ! test
+								// { categories: { equals: category } }, // ! test
+							],
+					  }
+					: undefined,
 				page,
 				limit,
 			});

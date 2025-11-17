@@ -28,18 +28,21 @@ export const Articles: CollectionConfig = {
 					type: "relationship",
 					hasMany: true,
 					relationTo: "users",
+					defaultValue: [],
 				},
 				{
 					name: "likes",
 					type: "relationship",
 					hasMany: true,
 					relationTo: "users",
+					defaultValue: [],
 				},
 				{
 					name: "dislikes",
 					type: "relationship",
 					hasMany: true,
 					relationTo: "users",
+					defaultValue: [],
 				},
 				{
 					name: "type",

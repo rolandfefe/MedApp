@@ -7,6 +7,7 @@ import ArticleCard from "../cards/ArticleCard";
 import Void from "../custom/Void";
 import { motion, stagger, Variants } from "motion/react";
 import { useCurrent } from "@/contexts/Current.context";
+import ArticleForm from "../forms/ArticleForm";
 
 const motionVariants: Variants = {
 	hidden: {
@@ -23,6 +24,8 @@ export default function ArticlesFeed() {
 	const { articles } = useArticles();
 	const currentDoctor = useCurrent().currentDoctor;
 
+	console.log(articles);
+
 	return (
 		<div>
 			<motion.section
@@ -32,10 +35,19 @@ export default function ArticlesFeed() {
 				transition={{
 					delayChildren: stagger(0.3),
 				}}
+				className="flex items-center gap-3 flex-wrap"
 			>
 				{articles.length > 0 ? (
 					articles.map((article) => (
-						<motion.div variants={motionVariants}>
+						<motion.div
+							variants={motionVariants}
+							layout
+							whileHover={{
+								scale: 1.01,
+							}}
+							whileTap={{ scale: 1 }}
+							className="flex-1 basis-full sm:basis-[45%]"
+						>
 							<ArticleCard article={article} />
 						</motion.div>
 					))
@@ -47,7 +59,7 @@ export default function ArticlesFeed() {
 								link={{
 									href: `/doctor/${currentDoctor.id}/articles/new`,
 								}}
-								className="flex mx-auto mb-3"
+								className="flex mx-auto mt-3"
 							>
 								New article <NotebookTabs />
 							</LinkBtn>
@@ -55,6 +67,10 @@ export default function ArticlesFeed() {
 					</div>
 				)}
 			</motion.section>
+
+			{currentDoctor && (
+				<ArticleForm.Trigger className="fixed bottom-3 right-3" />
+			)}
 		</div>
 	);
 }

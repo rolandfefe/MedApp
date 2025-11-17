@@ -6,8 +6,9 @@ interface ContextProps {
 	appointment: IAppointment;
 	referrals: IReferral[];
 	patientHistory: IHistory;
-	verdict?: IVerdict,
-	diagnosis?: IDiagnosis
+	verdict?: IVerdict;
+	diagnosis?: IDiagnosis;
+	recurrencePlan?: IRecurrencePlan;
 }
 
 const ConsultationContext = createContext<ContextProps | null>(null);
