@@ -784,7 +784,6 @@ export interface RecurrencePlan {
   id: string;
   supervisor: string | Doctor;
   appointment: string | Appointment;
-  name: string;
   frequency: 'Daily' | 'Weekly' | 'Bi-weekly' | 'Monthly';
   interval: number;
   startDate: string;
@@ -792,12 +791,7 @@ export interface RecurrencePlan {
   startTime: string;
   endTime?: string | null;
   weekDays: ('Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday')[];
-  exceptions?:
-    | {
-        date?: string | null;
-        id?: string | null;
-      }[]
-    | null;
+  exceptions?: string[] | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1388,7 +1382,6 @@ export interface ReferralsSelect<T extends boolean = true> {
 export interface RecurrencePlansSelect<T extends boolean = true> {
   supervisor?: T;
   appointment?: T;
-  name?: T;
   frequency?: T;
   interval?: T;
   startDate?: T;
@@ -1396,12 +1389,7 @@ export interface RecurrencePlansSelect<T extends boolean = true> {
   startTime?: T;
   endTime?: T;
   weekDays?: T;
-  exceptions?:
-    | T
-    | {
-        date?: T;
-        id?: T;
-      };
+  exceptions?: T;
   updatedAt?: T;
   createdAt?: T;
 }

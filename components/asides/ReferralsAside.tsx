@@ -1,22 +1,17 @@
-import { ArrowBigRightDash } from "lucide-react";
-import React from "react";
-import Heading from "../custom/Heading";
-import { Separator } from "../ui/separator";
-import ReferralCard from "../cards/ReferralCard";
-import { AnimatePresence, motion } from "motion/react";
-import Void from "../custom/Void";
-import MyBtn from "../custom/MyBtn";
-import { ReferralFormDialog } from "../forms/ReferralForm";
-import { Appointment } from "@/types/payload";
+"use client";
 
-export default function ReferralsAside({
-	referrals,
-	appointment,
-}: {
-	referrals: IReferral[];
-	appointment?: IAppointment;
-}) {
-	// const referrals = appointment.referrals;
+import { ArrowBigRightDash } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
+import ReferralCard from "../cards/ReferralCard";
+import Heading from "../custom/Heading";
+import MyBtn from "../custom/MyBtn";
+import Void from "../custom/Void";
+import { ReferralFormDialog } from "../forms/ReferralForm";
+import { Separator } from "../ui/separator";
+import { useConsultation } from "@/contexts/consultation.context";
+
+export default function ReferralsAside() {
+	const { referrals, appointment } = useConsultation();
 
 	return (
 		<div>

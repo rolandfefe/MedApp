@@ -15,9 +15,8 @@ export const RecurrencePlan: CollectionConfig = {
 			type: "relationship",
 			relationTo: "appointments",
 			required: true,
-			unique: true,
+			unique: true, // ! Appointments have only ONE plan!
 		},
-		{ name: "name", type: "text", required: true },
 		{
 			name: "frequency",
 			type: "select",
@@ -36,8 +35,8 @@ export const RecurrencePlan: CollectionConfig = {
 		},
 		{ name: "startDate", type: "date", required: true },
 		{ name: "endDate", type: "date" },
-		{ name: "startTime", type: "date", required: true },
-		{ name: "endTime", type: "date" },
+		{ name: "startTime", type: "text", required: true },
+		{ name: "endTime", type: "text" },
 		{
 			name: "weekDays",
 			type: "select",
@@ -50,8 +49,8 @@ export const RecurrencePlan: CollectionConfig = {
 		},
 		{
 			name: "exceptions",
-			type: "array",
-			fields: [{ name: "date", type: "date" }],
+			type: "text",
+			hasMany: true,
 		},
 	],
 };

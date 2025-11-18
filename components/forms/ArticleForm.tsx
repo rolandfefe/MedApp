@@ -292,7 +292,7 @@ ArticleForm.Trigger = ({
 	const currentDoctor = useCurrent().currentDoctor;
 
 	//? only allow doctors to write articles
-	if (!currentDoctor) return; 
+	if (!currentDoctor) return;
 
 	return (
 		<Tooltip>
@@ -303,8 +303,7 @@ ArticleForm.Trigger = ({
 					size={"icon"}
 					variant={"secondary"}
 					className={cn(
-						"rounded-xl",
-						"glass rounded-xl text-primary",
+						"rounded-xl glass text-primary",
 						className
 					)}
 				>

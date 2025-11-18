@@ -9,6 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
 	ArrowBigRightDash,
 	ArrowUpRightFromSquare,
+	CalendarClock,
 	ChevronsUpDown,
 	Loader,
 	Notebook,
@@ -37,9 +38,9 @@ import {
 import { Input } from "../ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Separator } from "../ui/separator";
-import { Skeleton } from "../ui/skeleton";
 
 import { useConsultation } from "@/contexts/consultation.context";
+import { useCurrent } from "@/contexts/Current.context";
 import { useMediaQuery } from "@uidotdev/usehooks";
 import ReferralsAside from "../asides/ReferralsAside";
 import LinkBtn from "../btns/LinkBtn";
@@ -49,31 +50,19 @@ import {
 	FormPanelTrigger,
 } from "../custom/form-panel";
 import { ReferralFormDialog } from "../forms/ReferralForm";
+import RecurrencePlanAside from "../asides/RecurrencePlanAside";
 
-export default function PatientFooter({
-	appointment,
-	currentUser,
-}: {
-	appointment: IAppointment;
-	currentUser: IUser;
-}) {
-	const router = useRouter();
-
-	if (!appointment)
-		return (
-			<div className="space-y-2">
-				{[...Array(4)].map((_, i) => (
-					<Skeleton key={i} className="w-full h-9 rounded-xl" />
-				))}
-			</div>
-		);
+export default function PatientFooter() {
+	const currentUser = useCurrent().currentUser!;
+	const { appointment } = useConsultation();
 
 	return (
 		<div className="space-y-3">
-			<ReferralBtn appointment={appointment} />
-			<OnlineMeetBtn appointment={appointment} />
+			<PatientFooter.RecurrenceBtn />
+			<ReferralBtn />
+			<OnlineMeetBtn />
 			<ButtonGroup className="!w-full">
-				<DiagnosisFormPanel action="Create" className="flex-1">
+				<DiagnosisFormPanel className="flex-1">
 					<MyBtn variant={"outline"} className="rounded-e-none justify-start">
 						<Stethoscope />
 						Diagnose
@@ -92,7 +81,7 @@ export default function PatientFooter({
 				</LinkBtn>
 			</ButtonGroup>
 
-			<DoctorNotesFormPanel currentUser={currentUser} appointment={appointment}>
+			<DoctorNotesFormPanel>
 				<MyBtn className="w-full">
 					Medical Notes <Notebook />
 				</MyBtn>
@@ -101,11 +90,39 @@ export default function PatientFooter({
 	);
 }
 
-const ReferralBtn = ({ appointment }: { appointment: IAppointment }) => {
-	const { referrals } = useConsultation();
+PatientFooter.RecurrenceBtn = () => {
+	const { appointment } = useConsultation();
+	const patient = appointment.patient as IPatient;
 
 	return (
-		<ButtonGroup className="!w-full">
+		<FormPanel>
+			<FormPanelTrigger asChild className="w-full!">
+				<MyBtn variant="outline" className="justify-start">
+					<CalendarClock />
+					Recurrence plan
+				</MyBtn>
+			</FormPanelTrigger>
+			<FormPanelContent>
+				<section>
+					<Heading className="text-xl sm:text-2xl font-medium">
+						<span className="text-primary flex item-center gap-x-2">
+							<CalendarClock />
+							{patient.user.fname}'s
+						</span>
+
+						<span>Recurrence Plan</span>
+					</Heading>
+				</section>
+				<Separator className="mt-2 mb-4" />
+				<RecurrencePlanAside />
+			</FormPanelContent>
+		</FormPanel>
+	);
+};
+
+const ReferralBtn = () => {
+	return (
+		<ButtonGroup className="w-full!">
 			<FormPanel>
 				<FormPanelTrigger asChild className="flex-1">
 					<MyBtn variant="outline" className="justify-start">
@@ -113,15 +130,11 @@ const ReferralBtn = ({ appointment }: { appointment: IAppointment }) => {
 					</MyBtn>
 				</FormPanelTrigger>
 				<FormPanelContent>
-					<ReferralsAside referrals={referrals} appointment={appointment} />
+					<ReferralsAside />
 				</FormPanelContent>
 			</FormPanel>
 
-			<ReferralFormDialog
-				appointment={appointment}
-				action="Create"
-				className="rounded-s-none"
-			>
+			<ReferralFormDialog action="Create" className="rounded-s-none">
 				<MyBtn
 					variant="secondary"
 					size="icon"
@@ -134,7 +147,9 @@ const ReferralBtn = ({ appointment }: { appointment: IAppointment }) => {
 	);
 };
 
-const OnlineMeetBtn = ({ appointment }: { appointment: IAppointment }) => {
+const OnlineMeetBtn = () => {
+	const { appointment } = useConsultation();
+
 	const [isPending, startTransition] = useTransition();
 	const [isOpen, setOpen] = useState<boolean>(false);
 	const router = useRouter();

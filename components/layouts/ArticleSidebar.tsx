@@ -1,8 +1,11 @@
 "use client";
 
+import { useArticles } from "@/contexts/Articles.context";
 import { Home, NotebookTabs } from "lucide-react";
 import BackBtn from "../btns/BackBtn";
 import LinkBtn from "../btns/LinkBtn";
+import ArticlesFeed from "../Feeds/ArticlesFeed";
+import ArticleForm from "../forms/ArticleForm";
 import {
 	Sidebar,
 	SidebarContent,
@@ -10,10 +13,6 @@ import {
 	SidebarHeader,
 	SidebarTrigger,
 } from "../ui/sidebar";
-import { useArticles } from "@/contexts/Articles.context";
-import ArticleForm from "../forms/ArticleForm";
-import { useCurrent } from "@/contexts/Current.context";
-import ArticlesFeed from "../Feeds/ArticlesFeed";
 
 export default function ArticleSidebar() {
 	const { activeArticle } = useArticles();
@@ -48,7 +47,7 @@ export default function ArticleSidebar() {
 					>
 						<NotebookTabs />
 					</LinkBtn>
-					<ArticleForm.Trigger className="flex-1" />
+					<ArticleForm.Trigger className="flex-1!" />
 					<BackBtn />
 				</div>
 			</SidebarFooter>

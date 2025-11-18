@@ -5,7 +5,7 @@ import { useCurrent } from "@/contexts/Current.context";
 import { cn } from "@/lib/utils";
 import { eAppointmentStatus, eAppointmentTypes } from "@/types/enums/enums";
 import { ChevronsUpDown, Sparkles, TriangleAlert } from "lucide-react";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, motion, stagger, Variants } from "motion/react";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import AppointmentCard from "../cards/AppointmentCard";
 import MyBtn from "../custom/MyBtn";
@@ -24,6 +24,12 @@ interface Filters {
 	status?: eAppointmentStatus;
 	emergency?: boolean;
 }
+
+const motionVariants: Variants = {
+	hidden: { opacity: 0, y: 50 },
+	visible: { opacity: 1, y: 0 },
+	exit: { opacity: 0, y: 50 },
+};
 
 export default function DoctorAppointmentFeeds({
 	autoAppointments,
@@ -62,7 +68,15 @@ export default function DoctorAppointmentFeeds({
 		<div className="space-y-2 ">
 			<FilterBar filters={filters} setFilters={setFilters} />
 
-			<section className="flex gap-3 flex-col sm:flex-row flex-wrap">
+			<motion.section
+				variants={motionVariants}
+				initial="hidden"
+				animate="visible"
+				transition={{
+					delayChildren: stagger(0.3),
+				}}
+				className="flex gap-3 flex-col sm:flex-row flex-wrap"
+			>
 				<AnimatePresence>
 					{filterResults.length > 0 ? (
 						filterResults.map((appointment) => {
@@ -71,11 +85,10 @@ export default function DoctorAppointmentFeeds({
 
 							return (
 								<motion.div
-									key={appointment.id}
+									variants={motionVariants}
+									exit={"exit"}
 									layout
-									initial={{ opacity: 0, y: 100 }}
-									animate={{ opacity: 1, y: 0 }}
-									exit={{ opacity: 0, y: 100 }}
+									key={appointment.id}
 									className={cn(
 										"mb-2 basis-full sm:basis-[47%] flex-1",
 										sidebarState === "expanded" &&
@@ -87,7 +100,7 @@ export default function DoctorAppointmentFeeds({
 										appointment={appointment}
 										variant="md"
 										mode="Doctor"
-									/>
+									/>	
 								</motion.div>
 							);
 						})
@@ -97,7 +110,7 @@ export default function DoctorAppointmentFeeds({
 						</div>
 					)}
 				</AnimatePresence>
-			</section>
+			</motion.section>
 		</div>
 	);
 }

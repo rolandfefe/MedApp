@@ -29,15 +29,14 @@ import toast from "react-hot-toast";
 import MyBtn from "../custom/MyBtn";
 import { Card, CardContent } from "../ui/card";
 import { getIsAppointmentDoctor } from "@/lib/utils";
+import { useConsultation } from "@/contexts/consultation.context";
+import { useCurrent } from "@/contexts/Current.context";
 
-export default function DoctorNotesForm({
-	appointment,
-	currentUser,
-}: {
-	appointment: IAppointment;
-	currentUser: IUser;
-}) {
-	const doctor = appointment.doctor as IDoctor;
+export default function DoctorNotesForm() {
+	const currentUser = useCurrent().currentUser!;
+	const doctor = useCurrent().currentDoctor!;
+	const { appointment } = useConsultation();
+
 	const patient = appointment.patient as IPatient;
 	const [isPending, startTransition] = useTransition();
 	const [isSuccess, setIsSuccess] = useState<boolean>(false);

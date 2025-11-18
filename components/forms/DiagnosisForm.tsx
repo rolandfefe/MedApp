@@ -40,14 +40,8 @@ import {
 	updateDiagnosis,
 } from "@/lib/actions/diagnosis.actions";
 
-export default function DiagnosisForm({
-	action,
-	diagnosis,
-}: {
-	action: "Create" | "Update";
-	diagnosis?: IDiagnosis;
-}) {
-	const { appointment, patientHistory } = useConsultation();
+export default function DiagnosisForm() {
+	const { appointment, patientHistory, diagnosis } = useConsultation();
 	const currentDoctor = useCurrent().currentDoctor!;
 	const patient = appointment.patient as IPatient;
 	const [activeStep, setActiveStep] = useState<number>(1);
@@ -77,17 +71,19 @@ export default function DiagnosisForm({
 
 		console.log(data, notesEditorState, complaintEditorState);
 
-		if (action === "Create") {
-			startTransition(async () => {
-				await createDiagnosis(cleanData);
-				toast.success("Diagnosis created successfully🧑‍⚕️");
-				form.reset();
-				setIsSuccess(true);
-			});
-		} else if (action === "Update" && diagnosis) {
+		if (diagnosis) {
+			// ? Update
 			startTransition(async () => {
 				await updateDiagnosis({ ...diagnosis, ...cleanData });
 				toast.success("Diagnosis updated successfully🧑‍⚕️");
+				form.reset();
+				setIsSuccess(true);
+			});
+		} else {
+			// ? Create
+			startTransition(async () => {
+				await createDiagnosis(cleanData);
+				toast.success("Diagnosis created successfully🧑‍⚕️");
 				form.reset();
 				setIsSuccess(true);
 			});

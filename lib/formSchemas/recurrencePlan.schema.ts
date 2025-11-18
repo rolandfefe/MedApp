@@ -4,11 +4,10 @@ import { eRecurrenceFrequency, eWeekDays } from "@/types/enums/enums";
 // Recurrence Plan Zod Schema
 export const recurrencePlanFormSchema = z
 	.object({
-		name: z.string().min(1, "Name is required").trim(),
 		frequency: z.nativeEnum(eRecurrenceFrequency, {
 			required_error: "Frequency is required",
 		}),
-		interval: z
+		interval: z.coerce
 			.number()
 			.int("Interval must be a whole number")
 			.positive("Interval must be positive")
@@ -25,10 +24,9 @@ export const recurrencePlanFormSchema = z
 		}),
 		endTime: z.string().optional(),
 
-		
 		// Exceptions and week days
-		exceptions: z.array(z.string()).default([]),
-		weekDays: z.array(z.nativeEnum(eWeekDays)).default([]),
+		exceptions: z.string(),
+		// weekDays: z.array(z.nativeEnum(eWeekDays)).default([]),
 	})
 	.refine(
 		(data) => {
@@ -40,45 +38,46 @@ export const recurrencePlanFormSchema = z
 			path: ["endDate"],
 		}
 	)
-	.refine(
-		(data) => {
-			if (!data.endTime) return true;
-			return new Date(data.endTime) > new Date(data.startTime);
-		},
-		{
-			message: "End time must be after start time",
-			path: ["endTime"],
-		}
-	)
-	.refine(
-		(data) => {
-			// For weekly frequency, at least one week day must be selected
-			if (data.frequency === eRecurrenceFrequency.WEEKLY) {
-				return data.weekDays.length > 0;
-			}
-			return true;
-		},
-		{
-			message: "At least one week day must be selected for weekly frequency",
-			path: ["weekDays"],
-		}
-	)
-	.refine(
-		(data) => {
-			// For daily frequency, weekDays should be empty
-			if (
-				data.frequency === eRecurrenceFrequency.DAILY &&
-				data.weekDays.length > 0
-			) {
-				return false;
-			}
-			return true;
-		},
-		{
-			message: "Week days should not be selected for daily frequency",
-			path: ["weekDays"],
-		}
-	);
+	// .refine(
+	// 	(data) => {
+	// 		if (!data.endTime) return true;
+	// 		return new Date(data.endTime) > new Date(data.startTime);
+	// 	},
+	// 	{
+	// 		message: "End time must be after start time",
+	// 		path: ["endTime"],
+	// 	}
+	// )
+	// ! Solve then implement
+	// .refine(
+	// 	(data) => {
+	// 		// For weekly frequency, at least one week day must be selected
+	// 		if (data.frequency === eRecurrenceFrequency.WEEKLY) {
+	// 			return data.weekDays.length > 0;
+	// 		}
+	// 		return true;
+	// 	},
+	// 	{
+	// 		message: "At least one week day must be selected for weekly frequency",
+	// 		path: ["weekDays"],
+	// 	}
+	// )
+	// .refine(
+	// 	(data) => {
+	// 		// For daily frequency, weekDays should be empty
+	// 		if (
+	// 			data.frequency === eRecurrenceFrequency.DAILY &&
+	// 			data.weekDays.length > 0
+	// 		) {
+	// 			return false;
+	// 		}
+	// 		return true;
+	// 	},
+	// 	{
+	// 		message: "Week days should not be selected for daily frequency",
+	// 		path: ["weekDays"],
+	// 	}
+	// );
 
 // Type exports
 export type RecurrencePlanFormData = z.infer<typeof recurrencePlanFormSchema>;

@@ -47,16 +47,17 @@ import { Separator } from "../ui/separator";
 import { Spinner } from "../ui/spinner";
 import { Textarea } from "../ui/textarea";
 import { createReferral, updateReferral } from "@/lib/actions/referral.actions";
+import { useConsultation } from "@/contexts/consultation.context";
 
 export default function ReferralForm({
 	action,
 	referral,
-	appointment,
 }: {
 	action: "Create" | "Update";
 	referral?: IReferral;
-	appointment?: IAppointment;
 }) {
+	const { appointment } = useConsultation();
+
 	const appointmentDoctor = appointment?.doctor as IDoctor;
 
 	const [selectedDoctor, setSelectedDoctor] = useState<IDoctor | undefined>(
