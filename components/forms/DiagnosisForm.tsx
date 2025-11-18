@@ -133,7 +133,7 @@ export default function DiagnosisForm() {
 			<div className="px-2 sticky top-0 bg-background/40 backdrop-blur-2xl backdrop-saturate-150">
 				<Heading className="text-xl md:text-2xl text-primary">
 					<Hospital /> Diagnosis Form
-					<Badge variant={"secondary"}>{action}</Badge>{" "}
+					<Badge variant={"secondary"}>{diagnosis ? "Create" : "Edit"}</Badge>{" "}
 				</Heading>
 				<Separator className="my-3" />
 			</div>

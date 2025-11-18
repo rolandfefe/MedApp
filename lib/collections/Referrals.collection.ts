@@ -17,7 +17,8 @@ export const Referrals: CollectionConfig = {
 			required: true,
 		},
 		{ name: "to", type: "relationship", relationTo: "doctors", required: true },
-		{ name: "reason", type: "richText", required: true },
+		{ name: "reason", type: "textarea", required: true },
+		// { name: "reason", type: "richText", required: true },
 		{
 			name: "status",
 			type: "select",

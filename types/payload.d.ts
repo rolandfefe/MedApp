@@ -425,8 +425,8 @@ export interface Doctor {
     isVerified?: boolean | null;
   };
   contact: {
-    officialPhone: string;
-    officialEmail: string;
+    officePhone: string;
+    officeEmail: string;
     mobilePhone?: string | null;
   };
   metrics?: {
@@ -757,21 +757,7 @@ export interface Referral {
   appointment: string | Appointment;
   from: string | Doctor;
   to: string | Doctor;
-  reason: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
+  reason: string;
   status?: ('Pending' | 'Active' | 'Rejected' | 'Completed' | 'Cancelled') | null;
   updatedAt: string;
   createdAt: string;
@@ -1133,8 +1119,8 @@ export interface DoctorsSelect<T extends boolean = true> {
   contact?:
     | T
     | {
-        officialPhone?: T;
-        officialEmail?: T;
+        officePhone?: T;
+        officeEmail?: T;
         mobilePhone?: T;
       };
   metrics?:

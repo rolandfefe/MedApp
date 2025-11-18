@@ -86,12 +86,12 @@ export default function DoctorSearchBox({
 			const filterResults = queryResults.filter(
 				({ specialties, languages, gender }) => {
 					return (
-						specialties.find(
+						specialties!.find(
 							({ primary, secondary }) =>
 								primary == filters?.specialties ||
 								secondary == filters?.specialties
 						) ||
-						languages.includes(filters?.languages) ||
+						languages!.includes(filters?.languages) ||
 						gender == filters?.gender
 					);
 				}

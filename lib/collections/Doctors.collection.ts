@@ -134,8 +134,8 @@ export const Doctors: CollectionConfig = {
 			name: "contact",
 			type: "group",
 			fields: [
-				{ name: "officialPhone", type: "text", required: true },
-				{ name: "officialEmail", type: "text", required: true },
+				{ name: "officePhone", type: "text", required: true },
+				{ name: "officeEmail", type: "text", required: true },
 				{ name: "mobilePhone", type: "text" },
 			],
 		},

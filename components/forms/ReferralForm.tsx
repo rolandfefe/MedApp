@@ -59,23 +59,12 @@ export default function ReferralForm({
 	const { appointment } = useConsultation();
 
 	const appointmentDoctor = appointment?.doctor as IDoctor;
-
 	const [selectedDoctor, setSelectedDoctor] = useState<IDoctor | undefined>(
 		referral ? (referral.to as IDoctor) : undefined
 	);
 	const [isPending, startTransition] = useTransition();
-	const [doctors, setDoctors] = useState<IDoctor[]>([]);
 	const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
-	const pathname = usePathname();
-
-	const fetchDoctors = useEffectEvent(async () =>
-		setDoctors((await getDoctors({})).doctors)
-	);
-
-	useEffect(() => {
-		fetchDoctors();
-	}, [fetchDoctors]);
 
 	const form = useForm<ReferralFormData>({
 		resolver: zodResolver(referralSchema),

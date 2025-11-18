@@ -33,7 +33,7 @@ export default function RecurrencePlanAside() {
 			animate={"visible"}
 			transition={{
 				delayChildren: stagger(0.3),
-				delay: 1,
+				delay: 0.3,
 			}}
 			className="space-y-4"
 		>
