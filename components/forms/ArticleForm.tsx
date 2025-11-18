@@ -299,13 +299,13 @@ ArticleForm.Trigger = ({
 			<TooltipTrigger asChild>
 				<LinkBtn
 					{...props}
-					link={{ href: `/doctor/${currentDoctor.id}/articles/new` }}
+					link={{
+						href: `/doctor/${currentDoctor.id}/articles/new`,
+						className: className,
+					}}
 					size={"icon"}
 					variant={"secondary"}
-					className={cn(
-						"rounded-xl glass text-primary",
-						className
-					)}
+					className={cn("rounded-xl glass text-primary", className)}
 				>
 					<ShineBorder shineColor={["#A07CFE", "#FE8FB5", "#FFBE7B"]} />
 					<PenTool />

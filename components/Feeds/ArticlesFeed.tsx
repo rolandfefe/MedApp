@@ -100,7 +100,7 @@ ArticlesFeed.Related = () => {
 						whileTap={{ scale: 1 }}
 						className="flex-1 basis-full sm:basis-[45%]"
 					>
-						<ArticleCard article={article} />
+						<ArticleCard.SM article={article} />
 					</motion.div>
 				))
 			) : (

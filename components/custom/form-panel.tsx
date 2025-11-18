@@ -7,7 +7,7 @@ import {
 	DrawerDescription,
 	DrawerHeader,
 	DrawerTitle,
-	DrawerTrigger
+	DrawerTrigger,
 } from "@/components/ui/drawer";
 import { cn } from "@/lib/utils";
 import { useMediaQuery } from "@uidotdev/usehooks";

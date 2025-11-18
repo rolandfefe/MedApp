@@ -11,8 +11,11 @@ import {
 	SidebarContent,
 	SidebarFooter,
 	SidebarHeader,
+	SidebarSeparator,
 	SidebarTrigger,
 } from "../ui/sidebar";
+import Heading from "../custom/Heading";
+import { Separator } from "../ui/separator";
 
 export default function ArticleSidebar() {
 	const { activeArticle } = useArticles();
@@ -22,6 +25,9 @@ export default function ArticleSidebar() {
 			<SidebarHeader>
 				<div className="flex items-center justify-between gap-x-2">
 					<SidebarTrigger />
+					<Heading className="text-lg sm:text-xl font-medium text-primary">
+						Related
+					</Heading>
 					<LinkBtn
 						link={{ href: "/home" }}
 						size="icon"
@@ -32,6 +38,7 @@ export default function ArticleSidebar() {
 					</LinkBtn>
 				</div>
 			</SidebarHeader>
+			<Separator className="mb-3" />
 
 			<SidebarContent className="px-2">
 				<ArticlesFeed.Related />
@@ -39,6 +46,8 @@ export default function ArticleSidebar() {
 
 			<SidebarFooter>
 				<div className="flex items-center justify-between gap-x-2">
+					<BackBtn />
+					<ArticleForm.Trigger className="flex-1! w-full" />
 					<LinkBtn
 						link={{ href: `/article/${activeArticle!.id}` }}
 						size="icon"
@@ -47,8 +56,6 @@ export default function ArticleSidebar() {
 					>
 						<NotebookTabs />
 					</LinkBtn>
-					<ArticleForm.Trigger className="flex-1!" />
-					<BackBtn />
 				</div>
 			</SidebarFooter>
 		</Sidebar>

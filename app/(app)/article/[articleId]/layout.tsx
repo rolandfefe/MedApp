@@ -9,7 +9,6 @@ import { CurrentProvider } from "@/contexts/Current.context";
 import { getArticle, getArticles } from "@/lib/actions/article.actions";
 import { getCurrentUser } from "@/lib/actions/user.actions";
 import { getCurrentDoctor } from "@/lib/actions/utils.actions";
-import React from "react";
 
 export default async function layout({
 	params,
@@ -27,12 +26,11 @@ export default async function layout({
 	return (
 		<CurrentProvider user={user} doctor={doctor}>
 			<ArticleProvider article={article} articlesInit={articles}>
-				<SidebarProvider>
+				<SidebarProvider sidebarWidth="20rem">
 					<SidebarInset>
 						<main className="p-3 relative ">
 							{children}
-
-							<SidebarTrigger className="fixed bottom-4 right-0 glass rounded-r-none" />
+							<SidebarTrigger className="fixed top-4 right-0 glass rounded-r-none" />
 						</main>
 					</SidebarInset>
 					<ArticleSidebar />

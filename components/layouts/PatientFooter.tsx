@@ -51,6 +51,7 @@ import {
 } from "../custom/form-panel";
 import { ReferralFormDialog } from "../forms/ReferralForm";
 import RecurrencePlanAside from "../asides/RecurrencePlanAside";
+import { ScrollArea } from "../ui/scroll-area";
 
 export default function PatientFooter() {
 	const currentUser = useCurrent().currentUser!;
@@ -103,6 +104,7 @@ PatientFooter.RecurrenceBtn = () => {
 				</MyBtn>
 			</FormPanelTrigger>
 			<FormPanelContent>
+				{/* <ScrollArea className="h-[90vh] mb-4"> */}
 				<section>
 					<Heading className="text-xl sm:text-2xl font-medium">
 						<span className="text-primary flex item-center gap-x-2">
@@ -115,6 +117,7 @@ PatientFooter.RecurrenceBtn = () => {
 				</section>
 				<Separator className="mt-2 mb-4" />
 				<RecurrencePlanAside />
+				{/* </ScrollArea> */}
 			</FormPanelContent>
 		</FormPanel>
 	);
