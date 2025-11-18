@@ -5,8 +5,12 @@ import {
 } from "@/types/enums/enums";
 import { z } from "zod";
 
+const ARTICLE_TYPES = Object.entries(eArticleType).map(([k, v]) => `${v}`);
+type aT = z.infer<typeof ARTICLE_TYPES>;
+
 const metaSchema = z.object({
 	type: z.nativeEnum(eArticleType),
+	// type: z.enum(),
 	// categories: z.array(z.nativeEnum(eArticleCategories)),
 	// status: z.nativeEnum(eArticleStatus).default(eArticleStatus.DRAFT),
 });

@@ -7,7 +7,6 @@ import { Eye, ThumbsDown, ThumbsUp } from "lucide-react";
 export default function ArticleCard({ article }: { article: IArticle }) {
 	const currentDoctor = useCurrent().currentDoctor!;
 
-	console.log(article);
 	return (
 		<Link href={`/article/${article.id}`}>
 			<div className="relative p-3 glass glass-shadow rounded-2xl bg-secondary space-y-2">

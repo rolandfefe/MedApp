@@ -73,11 +73,7 @@ export default function PatientFooter({
 			<ReferralBtn appointment={appointment} />
 			<OnlineMeetBtn appointment={appointment} />
 			<ButtonGroup className="!w-full">
-				<DiagnosisFormPanel
-					appointment={appointment}
-					action="Create"
-					className="flex-1"
-				>
+				<DiagnosisFormPanel action="Create" className="flex-1">
 					<MyBtn variant={"outline"} className="rounded-e-none justify-start">
 						<Stethoscope />
 						Diagnose

@@ -82,17 +82,33 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 export default function ArticleForm({}: {}) {
 	const currentDoctor = useCurrent().currentDoctor!;
 	const { activeArticle } = useArticles();
-	const [categories, setCategories] = useState<eArticleCategories[]>([]);
-	const [contentSerializedState, setContentSerializedState] =
-		useState<SerializedEditorState>();
+	const [categories, setCategories] = useState<eArticleCategories[]>(
+		activeArticle?.meta?.categories ?? [] //! fix type errors
+	);
+	const [contentSerializedState, setContentSerializedState] = useState<
+		SerializedEditorState | undefined
+	>(activeArticle?.content ?? undefined);
 	const [isPending, startTransition] = useTransition();
 	const [isSuccess, setIsSuccess] = useState<boolean>(false);
+
 	const router = useRouter();
 	const isSmScreen = useMediaQuery("(width <= 640px)");
 
+	// ! Fix form type errors
 	const form = useForm<ArticleFormData>({
 		resolver: zodResolver(ArticleZodSchema),
-		defaultValues: { licensing: { isPublic: true } },
+		defaultValues: {
+			title: activeArticle?.title ?? "",
+			description: activeArticle?.description ?? "",
+			meta: {
+				type: activeArticle?.meta?.type ?? "",
+			},
+			licensing: {
+				isPublic: true,
+				copyright: activeArticle?.licensing.copyright ?? "",
+				licenseType: activeArticle?.licensing.licenseType ?? "",
+			},
+		},
 	});
 
 	const submitHandler = (data: ArticleFormData, status: eArticleStatus) => {
@@ -262,7 +278,7 @@ export default function ArticleForm({}: {}) {
 						errHandler
 					)}
 				>
-					Publish
+					{activeArticle ? "Edit article" : "Publish"}
 				</MyBtn>
 			</div>
 		</Form>
@@ -273,7 +289,11 @@ ArticleForm.Trigger = ({
 	className,
 	...props
 }: ComponentProps<typeof MyBtn>) => {
-	const currentDoctor = useCurrent().currentDoctor!;
+	const currentDoctor = useCurrent().currentDoctor;
+
+	//? only allow doctors to write articles
+	if (!currentDoctor) return; 
+
 	return (
 		<Tooltip>
 			<TooltipTrigger asChild>

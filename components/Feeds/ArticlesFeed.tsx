@@ -74,3 +74,38 @@ export default function ArticlesFeed() {
 		</div>
 	);
 }
+
+ArticlesFeed.Related = () => {
+	const { articles } = useArticles();
+	const currentDoctor = useCurrent().currentDoctor;
+
+	return (
+		<motion.section
+			variants={motionVariants}
+			initial="hidden"
+			animate="visible"
+			transition={{
+				delayChildren: stagger(0.3),
+			}}
+			className="space-y-3"
+		>
+			{articles.length > 0 ? (
+				articles.map((article) => (
+					<motion.div
+						variants={motionVariants}
+						layout
+						whileHover={{
+							scale: 1.01,
+						}}
+						whileTap={{ scale: 1 }}
+						className="flex-1 basis-full sm:basis-[45%]"
+					>
+						<ArticleCard article={article} />
+					</motion.div>
+				))
+			) : (
+				<Void msg="No articles😭 Click button bellow to create an article👇." />
+			)}
+		</motion.section>
+	);
+};

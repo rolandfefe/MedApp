@@ -7,6 +7,7 @@ import { CollectionConfig } from "payload";
 
 export const Articles: CollectionConfig = {
 	slug: "Articles",
+	// trash: true, // ? add Soft delete?
 	fields: [
 		{ name: "title", type: "text", required: true },
 		{ name: "description", type: "text" },

@@ -9,21 +9,32 @@ import {
 	useTransition,
 } from "react";
 import { useCurrent } from "@/contexts/Current.context";
-import { updateArticle } from "@/lib/actions/article.actions";
+import { deleteArticle, updateArticle } from "@/lib/actions/article.actions";
 import Heading from "./custom/Heading";
 import moment from "moment";
-import { Eye, NotebookTabs, Stars, ThumbsDown, ThumbsUp } from "lucide-react";
+import {
+	Edit3,
+	Eye,
+	NotebookTabs,
+	Stars,
+	ThumbsDown,
+	ThumbsUp,
+	Trash2,
+} from "lucide-react";
 import { Badge } from "./ui/badge";
 import DoctorCard from "./cards/DoctorCard";
 import { cn } from "@/lib/utils";
 import MyBtn from "./custom/MyBtn";
 import { Spinner } from "./ui/spinner";
 import BackBtn from "./btns/BackBtn";
+import Image from "next/image";
+import LinkBtn from "./btns/LinkBtn";
+import { ButtonGroup, ButtonGroupSeparator } from "./ui/button-group";
+import ConfirmationDialog from "./panels/ConfirmationDialog";
+import { useRouter } from "next/navigation";
 
 export default function ArticlePreview({ article }: { article: IArticle }) {
 	console.log(article);
-	// const { articles, setActiveArticle } = useArticles();
-	// setActiveArticle(article);
 
 	return (
 		<div className="space-y-3">
@@ -53,10 +64,20 @@ export default function ArticlePreview({ article }: { article: IArticle }) {
 					</p>
 				</div>
 			</section>
-			<Editor.Renderer
-				editorSerializedState={article.content}
-				className="border-0"
-			/>
+			<section className="relative">
+				<Image
+					src="/assets/logo_transparent.png"
+					alt="logo"
+					width={999}
+					height={999}
+					priority
+					className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 opacity-20 dark:opacity-15 w-[40%] sm:w-1/2"
+				/>
+				<Editor.Renderer
+					editorSerializedState={article.content}
+					className="border-0 bg-transparent"
+				/>
+			</section>
 			<p className="text-sm font-medium text-center text-muted-foreground">
 				<span>{article.licensing.copyright}</span>,{" "}
 				<span>{article.licensing.licenseType}</span>
@@ -65,19 +86,66 @@ export default function ArticlePreview({ article }: { article: IArticle }) {
 			<div className="flex items-center justify-center gap-x-2">
 				<BackBtn className="rounded-full!" />
 				<ArticlePreview.Engagement article={article} />
+				<ArticlePreview.Actions article={article} />
 			</div>
 
-			<section className="bg-secondary p-3 rounded-2xl">
+			<section className="bg-secondary glass-shadow p-3 rounded-2xl">
 				<p className="text-lg">Authors:</p>
 				<div className="flex items-center gap-2">
 					{article.authors!.map((a, i) => (
-						<DoctorCard key={i} doctor={a as IDoctor} />
+						<DoctorCard
+							key={i}
+							doctor={a as IDoctor}
+							className="flex-1 basis-full sm:basis-auto"
+						/>
 					))}
 				</div>
 			</section>
 		</div>
 	);
 }
+
+
+ArticlePreview.Actions = ({
+	article,
+}: ComponentProps<typeof ArticlePreview>) => {
+	const currentDoctor = useCurrent().currentDoctor;
+	const isAuthor = !!article.authors!.find((a) => a.id === currentDoctor?.id);
+	const router = useRouter();
+
+	console.log(currentDoctor, isAuthor);
+
+	if (!currentDoctor || !isAuthor) return;
+
+	const deleteHandler = async () => {
+		await deleteArticle(article.id);
+		router.push(`/doctor/${currentDoctor.id}/articles`)
+	};
+
+	return (
+		<ButtonGroup>
+			<LinkBtn
+				link={{ href: `/article/${article.id}/edit` }}
+				variant={"secondary"}
+				size="sm"
+				className="rounded-r-none"
+			>
+				<Edit3 />
+			</LinkBtn>
+			<ButtonGroupSeparator orientation="vertical" />
+
+			<ConfirmationDialog
+				action={deleteHandler}
+				msg="Are you sure you want to delete this article?"
+				successMsg="Article deleted🗑️"
+			>
+				<MyBtn size="sm" variant="secondary" className="text-destructive">
+					<Trash2 />
+				</MyBtn>
+			</ConfirmationDialog>
+		</ButtonGroup>
+	);
+};
 
 ArticlePreview.Engagement = ({
 	className,
@@ -98,15 +166,16 @@ ArticlePreview.Engagement = ({
 			const likes = l as IUser;
 			return likes.id;
 		}) ?? [];
+	const hasLiked = !!likesArr!.find((l) => l == currentUser.id);
+
 	const dislikesArr =
 		article.meta?.dislikes?.map((d) => {
 			const dislikes = d as IUser;
 			return dislikes.id;
 		}) ?? [];
+	const hasDisliked = !!dislikesArr!.find((d) => d == currentUser.id);
 
 	const likeHandler = async () => {
-		const hasLiked = !!likesArr!.find((l) => l == currentUser.id);
-
 		likeTransition(async () => {
 			if (hasLiked) {
 				await updateArticle({
@@ -126,8 +195,6 @@ ArticlePreview.Engagement = ({
 	};
 
 	const dislikeHandler = async () => {
-		const hasDisliked = !!dislikesArr!.find((d) => d == currentUser.id);
-
 		dislikeTransition(async () => {
 			if (hasDisliked) {
 				await updateArticle({
@@ -166,7 +233,7 @@ ArticlePreview.Engagement = ({
 	return (
 		<div className={cn("flex items-center gap-2 w-fit ", className)} {...props}>
 			<MyBtn
-				disabled={isLiking || isDisliking}
+				disabled={isLiking || isDisliking || hasDisliked}
 				size="sm"
 				variant="outline"
 				onClick={likeHandler}
@@ -175,10 +242,11 @@ ArticlePreview.Engagement = ({
 				{likesArr!.length}
 			</MyBtn>
 			<MyBtn
-				disabled={isLiking || isDisliking}
+				disabled={isLiking || isDisliking || hasLiked}
 				size="sm"
 				variant="outline"
 				onClick={dislikeHandler}
+				className={cn(hasLiked && "cursor-progress")}
 			>
 				{isDisliking ? <Spinner /> : <ThumbsDown />}
 
