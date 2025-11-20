@@ -53,7 +53,7 @@ declare global {
 	type IRecurrencePlan = RecurrencePlan;
 	type IHealthStatus = HealthStatus;
 	type IVerdict = Verdict;
-	type IArticle = Article
+	type IArticle = Article;
 
 	// Globals
 	type ILandingNav = LandingNav;
@@ -73,7 +73,6 @@ declare global {
 		nextAvailableAppointmentDate?: Date | string;
 	}
 
-
 	interface IReminder extends Base {
 		user: IUser | string;
 
@@ -85,7 +84,6 @@ declare global {
 		sent: boolean;
 		status?: "pending" | "sent" | "failed";
 	}
-
 
 	interface CustomJwtSessionClaims extends Base {
 		metadata: {
