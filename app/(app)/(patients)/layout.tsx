@@ -45,20 +45,20 @@ export default async function layout({ children }: { children: ReactNode }) {
 
 	return (
 		<CurrentProvider user={currentUser} patient={patient}>
-			<ArticleProvider articlesInit={articles}>
-				<SidebarProvider defaultOpen>
-					<AppSidebar />
-					<SidebarInset>
-						<ScrollArea className="h-screen">
-							<Navbar patientNav={patientNav} />
-							<main className="overflow-x-hidden p-3">{children}</main>
-							<ScrollBar />
-						</ScrollArea>
-					</SidebarInset>
-				</SidebarProvider>
-			</ArticleProvider>
-
 			<DoctorsProvider doctorsInit={doctors}>
+				<ArticleProvider articlesInit={articles}>
+					<SidebarProvider defaultOpen>
+						<AppSidebar />
+						<SidebarInset>
+							<ScrollArea className="h-screen">
+								<Navbar patientNav={patientNav} />
+								<main className="overflow-x-hidden p-3">{children}</main>
+								<ScrollBar />
+							</ScrollArea>
+						</SidebarInset>
+					</SidebarProvider>
+				</ArticleProvider>
+
 				<AppointmentPanel
 					action="Create"
 					className="fixed bottom-3 right-3 size"

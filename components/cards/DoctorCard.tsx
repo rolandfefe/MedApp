@@ -5,48 +5,12 @@ import { Badge } from "../ui/badge";
 import { Card, CardContent } from "../ui/card";
 
 export default function DoctorCard({
-	...props
+	doctor,
+	className,
 }: {
 	doctor: IDoctor;
 	className?: string;
 }) {
-	return <DoctorCard.SM {...props} />;
-}
-
-DoctorCard.XS = ({ doctor, className }: ComponentProps<typeof DoctorCard>) => {
-	const user = doctor.user as IUser;
-
-	return (
-		<Card className={cn("w-fit bg-transparent hover:bg-muted", className)}>
-			<CardContent className="">
-				<section className="flex items-start gap-x-2">
-					<Avatar className="size-10 rounded-lg">
-						<AvatarImage src={user.imageUrl!} />
-						<AvatarFallback className="size-full rounded-lg bg-fuchsia-400 dark:bg-fuchsia-600">
-							{user.username[0].toUpperCase()}
-						</AvatarFallback>
-					</Avatar>
-
-					{/* <Tooltip>
-							<TooltipTrigger asChild> */}
-					<div className="space-y-2 ">
-						<div className="leading-tight">
-							<p className="line-clamp-1 font-medium">
-								Dr. <span>{user.fname}</span> <span>{user.lname}</span>
-							</p>
-
-							<p className="text-xs text-muted-foreground line-clamp-1">
-								{doctor.contact.officeEmail ?? `@${user.username}`}
-							</p>
-						</div>
-					</div>
-				</section>
-			</CardContent>
-		</Card>
-	);
-};
-
-DoctorCard.SM = ({ doctor, className }: ComponentProps<typeof DoctorCard>) => {
 	const user = doctor.user as IUser;
 
 	return (
@@ -86,6 +50,39 @@ DoctorCard.SM = ({ doctor, className }: ComponentProps<typeof DoctorCard>) => {
 						</Badge>
 					))}
 				</div>
+			</CardContent>
+		</Card>
+	);
+}
+
+DoctorCard.XS = ({ doctor, className }: ComponentProps<typeof DoctorCard>) => {
+	const user = doctor.user as IUser;
+
+	return (
+		<Card className={cn("w-fit bg-transparent hover:bg-muted", className)}>
+			<CardContent className="">
+				<section className="flex items-start gap-x-2">
+					<Avatar className="size-10 rounded-lg">
+						<AvatarImage src={user.imageUrl!} />
+						<AvatarFallback className="size-full rounded-lg bg-fuchsia-400 dark:bg-fuchsia-600">
+							{user.username[0].toUpperCase()}
+						</AvatarFallback>
+					</Avatar>
+
+					{/* <Tooltip>
+							<TooltipTrigger asChild> */}
+					<div className="space-y-2 ">
+						<div className="leading-tight">
+							<p className="line-clamp-1 font-medium">
+								Dr. <span>{user.fname}</span> <span>{user.lname}</span>
+							</p>
+
+							<p className="text-xs text-muted-foreground line-clamp-1">
+								{doctor.contact.officeEmail ?? `@${user.username}`}
+							</p>
+						</div>
+					</div>
+				</section>
 			</CardContent>
 		</Card>
 	);

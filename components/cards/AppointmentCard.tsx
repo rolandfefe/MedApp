@@ -25,7 +25,6 @@ export default function AppointmentCard({
 	const currentPatient = useCurrent().currentPatient as IPatient;
 	const currentDoctor = useCurrent().currentDoctor as IDoctor;
 
-
 	if (variant === "sm") {
 		return (
 			<Card className={cn("", className)}>
@@ -34,14 +33,11 @@ export default function AppointmentCard({
 		);
 	} else if (variant === "md") {
 		return (
-			<AppointmentDynamicPanel mode="Doctor" appointment={appointment}>
+			<AppointmentDynamicPanel mode={mode} appointment={appointment}>
 				<Card className={cn("bg-popover hover:bg-muted/50 h-56", className)}>
 					<CardContent className="space-y-3">
 						{mode === "Doctor" ? (
-							<PatientCard
-								patient={appointment.patient as IPatient}
-								variant="sm"
-							/>
+							<PatientCard patient={appointment.patient as IPatient} />
 						) : appointment.doctor ? (
 							<DoctorCard
 								doctor={appointment.doctor as IDoctor}

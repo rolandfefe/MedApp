@@ -34,8 +34,9 @@ export const getCurrentPatientAppointments = async ({
 	page?: number;
 	limit?: number;
 }) => {
-	const { id } = await getCurrentPatient();
-	return await getAppointments({ patient: id!, page, limit });
+	const { id: patient } = await getCurrentPatient();
+
+	return await getAppointments({ patient, page, limit });
 };
 
 export const getCurrentDoctorAppointments = async ({
@@ -45,8 +46,8 @@ export const getCurrentDoctorAppointments = async ({
 	page?: number;
 	limit?: number;
 }) => {
-	const { id } = await getCurrentDoctor();
-	return await getAppointments({ doctor: id!, limit, page });
+	const { id:doctor } = await getCurrentDoctor();
+	return await getAppointments({ doctor, limit, page });
 };
 
 export const getAllocatedAutoAppointments = async () => {

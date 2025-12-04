@@ -13,7 +13,7 @@ export default function DiagnosisSection() {
 	const { appointment, diagnosis } = useConsultation();
 	// console.log("Diagnosis:",diagnosis);
 
-	if (!diagnosis) return <DiagnosisForm action="Create" />;
+	if (!diagnosis) return <DiagnosisForm />;
 
 	const doctor = appointment.doctor as IDoctor;
 	const patient = appointment.patient as IPatient;
@@ -21,7 +21,7 @@ export default function DiagnosisSection() {
 	return (
 		<div className="space-y-4 mb-5">
 			<div className="flex flex-col sm:flex-row items-center-center justify-between">
-				<DoctorCard.SM doctor={doctor} className="w-fit" />
+				<DoctorCard doctor={doctor} className="w-fit" />
 				<PatientCard patient={patient} />
 			</div>
 			<section>

@@ -80,7 +80,7 @@ export const deleteUser = async (clerkId: string): Promise<void> => {
 export const getCurrentUser = async (): Promise<IUser> => {
 	try {
 		const clerkId = isDevMode
-			? "user_44Ep69eYVSnVJI1XSnkXxkyFbkE"
+			? "user_44Oz69oiFCxEQ1hCwvHhuiPkuoO"
 			: (await currentUser())!.id;
 
 		const {

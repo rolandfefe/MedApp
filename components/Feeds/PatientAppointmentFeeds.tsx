@@ -38,6 +38,8 @@ export default function PatientAppointmentFeeds() {
 	const { state: sidebarState } = useSidebar();
 	const { appointments, loadRef, isLoading } = useAppointments();
 
+	// console.log(appointments)
+
 	console.log("loading Appointments:", isLoading);
 
 	const [filters, setFilters] = useState<Filters>({

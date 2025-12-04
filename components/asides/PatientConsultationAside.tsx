@@ -24,7 +24,6 @@ export default function PatientConsultationAside() {
 	const patient = appointment.patient as IPatient;
 	const doctor = appointment.doctor as IDoctor;
 
-
 	return (
 		<div className="">
 			<div className="flex items-center justify-between">
@@ -36,11 +35,7 @@ export default function PatientConsultationAside() {
 				</AppointmentStatusBadge>
 				<Badge variant={"secondary"}>{appointment.type}</Badge>
 			</div>
-			<PatientCard
-				patient={patient}
-				variant="md"
-				className="border-0 bg-transparent"
-			/>
+			<PatientCard.MD patient={patient} className="border-0 bg-transparent" />
 
 			{/* <Separator className="my-3" /> */}
 			<section className="space-y-3">

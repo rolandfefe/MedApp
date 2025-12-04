@@ -3,7 +3,8 @@
 import { useCurrent } from "@/contexts/Current.context";
 import { useMediaQuery } from "@uidotdev/usehooks";
 import { AlarmClock, ChevronsUpDown, Hospital, UserPlus2 } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 import MyBtn from "../custom/MyBtn";
 import { DoctorFormPanel } from "../forms/DoctorForm";
@@ -17,7 +18,6 @@ import {
 } from "../ui/dropdown-menu";
 import { SidebarMenuButton, useSidebar } from "../ui/sidebar";
 import NavItem from "./NavItem";
-import Link from "next/link";
 
 export default function AppSidebarFooter() {
 	const { state: sidebarState } = useSidebar();
@@ -90,7 +90,7 @@ export default function AppSidebarFooter() {
 					{patient ? (
 						<DropdownMenuItem disabled={!isDoctorMode}>
 							<Link
-								href={`/doctor/${doctor.id!}`}
+								href={`/doctor/${doctor?.id!}`}
 								className="flex item-center gap-x-1"
 							>
 								<Hospital />

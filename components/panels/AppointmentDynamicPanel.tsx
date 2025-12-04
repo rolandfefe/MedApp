@@ -162,116 +162,129 @@ export default function AppointmentDynamicPanel({
 						</p>
 					</div>
 
-					{mode === "Doctor" ? (
-						<div className="space-y-2">
-							<PatientCard
-								patient={appointment.patient as IPatient}
-								currentDoctor={currentDoctor!}
-								variant="sm"
-							/>
+					<div className="space-y-2">
+						{mode === "Doctor" ? (
+							<PatientCard patient={appointment.patient as IPatient} />
+						) : (
+							!isAutoMode && (
+								<DoctorCard doctor={appointment.doctor as IDoctor} />
+							)
+						)}
 
-							{isAutoMode && (
-								<div className="p-2 border rounded-xl">
-									<p className="flex items-center gap-x-2 justify-center text-blue-500 font-medium">
-										<Sparkles />
-										Auto mode
-									</p>
+						{isAutoMode && (
+							<div className="p-2 border rounded-xl">
+								<p className="flex items-center gap-x-2 justify-center text-blue-500 font-medium">
+									<Sparkles />
+									Auto mode
+								</p>
+
+								{mode === "Doctor" ? (
+									<>
+										<p className="text-sm text-center text-muted-foreground">
+											Take on this application
+										</p>
+
+										<MyBtn
+											size="sm"
+											disabled={isPending}
+											variant={"secondary"}
+											onClick={takeAppointmentHandler}
+											className="text-primary flex w-fit mx-auto mt-3 glass"
+										>
+											<span>Take Appointment</span>
+											{isPending && <Loader className="animate-spin" />}
+											<ShineBorder
+												shineColor={["#A07CFE", "#FE8FB5", "#FFBE7B"]}
+											/>
+										</MyBtn>
+									</>
+								) : (
 									<p className="text-sm text-center text-muted-foreground">
-										Take on this application
+										System will match you with a doctor.
 									</p>
-
-									<MyBtn
-										size="sm"
-										disabled={isPending}
-										variant={"secondary"}
-										onClick={takeAppointmentHandler}
-										className="text-primary flex w-fit mx-auto mt-3 glass"
-									>
-										<span>Take Appointment</span>
-										{isPending && <Loader className="animate-spin" />}
-										<ShineBorder
-											shineColor={["#A07CFE", "#FE8FB5", "#FFBE7B"]}
-										/>
-									</MyBtn>
-								</div>
-							)}
-						</div>
-					) : (
-						<DoctorCard doctor={appointment.doctor as IDoctor} />
-					)}
+								)}
+							</div>
+						)}
+					</div>
 
 					{/* Actions */}
 					<div className="flex items-center gap-x-2 justify-center mt-4">
-						{appointment.doctor &&
-						appointment.status === eAppointmentStatus.SCHEDULED ? (
+						{appointment.doctor && (
 							<>
-								{mode === "Doctor" ? (
-									<MyBtn
-										disabled={isConfirming}
-										size="sm"
-										onClick={confirmHandler}
-									>
-										Confirm
-										{isConfirming ? (
-											<Loader className="animate-spin" />
-										) : (
-											<CircleCheck />
-										)}
-									</MyBtn>
-								) : (
-									<ConfirmationDialog
-										action={deleteHandler}
-										msg="Are you sure you want to PERMANENTLY delete this appointment?"
-										successMsg="Appointment deleted🗑️"
-									>
-										<MyBtn size="sm" variant={"destructive"}>
-											Delete
+								{mode === "Doctor" &&
+									appointment.status === eAppointmentStatus.SCHEDULED && (
+										<MyBtn
+											disabled={isConfirming}
+											size="sm"
+											onClick={confirmHandler}
+										>
+											Confirm
 											{isConfirming ? (
 												<Loader className="animate-spin" />
 											) : (
-												<Trash2 />
+												<CircleCheck />
 											)}
+										</MyBtn>
+									)}
+
+								{appointment.status === eAppointmentStatus.CONFIRMED && (
+									<LinkBtn
+										link={{
+											href: `/consultation/${encodeURIComponent(
+												appointment.id!
+											)}`,
+										}}
+										variant={"ghost"}
+										asChild
+										className="p-0! "
+									>
+										<HoverBorderGradient
+											containerClassName="rounded-full"
+											as="div"
+											className="cursor-pointer w-full bg-background text-foreground  inline-flex items-center space-x-2 text-center"
+										>
+											<MessageCircleMore />
+											<span>Consultation</span>
+										</HoverBorderGradient>
+									</LinkBtn>
+								)}
+
+								{(mode === "Patient" &&
+									appointment.status === eAppointmentStatus.SCHEDULED) ||
+									(appointment.status === eAppointmentStatus.CANCELLED && (
+										<ConfirmationDialog
+											action={deleteHandler}
+											msg="Are you sure you want to PERMANENTLY delete this appointment?"
+											successMsg="Appointment deleted🗑️"
+										>
+											<MyBtn size="sm" variant={"destructive"}>
+												Delete
+												{isConfirming ? (
+													<Loader className="animate-spin" />
+												) : (
+													<Trash2 />
+												)}
+											</MyBtn>
+										</ConfirmationDialog>
+									))}
+
+								{appointment.status === eAppointmentStatus.SCHEDULED && (
+									<ConfirmationDialog
+										action={cancelHandler}
+										msg="Are you sure you want to Cancel this application? It will be set to AutoMode✨"
+										successMsg="Appointment Cancelled"
+									>
+										<MyBtn
+											size="sm"
+											variant={"secondary"}
+											className="text-destructive"
+										>
+											Cancel
+											<CircleX />
 										</MyBtn>
 									</ConfirmationDialog>
 								)}
-
-								<ConfirmationDialog
-									action={cancelHandler}
-									msg="Are you sure you want to Cancel this application? It will be set to AutoMode✨"
-									successMsg="Appointment Cancelled"
-								>
-									<MyBtn
-										size="sm"
-										variant={"secondary"}
-										className="text-destructive"
-									>
-										Cancel
-										<CircleX />
-									</MyBtn>
-								</ConfirmationDialog>
 							</>
-						) : (
-							appointment.status === eAppointmentStatus.CONFIRMED && (
-								<LinkBtn
-									link={{
-										href: `/consultation/${encodeURIComponent(
-											appointment.id!
-										)}`,
-									}}
-									variant={"ghost"}
-									asChild
-									className="p-0! "
-								>
-									<HoverBorderGradient
-										containerClassName="rounded-full"
-										as="div"
-										className="cursor-pointer w-full bg-background text-foreground  inline-flex items-center space-x-2 text-center"
-									>
-										<MessageCircleMore />
-										<span>Consultation</span>
-									</HoverBorderGradient>
-								</LinkBtn>
-							)
 						)}
 					</div>
 				</section>

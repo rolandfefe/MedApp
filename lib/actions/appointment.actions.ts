@@ -98,6 +98,8 @@ export const getAppointments = cache(
 				limit,
 			});
 
+			// work on fetching Auto-mode appointments
+
 			return { appointments, hasNextPage, nextPage: nextPage ?? page };
 		} catch (error: any) {
 			throw new Error(error);
