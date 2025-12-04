@@ -61,7 +61,7 @@ export default buildConfig({
 		outputFile: path.resolve(dirname, "./types/payload.d.ts"),
 	},
 	db: mongooseAdapter({
-		url: process.env.MONGO_URI_LOCAL || process.env.MONGO_URI || "",
+		url: process.env.MONGO_URI || "",
 	}),
 	sharp,
 	plugins: [

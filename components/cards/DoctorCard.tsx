@@ -88,8 +88,40 @@ DoctorCard.XS = ({ doctor, className }: ComponentProps<typeof DoctorCard>) => {
 	);
 };
 
-DoctorCard.MD = () => {
-	return <Card></Card>;
+DoctorCard.MD = ({ doctor, className }: ComponentProps<typeof DoctorCard>) => {
+	const user = doctor.user as IUser;
+
+	console.log(doctor);
+
+	return (
+		<Card className={cn("", className)}>
+			<CardContent className="space-y-3">
+				<Avatar className="size-20 mx-auto">
+					<AvatarImage src={user.imageUrl!} />
+					<AvatarFallback className="size-full rounded-lg bg-fuchsia-400 dark:bg-fuchsia-600">
+						{user.username[0].toUpperCase()}
+					</AvatarFallback>
+				</Avatar>
+
+				<section className="leading-tight text-center">
+					<p className="font-medium">
+						<span>Dr.{user.fname}</span> <span>{user.lname}</span>
+					</p>
+					<p className="text-xs text-muted-foreground">{user.email}</p>
+				</section>
+
+				<section className="flex items-center justify-center gap-x-1">
+					<Badge variant={"secondary"}>{doctor.gender}</Badge>
+					<Badge variant={"secondary"}>
+						{doctor.languages && doctor.languages[0]}
+					</Badge>
+					<Badge variant={"secondary"}>
+						{doctor.specialties && doctor.specialties[0].primary}
+					</Badge>
+				</section>
+			</CardContent>
+		</Card>
+	);
 };
 
 DoctorCard.LG = () => {

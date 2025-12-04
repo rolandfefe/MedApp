@@ -11,7 +11,6 @@ import { Separator } from "../ui/separator";
 
 export default function DiagnosisSection() {
 	const { appointment, diagnosis } = useConsultation();
-	// console.log("Diagnosis:",diagnosis);
 
 	if (!diagnosis) return <DiagnosisForm />;
 

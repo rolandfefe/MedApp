@@ -1,3 +1,4 @@
+import { useCurrent } from "@/contexts/Current.context";
 import {
 	deleteAppointment,
 	updateAppointment,
@@ -12,9 +13,9 @@ import {
 	Trash2,
 } from "lucide-react";
 import moment from "moment";
-import { usePathname, useRouter } from "next/navigation";
 import { ReactNode, useTransition } from "react";
 import toast from "react-hot-toast";
+import LinkBtn from "../btns/LinkBtn";
 import { AppointmentStatusBadge } from "../cards/AppointmentCard";
 import DoctorCard from "../cards/DoctorCard";
 import PatientCard from "../cards/patientCard";
@@ -30,8 +31,6 @@ import { HoverBorderGradient } from "../ui/hover-border-gradient";
 import { Separator } from "../ui/separator";
 import { ShineBorder } from "../ui/shine-border";
 import ConfirmationDialog from "./ConfirmationDialog";
-import LinkBtn from "../btns/LinkBtn";
-import { useCurrent } from "@/contexts/Current.context";
 
 export default function AppointmentDynamicPanel({
 	appointment,

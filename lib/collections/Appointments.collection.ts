@@ -29,7 +29,7 @@ export const Appointments: CollectionConfig = {
 			relationTo: "reminders",
 			hasMany: true,
 		},
-		
+
 		{ name: "reason", type: "textarea", required: true },
 		{
 			name: "type",

@@ -42,6 +42,7 @@ import { Separator } from "../ui/separator";
 import { useConsultation } from "@/contexts/consultation.context";
 import { useCurrent } from "@/contexts/Current.context";
 import { useMediaQuery } from "@uidotdev/usehooks";
+import RecurrencePlanAside from "../asides/RecurrencePlanAside";
 import ReferralsAside from "../asides/ReferralsAside";
 import LinkBtn from "../btns/LinkBtn";
 import {
@@ -50,18 +51,16 @@ import {
 	FormPanelTrigger,
 } from "../custom/form-panel";
 import { ReferralFormDialog } from "../forms/ReferralForm";
-import RecurrencePlanAside from "../asides/RecurrencePlanAside";
-import { ScrollArea } from "../ui/scroll-area";
 
-export default function PatientFooter() {
+export default function PatientConsultationFooter() {
 	const currentUser = useCurrent().currentUser!;
 	const { appointment } = useConsultation();
 
 	return (
 		<div className="space-y-3">
-			<PatientFooter.RecurrenceBtn />
-			<ReferralBtn />
-			<OnlineMeetBtn />
+			<PatientConsultationFooter.RecurrenceBtn />
+			<PatientConsultationFooter.ReferralBtn />
+			<PatientConsultationFooter.OnlineMeetBtn />
 			<ButtonGroup className="!w-full">
 				<DiagnosisFormPanel className="flex-1">
 					<MyBtn variant={"outline"} className="rounded-e-none justify-start">
@@ -91,9 +90,10 @@ export default function PatientFooter() {
 	);
 }
 
-PatientFooter.RecurrenceBtn = () => {
-	const { appointment } = useConsultation();
+PatientConsultationFooter.RecurrenceBtn = () => {
+	const { appointment, recurrencePlan } = useConsultation();
 	const patient = appointment.patient as IPatient;
+
 
 	return (
 		<FormPanel>
@@ -123,7 +123,7 @@ PatientFooter.RecurrenceBtn = () => {
 	);
 };
 
-const ReferralBtn = () => {
+PatientConsultationFooter.ReferralBtn = () => {
 	return (
 		<ButtonGroup className="w-full!">
 			<FormPanel>
@@ -150,7 +150,7 @@ const ReferralBtn = () => {
 	);
 };
 
-const OnlineMeetBtn = () => {
+PatientConsultationFooter.OnlineMeetBtn = () => {
 	const { appointment } = useConsultation();
 
 	const [isPending, startTransition] = useTransition();
