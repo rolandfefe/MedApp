@@ -1,9 +1,7 @@
 "use client";
 
 import useLoadMore from "@/hooks/useLoadMore";
-import { getAppointments } from "@/lib/actions/appointment.actions";
 import { getCurrentPatientAppointments } from "@/lib/actions/utils.actions";
-import { eAppointmentStatus, eAppointmentTypes } from "@/types/enums/enums";
 import { flattenDeep, uniqBy } from "lodash-es";
 import {
 	ComponentProps,
@@ -24,7 +22,7 @@ export const useAppointments = () => {
 	const context = useContext(AppointmentsContext);
 
 	if (!context)
-		throw new Error("Element is not child of `<AppointmentsProvide />`");
+		throw new Error("Element is not child of `<AppointmentsProvider />`");
 
 	return context;
 };
@@ -37,7 +35,6 @@ export const AppointmentsProvider = ({
 }: {
 	appointmentsInit: IAppointment[];
 	fetchAction: typeof getCurrentPatientAppointments;
-	// fetchAction: () => Promise<ReturnType<typeof getAppointments>>;
 } & ComponentProps<"div">) => {
 	const [appointments, setAppointments] =
 		useState<IAppointment[]>(appointmentsInit);

@@ -46,7 +46,7 @@ export const getCurrentDoctorAppointments = async ({
 	page?: number;
 	limit?: number;
 }) => {
-	const { id:doctor } = await getCurrentDoctor();
+	const { id: doctor } = await getCurrentDoctor();
 	return await getAppointments({ doctor, limit, page });
 };
 
