@@ -1,9 +1,17 @@
-import { getCurrentUser } from "@/lib/actions/user.actions";
+import ReferralsFeed from "@/components/Feeds/ReferralsFeed";
+import { ReferralsProvider } from "@/contexts/referrals.context";
+import { getReferrals } from "@/lib/actions/referral.actions";
 import { getCurrentDoctor } from "@/lib/actions/utils.actions";
 
 export default async function page() {
-	const currentUser = await getCurrentUser();
 	const doctor = await getCurrentDoctor();
 
-	return <div>page</div>;
+	// ? Both sent and received
+	const { referrals } = await getReferrals({ from: doctor.id, to: doctor.id });
+
+	return (
+		<ReferralsProvider variant="Doctor" referralsInit={referrals}>
+			<ReferralsFeed />
+		</ReferralsProvider>
+	);
 }

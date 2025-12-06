@@ -3,6 +3,7 @@
 import config from "@/payload.config";
 import { unstable_cache as cache, updateTag } from "next/cache";
 import { getPayload } from "payload";
+import { getAppointments } from "./appointment.actions";
 
 const payload = await getPayload({ config });
 
@@ -92,7 +93,7 @@ export const getPlans = cache(
 		supervisor?: string;
 		page?: number;
 		limit?: number;
-	}): Promise<{ plans: IRecurrencePlan[]; nextPg: number }> => {
+	}) => {
 		try {
 			const {
 				docs: plans,
@@ -107,7 +108,50 @@ export const getPlans = cache(
 				limit,
 			});
 
-			return { plans, nextPg: hasNextPage ? nextPage! : page };
+			return { plans, hasNextPage, nextPage: nextPage ?? page };
+		} catch (error: any) {
+			throw new Error(error);
+		}
+	},
+	[],
+	{
+		tags: ["plans"],
+		revalidate: 15 * 60,
+	}
+);
+
+/**
+ * @Utils
+ *
+ * */
+export const getPlansByPatient = cache(
+	async ({
+		patient,
+		page,
+		limit,
+	}: {
+		patient: string;
+		page?: number;
+		limit?: number;
+	}) => {
+		try {
+			const { appointments } = await getAppointments({ patient, limit: 0 });
+			const appointmentsIDArr = appointments.map((a) => a.id);
+
+			const {
+				docs: plans,
+				hasNextPage,
+				nextPage,
+			} = await payload.find({
+				collection: "recurrencePlans",
+				where: {
+					appointment: { in: appointmentsIDArr },
+				},
+				page,
+				limit,
+			});
+
+			return { plans, hasNextPage, nextPage: nextPage ?? page };
 		} catch (error: any) {
 			throw new Error(error);
 		}

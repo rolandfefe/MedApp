@@ -205,6 +205,7 @@ export enum eAppointmentStatus {
 	COMPLETED = "Completed",
 	NO_SHOW = "No Show",
 	RESCHEDULED = "Rescheduled",
+	REFERRED = "Referred",
 }
 
 export enum eReferralStatus {

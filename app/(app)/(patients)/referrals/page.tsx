@@ -1,6 +1,17 @@
-import { getCurrentUser } from "@/lib/actions/user.actions";
+import ReferralsFeed from "@/components/Feeds/ReferralsFeed";
+import { ReferralsProvider } from "@/contexts/referrals.context";
+import { getReferralsByPatient } from "@/lib/actions/referral.actions";
+import { getCurrentPatient } from "@/lib/actions/utils.actions";
 
 export default async function page() {
-  const currentUser = await getCurrentUser();
-  return <div>page</div>;
+	const currentPatient = await getCurrentPatient();
+	const { referrals } = await getReferralsByPatient({
+		patient: currentPatient.id,
+	});
+
+	return (
+		<ReferralsProvider variant="Patient" referralsInit={referrals}>
+			<ReferralsFeed />
+		</ReferralsProvider>
+	);
 }

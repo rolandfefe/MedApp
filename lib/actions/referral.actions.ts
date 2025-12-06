@@ -2,9 +2,8 @@
 
 import config from "@/payload.config";
 import { eReferralStatus } from "@/types/enums/enums";
-import { updateTag, unstable_cache as cache } from "next/cache";
+import { unstable_cache as cache, updateTag } from "next/cache";
 import { getPayload } from "payload";
-import referralModel from "../db/models/referral.model";
 
 const payload = await getPayload({ config });
 
@@ -63,8 +62,8 @@ export const getReferrals = cache(
 		from,
 		to,
 		status,
-		page = 1,
-		limit = 0,
+		page,
+		limit,
 	}: {
 		appointment?: string;
 		from?: string;
@@ -72,7 +71,7 @@ export const getReferrals = cache(
 		status?: eReferralStatus;
 		page?: number;
 		limit?: number;
-	}): Promise<{ referrals: IReferral[]; nextPg: number }> => {
+	}) => {
 		try {
 			const {
 				docs: referrals,
@@ -93,7 +92,7 @@ export const getReferrals = cache(
 				limit,
 			});
 
-			return { referrals, nextPg: hasNextPage ? nextPage! : page };
+			return { referrals, hasNextPage, nextPage: nextPage ?? page };
 		} catch (error: any) {
 			throw new Error(error.message);
 		}
@@ -117,6 +116,47 @@ export const getReferral = cache(
 			return referral;
 		} catch (error: any) {
 			throw new Error(error.message);
+		}
+	},
+	[],
+	{
+		tags: ["referrals"],
+		revalidate: 15 * 60,
+	}
+);
+
+/**
+ * @Utils
+ */
+
+export const getReferralsByPatient = cache(
+	async ({
+		patient,
+		page,
+		limit,
+	}: {
+		patient: string;
+		page?: number;
+		limit?: number;
+	}) => {
+		try {
+			const {
+				docs: allReferrals,
+				hasNextPage,
+				nextPage,
+			} = await payload.find({
+				collection: "referrals",
+				page,
+				limit,
+			});
+
+			const referrals = allReferrals.filter(
+				({ appointment }) => appointment.patient.id == patient
+			);
+
+			return { referrals, hasNextPage, nextPage: nextPage ?? page };
+		} catch (error: any) {
+			throw new Error(error);
 		}
 	},
 	[],

@@ -81,3 +81,51 @@ export const getVerdict = cache(
 		revalidate: 15 * 60,
 	}
 );
+
+/**
+ * @Utils
+ */
+export const getVerdicts = cache(
+	async ({
+		patient,
+		doctor,
+		page,
+		limit,
+	}: {
+		patient?: string;
+		doctor?: string;
+		page?: number;
+		limit?: number;
+	}) => {
+		try {
+			const {
+				docs: allVerdicts,
+				hasNextPage,
+				nextPage,
+			} = await payload.find({
+				collection: "Verdict",
+				limit,
+				page,
+			});
+
+			const verdicts: IVerdict[] = allVerdicts.filter(({ diagnosis }) => {
+				const appointment = diagnosis.appointment as IAppointment;
+
+				return patient
+					? appointment.patient.id === patient
+					: doctor
+					? appointment.doctor.id === doctor
+					: [];
+			});
+
+			return { verdicts, hasNextPage, nextPage: nextPage ?? page };
+		} catch (error: any) {
+			throw new Error(error);
+		}
+	},
+	[],
+	{
+		tags: ["verdicts"],
+		revalidate: 15 * 60,
+	}
+);

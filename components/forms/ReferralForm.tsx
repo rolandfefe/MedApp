@@ -48,6 +48,8 @@ import { Spinner } from "../ui/spinner";
 import { Textarea } from "../ui/textarea";
 import { createReferral, updateReferral } from "@/lib/actions/referral.actions";
 import { useConsultation } from "@/contexts/consultation.context";
+import { eAppointmentStatus } from "@/types/enums/enums";
+import { promise } from "zod";
 
 export default function ReferralForm({
 	action,
@@ -64,7 +66,6 @@ export default function ReferralForm({
 	);
 	const [isPending, startTransition] = useTransition();
 	const [isSuccess, setIsSuccess] = useState<boolean>(false);
-
 
 	const form = useForm<ReferralFormData>({
 		resolver: zodResolver(referralSchema),
@@ -89,7 +90,13 @@ export default function ReferralForm({
 				};
 
 			startTransition(async () => {
-				await createReferral(newReferralData);
+				await Promise.all([
+					createReferral(newReferralData),
+					updateAppointment({
+						...appointment,
+						status: eAppointmentStatus.REFERRED,
+					}),
+				]);
 
 				form.reset();
 				setIsSuccess(true);

@@ -672,7 +672,17 @@ export interface Appointment {
     | 'Telemedicine'
     | 'Phone Consult';
   status?:
-    | ('Scheduled' | 'Confirmed' | 'Cancelled' | 'Arrived' | 'In Progress' | 'Completed' | 'No Show' | 'Rescheduled')
+    | (
+        | 'Scheduled'
+        | 'Confirmed'
+        | 'Cancelled'
+        | 'Arrived'
+        | 'In Progress'
+        | 'Completed'
+        | 'No Show'
+        | 'Rescheduled'
+        | 'Referred'
+      )
     | null;
   confirmation?: {
     isConfirmed?: boolean | null;
