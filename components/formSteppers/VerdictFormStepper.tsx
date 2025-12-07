@@ -402,7 +402,7 @@ TreatmentPlanSection.Therapies = ({
 										</FormItem>
 									)}
 								/>
-								<div className="flex-1 flex items-center gap-3">
+								<div className="flex-1 flex items-end gap-3">
 									<FormField
 										control={form.control}
 										name={`treatmentPlan.therapies.${i}.duration`}
@@ -520,7 +520,7 @@ TreatmentPlanSection.Medications = ({
 									name={`treatmentPlan.medications.${i}.route`}
 									render={({ field }) => (
 										<FormItem className="flex-1">
-											<FormLabel>Dosage</FormLabel>
+											<FormLabel>Route</FormLabel>
 
 											<Select
 												onValueChange={field.onChange}
@@ -671,7 +671,7 @@ TreatmentPlanSection.Medications = ({
 					}
 					className="mt-3"
 				>
-					Add therapy <PlusCircle />
+					Add Medication <PlusCircle />
 				</MyBtn>
 			)}
 		</section>

@@ -79,8 +79,9 @@ export const deleteUser = async (clerkId: string): Promise<void> => {
  */
 export const getCurrentUser = async (): Promise<IUser> => {
 	try {
+		// ? "user_44Oz69oiFCxEQ1hCwvHhuiPkuoO" - Pat olivia brown
 		const clerkId = isDevMode
-			? "user_44Oz69oiFCxEQ1hCwvHhuiPkuoO"
+			? "user_33Ny58nhEBwER0gBwuGgthOktnN" // - Dr lina
 			: (await currentUser())!.id;
 
 		const {

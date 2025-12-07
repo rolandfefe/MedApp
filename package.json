@@ -5,6 +5,7 @@
 	"scripts": {
 		"dev": "next dev --turbopack",
 		"build": "next build --turbopack",
+		"build-w": "next build --webpack",
 		"start": "next start",
 		"sync": "payload generate:types & payload generate:importmap"
 	},
