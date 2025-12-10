@@ -1,17 +1,10 @@
 "use client";
 
 import { useConsultation } from "@/contexts/consultation.context";
+import { AppointmentStatusBadge } from "../cards/AppointmentCard";
 import DoctorCard from "../cards/DoctorCard";
 import ConsentControl from "../ConsentControl";
-import { AppointmentStatusBadge } from "../cards/AppointmentCard";
 import { Badge } from "../ui/badge";
-import {
-	FormPanel,
-	FormPanelContent,
-	FormPanelTrigger,
-} from "../custom/form-panel";
-import MyBtn from "../custom/MyBtn";
-import PatientHistorySection from "../PatientHistorySection";
 import { Separator } from "../ui/separator";
 
 export default function DoctorConsultationAside() {

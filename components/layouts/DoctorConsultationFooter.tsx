@@ -14,9 +14,10 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import toast from "react-hot-toast";
+import RecurrencePlanAside from "../asides/RecurrencePlanAside";
 import ReferralsAside from "../asides/ReferralsAside";
 import LinkBtn from "../btns/LinkBtn";
-import CopyBadge from "../custom/CopyBadge";
 import {
 	FormPanel,
 	FormPanelContent,
@@ -26,11 +27,7 @@ import Heading from "../custom/Heading";
 import MyBtn from "../custom/MyBtn";
 import DiagnosisSection from "../Sections/DiagnosisSection";
 import { ButtonGroup } from "../ui/button-group";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Separator } from "../ui/separator";
-import PatientConsultationFooter from "./PatientConsultationFooter";
-import toast from "react-hot-toast";
-import RecurrencePlanAside from "../asides/RecurrencePlanAside";
 
 export default function DoctorConsultationFooter() {
 	const { appointment, recurrencePlan, diagnosis, verdict, referrals } =
@@ -163,7 +160,7 @@ DoctorConsultationFooter.DiagnosisBtn = () => {
 	return (
 		<ButtonGroup className="w-full">
 			<FormPanel>
-				<FormPanelTrigger asChild className="w-full">
+				<FormPanelTrigger asChild className="flex-1">
 					<MyBtn variant={"outline"} className="rounded-e-none justify-start!">
 						<Stethoscope />
 						Diagnosis

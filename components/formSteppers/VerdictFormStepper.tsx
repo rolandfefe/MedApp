@@ -276,7 +276,7 @@ TreatmentPlanSection.Procedures = ({
 								/>
 							</div>
 
-							<div className="flex sm:items-end gap-3 ">
+							<div className="flex items-end gap-3 ">
 								<FormField
 									control={form.control}
 									name={`treatmentPlan.procedures.${i}.scheduledDate`}
@@ -409,7 +409,6 @@ TreatmentPlanSection.Therapies = ({
 										render={({ field }) => (
 											<FormItem className="flex-1">
 												<FormLabel>Duration</FormLabel>
-
 												<FormControl>
 													<Input
 														{...field}

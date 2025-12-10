@@ -32,7 +32,7 @@ const medicationSchema = z.object({
 	instructions: z.string(),
 	sideEffects: z.string().optional(),
 	reason: z.string().optional(),
-	
+
 	// route: z.string().optional(), // You might want to use z.enum() here with actual values
 	startDate: z.string().min(1, "Start date is required"), // Date as string
 	endDate: z.string().optional(),

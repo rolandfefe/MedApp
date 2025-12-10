@@ -2,32 +2,27 @@
 
 import { Form } from "@/components/ui/form";
 import { useConsultation } from "@/contexts/consultation.context";
+import { createVerdict, updateVerdict } from "@/lib/actions/verdict.actions";
 import {
 	VerdictFormData,
 	VerdictZodSchema,
 } from "@/lib/formSchemas/verdict.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SerializedEditorState } from "lexical";
-import { X } from "lucide-react";
 import { useState, useTransition } from "react";
 import { FieldErrors, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import Heading from "../custom/Heading";
+import ToastErrCard from "../cards/ToastErrCard";
 import {
 	Step,
 	Stepper,
 	StepperContent,
 	StepperTrigger,
 } from "../custom/motion-stepper";
-import MyBtn from "../custom/MyBtn";
 import getVerdictFormStepper, {
 	PatientNotesSection,
 	TreatmentPlanSection,
 } from "../formSteppers/VerdictFormStepper";
-import { Card, CardContent } from "../ui/card";
-import { Separator } from "../ui/separator";
-import ToastErrCard from "../cards/ToastErrCard";
-import { createVerdict, updateVerdict } from "@/lib/actions/verdict.actions";
 
 export default function VerdictForm() {
 	const { verdict, diagnosis } = useConsultation();
@@ -51,6 +46,36 @@ export default function VerdictForm() {
 	});
 
 	const submitHandler = async (data: VerdictFormData) => {
+		if (!notesSerializedState || !planSerializedState) {
+			toast.custom(
+				(t) => (
+					<ToastErrCard t={t}>
+						{!notesSerializedState && (
+							<p className={"text-sm text-secondary-foreground"}>
+								<span className="font-medium text-destructive">
+									Verdict Notes:
+								</span>
+								<code>Please the verdict notes📒.</code>
+							</p>
+						)}
+						{!planSerializedState && (
+							<p className={"text-sm text-secondary-foreground"}>
+								<span className="font-medium text-destructive">
+									Treatment Plan:
+								</span>
+								<code>Please the treatment plan🩺.</code>
+							</p>
+						)}
+					</ToastErrCard>
+				),
+				{ id: "c2428nc209" }
+			);
+			toast.error(
+				"Please ensure that you detail both the 'Verdict Notes' and 'Treatment Plan'."
+			);
+			return;
+		}
+
 		const cleanData: IVerdict = {
 			...data,
 			notes: notesSerializedState,
@@ -68,7 +93,7 @@ export default function VerdictForm() {
 			startTransition(async () => {
 				await updateVerdict({ ...verdict, ...cleanData });
 
-				toast("Verdict Updated✍️")
+				toast("Verdict Updated✍️");
 				form.reset();
 				setIsSuccess(true);
 			});
