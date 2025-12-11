@@ -21,7 +21,7 @@ export default function DiagnosisSection() {
 		<div className="space-y-4 mb-5">
 			<div className="flex flex-col sm:flex-row items-center-center justify-between">
 				<DoctorCard doctor={doctor} className="w-fit" />
-				<PatientCard patient={patient} />
+				<PatientCard patient={patient} className="bg-transparent" />
 			</div>
 			<section>
 				<p className="tex-lg font-medium">Chief Complaint</p>

@@ -91,10 +91,8 @@ DoctorCard.XS = ({ doctor, className }: ComponentProps<typeof DoctorCard>) => {
 DoctorCard.MD = ({ doctor, className }: ComponentProps<typeof DoctorCard>) => {
 	const user = doctor.user as IUser;
 
-	console.log(doctor);
-
 	return (
-		<Card className={cn("", className)}>
+		<Card className={cn("bg-transparent hover:bg-muted", className)}>
 			<CardContent className="space-y-3">
 				<Avatar className="size-20 mx-auto">
 					<AvatarImage src={user.imageUrl!} />

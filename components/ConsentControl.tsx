@@ -28,9 +28,8 @@ ConsentControl.Patient = () => {
 	const doctor = appointment.doctor;
 	const [isPending, startTransition] = useTransition();
 
-  // Todo: Add Realtime requests from dr
-  // Todo: Realtime indication on what dr is viewing
-
+	// Todo: Add Realtime requests from dr
+	// Todo: Realtime indication on what dr is viewing
 
 	const toggleConsentHandler = (
 		consent: NonNullable<IAppointment["consentLevels"]>[number],
@@ -57,24 +56,22 @@ ConsentControl.Patient = () => {
 
 	return (
 		<div className="space-y-3">
-			<div className="flex items-center gap-x-2 text-sm font-medium">
+			<div className="flex items-center gap-x-1 text-sm font-medium">
 				<AnimatePresence>
+					<motion.span layout className="text-sm font-medium">
+						Consent Info:
+					</motion.span>
+
 					{isPending && (
 						<motion.span
-							initial={{ opacity: 0, x: -40 }}
+							initial={{ opacity: 0, x: 10 }}
 							animate={{ opacity: 1, x: 0 }}
-							exit={{ opacity: 0, x: -40 }}
+							exit={{ opacity: 0, x: 10 }}
 							layout
 						>
 							<Spinner />
 						</motion.span>
 					)}
-					<motion.span
-						className="flex items-center gap-x-2 text-sm font-medium"
-						layout
-					>
-						Consent Info:
-					</motion.span>
 				</AnimatePresence>
 			</div>
 

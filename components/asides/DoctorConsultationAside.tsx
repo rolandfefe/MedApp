@@ -25,7 +25,7 @@ export default function DoctorConsultationAside() {
 				</div>
 				<DoctorCard.MD
 					doctor={appointment.doctor as IDoctor}
-					className="border-0"
+					className="hover:bg-transparent border-0"
 				/>
 			</section>
 			<Separator className="my-2" />

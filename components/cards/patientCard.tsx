@@ -20,7 +20,7 @@ export default function PatientCard({
 	const currentDoctor = useCurrent().currentDoctor as IDoctor;
 
 	return (
-		<Card className={cn("", className)}>
+		<Card className={cn("bg-transparent hover:bg-muted", className)}>
 			<CardContent className="flex items-start gap-x-2">
 				<Avatar className="size-10 sm:size-14 rounded-lg">
 					<AvatarImage src={user.imageUrl!} />
@@ -54,7 +54,7 @@ PatientCard.SM = ({
 	const user = patient.user as IUser;
 
 	return (
-		<Card className={cn("", className)}>
+		<Card className={cn("bg-transparent hover:bg-muted", className)}>
 			<CardContent className="flex items-start gap-x-2">
 				<Avatar className="size-10 sm:size-14 rounded-lg">
 					<AvatarImage src={user.imageUrl!} />
@@ -88,7 +88,7 @@ PatientCard.MD = ({
 	const user = patient.user as IUser;
 
 	return (
-		<Card className={cn("", className)}>
+		<Card className={cn("bg-transparent hover:bg-muted", className)}>
 			<CardContent className="">
 				<Avatar className="size-20 mx-auto rounded-full">
 					<AvatarImage src={user.imageUrl!} />
@@ -124,7 +124,7 @@ PatientCard.LG = ({
 
 	// ! Style
 	return (
-		<Card className={cn("", className)}>
+		<Card className={cn("bg-transparent hover:bg-muted", className)}>
 			<CardContent className="">
 				<Avatar className="size-20 mx-auto rounded-full">
 					<AvatarImage src={user.imageUrl!} />
