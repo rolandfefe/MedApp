@@ -267,6 +267,7 @@ export default function AppointmentDynamicPanel({
 										</ConfirmationDialog>
 									))}
 
+								{/* Allow patients to CANCEL AT any stage of the process */}
 								{appointment.status === eAppointmentStatus.SCHEDULED && (
 									<ConfirmationDialog
 										action={cancelHandler}

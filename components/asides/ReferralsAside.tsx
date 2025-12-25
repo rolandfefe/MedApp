@@ -33,7 +33,7 @@ export default function ReferralsAside() {
 							transition={{ delay: 0.3 }}
 							className="mb-2"
 						>
-							<ReferralCard referral={referral} variant="sm" />
+							<ReferralCard referral={referral} />
 						</motion.div>
 					))
 				) : (
@@ -42,7 +42,7 @@ export default function ReferralsAside() {
 							msg={`This appointment has no referrals. Click button bellow to make a referral👇.`}
 						/>
 
-						<ReferralFormDialog appointment={appointment} action="Create">
+						<ReferralFormDialog action="Create">
 							<MyBtn
 								variant="secondary"
 								size="lg"

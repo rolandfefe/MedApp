@@ -49,7 +49,7 @@ export const ReferralsProvider = ({
 	referralsInit: IReferral[];
 	variant: "Patient" | "Doctor";
 } & ComponentProps<"div">) => {
-	const [referrals, setReferrals] = useState<IReferral[]>([]);
+	const [referrals, setReferrals] = useState<IReferral[]>(referralsInit);
 	const [nextPg, setNextPg] = useState<number>();
 	const [hasNextPg, setHasNextPg] = useState<boolean>(true);
 

@@ -1,22 +1,16 @@
+import { useConsultation } from "@/contexts/consultation.context";
 import { updateAppointment } from "@/lib/actions/appointment.actions";
-import { getDoctors } from "@/lib/actions/doctor.actions";
+import { createReferral, updateReferral } from "@/lib/actions/referral.actions";
 import {
 	ReferralFormData,
 	referralSchema,
 } from "@/lib/formSchemas/referral.schema";
 import { cn } from "@/lib/utils";
+import { eAppointmentStatus } from "@/types/enums/enums";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowBigRightDash } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
-import { usePathname } from "next/navigation";
-import {
-	ComponentProps,
-	ReactNode,
-	useEffect,
-	useEffectEvent,
-	useState,
-	useTransition,
-} from "react";
+import { ComponentProps, ReactNode, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import DoctorSearchBox from "../DoctorSearchBox";
@@ -46,10 +40,6 @@ import { ScrollArea } from "../ui/scroll-area";
 import { Separator } from "../ui/separator";
 import { Spinner } from "../ui/spinner";
 import { Textarea } from "../ui/textarea";
-import { createReferral, updateReferral } from "@/lib/actions/referral.actions";
-import { useConsultation } from "@/contexts/consultation.context";
-import { eAppointmentStatus } from "@/types/enums/enums";
-import { promise } from "zod";
 
 export default function ReferralForm({
 	action,

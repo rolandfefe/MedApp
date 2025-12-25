@@ -26,6 +26,7 @@ export const Referrals: CollectionConfig = {
 				label,
 				value,
 			})),
+			defaultValue: eReferralStatus.PENDING,
 		},
 	],
 };

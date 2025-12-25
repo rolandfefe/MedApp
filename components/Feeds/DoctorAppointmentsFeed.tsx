@@ -98,7 +98,6 @@ export default function DoctorAppointmentFeeds({
 								>
 									<AppointmentCard
 										appointment={appointment}
-										variant="md"
 										mode="Doctor"
 									/>	
 								</motion.div>

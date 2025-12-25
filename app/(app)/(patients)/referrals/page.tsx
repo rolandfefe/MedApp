@@ -10,7 +10,11 @@ export default async function page() {
 	});
 
 	return (
-		<ReferralsProvider variant="Patient" referralsInit={referrals}>
+		<ReferralsProvider
+			variant="Patient"
+			referralsInit={referrals}
+			className="pt-3 sm:p-3"
+		>
 			<ReferralsFeed />
 		</ReferralsProvider>
 	);
