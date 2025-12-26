@@ -9,9 +9,11 @@ import {
 	FormPanelTrigger,
 } from "./custom/form-panel";
 import MyBtn from "./custom/MyBtn";
-import { MessageSquareText } from "lucide-react";
+import { ArrowLeft, ArrowLeftCircle, MessageSquareText } from "lucide-react";
 import { ComponentProps } from "react";
 import { cn } from "@/lib/utils";
+import LinkBtn from "./btns/LinkBtn";
+import { useConsultation } from "@/contexts/consultation.context";
 
 export default function ChatContainer({ className }: { className?: string }) {
 	return (
@@ -34,6 +36,7 @@ ChatContainer.Panel = ({
 	className,
 	...props
 }: ComponentProps<typeof FormPanelTrigger>) => {
+	const { appointment } = useConsultation();
 	return (
 		<FormPanel>
 			<FormPanelTrigger {...props} asChild>
@@ -41,8 +44,18 @@ ChatContainer.Panel = ({
 					<MessageSquareText />
 				</MyBtn>
 			</FormPanelTrigger>
-			<FormPanelContent>
-				<ChatContainer className="h-[97vh]!" />
+			<FormPanelContent className="relative">
+				<LinkBtn
+					link={{ href: `/consultation/${appointment.id}` }}
+					size="sm"
+					variant={"primary-outline"}
+					className="sticky top-0 left-2"
+				>
+					<ArrowLeftCircle size={26} />
+					Chat
+					{/* <MessageSquareText /> */}
+				</LinkBtn>
+				<ChatContainer className="h-[94vh]!" />
 			</FormPanelContent>
 		</FormPanel>
 	);

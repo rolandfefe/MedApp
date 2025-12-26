@@ -2,6 +2,7 @@
 
 import { useConsultation } from "@/contexts/consultation.context";
 import {
+	ArrowLeftCircle,
 	ArrowRightCircle,
 	BadgeAlert,
 	Calendar1,
@@ -70,7 +71,7 @@ export default function DiagnosisSection() {
 			</Activity>
 
 			<DiagnosisSection.Actions tab={tab} setTab={setTab} />
-			<Separator className="my-5" />
+			{/* <Separator className="my-5" /> */}
 
 			<motion.section
 				variants={motionVariants}
@@ -83,8 +84,9 @@ export default function DiagnosisSection() {
 					variant={"primary-outline"}
 					className=" w-30 h-14 text-lg"
 				>
+					<ArrowLeftCircle />
 					Chat
-					<MessageSquareText />
+					{/* <MessageSquareText /> */}
 				</LinkBtn>
 				<LinkBtn
 					link={{ href: `/consultation/${appointment.id}/verdict` }}
