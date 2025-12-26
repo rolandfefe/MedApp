@@ -20,7 +20,7 @@ export default function PatientCard({
 	const currentDoctor = useCurrent().currentDoctor as IDoctor;
 
 	return (
-		<Card className={cn("bg-transparent hover:bg-muted", className)}>
+		<Card className={cn("bg-transparent hover:bg-muted/30", className)}>
 			<CardContent className="space-y-2">
 				<section className="flex items-start gap-x-2">
 					<Avatar className="size-10 rounded-lg">

@@ -10,6 +10,7 @@ import {
 	Cog,
 	Edit3,
 	GitCommit,
+	MessageSquareText,
 	Microscope,
 	PencilRuler,
 	Pill,
@@ -28,7 +29,13 @@ import moment from "moment";
 import { Badge } from "../ui/badge";
 import { cn } from "@/lib/utils";
 import { useMediaQuery } from "@uidotdev/usehooks";
-import { Activity, useState, useTransition } from "react";
+import {
+	Activity,
+	Dispatch,
+	SetStateAction,
+	useState,
+	useTransition,
+} from "react";
 import MyBtn from "../custom/MyBtn";
 import { ButtonGroup, ButtonGroupSeparator } from "../ui/button-group";
 import { updateDiagnosis } from "@/lib/actions/diagnosis.actions";
@@ -49,14 +56,65 @@ const motionVariants: Variants = {
 
 export default function DiagnosisSection() {
 	const { appointment, diagnosis } = useConsultation();
-	const currentDoctor = useCurrent().currentDoctor!;
 	const [tab, setTab] = useState<"PRESENT" | "EDIT">("PRESENT");
-	const [isConfirming, startConfirming] = useTransition();
-	const [isReviewing, startReviewing] = useTransition();
 
 	if (!diagnosis) return <DiagnosisForm />;
 
-	// console.log(diagnosis);
+	return (
+		<>
+			<Activity mode={tab === "PRESENT" ? "visible" : "hidden"}>
+				<DiagnosisSection.Present />
+			</Activity>
+			<Activity mode={tab === "EDIT" ? "visible" : "hidden"}>
+				<DiagnosisSection.EditForm />
+			</Activity>
+
+			<DiagnosisSection.Actions tab={tab} setTab={setTab} />
+			<Separator className="my-5" />
+
+			<motion.section
+				variants={motionVariants}
+				layout
+				className="mb-3 flex items-center gap-x-3 justify-between"
+			>
+				<LinkBtn
+					link={{ href: `/consultation/${appointment.id}` }}
+					size="lg"
+					variant={"primary-outline"}
+					className=" w-30 h-14 text-lg"
+				>
+					Chat
+					<MessageSquareText />
+				</LinkBtn>
+				<LinkBtn
+					link={{ href: `/consultation/${appointment.id}/verdict` }}
+					size="lg"
+					variant={"primary-outline"}
+					className=" w-30 h-14 text-lg"
+				>
+					Verdict
+					<ArrowRightCircle size={26} />
+				</LinkBtn>
+			</motion.section>
+		</>
+	);
+}
+
+DiagnosisSection.Actions = ({
+	setTab,
+	tab,
+}: {
+	tab: "EDIT" | "PRESENT";
+	setTab: Dispatch<SetStateAction<"EDIT" | "PRESENT">>;
+}) => {
+	const { diagnosis } = useConsultation();
+
+	const currentDoctor = useCurrent().currentDoctor;
+
+	const [isConfirming, startConfirming] = useTransition();
+	const [isReviewing, startReviewing] = useTransition();
+
+	if (!diagnosis || !currentDoctor) return;
 
 	const confirmHandler = () => {
 		startConfirming(async () => {
@@ -82,60 +140,35 @@ export default function DiagnosisSection() {
 			);
 		});
 	};
-
 	return (
-		<>
-			<Activity mode={tab === "PRESENT" ? "visible" : "hidden"}>
-				<DiagnosisSection.Present />
-			</Activity>
-			<Activity mode={tab === "EDIT" ? "visible" : "hidden"}>
-				<DiagnosisSection.EditForm />
-			</Activity>
-
-			<ButtonGroup className="border-2 rounded-2xl mx-auto">
-				<MyBtn
-					variant="secondary"
-					onClick={() =>
-						setTab((prev) => (prev === "EDIT" ? "PRESENT" : "EDIT"))
-					}
-					className={cn(tab === "EDIT" && "text-primary")}
-				>
-					<Edit3 />
-					<span className="hidden sm:inline">Edit</span>
-				</MyBtn>
-				<ButtonGroupSeparator />
-				<MyBtn
-					variant="secondary"
-					disabled={isConfirming}
-					onClick={confirmHandler}
-				>
-					{isConfirming ? <Spinner /> : <ShieldCheck />} Confirm
-				</MyBtn>
-				<ButtonGroupSeparator />
-				<MyBtn
-					variant="secondary"
-					disabled={isReviewing}
-					onClick={reviewMedicationsHandler}
-				>
-					{isReviewing ? <Spinner /> : <Pill />} Review Medications
-				</MyBtn>
-			</ButtonGroup>
-			<Separator className="my-5" />
-
-			<motion.section variants={motionVariants} layout>
-				<LinkBtn
-					link={{ href: `/consultation/${appointment.id}/verdict` }}
-					size="lg"
-					variant={"primary-outline"}
-					className=" w-30 h-14 flex ml-auto text-lg"
-				>
-					<p>Verdict</p>
-					<ArrowRightCircle size={26} />
-				</LinkBtn>
-			</motion.section>
-		</>
+		<ButtonGroup className="mx-auto">
+			<MyBtn
+				variant="secondary"
+				onClick={() => setTab((prev) => (prev === "EDIT" ? "PRESENT" : "EDIT"))}
+				className={cn(tab === "EDIT" && "text-primary")}
+			>
+				<Edit3 />
+				<span className="hidden sm:inline">Edit</span>
+			</MyBtn>
+			<ButtonGroupSeparator />
+			<MyBtn
+				variant="secondary"
+				disabled={isConfirming}
+				onClick={confirmHandler}
+			>
+				{isConfirming ? <Spinner /> : <ShieldCheck />} Confirm
+			</MyBtn>
+			<ButtonGroupSeparator />
+			<MyBtn
+				variant="secondary"
+				disabled={isReviewing}
+				onClick={reviewMedicationsHandler}
+			>
+				{isReviewing ? <Spinner /> : <Pill />} Review Medications
+			</MyBtn>
+		</ButtonGroup>
 	);
-}
+};
 
 DiagnosisSection.Present = () => {
 	const { appointment, diagnosis } = useConsultation();

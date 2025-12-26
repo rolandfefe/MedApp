@@ -79,7 +79,7 @@ PatientConsultationFooter.RecurrenceBtn = () => {
 	return (
 		<FormPanel>
 			<FormPanelTrigger asChild className="w-full!">
-				<MyBtn variant="outline" className="justify-start">
+				<MyBtn variant="invert" className="justify-start">
 					<CalendarClock />
 					Recurrence plan
 				</MyBtn>
@@ -240,14 +240,14 @@ PatientConsultationFooter.DiagnosisBtn = () => {
 
 	return (
 		<LinkBtn
-			variant={"outline"}
+			variant={"invert"}
 			link={{
 				href: `/consultation/${appointment.id!}/diagnosis`,
 			}}
 			className="w-full! justify-start mb-3"
 		>
 			<Stethoscope />
-			Diagnose
+			Diagnosis
 		</LinkBtn>
 	);
 };

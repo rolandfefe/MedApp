@@ -105,7 +105,6 @@ export default function ArticlePreview({ article }: { article: IArticle }) {
 	);
 }
 
-
 ArticlePreview.Actions = ({
 	article,
 }: ComponentProps<typeof ArticlePreview>) => {
@@ -119,7 +118,7 @@ ArticlePreview.Actions = ({
 
 	const deleteHandler = async () => {
 		await deleteArticle(article.id);
-		router.push(`/doctor/${currentDoctor.id}/articles`)
+		router.push(`/doctor/${currentDoctor.id}/articles`);
 	};
 
 	return (

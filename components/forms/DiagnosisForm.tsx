@@ -40,6 +40,7 @@ import {
 	updateDiagnosis,
 } from "@/lib/actions/diagnosis.actions";
 import { eConfidenceLevel } from "@/types/enums/enums";
+import ToastErrCard from "../cards/ToastErrCard";
 
 export default function DiagnosisForm() {
 	const { appointment, patientHistory, diagnosis } = useConsultation();
@@ -111,28 +112,14 @@ export default function DiagnosisForm() {
 		console.log("err: ", err);
 		toast.custom(
 			(t) => (
-				<Card className="w-[95vw] sm:w-72 relative">
-					<MyBtn
-						size="icon"
-						variant={"secondary"}
-						onClick={() => toast.dismiss(t.id)}
-						className="size-7 rounded-xl hover:text-destructive absolute top-2 right-2 "
-					>
-						<X />
-					</MyBtn>
-					<CardContent className="px-2 py-1">
-						<Heading className="text-xl">🚨Form input error(s) </Heading>
-						<Separator className="my-1" />
-						<div>
-							{Object.entries(err).map(([k, v]) => (
-								<p key={k} className={"text-sm text-secondary-foreground"}>
-									<span className="font-medium text-destructive">{k}: </span>
-									<code>{v.message}</code>
-								</p>
-							))}
-						</div>
-					</CardContent>
-				</Card>
+				<ToastErrCard t={t}>
+					{Object.entries(err).map(([k, v]) => (
+						<p key={k} className={"text-sm text-secondary-foreground"}>
+							<span className="font-medium text-destructive">{k}: </span>
+							<code>{v.message}</code>
+						</p>
+					))}
+				</ToastErrCard>
 			),
 			{ id: "cn94839k" }
 		);
@@ -157,7 +144,7 @@ export default function DiagnosisForm() {
 				<Separator className="my-3" />
 			</div>
 
-			<section className="px-5 space-y-4">
+			<section className="sm:px-5 space-y-4">
 				<ChiefComplaintSection
 					setComplaintEditorState={setComplaintEditorState}
 					complaintEditorState={complaintEditorState}

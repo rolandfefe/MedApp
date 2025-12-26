@@ -96,10 +96,7 @@ export default function DoctorAppointmentFeeds({
 									)}
 									ref={isLastItem ? loadRef : null}
 								>
-									<AppointmentCard
-										appointment={appointment}
-										mode="Doctor"
-									/>	
+									<AppointmentCard appointment={appointment} mode="Doctor" />
 								</motion.div>
 							);
 						})

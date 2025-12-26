@@ -10,7 +10,7 @@ export default function ArticleCard({ article }: { article: IArticle }) {
 
 	return (
 		<Link href={`/article/${article.id}`}>
-			<div className="relative p-3 glass glass-shadow rounded-2xl bg-secondary space-y-2">
+			<div className="relative p-3 glass glass-shadow rounded-2xl bg-secondary space-y-2 h-32">
 				<Badge
 					variant={"secondary"}
 					className="absolute top-2 right-2 text-primary"

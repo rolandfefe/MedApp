@@ -35,6 +35,8 @@ import {
 	SelectValue,
 } from "../ui/select";
 import { Checkbox } from "../ui/checkbox";
+import DynamicEditor from "../custom/DynamicEditor";
+import { Separator } from "../ui/separator";
 // import { Editor } from "../blocks/editor-00/editor";
 
 export default function getDiagnosisFormStepper(
@@ -117,7 +119,7 @@ const EssentialsHistorySection = ({
 					</FormItem>
 				)}
 			/>
-			<div className="flex items-center gap-x-3">
+			<div className="flex flex-col sm:flex-row sm:items-center gap-3">
 				<FormField
 					control={form.control}
 					name="onsetDate"
@@ -148,10 +150,12 @@ const EssentialsHistorySection = ({
 				/>
 			</div>
 
+			<Separator />
+
 			<div className="space-y-3">
 				<p className="font-medium text-sm">Patient Data</p>
 
-				<div className="flex items-center gap-x-3 ">
+				<div className="flex items-center gap-2 flex-wrap ">
 					<FormPanel>
 						<FormPanelTrigger asChild>
 							<MyBtn size={"sm"}>Current History</MyBtn>
@@ -164,7 +168,7 @@ const EssentialsHistorySection = ({
 						Take new History
 					</MyBtn>
 				</div>
-				<div className="flex items-center gap-x-3 ">
+				<div className="flex items-center gap-2 flex-wrap">
 					<MyBtn size={"sm"}>Current Health status</MyBtn>
 					<MyBtn size={"sm"} variant={"secondary"} className="text-primary">
 						Take health status
@@ -193,7 +197,8 @@ export const ChiefComplaintSection = ({
 				</p>
 			</div>
 
-			<Editor
+			{/* <Editor */}
+			<DynamicEditor
 				editorSerializedState={complaintEditorState}
 				onSerializedChange={(v) => setComplaintEditorState(v)}
 				className="min-h-52"
@@ -220,7 +225,8 @@ export const NotesSection = ({
 				</p>
 			</div>
 
-			<Editor
+			{/* <Editor */}
+			<DynamicEditor
 				editorSerializedState={notesEditorState}
 				onSerializedChange={(v) => setNotesEditorState(v)}
 				className="min-h-52"
@@ -406,7 +412,8 @@ const DifferentialDiagnosis = ({
 								/>
 							</div>
 
-							<div className="flex items-center gap-3 items-">
+							<div className="flex items-end gap-3">
+								{/* ? SHould be removed */}
 								<FormField
 									control={form.control}
 									name={`differentialDiagnosis.${i}.dateConfirmed`}

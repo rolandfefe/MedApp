@@ -305,10 +305,10 @@ ArticleForm.Trigger = ({
 					}}
 					size={"icon"}
 					variant={"secondary"}
-					className={cn("rounded-xl glass text-primary", className)}
+					className={cn("rounded-full glass text-primary size-14", className)}
 				>
 					<ShineBorder shineColor={["#A07CFE", "#FE8FB5", "#FFBE7B"]} />
-					<PenTool />
+					<PenTool size={24} />
 				</LinkBtn>
 			</TooltipTrigger>
 			<TooltipContent>✍️Write article</TooltipContent>
@@ -523,7 +523,7 @@ ArticleForm.EditorSection = ({
 			<Editor
 				editorSerializedState={contentSerializedState}
 				onSerializedChange={setContentSerializedState}
-				className="min-h-[70vh] bg-transparent border-0 sm:border "
+				className="min-h-[70vh] bg-transparent border-0 sm:border"
 			/>
 		</div>
 	);

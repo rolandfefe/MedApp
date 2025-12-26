@@ -9,6 +9,9 @@ import ChatContainer from "../ChatContainer";
 import Heading from "../custom/Heading";
 import MyBtn from "../custom/MyBtn";
 import { SidebarTrigger } from "../ui/sidebar";
+import LinkBtn from "../btns/LinkBtn";
+import { Home, LayoutDashboard } from "lucide-react";
+import { useCurrent } from "@/contexts/Current.context";
 
 export default function ConsultationNavbar({
 	className,
@@ -16,6 +19,7 @@ export default function ConsultationNavbar({
 	className?: string;
 }) {
 	const pathname = usePathname();
+	const currentDoctor = useCurrent().currentDoctor;
 
 	return (
 		<nav
@@ -25,7 +29,20 @@ export default function ConsultationNavbar({
 			)}
 		>
 			<div className="flex items-center gap-x-2">
-				<SidebarTrigger className=" " />
+				{/* <SidebarTrigger className=" " /> */}
+				{currentDoctor ? (
+					<LinkBtn
+						link={{ href: `/doctor/${currentDoctor.id}` }}
+						size="icon"
+						variant="secondary"
+					>
+						<LayoutDashboard />
+					</LinkBtn>
+				) : (
+					<LinkBtn link={{ href: `/home` }} size="icon" variant="secondary">
+						<Home />
+					</LinkBtn>
+				)}
 				<BackBtn />
 			</div>
 

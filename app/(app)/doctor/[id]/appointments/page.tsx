@@ -20,7 +20,7 @@ export default async function page() {
 		<AppointmentsProvider
 			appointmentsInit={doctorAppointments}
 			fetchAction={getCurrentDoctorAppointments}
-			className="sm:p-3"
+			className="sm:p3"
 		>
 			<DoctorAppointmentFeeds autoAppointments={autoAppointments} />
 		</AppointmentsProvider>

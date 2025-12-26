@@ -11,10 +11,11 @@ import {
 import MyBtn from "./custom/MyBtn";
 import { MessageSquareText } from "lucide-react";
 import { ComponentProps } from "react";
+import { cn } from "@/lib/utils";
 
-export default function ChatContainer() {
+export default function ChatContainer({ className }: { className?: string }) {
 	return (
-		<div className="h-[calc(89.4vh)] w-full relative">
+		<div className={cn("h-[calc(89.4vh)] w-full relative", className)}>
 			<Image
 				src="/assets/logo_transparent.png"
 				alt="logo"
@@ -24,7 +25,7 @@ export default function ChatContainer() {
 				className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 opacity-40 dark:opacity-25 w-[40%] sm:w-1/2"
 			/>
 			<MessagesFeed className="w-full z-20" />
-			<MessageForm className="absolute -bottom-14 left-1/2 -translate-1/2 z-30" />
+			<MessageForm className="absolute bottom-1 left-1/2 -translate-x-1/2 z-30" />
 		</div>
 	);
 }
@@ -41,7 +42,7 @@ ChatContainer.Panel = ({
 				</MyBtn>
 			</FormPanelTrigger>
 			<FormPanelContent>
-				<ChatContainer />
+				<ChatContainer className="h-[97vh]!" />
 			</FormPanelContent>
 		</FormPanel>
 	);
