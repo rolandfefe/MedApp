@@ -21,27 +21,36 @@ export default function PatientCard({
 
 	return (
 		<Card className={cn("bg-transparent hover:bg-muted", className)}>
-			<CardContent className="flex items-start gap-x-2">
-				<Avatar className="size-10 sm:size-14 rounded-lg">
-					<AvatarImage src={user.imageUrl!} />
-					<AvatarFallback className="size-full rounded-lg bg-fuchsia-400 dark:bg-fuchsia-600">
-						{user.username[0].toUpperCase()}
-					</AvatarFallback>
-				</Avatar>
+			<CardContent className="space-y-2">
+				<section className="flex items-start gap-x-2">
+					<Avatar className="size-10 rounded-lg">
+						<AvatarImage src={user.imageUrl!} />
+						<AvatarFallback className="size-full rounded-lg bg-fuchsia-400 dark:bg-fuchsia-600">
+							{user.username[0].toUpperCase()}
+						</AvatarFallback>
+					</Avatar>
 
-				<div>
-					<div className="leading-tight">
-						<p className="line-clamp-1 font-medium">
-							<span>{user.fname}</span> <span>{user.lname}</span>
-						</p>
-						<p className="text-xs text-muted-foreground">{user.email}</p>
+					<div>
+						<div className="leading-tight">
+							<p className="line-clamp-1 font-medium">
+								<span>{user.fname}</span> <span>{user.lname}</span>
+							</p>
+							<p className="text-xs text-muted-foreground">{user.email}</p>
+						</div>
 					</div>
+				</section>
 
-					<div className="flex items-center gap-x-2">
-						<Badge variant={"secondary"}>{patient.gender}</Badge>
-						<Badge variant={"secondary"}>{getAge(patient.DOB)}</Badge>
-					</div>
-				</div>
+				<section className="flex items-center gap-x-1">
+					<Badge variant={"secondary"} className="flex-1">
+						{patient.gender}
+					</Badge>
+					<Badge variant={"secondary"} className="flex-1">
+						{getAge(patient.DOB)}
+					</Badge>
+					<Badge variant={"secondary"} className="flex-1">
+						{patient.maritalStatus}
+					</Badge>
+				</section>
 			</CardContent>
 		</Card>
 	);

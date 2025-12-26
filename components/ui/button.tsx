@@ -22,7 +22,7 @@ const buttonVariants = cva(
 				link: "text-primary underline-offset-4 hover:underline",
 				invert: "bg-secondary text-primary shadow-xs hover:bg-secondary/80",
 				"primary-outline":
-					"border border-primary bg-background shadow-xs hover:bg-accent text-primary dark:bg-input/30 dark:hover:bg-primary/50",
+					"border border-primary bg-background shadow-xs hover:bg-accent text-primary dark:bg-input/20 dark:hover:bg-primary/20!",
 				"destructive-outline":
 					"border border-destructive bg-background shadow-xs hover:bg-destructive/30 text-destructive dark:bg-input/30 dark:hover:bg-destructive/30",
 			},

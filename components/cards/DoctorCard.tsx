@@ -125,3 +125,16 @@ DoctorCard.MD = ({ doctor, className }: ComponentProps<typeof DoctorCard>) => {
 DoctorCard.LG = () => {
 	return <Card></Card>;
 };
+
+DoctorCard.Tag = ({ doctor, className }: ComponentProps<typeof DoctorCard>) => {
+	return (
+		<div
+			className={cn(
+				"font-medium font-mono hover:text-primary cursor-pointer",
+				className
+			)}
+		>
+			@Dr.{doctor.user.fname}
+		</div>
+	);
+};

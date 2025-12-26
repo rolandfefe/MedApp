@@ -28,11 +28,9 @@ import MyBtn from "../custom/MyBtn";
 import DiagnosisSection from "../Sections/DiagnosisSection";
 import { ButtonGroup } from "../ui/button-group";
 import { Separator } from "../ui/separator";
+import { ScrollArea } from "../ui/scroll-area";
 
 export default function DoctorConsultationFooter() {
-	const { appointment, recurrencePlan, diagnosis, verdict, referrals } =
-		useConsultation();
-
 	return (
 		<div className="space-y-3">
 			<DoctorConsultationFooter.RecurrenceBtn />
@@ -56,7 +54,7 @@ DoctorConsultationFooter.RecurrenceBtn = () => {
 	if (!recurrencePlan) return;
 
 	return (
-		<FormPanel>
+		<FormPanel dismissible={false}>
 			<FormPanelTrigger asChild className="w-full!">
 				<MyBtn variant="outline" className="justify-start">
 					<CalendarClock />
@@ -64,20 +62,20 @@ DoctorConsultationFooter.RecurrenceBtn = () => {
 				</MyBtn>
 			</FormPanelTrigger>
 			<FormPanelContent>
-				{/* <ScrollArea className="h-[90vh] mb-4"> */}
-				<section>
-					<Heading className="text-xl sm:text-2xl font-medium">
-						<span className="text-primary flex item-center gap-x-2">
-							<CalendarClock />
-							{patient.user.fname}'s
-						</span>
+				<ScrollArea className="h-[90vh] mb-4">
+					<section>
+						<Heading className="text-xl sm:text-2xl font-medium">
+							<span className="text-primary flex item-center gap-x-2">
+								<CalendarClock />
+								{patient.user.fname}'s
+							</span>
 
-						<span>Recurrence Plan</span>
-					</Heading>
-				</section>
-				<Separator className="mt-2 mb-4" />
-				<RecurrencePlanAside />
-				{/* </ScrollArea> */}
+							<span>Recurrence Plan</span>
+						</Heading>
+					</section>
+					<Separator className="mt-2 mb-4" />
+					<RecurrencePlanAside />
+				</ScrollArea>
 			</FormPanelContent>
 		</FormPanel>
 	);
@@ -155,6 +153,7 @@ DoctorConsultationFooter.OnlineMeetBtn = () => {
 
 DoctorConsultationFooter.DiagnosisBtn = () => {
 	const { appointment, diagnosis } = useConsultation();
+
 	if (!diagnosis) return;
 
 	return (

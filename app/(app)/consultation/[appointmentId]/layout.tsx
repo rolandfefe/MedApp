@@ -50,7 +50,7 @@ export default async function layout({
 		getMsgs({ appointment: decodeURIComponent(appointmentId) }),
 		getDiagnosis({ appointment: appointmentId }),
 		getVerdictByAppointment(appointmentId),
-		getDoctors({limit: 0}),
+		getDoctors({ limit: 0 }),
 		getPlan({ appointment: appointmentId }),
 	]);
 

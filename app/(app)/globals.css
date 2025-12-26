@@ -127,6 +127,7 @@
 @layer base {
 	* {
 		@apply border-border outline-ring/50;
+	
 	}
 	body {
 		@apply bg-background text-foreground;
@@ -146,7 +147,7 @@
 	}
 
 	.glass-bg {
-		@apply !bg-background/40 backdrop-blur-3xl backdrop-saturate-150 border-secondary;
+		@apply bg-background/40! backdrop-blur-3xl backdrop-saturate-150 border-secondary;
 	}
 
 	.glass-shadow {

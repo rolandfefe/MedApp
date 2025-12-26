@@ -9,16 +9,16 @@ import RecurrenceForm from "../forms/RecurrenceForm";
 import { Badge } from "../ui/badge";
 import { Separator } from "../ui/separator";
 
-const motionVariants: Variants = {
-	hidden: {
-		opacity: 0,
-		scale: 0.5,
-	},
-	visible: {
-		opacity: 1,
-		scale: 1,
-	},
-};
+	const motionVariants: Variants = {
+		hidden: {
+			opacity: 0,
+			scale: 0.5,
+		},
+		visible: {
+			opacity: 1,
+			scale: 1,
+		},
+	};
 
 export default function RecurrencePlanAside() {
 	const { recurrencePlan } = useConsultation();

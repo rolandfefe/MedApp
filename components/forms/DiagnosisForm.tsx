@@ -39,6 +39,7 @@ import {
 	createDiagnosis,
 	updateDiagnosis,
 } from "@/lib/actions/diagnosis.actions";
+import { eConfidenceLevel } from "@/types/enums/enums";
 
 export default function DiagnosisForm() {
 	const { appointment, patientHistory, diagnosis } = useConsultation();
@@ -48,14 +49,26 @@ export default function DiagnosisForm() {
 	const [isPending, startTransition] = useTransition();
 	const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
-	const [complaintEditorState, setComplaintEditorState] =
-		useState<SerializedEditorState>();
-	const [notesEditorState, setNotesEditorState] =
-		useState<SerializedEditorState>();
+	const [complaintEditorState, setComplaintEditorState] = useState<
+		SerializedEditorState | undefined
+	>(diagnosis?.chiefComplaint || undefined);
+	const [notesEditorState, setNotesEditorState] = useState<
+		SerializedEditorState | undefined
+	>(diagnosis?.notes || undefined);
 
 	const form = useForm<DiagnosisFormData>({
 		resolver: zodResolver(diagnosisFormSchema),
-		defaultValues: {},
+		defaultValues: {
+			dateResolved: diagnosis?.dateResolved || "",
+			onsetDate: diagnosis?.onsetDate || "",
+			templateUsed: diagnosis?.templateUsed || "",
+			// ! fix Enum to string-literal types err
+			differentialDiagnosis: diagnosis?.differentialDiagnosis.map((d) => ({
+				...d,
+				// confidence: eConfidenceLevel[d.confidence.toUpperCase()],
+				isPrimary: d.isPrimary!,
+			})),
+		},
 	});
 
 	const submitHandler = (data: DiagnosisFormData) => {
@@ -74,7 +87,11 @@ export default function DiagnosisForm() {
 		if (diagnosis) {
 			// ? Update
 			startTransition(async () => {
-				await updateDiagnosis({ ...diagnosis, ...cleanData });
+				await updateDiagnosis({
+					...diagnosis,
+					...cleanData,
+					updatedBy: currentDoctor.id!,
+				});
 				toast.success("Diagnosis updated successfully🧑‍⚕️");
 				form.reset();
 				setIsSuccess(true);
@@ -133,7 +150,9 @@ export default function DiagnosisForm() {
 			<div className="px-2 sticky top-0 bg-background/40 backdrop-blur-2xl backdrop-saturate-150">
 				<Heading className="text-xl md:text-2xl text-primary">
 					<Hospital /> Diagnosis Form
-					<Badge variant={"secondary"}>{diagnosis ? "Create" : "Edit"}</Badge>{" "}
+					<Badge variant={"secondary"}>
+						{diagnosis ? "Create" : "Edit"}
+					</Badge>{" "}
 				</Heading>
 				<Separator className="my-3" />
 			</div>

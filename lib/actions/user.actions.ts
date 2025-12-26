@@ -84,7 +84,7 @@ export const getCurrentUser = async (): Promise<IUser> => {
 		// ? "user_44Oz69oiFCxEQ1hCwvHhuiPkuoO" // - Pat olivia brown
 		// ? "user_33Ny58nhEBwER0gBwuGgthOktnN" // - Dr lina
 		const clerkId = isDevMode
-		? "user_88It03icZWrZN5bWrpBbocJfoI" // - Dr Miah Johnson
+			? "user_88It03icZWrZN5bWrpBbocJfoI" // - Dr Miah Johnson
 			: (await currentUser())!.id;
 
 		const {

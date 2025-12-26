@@ -54,6 +54,7 @@ export const Diagnosis: CollectionConfig = {
 		{ name: "updatedBy", type: "relationship", relationTo: "doctors" },
 
 		{ name: "dateConfirmed", type: "date" },
+		{ name: "confirmedBy", type: "relationship", relationTo: "doctors" },
 		// { name: "isConfirmed", type: "checkbox", defaultValue: false },
 		// ? Differential Diagnosis.
 		{
@@ -86,11 +87,12 @@ export const Diagnosis: CollectionConfig = {
 				{
 					name: "laterality",
 					type: "radio",
-					// required: true,
+					required: true,
 					options: Object.entries(eLaterality).map(([label, value]) => ({
 						label,
 						value,
 					})),
+					defaultValue: eLaterality.BILATERAL,
 				},
 			],
 		},

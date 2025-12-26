@@ -640,6 +640,7 @@ export interface Diagnosis {
   status?: ('Active' | 'Provisional' | 'Ruled-out' | 'Confirmed' | 'Resolved' | 'Pending') | null;
   updatedBy?: (string | null) | Doctor;
   dateConfirmed?: string | null;
+  confirmedBy?: (string | null) | Doctor;
   differentialDiagnosis?:
     | {
         condition: string;
@@ -648,7 +649,7 @@ export interface Diagnosis {
         isPrimary?: boolean | null;
         confidence: 'Ruled-out' | 'Low' | 'Medium' | 'High' | 'Confirmed';
         severity: 'Mild' | 'Moderate' | 'Severe';
-        laterality?: ('Left' | 'Right' | 'Bilateral') | null;
+        laterality: 'Left' | 'Right' | 'Bilateral';
         id?: string | null;
       }[]
     | null;
@@ -1302,6 +1303,7 @@ export interface DiagnosesSelect<T extends boolean = true> {
   status?: T;
   updatedBy?: T;
   dateConfirmed?: T;
+  confirmedBy?: T;
   differentialDiagnosis?:
     | T
     | {

@@ -61,25 +61,7 @@ export default function PatientConsultationFooter() {
 			<PatientConsultationFooter.RecurrenceBtn />
 			<PatientConsultationFooter.ReferralBtn />
 			<PatientConsultationFooter.OnlineMeetBtn />
-			<ButtonGroup className="!w-full">
-				<DiagnosisFormPanel className="flex-1">
-					<MyBtn variant={"outline"} className="rounded-e-none justify-start">
-						<Stethoscope />
-						Diagnose
-					</MyBtn>
-				</DiagnosisFormPanel>
-
-				<LinkBtn
-					variant={"secondary"}
-					size="icon"
-					link={{
-						href: `/consultation/${appointment.id!}/diagnosis`,
-					}}
-					className="text-primary rounded-l-none"
-				>
-					<ArrowUpRightFromSquare />
-				</LinkBtn>
-			</ButtonGroup>
+			<PatientConsultationFooter.DiagnosisBtn />
 
 			<DoctorNotesFormPanel>
 				<MyBtn className="w-full">
@@ -93,7 +75,6 @@ export default function PatientConsultationFooter() {
 PatientConsultationFooter.RecurrenceBtn = () => {
 	const { appointment, recurrencePlan } = useConsultation();
 	const patient = appointment.patient as IPatient;
-
 
 	return (
 		<FormPanel>
@@ -251,5 +232,22 @@ PatientConsultationFooter.OnlineMeetBtn = () => {
 				</PopoverContent>
 			</Popover>
 		</ButtonGroup>
+	);
+};
+
+PatientConsultationFooter.DiagnosisBtn = () => {
+	const { appointment } = useConsultation();
+
+	return (
+		<LinkBtn
+			variant={"outline"}
+			link={{
+				href: `/consultation/${appointment.id!}/diagnosis`,
+			}}
+			className="w-full! justify-start mb-3"
+		>
+			<Stethoscope />
+			Diagnose
+		</LinkBtn>
 	);
 };
