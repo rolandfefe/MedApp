@@ -550,7 +550,7 @@ function SidebarMenuButton({
 			<TooltipContent
 				side="right"
 				align="center"
-				className="!text-primary"
+				className="text-primary! cursor-pointer!"
 				hidden={state !== "collapsed" || isMobile}
 				{...tooltip}
 			/>

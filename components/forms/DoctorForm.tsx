@@ -48,12 +48,11 @@ export default function DoctorForm({
 	const form = useForm<DoctorFormData>({
 		resolver: zodResolver(doctorFormSchema),
 		defaultValues: {
-			bio: doctor?.bio,
-			DOB: doctor?.DOB as string,
-			gender: doctor?.gender,
+			bio: doctor?.bio || "",
+			DOB: (doctor?.DOB as string) || "",
+			gender: doctor?.gender || "",
 			languages: doctor?.languages!.join(", "),
 			contact: doctor?.contact,
-			// credentials: doctor?.credentials,
 		},
 	});
 

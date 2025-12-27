@@ -7,6 +7,7 @@ import { eAppointmentStatus } from "@/types/enums/enums";
 import {
 	CircleCheck,
 	CircleX,
+	FileBadge2,
 	Loader,
 	MessageCircleMore,
 	Sparkles,
@@ -247,6 +248,21 @@ export default function AppointmentDynamicPanel({
 										</HoverBorderGradient>
 									</LinkBtn>
 								)}
+
+								{appointment.status !== eAppointmentStatus.CANCELLED &&
+									appointment.status !== eAppointmentStatus.NO_SHOW &&
+									appointment.status !== eAppointmentStatus.SCHEDULED && (
+										<LinkBtn
+											variant={"invert"}
+											link={{
+												href: `/consultation/${appointment.id!}/report`,
+											}}
+											className=""
+										>
+											<FileBadge2 />
+											Report
+										</LinkBtn>
+									)}
 
 								{(mode === "Patient" &&
 									appointment.status === eAppointmentStatus.SCHEDULED) ||

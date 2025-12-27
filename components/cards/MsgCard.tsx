@@ -46,11 +46,7 @@ export default function MsgCard({
 					isAuthor ? "ml-auto flex-row-reverse" : ""
 				)}
 			>
-				<UserCard
-					user={msg.from as IUser}
-					currentUser={currentUser}
-					variant="xs"
-				/>
+				<UserCard.XS user={msg.from as IUser} />
 				<MsgCard.Context msg={msg} isAuthor={isAuthor} asChild>
 					<CardContent
 						className={cn(

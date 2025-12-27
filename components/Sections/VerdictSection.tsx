@@ -6,6 +6,7 @@ import { deleteVerdict, updateVerdict } from "@/lib/actions/verdict.actions";
 import { cn } from "@/lib/utils";
 import { useMediaQuery } from "@uidotdev/usehooks";
 import {
+	BookAIcon,
 	CheckCircle2,
 	CheckCircle2Icon,
 	Clock10,
@@ -269,8 +270,17 @@ VerdictSection.Actions = ({
 					onClick={() => setTab((prev) => (prev === "EDIT" ? "MAIN" : "EDIT"))}
 					className="flex mx-auto"
 				>
-					<Edit3 />
-					Edit
+					{tab === "MAIN" ? (
+						<>
+							<Edit3 />
+							Edit
+						</>
+					) : (
+						<>
+							<BookAIcon />
+							Read
+						</>
+					)}
 				</MyBtn>
 				<ButtonGroupSeparator />
 				<MyBtn

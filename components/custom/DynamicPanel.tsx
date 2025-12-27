@@ -51,8 +51,8 @@ export const DynamicPanelTrigger = ({
 	if (isSmScreen) {
 		return (
 			<DrawerTrigger
-				className={cn("", className)}
 				{...props.drawerProps}
+				className={cn("", className)}
 				asChild
 			>
 				{children}

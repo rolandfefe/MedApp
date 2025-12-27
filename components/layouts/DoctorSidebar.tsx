@@ -39,8 +39,10 @@ export default function DoctorSidebar({
 					))}
 				</SidebarMenu>
 			</SidebarContent>
+
+			
 			<SidebarFooter>
-				<AppSidebarFooter currentUser={currentUser} />
+				<AppSidebarFooter />
 			</SidebarFooter>
 			<SidebarRail />
 		</Sidebar>

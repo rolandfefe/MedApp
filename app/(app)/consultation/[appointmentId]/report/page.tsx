@@ -1,5 +1,10 @@
+import AppointmentReportSection from "@/components/Sections/AppointmentReportSection";
 import React from "react";
 
 export default function page() {
-	return <div>Appointment report</div>;
+	return (
+		<div>
+			<AppointmentReportSection />
+		</div>
+	);
 }

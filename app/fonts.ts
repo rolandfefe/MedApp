@@ -1,4 +1,4 @@
-import { Anta, Audiowide, Zen_Dots, } from "next/font/google";
+import { Anta, Audiowide, Zen_Dots } from "next/font/google";
 
 /**
  * Alan Sans
@@ -9,17 +9,17 @@ import { Anta, Audiowide, Zen_Dots, } from "next/font/google";
  */
 
 export const logoFont = Anta({
-  weight: ["400"],
-  subsets: ["latin"],
-  preload: true,
-  style: "normal",
-  display: "auto",
+	weight: ["400"],
+	subsets: ["latin"],
+	preload: true,
+	style: "normal",
+	display: "auto",
 });
 
 export const headerFont = Anta({
-  weight: ["400"],
-  subsets: ["latin"],
-  preload: true,
-  style: "normal",
-  display: "auto",
-})
+	weight: ["400"],
+	subsets: ["latin"],
+	preload: true,
+	style: "normal",
+	display: "auto",
+});

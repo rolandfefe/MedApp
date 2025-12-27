@@ -2,13 +2,20 @@
 
 import { useCurrent } from "@/contexts/Current.context";
 import { useMediaQuery } from "@uidotdev/usehooks";
-import { AlarmClock, ChevronsUpDown, Hospital, UserPlus2 } from "lucide-react";
+import {
+	AlarmClock,
+	ChevronsUpDown,
+	Hospital,
+	UserCircle,
+	UserPlus2,
+} from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import MyBtn from "../custom/MyBtn";
 import { DoctorFormPanel } from "../forms/DoctorForm";
 import { PatientFormPanel } from "../forms/patientForm";
+import DoctorProfilePanel from "../panels/DoctorProfilePanel";
 import RemindersPanel from "../panels/RemindersPanel";
 import {
 	DropdownMenu,
@@ -17,7 +24,6 @@ import {
 	DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { SidebarMenuButton, useSidebar } from "../ui/sidebar";
-import NavItem from "./NavItem";
 
 export default function AppSidebarFooter() {
 	const { state: sidebarState } = useSidebar();
@@ -30,12 +36,21 @@ export default function AppSidebarFooter() {
 
 	return (
 		<div className="space-y-2">
-			<NavItem
+			{/* <NavItem
 				icon={"user-circle"}
 				link="/profile"
 				name="Profile"
 				className="border"
-			/>
+			/> */}
+
+			{doctor && (
+				<DoctorProfilePanel doctor={doctor}>
+					<SidebarMenuButton className="border cursor-pointer">
+						<UserCircle />
+						Profile
+					</SidebarMenuButton>
+				</DoctorProfilePanel>
+			)}
 
 			<RemindersPanel reminders={reminders}>
 				<SidebarMenuButton tooltip={"Reminders"} className="border">

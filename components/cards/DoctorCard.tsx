@@ -3,6 +3,7 @@ import { ComponentProps } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Badge } from "../ui/badge";
 import { Card, CardContent } from "../ui/card";
+import Heading from "../custom/Heading";
 
 export default function DoctorCard({
 	doctor,
@@ -88,11 +89,15 @@ DoctorCard.XS = ({ doctor, className }: ComponentProps<typeof DoctorCard>) => {
 	);
 };
 
-DoctorCard.MD = ({ doctor, className }: ComponentProps<typeof DoctorCard>) => {
+DoctorCard.MD = ({
+	doctor,
+	hideBadges = false,
+	className,
+}: { hideBadges?: boolean } & ComponentProps<typeof DoctorCard>) => {
 	const user = doctor.user as IUser;
 
 	return (
-		<Card className={cn("bg-transparent hover:bg-muted", className)}>
+		<Card className={cn("bg-transparent hover:bg-muted border-0", className)}>
 			<CardContent className="space-y-3">
 				<Avatar className="size-20 mx-auto">
 					<AvatarImage src={user.imageUrl!} />
@@ -102,21 +107,30 @@ DoctorCard.MD = ({ doctor, className }: ComponentProps<typeof DoctorCard>) => {
 				</Avatar>
 
 				<section className="leading-tight text-center">
-					<p className="font-medium">
+					<Heading className="text-lg font-medium justify-center">
 						<span>Dr.{user.fname}</span> <span>{user.lname}</span>
+					</Heading>
+					<p className="text-xs sm:text-sm font-medium text-muted-foreground">
+						{user.email}
 					</p>
-					<p className="text-xs text-muted-foreground">{user.email}</p>
+					{hideBadges && (
+						<p className="text-sm text-muted-foreground font-mono">
+							@{user.username}
+						</p>
+					)}
 				</section>
 
-				<section className="flex items-center justify-center gap-x-1">
-					<Badge variant={"secondary"}>{doctor.gender}</Badge>
-					<Badge variant={"secondary"}>
-						{doctor.languages && doctor.languages[0]}
-					</Badge>
-					<Badge variant={"secondary"}>
-						{doctor.specialties && doctor.specialties[0].primary}
-					</Badge>
-				</section>
+				{!hideBadges && (
+					<section className="flex items-center justify-center gap-x-1">
+						<Badge variant={"secondary"}>{doctor.gender}</Badge>
+						<Badge variant={"secondary"}>
+							{doctor.languages && doctor.languages[0]}
+						</Badge>
+						<Badge variant={"secondary"}>
+							{doctor.specialties && doctor.specialties[0].primary}
+						</Badge>
+					</section>
+				)}
 			</CardContent>
 		</Card>
 	);

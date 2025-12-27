@@ -11,6 +11,7 @@ import {
 	ArrowUpRightFromSquare,
 	CalendarClock,
 	ChevronsUpDown,
+	FileBadge2,
 	Loader,
 	Notebook,
 	Plus,
@@ -63,11 +64,25 @@ export default function PatientConsultationFooter() {
 			<PatientConsultationFooter.OnlineMeetBtn />
 			<PatientConsultationFooter.DiagnosisBtn />
 
-			<DoctorNotesFormPanel>
-				<MyBtn className="w-full">
-					Medical Notes <Notebook />
-				</MyBtn>
-			</DoctorNotesFormPanel>
+			<div className="flex items-center gap-x-1 justify-between">
+				<DoctorNotesFormPanel>
+					<MyBtn className="flex-1">
+						{/* Medical */}
+						 Notes <Notebook />
+
+					</MyBtn>
+				</DoctorNotesFormPanel>
+				<LinkBtn
+					variant={"invert"}
+					link={{
+						href: `/consultation/${appointment.id!}/report`,
+					}}
+					className="flex-1"
+				>
+					<FileBadge2 />
+					Report
+				</LinkBtn>
+			</div>
 		</div>
 	);
 }
