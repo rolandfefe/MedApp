@@ -35,7 +35,8 @@ export default function ArticlesFeed() {
 				transition={{
 					delayChildren: stagger(0.3),
 				}}
-				className="flex items-center gap-3 flex-wrap"
+				// className="flex items-center gap-3 flex-wrap"
+				className="space-y-2"
 			>
 				{articles.length > 0 ? (
 					articles.map((article) => (

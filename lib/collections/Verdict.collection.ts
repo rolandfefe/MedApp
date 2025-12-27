@@ -31,12 +31,15 @@ export const Verdict: CollectionConfig = {
 					name: "outlook",
 					type: "select",
 					options: ["excellent", "good", "fair", "poor", "guarded"],
+					defaultValue: "fair",
 				},
 				{ name: "estimatedRecoveryTime", type: "text" },
 			],
 		},
 
 		{ name: "isConfirmed", type: "checkbox", defaultValue: false },
+		{ name: "confirmedBy", type: "relationship", relationTo: "doctors" },
+		{ name: "updatedBy", type: "relationship", relationTo: "doctors" },
 		{
 			name: "treatmentPlan",
 			type: "group",

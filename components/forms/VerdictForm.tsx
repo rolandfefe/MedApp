@@ -23,25 +23,30 @@ import getVerdictFormStepper, {
 	PatientNotesSection,
 	TreatmentPlanSection,
 } from "../formSteppers/VerdictFormStepper";
+import { useCurrent } from "@/contexts/Current.context";
 
 export default function VerdictForm() {
 	const { verdict, diagnosis } = useConsultation();
 	const [activeStep, setActiveStep] = useState<number>(1);
 	const [isSuccess, setIsSuccess] = useState<boolean>(false);
+	const currentDoctor = useCurrent().currentDoctor!;
 
-	const [notesSerializedState, setNotesSerializedState] =
-		useState<SerializedEditorState>();
-	const [planSerializedState, setPlanSerializedState] =
-		useState<SerializedEditorState>();
+	const [notesSerializedState, setNotesSerializedState] = useState<
+		SerializedEditorState | undefined
+	>(verdict?.notes);
+	const [planSerializedState, setPlanSerializedState] = useState<
+		SerializedEditorState | undefined
+	>(verdict?.treatmentPlan.plan);
+
 	const [isPending, startTransition] = useTransition();
 
 	const form = useForm<VerdictFormData>({
 		resolver: zodResolver(VerdictZodSchema),
 		defaultValues: {
 			// ! Fix error form default values
-			// isConfirmed: verdict?.isConfirmed!,
-			// prognosis: verdict?.prognosis!,
-			// treatmentPlan: verdict?.treatmentPlan!,
+			isConfirmed: verdict?.isConfirmed || false,
+			prognosis: verdict?.prognosis || "",
+			treatmentPlan: verdict?.treatmentPlan || {},
 		},
 	});
 
@@ -91,9 +96,13 @@ export default function VerdictForm() {
 			// ? Update
 
 			startTransition(async () => {
-				await updateVerdict({ ...verdict, ...cleanData });
+				await updateVerdict({
+					...verdict,
+					...cleanData,
+					updatedBy: currentDoctor.id,
+				});
 
-				toast("Verdict Updated✍️");
+				toast.success("Verdict Updated✍️");
 				form.reset();
 				setIsSuccess(true);
 			});

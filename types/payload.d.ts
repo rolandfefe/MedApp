@@ -822,6 +822,8 @@ export interface Verdict {
     estimatedRecoveryTime?: string | null;
   };
   isConfirmed?: boolean | null;
+  confirmedBy?: (string | null) | Doctor;
+  updatedBy?: (string | null) | Doctor;
   treatmentPlan: {
     plan: {
       root: {
@@ -1425,6 +1427,8 @@ export interface VerdictSelect<T extends boolean = true> {
         estimatedRecoveryTime?: T;
       };
   isConfirmed?: T;
+  confirmedBy?: T;
+  updatedBy?: T;
   treatmentPlan?:
     | T
     | {

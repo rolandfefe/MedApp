@@ -36,6 +36,7 @@ import {
 } from "../ui/select";
 import { Textarea } from "../ui/textarea";
 import { Spinner } from "../ui/spinner";
+import DynamicEditor from "../custom/DynamicEditor";
 
 export default function getVerdictFormStepper(
 	form: ReturnType<typeof useForm<VerdictFormData>>,
@@ -168,14 +169,16 @@ export const PatientNotesSection = ({
 }) => {
 	return (
 		<div>
-			<p className="text-lg font-medium inline-flex gap-x-1 items-center">
+			<p className="text-lg font-medium inline-flex gap-x-1 items-center text-primary">
 				<NotebookTabs />
 				<span>Verdict Notes</span>
 			</p>
 			<p className="text-sm text-muted-foreground mb-3">
 				Detail your verdict notes bellow.
 			</p>
-			<Editor
+
+			{/* <Editor */}
+			<DynamicEditor
 				editorSerializedState={notesSerializedState}
 				onSerializedChange={setNotesSerializedState}
 				className="min-h-52"
@@ -195,7 +198,7 @@ export const TreatmentPlanSection = ({
 }) => {
 	return (
 		<section>
-			<p className="text-lg font-medium inline-flex gap-x-1 items-center">
+			<p className="text-lg font-medium inline-flex gap-x-1 items-center text-primary">
 				<Syringe />
 				<span>Treatment Plan</span>
 			</p>
@@ -203,7 +206,8 @@ export const TreatmentPlanSection = ({
 				Clearly detail the patient's treatment Plan bellow
 			</p>
 
-			<Editor
+			{/* <Editor */}
+			<DynamicEditor
 				editorSerializedState={planSerializedState}
 				onSerializedChange={setPlanSerializedState}
 				className="min-h-52"

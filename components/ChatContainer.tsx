@@ -55,7 +55,7 @@ ChatContainer.Panel = ({
 					Chat
 					{/* <MessageSquareText /> */}
 				</LinkBtn>
-				<ChatContainer className="sm:h-[90vh]!" />
+				<ChatContainer className="h-[90vh]! sm:h-[92vh]!" />
 			</FormPanelContent>
 		</FormPanel>
 	);

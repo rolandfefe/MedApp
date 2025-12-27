@@ -243,7 +243,7 @@ DiagnosisSection.Present = () => {
 };
 
 DiagnosisSection.Meta = ({ className }: { className?: string }) => {
-	const { appointment, diagnosis } = useConsultation();
+	const { diagnosis } = useConsultation();
 	const isSmScreen = useMediaQuery("(width <= 640px)");
 
 	if (!diagnosis) return;
