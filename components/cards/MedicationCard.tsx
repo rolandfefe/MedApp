@@ -28,7 +28,6 @@ export default function MedicationCard({
 		<Card {...props} className={cn("bg-transparent", className)}>
 			<CardContent className="space-y-2">
 				<div className="flex items-center justify-between">
-					{/* <Heading className="flex item-center gap-x-1 font-medium"> */}
 					<Heading className="text-primary sm:text-lg font-medium">
 						<Pill size={20} />
 						<span>{medication.name}</span>

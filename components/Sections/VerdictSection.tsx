@@ -59,6 +59,8 @@ export default function VerdictSection() {
 			<motion.section variants={motionVariants} layout>
 				<VerdictSection.Plans />
 			</motion.section>
+
+			{/* ! Consider the Prognosis Sections */}
 		</motion.div>
 	);
 }
@@ -107,11 +109,16 @@ VerdictSection.Plans = () => {
 					transition={{
 						delayChildren: stagger(0.3),
 					}}
-					className="space-y-2"
+					className="flex flex-col sm:flex-row sm:items-center gap-2"
 				>
 					{procedures.length > 0 ? (
 						procedures.map((p) => (
-							<motion.div variants={motionVariants} key={p.id} layout>
+							<motion.div
+								variants={motionVariants}
+								key={p.id}
+								layout
+								className="flex-1"
+							>
 								<ProcedureCard procedure={p} />
 							</motion.div>
 						))
@@ -128,11 +135,16 @@ VerdictSection.Plans = () => {
 					transition={{
 						delayChildren: stagger(0.3),
 					}}
-					className="space-y-2"
+					className="flex flex-col sm:flex-row sm:items-center gap-2"
 				>
 					{therapies.length > 0 ? (
 						therapies.map((t) => (
-							<motion.div variants={motionVariants} key={t.id} layout>
+							<motion.div
+								variants={motionVariants}
+								key={t.id}
+								layout
+								className="flex-1"
+							>
 								<TherapyCard therapy={t} />
 							</motion.div>
 						))

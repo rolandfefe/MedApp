@@ -48,14 +48,14 @@ ChatContainer.Panel = ({
 				<LinkBtn
 					link={{ href: `/consultation/${appointment.id}` }}
 					size="sm"
-					variant={"primary-outline"}
+					variant={"invert"}
 					className="sticky top-0 left-2"
 				>
 					<ArrowLeftCircle size={26} />
 					Chat
 					{/* <MessageSquareText /> */}
 				</LinkBtn>
-				<ChatContainer className="h-[94vh]!" />
+				<ChatContainer className="sm:h-[90vh]!" />
 			</FormPanelContent>
 		</FormPanel>
 	);
