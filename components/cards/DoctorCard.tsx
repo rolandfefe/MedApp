@@ -4,13 +4,20 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Badge } from "../ui/badge";
 import { Card, CardContent } from "../ui/card";
 import Heading from "../custom/Heading";
+import MyBtn from "../custom/MyBtn";
+import { DoctorFormPanel } from "../forms/DoctorForm";
+import { Edit3 } from "lucide-react";
+import { useCurrent } from "@/contexts/Current.context";
+import DoctorProfilePanel from "../panels/DoctorProfilePanel";
 
 export default function DoctorCard({
 	doctor,
 	className,
+	hideProfile = false,
 }: {
 	doctor: IDoctor;
 	className?: string;
+	hideProfile?: boolean;
 }) {
 	const user = doctor.user as IUser;
 
@@ -18,12 +25,18 @@ export default function DoctorCard({
 		<Card className={cn("bg-transparent hover:bg-muted", className)}>
 			<CardContent className="space-y-2">
 				<section className="flex items-start gap-x-2">
-					<Avatar className="size-10 rounded-lg">
-						<AvatarImage src={user.imageUrl!} />
-						<AvatarFallback className="size-full rounded-lg bg-fuchsia-400 dark:bg-fuchsia-600">
-							{user.username[0].toUpperCase()}
-						</AvatarFallback>
-					</Avatar>
+					<DoctorProfilePanel
+						dialogProps={{ disabled: hideProfile }}
+						drawerProps={{ disabled: hideProfile }}
+						doctor={doctor}
+					>
+						<Avatar className="size-10 rounded-lg">
+							<AvatarImage src={user.imageUrl!} />
+							<AvatarFallback className="size-full rounded-lg bg-fuchsia-400 dark:bg-fuchsia-600">
+								{user.username[0].toUpperCase()}
+							</AvatarFallback>
+						</Avatar>
+					</DoctorProfilePanel>
 
 					<div className="space-y-2 ">
 						<div className="leading-tight">
@@ -56,19 +69,29 @@ export default function DoctorCard({
 	);
 }
 
-DoctorCard.XS = ({ doctor, className }: ComponentProps<typeof DoctorCard>) => {
+DoctorCard.XS = ({
+	doctor,
+	className,
+	hideProfile = false,
+}: ComponentProps<typeof DoctorCard>) => {
 	const user = doctor.user as IUser;
 
 	return (
 		<Card className={cn("w-fit bg-transparent hover:bg-muted", className)}>
 			<CardContent className="">
 				<section className="flex items-start gap-x-2">
-					<Avatar className="size-10 rounded-lg">
-						<AvatarImage src={user.imageUrl!} />
-						<AvatarFallback className="size-full rounded-lg bg-fuchsia-400 dark:bg-fuchsia-600">
-							{user.username[0].toUpperCase()}
-						</AvatarFallback>
-					</Avatar>
+					<DoctorProfilePanel
+						dialogProps={{ disabled: hideProfile }}
+						drawerProps={{ disabled: hideProfile }}
+						doctor={doctor}
+					>
+						<Avatar className="size-10 rounded-lg">
+							<AvatarImage src={user.imageUrl!} />
+							<AvatarFallback className="size-full rounded-lg bg-fuchsia-400 dark:bg-fuchsia-600">
+								{user.username[0].toUpperCase()}
+							</AvatarFallback>
+						</Avatar>
+					</DoctorProfilePanel>
 
 					{/* <Tooltip>
 							<TooltipTrigger asChild> */}
@@ -89,22 +112,24 @@ DoctorCard.XS = ({ doctor, className }: ComponentProps<typeof DoctorCard>) => {
 	);
 };
 
-DoctorCard.MD = ({
-	doctor,
-	hideBadges = false,
-	className,
-}: { hideBadges?: boolean } & ComponentProps<typeof DoctorCard>) => {
+DoctorCard.MD = ({ doctor, className }: ComponentProps<typeof DoctorCard>) => {
 	const user = doctor.user as IUser;
 
 	return (
 		<Card className={cn("bg-transparent hover:bg-muted border-0", className)}>
 			<CardContent className="space-y-3">
-				<Avatar className="size-20 mx-auto">
-					<AvatarImage src={user.imageUrl!} />
-					<AvatarFallback className="size-full rounded-lg bg-fuchsia-400 dark:bg-fuchsia-600">
-						{user.username[0].toUpperCase()}
-					</AvatarFallback>
-				</Avatar>
+				<DoctorProfilePanel
+					dialogProps={{ disabled: hideProfile }}
+					drawerProps={{ disabled: hideProfile }}
+					doctor={doctor}
+				>
+					<Avatar className="size-20 mx-auto">
+						<AvatarImage src={user.imageUrl!} />
+						<AvatarFallback className="size-full rounded-lg bg-fuchsia-400 dark:bg-fuchsia-600">
+							{user.username[0].toUpperCase()}
+						</AvatarFallback>
+					</Avatar>
+				</DoctorProfilePanel>
 
 				<section className="leading-tight text-center">
 					<Heading className="text-lg font-medium justify-center">
@@ -113,42 +138,104 @@ DoctorCard.MD = ({
 					<p className="text-xs sm:text-sm font-medium text-muted-foreground">
 						{user.email}
 					</p>
-					{hideBadges && (
-						<p className="text-sm text-muted-foreground font-mono">
-							@{user.username}
-						</p>
-					)}
 				</section>
 
-				{!hideBadges && (
-					<section className="flex items-center justify-center gap-x-1">
-						<Badge variant={"secondary"}>{doctor.gender}</Badge>
-						<Badge variant={"secondary"}>
-							{doctor.languages && doctor.languages[0]}
-						</Badge>
-						<Badge variant={"secondary"}>
-							{doctor.specialties && doctor.specialties[0].primary}
-						</Badge>
-					</section>
-				)}
+				<section className="flex items-center justify-center gap-x-1">
+					<Badge variant={"secondary"}>{doctor.gender}</Badge>
+					<Badge variant={"secondary"}>
+						{doctor.languages && doctor.languages[0]}
+					</Badge>
+					<Badge variant={"secondary"}>
+						{doctor.specialties && doctor.specialties[0].primary}
+					</Badge>
+				</section>
 			</CardContent>
 		</Card>
 	);
 };
 
-DoctorCard.LG = () => {
-	return <Card></Card>;
+DoctorCard.LG = ({
+	doctor,
+	className,
+	hideProfile = false,
+	...props
+}: ComponentProps<typeof DoctorCard>) => {
+	const user = doctor.user as IUser;
+	const currentUser = useCurrent().currentUser;
+
+	const isOwner = user.id === currentUser.id;
+
+	return (
+		<Card {...props} className={cn("relative bg-transparent", className)}>
+			<CardContent>
+				<DoctorProfilePanel
+					dialogProps={{ disabled: hideProfile }}
+					drawerProps={{ disabled: hideProfile }}
+					doctor={doctor}
+				>
+					<Avatar className="size-14 sm:size-20 mx-auto">
+						<AvatarImage src={user.imageUrl!} />
+						<AvatarFallback className="size-full rounded-lg bg-fuchsia-400 dark:bg-fuchsia-600">
+							{user.username[0].toUpperCase()}
+						</AvatarFallback>
+					</Avatar>
+				</DoctorProfilePanel>
+
+				<section className="leading-tight text-center">
+					<Heading className="text-lg font-medium justify-center">
+						<span>Dr.{user.fname}</span> <span>{user.lname}</span>
+					</Heading>
+					<p className="text-xs sm:text-sm font-medium text-muted-foreground">
+						{user.email}
+					</p>
+					<p className="text-sm text-muted-foreground font-mono">
+						@{user.username}
+					</p>
+				</section>
+
+				<div className="p-1 px-2 mt-3 bg-background/40 text-xs rounded-lg text-muted-foreground font-mono">
+					<p>{doctor.bio}</p>
+				</div>
+			</CardContent>
+
+			{isOwner && (
+				<DoctorFormPanel className="absolute top-1 right-1">
+					<MyBtn
+						variant={"outline"}
+						size={"icon"}
+						className="rounded-full size-8"
+					>
+						<Edit3 size={20} />
+					</MyBtn>
+				</DoctorFormPanel>
+			)}
+		</Card>
+	);
 };
 
-DoctorCard.Tag = ({ doctor, className }: ComponentProps<typeof DoctorCard>) => {
+DoctorCard.Tag = ({
+	doctor,
+	className,
+	hideProfile = false,
+}: ComponentProps<typeof DoctorCard>) => {
 	return (
-		<div
-			className={cn(
-				"font-medium font-mono hover:text-primary cursor-pointer",
-				className
-			)}
+		<DoctorProfilePanel
+			dialogProps={{ disabled: hideProfile }}
+			drawerProps={{ disabled: hideProfile }}
+			doctor={doctor}
 		>
-			@Dr.{doctor.user.fname}
-		</div>
+			<div
+				className={cn(
+					"font-medium font-mono hover:text-primary cursor-pointer",
+					className
+				)}
+			>
+				@Dr.{doctor.user.fname}
+			</div>
+		</DoctorProfilePanel>
 	);
+};
+
+DoctorCard.Actions = () => {
+	return;
 };

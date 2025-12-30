@@ -1,15 +1,6 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import React, { ComponentProps } from "react";
-import { Card, CardContent } from "./ui/card";
-import {
-	Carousel,
-	CarouselContent,
-	CarouselItem,
-	CarouselNavigation,
-} from "./motion-primitives/carousel";
-import Void from "./custom/Void";
 import {
 	Apple,
 	BottleWine,
@@ -18,17 +9,24 @@ import {
 	Cross,
 	ForkKnife,
 	Hospital,
-	Hotel,
 	Link,
 	Notebook,
 	TreeDeciduous,
 	Users,
 	Weight,
 } from "lucide-react";
-import { useSidebar } from "./ui/sidebar";
-import { Badge } from "./ui/badge";
 import moment from "moment";
+import { ComponentProps } from "react";
+import Void from "./custom/Void";
+import {
+	Carousel,
+	CarouselContent,
+	CarouselItem,
+} from "./motion-primitives/carousel";
+import { Badge } from "./ui/badge";
+import { Card, CardContent } from "./ui/card";
 import { Separator } from "./ui/separator";
+import { useSidebar } from "./ui/sidebar";
 
 export default function PatientHistorySection({
 	history,
@@ -125,6 +123,8 @@ const DiseaseHistorySection = ({
 }) => {
 	const { state: sidebarState } = useSidebar();
 
+	if (!diseaseHistory) return;
+
 	return (
 		<section>
 			<div className="mb-3">
@@ -172,6 +172,8 @@ const SurgicalHistorySection = ({
 }) => {
 	const { state: sidebarState } = useSidebar();
 
+	if (!surgicalHistory) return;
+
 	return (
 		<section>
 			<div className="mb-3">
@@ -216,6 +218,8 @@ const FamilyHistorySection = ({
 	familyHistory: IHistory["familyHistory"];
 }) => {
 	const { state: sidebarState } = useSidebar();
+
+	if (!familyHistory) return;
 
 	return (
 		<section>
@@ -262,6 +266,8 @@ const AllergiesSection = ({
 }) => {
 	const { state: sidebarState } = useSidebar();
 
+	if (!allergies) return;
+
 	return (
 		<section>
 			<div className="mb-3">
@@ -306,6 +312,9 @@ const SocialHistorySection = ({
 	socialHistory: IHistory["socialHistory"];
 }) => {
 	const { state: sidebarState } = useSidebar();
+
+	if (!socialHistory) return;
+
 	const { smoking, alcohol, substanceUse } = socialHistory;
 
 	return (

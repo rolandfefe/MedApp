@@ -3,7 +3,7 @@
 import { ComponentProps, createContext, useContext } from "react";
 
 interface Props {
-	currentUser?: IUser;
+	currentUser: IUser;
 	currentPatient?: IPatient;
 	currentDoctor?: IDoctor;
 }
@@ -25,7 +25,7 @@ export const CurrentProvider = ({
 	children,
 	...props
 }: {
-	user?: IUser;
+	user: IUser;
 	patient?: IPatient;
 	doctor?: IDoctor;
 } & ComponentProps<"div">) => {

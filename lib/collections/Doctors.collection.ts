@@ -47,6 +47,8 @@ export const Doctors: CollectionConfig = {
 				{ name: "procedures", type: "text", hasMany: true, required: true },
 			],
 		},
+
+		// Add Verification boolean on all credentials Factors.
 		{
 			name: "credentials",
 			required: true,

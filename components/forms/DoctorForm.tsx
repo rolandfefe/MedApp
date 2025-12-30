@@ -31,6 +31,7 @@ import { Card, CardContent } from "../ui/card";
 import { Separator } from "../ui/separator";
 import { createDoctor, updateDoctor } from "@/lib/actions/doctor.actions";
 import { useCurrent } from "@/contexts/Current.context";
+import { cn } from "@/lib/utils";
 
 export default function DoctorForm({
 	action,
@@ -174,13 +175,17 @@ export default function DoctorForm({
 export const DoctorFormPanel = ({
 	action = "Create",
 	children,
+	className,
 }: {
 	action?: "Update" | "Create";
 	children: ReactNode;
+	className?: string;
 }) => {
 	return (
 		<FormPanel>
-			<FormPanelTrigger asChild>{children}</FormPanelTrigger>
+			<FormPanelTrigger asChild className={cn("", className)}>
+				{children}
+			</FormPanelTrigger>
 
 			<FormPanelContent>
 				<DoctorForm action={action} />
