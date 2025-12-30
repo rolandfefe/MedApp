@@ -7,6 +7,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Badge } from "../ui/badge";
 import { Card, CardContent } from "../ui/card";
 import { ComponentProps } from "react";
+import { PatientFormPanel } from "../forms/patientForm";
+import MyBtn from "../custom/MyBtn";
+import { Edit3 } from "lucide-react";
 
 export default function PatientCard({
 	patient,
@@ -95,9 +98,12 @@ PatientCard.MD = ({
 	className,
 }: ComponentProps<typeof PatientCard>) => {
 	const user = patient.user as IUser;
+	const currentUser = useCurrent().currentUser;
+
+	const isOwner = user.id === currentUser.id;
 
 	return (
-		<Card className={cn("bg-transparent hover:bg-muted", className)}>
+		<Card className={cn("relative bg-transparent hover:bg-muted", className)}>
 			<CardContent className="">
 				<Avatar className="size-20 mx-auto rounded-full">
 					<AvatarImage src={user.imageUrl!} />
@@ -121,6 +127,13 @@ PatientCard.MD = ({
 					</div>
 				</div>
 			</CardContent>
+			{isOwner && (
+				<PatientFormPanel className="absolute top-1 right-1">
+					<MyBtn size="icon" variant={"outline"}>
+						<Edit3 />
+					</MyBtn>
+				</PatientFormPanel>
+			)}
 		</Card>
 	);
 };

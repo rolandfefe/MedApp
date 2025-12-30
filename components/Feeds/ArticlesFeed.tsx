@@ -8,6 +8,7 @@ import Void from "../custom/Void";
 import { motion, stagger, Variants } from "motion/react";
 import { useCurrent } from "@/contexts/Current.context";
 import ArticleForm from "../forms/ArticleForm";
+import { useMediaQuery } from "@uidotdev/usehooks";
 
 const motionVariants: Variants = {
 	hidden: {
@@ -23,6 +24,7 @@ const motionVariants: Variants = {
 export default function ArticlesFeed() {
 	const { articles } = useArticles();
 	const currentDoctor = useCurrent().currentDoctor;
+	const isSmScreen = useMediaQuery("(width < 640px)");
 
 	console.log(articles);
 
@@ -49,7 +51,11 @@ export default function ArticlesFeed() {
 							whileTap={{ scale: 1 }}
 							className="flex-1 basis-full sm:basis-[45%]"
 						>
-							<ArticleCard article={article} />
+							{isSmScreen ? (
+								<ArticleCard.MD article={article} />
+							) : (
+								<ArticleCard article={article} />
+							)}
 						</motion.div>
 					))
 				) : (

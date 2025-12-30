@@ -17,13 +17,14 @@ export default function CallBtn({
 	const callHandler = () => {
 		startCalling(async () => {
 			// ! Figure this out coming soon.
-			toast("Coming soon...");
+			toast("Coming soon...", {id: "s0c48ncs"});
 		});
 	};
 	return (
 		<MyBtn
 			{...props}
 			size={"icon"}
+			variant={"secondary"}
 			onClick={callHandler}
 			disabled={isCalling}
 			className={cn("text-primary", className)}

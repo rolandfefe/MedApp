@@ -32,6 +32,8 @@ import getPatientFormStepper from "../formSteppers/patientFormStepper";
 import { Card, CardContent } from "../ui/card";
 import { Separator } from "../ui/separator";
 import { useCurrent } from "@/contexts/Current.context";
+import { cn } from "@/lib/utils";
+import ToastErrCard from "../cards/ToastErrCard";
 
 export default function PatientForm({
 	action = "create",
@@ -50,12 +52,12 @@ export default function PatientForm({
 		resolver: zodResolver(patientZodSchema),
 		defaultValues: {
 			DOB: patient?.DOB as string,
-			gender: patient?.gender,
-			race: patient?.race,
-			occupation: patient?.occupation,
-			maritalStatus: patient?.maritalStatus,
+			gender: patient?.gender || "",
+			race: patient?.race || "",
+			occupation: patient?.occupation || "",
+			maritalStatus: patient?.maritalStatus || "",
 			languages: patient?.languages?.join(", "),
-			// emergencyContacts
+			emergencyContacts: patient?.emergencyContacts || [],
 		},
 	});
 
@@ -94,28 +96,14 @@ export default function PatientForm({
 	const errHandler = async (err: FieldErrors<PatientFormData>) => {
 		toast.custom(
 			(t) => (
-				<Card className="w-[95vw] sm:w-72 relative">
-					<MyBtn
-						size="icon"
-						variant={"secondary"}
-						onClick={() => toast.dismiss(t.id)}
-						className="size-7 rounded-xl hover:text-destructive absolute top-2 right-2 "
-					>
-						<X />
-					</MyBtn>
-					<CardContent className="px-2 py-1">
-						<Heading className="text-xl">🚨Form input error(s) </Heading>
-						<Separator className="my-1" />
-						<div>
-							{Object.entries(err).map(([k, v]) => (
-								<p key={k} className={"text-sm text-secondary-foreground"}>
-									<span className="font-medium text-destructive">{k}: </span>
-									<code>{v.message}</code>
-								</p>
-							))}
-						</div>
-					</CardContent>
-				</Card>
+				<ToastErrCard t={t}>
+					{Object.entries(err).map(([k, v]) => (
+						<p key={k} className={"text-sm text-secondary-foreground"}>
+							<span className="font-medium text-destructive">{k}: </span>
+							<code>{v.message}</code>
+						</p>
+					))}
+				</ToastErrCard>
 			),
 			{ id: "adiou2b947" }
 		);
@@ -174,16 +162,17 @@ export default function PatientForm({
 export function PatientFormPanel({
 	children,
 	action = "create",
+	className,
 }: {
 	children: ReactNode;
 	action?: "create" | "update";
+	className?: string;
 }) {
-	// const [isOpen, setIsOpen] = useState<boolean>(false);
-
 	return (
-		// <FormPanel open={isOpen} onOpenChange={setIsOpen}>
 		<FormPanel>
-			<FormPanelTrigger asChild>{children}</FormPanelTrigger>
+			<FormPanelTrigger asChild className={cn("", className)}>
+				{children}
+			</FormPanelTrigger>
 
 			<FormPanelContent>
 				<PatientForm action={action} />

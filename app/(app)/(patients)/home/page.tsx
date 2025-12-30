@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function page() {
 	return (
-		<div className="">
+		<div className="mt-3">
 			<ArticlesFeed />
 		</div>
 	);

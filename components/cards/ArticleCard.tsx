@@ -4,6 +4,7 @@ import { Badge } from "../ui/badge";
 import moment from "moment";
 import { Eye, Stars, ThumbsDown, ThumbsUp } from "lucide-react";
 import { ComponentProps } from "react";
+import DoctorCard from "./DoctorCard";
 
 export default function ArticleCard({ article }: { article: IArticle }) {
 	const currentDoctor = useCurrent().currentDoctor!;
@@ -13,10 +14,12 @@ export default function ArticleCard({ article }: { article: IArticle }) {
 			<div className="relative p-3 glass glass-shadow rounded-2xl bg-secondary space-y-2 h-32">
 				<Badge
 					variant={"secondary"}
-					className="absolute top-2 right-2 text-primary"
+					className="absolute top-2 right-2 flex items-center gap-x-1 text-primary"
 				>
+					<Stars size={20} />
 					{article.meta?.type}
 				</Badge>
+
 				<div>
 					<p className="text-xl font-medium text-primary mb-1">
 						{article.title}
@@ -74,7 +77,69 @@ ArticleCard.SM = ({ article }: ComponentProps<typeof ArticleCard>) => {
 				</div>
 				<Badge
 					variant={"secondary"}
-					className="flex items-center gap-x-2 text-primary"
+					className="flex items-center gap-x-1 text-primary"
+				>
+					<Stars size={20} />
+					{article.meta?.type}
+				</Badge>
+
+				<div className="flex items-center justify-between">
+					<div className="flex items-center">
+						<Badge variant="secondary" className="font-medium">
+							<DoctorCard.Tag doctor={article.authors[0]! as IDoctor} />
+						</Badge>
+
+						{/* {article.authors!.map((author, i) => {
+							const user = author.user as IUser;
+
+							return (
+								<Badge variant="secondary" key={i} className="font-medium">
+									<DoctorCard.Tag doctor={author as IDoctor} />
+								</Badge>
+							);
+						})} */}
+					</div>
+
+					<p className="text-xs text-muted-foreground ">
+						{moment(article.createdAt).fromNow(true)}
+					</p>
+
+					<div className="flex items-center gap-x-2 border py-1 px-2 rounded-3xl text-xs text-muted-foreground">
+						<div className="flex items-center gap-x-1">
+							<Eye size={18} />
+							<span>{article.meta!.reads?.length ?? 0}</span>
+						</div>
+						<div className="flex items-center gap-x-1">
+							<ThumbsUp size={18} />
+							<span>{article.meta!.likes?.length ?? 0}</span>
+						</div>
+						<div className="flex items-center gap-x-1">
+							<ThumbsDown size={18} />
+							<span>{article.meta!.dislikes?.length ?? 0}</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</Link>
+	);
+};
+
+ArticleCard.MD = ({ article }: ComponentProps<typeof ArticleCard>) => {
+	return (
+		<Link href={`/article/${article.id}`}>
+			<div className="relative p-3 glass glass-shadow rounded-2xl bg-secondary space-y-2 sm:h-32">
+				<div>
+					<p className="text-xl font-medium text-primary mb-1">
+						{article.title}
+					</p>
+					<p className="text-xs text-muted-foreground line-clamp-2">
+						{article.description}
+					</p>
+				</div>
+
+				<Badge
+					variant={"secondary"}
+					className="flex items-center gap-x-1 text-primary"
 				>
 					<Stars size={20} />
 					{article.meta?.type}
@@ -94,7 +159,7 @@ ArticleCard.SM = ({ article }: ComponentProps<typeof ArticleCard>) => {
 					</div>
 
 					<p className="text-xs text-muted-foreground ">
-						{moment(article.createdAt).fromNow(true)}
+						{moment(article.createdAt).fromNow()}
 					</p>
 
 					<div className="flex items-center gap-x-2 border py-1 px-2 rounded-3xl text-xs text-muted-foreground">

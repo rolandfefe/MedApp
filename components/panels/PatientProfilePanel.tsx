@@ -56,7 +56,7 @@ export default function PatientProfilePanel({
 				{children}
 			</DynamicPanelTrigger>
 
-			<DynamicPanelContent className="sm:flex gap-1 items-start p-0 overflow-hidden min-h-[94vh]! sm:min-h-[70vh]! sm:min-w-[75vw]! md:min-w-[60vw]!">
+			<DynamicPanelContent className="sm:flex gap-1 sm:items-start p-0 overflow-hidden min-h-[94vh]! sm:min-h-[70vh]! sm:min-w-[75vw]! md:min-w-[60vw]!">
 				<PatientProfilePanel.InfoAside
 					patient={patient}
 					className="h-fit w-[97%] rounded-lg sm:rounded-r-none mx-auto sm:h-[75vh] sm:w-56"
@@ -175,7 +175,7 @@ export default function PatientProfilePanel({
 										key={c.id}
 										variants={motionVariants}
 										layout
-										className="space-y-2 relative"
+										className="space-y-3 relative"
 									>
 										<div className="flex item-center gap-x-1">
 											<Heading className="text-xs md:text-sm font-medium text-muted-foreground flex items-center gap-x-1">
@@ -199,7 +199,10 @@ export default function PatientProfilePanel({
 											Priority - {c.priority}
 										</Badge>
 
-										<CallBtn contact={c.} className="absolute bottom-1 right-1" />
+										<CallBtn
+											contact={c.phone}
+											className="absolute bottom-1 right-1"
+										/>
 									</motion.div>
 								))}
 							</motion.section>
