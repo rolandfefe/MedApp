@@ -67,7 +67,7 @@ export default function PatientAppointmentFeeds() {
 
 			<section className="flex gap-3 flex-col sm:flex-row flex-wrap">
 				<AnimatePresence>
-					{filterResults.length > 0 ? (
+					{appointments.length > 0 && filterResults.length > 0 ? (
 						filterResults.map((appointment) => {
 							const isLastItem =
 								appointments[appointments.length - 1].id === appointment.id;
