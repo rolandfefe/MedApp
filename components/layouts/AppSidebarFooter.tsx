@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { Activity, useState } from "react";
 import MyBtn from "../custom/MyBtn";
 import { DoctorFormPanel } from "../forms/DoctorForm";
 import { PatientFormPanel } from "../forms/patientForm";
@@ -24,6 +24,7 @@ import {
 	DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { SidebarMenuButton, useSidebar } from "../ui/sidebar";
+import PatientProfilePanel from "../panels/PatientProfilePanel";
 
 export default function AppSidebarFooter() {
 	const { state: sidebarState } = useSidebar();
@@ -36,20 +37,22 @@ export default function AppSidebarFooter() {
 
 	return (
 		<div className="space-y-2">
-			{/* <NavItem
-				icon={"user-circle"}
-				link="/profile"
-				name="Profile"
-				className="border"
-			/> */}
-
-			{doctor && (
+			{doctor ? (
 				<DoctorProfilePanel doctor={doctor}>
 					<SidebarMenuButton className="border cursor-pointer">
 						<UserCircle />
 						Profile
 					</SidebarMenuButton>
 				</DoctorProfilePanel>
+			) : (
+				patient && (
+					<PatientProfilePanel patient={patient}>
+						<SidebarMenuButton className="border cursor-pointer">
+							<UserCircle />
+							Profile
+						</SidebarMenuButton>
+					</PatientProfilePanel>
+				)
 			)}
 
 			<RemindersPanel reminders={reminders}>

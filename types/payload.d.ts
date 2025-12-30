@@ -471,7 +471,6 @@ export interface Patient {
     | null;
   updatedAt: string;
   createdAt: string;
-  deletedAt?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1085,7 +1084,6 @@ export interface PatientsSelect<T extends boolean = true> {
       };
   updatedAt?: T;
   createdAt?: T;
-  deletedAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

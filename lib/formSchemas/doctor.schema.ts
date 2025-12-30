@@ -99,7 +99,6 @@ export const doctorFormSchema = z.object({
 	}),
 });
 
-
 // Optional: Create schemas for partial updates
 export const doctorUpdateSchema = doctorFormSchema.partial();
 

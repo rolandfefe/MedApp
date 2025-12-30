@@ -77,7 +77,7 @@ export default function DoctorProfilePanel({
 			</DynamicPanelTrigger>
 
 			<DynamicPanelContent className="sm:flex gap-1 items-start p-0 overflow-hidden min-h-[94vh]! sm:min-h-[70vh]! sm:min-w-[75vw]! md:min-w-[60vw]!">
-				<DoctorProfilePanel.UserInfoAside
+				<DoctorProfilePanel.InfoAside
 					doctor={doctor}
 					className="h-fit w-[97%] rounded-lg sm:rounded-r-none mx-auto sm:h-[75vh] sm:w-56"
 				/>
@@ -109,7 +109,7 @@ export default function DoctorProfilePanel({
 	);
 }
 
-DoctorProfilePanel.UserInfoAside = ({
+DoctorProfilePanel.InfoAside = ({
 	doctor,
 	className,
 }: {
@@ -120,19 +120,9 @@ DoctorProfilePanel.UserInfoAside = ({
 
 	return (
 		<div className={cn("relative bg-secondary glass-shadow p2", className)}>
-			{/* <UserCard user={doctor.user as IUser} /> */}
 			<section>
-				{/* {isSmScreen ? (
-					<DoctorCard.LG doctor={doctor} className="shadow-none border-0" />
-					) : (
-						<DoctorCard.MD doctor={doctor} hideBadges className="shadow-none" />
-						)} */}
 				<DoctorCard.LG doctor={doctor} className="shadow-none border-0" />
-				{/* <Separator className="mb-2" /> */}
 			</section>
-			{/* <div className="p-2 bg-background/40 text-xs rounded-lg text-muted-foreground ">
-				<p>{doctor.bio}</p>
-			</div> */}
 		</div>
 	);
 };

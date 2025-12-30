@@ -62,7 +62,7 @@ export default function PatientAppointmentFeeds() {
 	}, [filters, appointments]);
 
 	return (
-		<div className="space-y-2 ">
+		<div className="space-y-2">
 			<FilterBar filters={filters} setFilters={setFilters} />
 
 			<section className="flex gap-3 flex-col sm:flex-row flex-wrap">

@@ -3,6 +3,8 @@ import { CollectionConfig } from "payload";
 
 export const Patients: CollectionConfig = {
 	slug: "patients",
+	// trash: true, // ! Think about this
+
 	// ! typescript:  { interface: "IPatient" },
 	fields: [
 		{ name: "user", type: "relationship", relationTo: "users", required: true },
@@ -47,5 +49,4 @@ export const Patients: CollectionConfig = {
 			// maxRows: 3,
 		},
 	],
-	trash: true,
 };

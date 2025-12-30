@@ -32,6 +32,7 @@ import { Separator } from "../ui/separator";
 import { createDoctor, updateDoctor } from "@/lib/actions/doctor.actions";
 import { useCurrent } from "@/contexts/Current.context";
 import { cn } from "@/lib/utils";
+import ToastErrCard from "../cards/ToastErrCard";
 
 export default function DoctorForm({
 	action,
@@ -48,12 +49,32 @@ export default function DoctorForm({
 
 	const form = useForm<DoctorFormData>({
 		resolver: zodResolver(doctorFormSchema),
+		// ! Fix default type errs [enums & dates]
 		defaultValues: {
 			bio: doctor?.bio || "",
-			DOB: (doctor?.DOB as string) || "",
+			DOB: doctor?.DOB || "",
 			gender: doctor?.gender || "",
 			languages: doctor?.languages!.join(", "),
-			contact: doctor?.contact,
+			contact: doctor?.contact || {},
+			credentials: {
+				...doctor.credentials,
+				hospitalAffiliations:
+					doctor.credentials.hospitalAffiliations!.map((h) => ({
+						...h,
+						roles: h.roles.join(", "),
+						endDate: h.endDate,
+					})) || [],
+				licenses: doctor.credentials.licenses!.map((l) => ({
+					...l,
+					type: l.type,
+				})),
+			},
+			// credentials: doctor.credentials || {},
+			specialties:
+				doctor.specialties!.map((s) => ({
+					...s,
+					procedures: s.procedures.join(", "),
+				})) || [],
 		},
 	});
 
@@ -77,7 +98,16 @@ export default function DoctorForm({
 			},
 		};
 
-		if (action === "Create") {
+		if (doctor) {
+			// ? Update
+			startTransition(async () => {
+				await updateDoctor({ ...doctor, ...cleanData });
+				form.reset();
+				toast.success("Doctor Profile updated.");
+				setIsSuccess(true);
+			});
+		} else {
+			// ? Create
 			startTransition(async () => {
 				const { id } = await createDoctor(cleanData);
 				form.reset();
@@ -87,13 +117,6 @@ export default function DoctorForm({
 				setIsSuccess(true);
 				router.push(`/doctor/${encodeURIComponent(id!)}`);
 			});
-		} else if (action === "Update" && doctor) {
-			startTransition(async () => {
-				await updateDoctor({ ...doctor, ...cleanData });
-				form.reset();
-				toast.success("Doctor Profile updated.");
-				setIsSuccess(true);
-			});
 		}
 	};
 
@@ -101,28 +124,14 @@ export default function DoctorForm({
 		console.log("err: ", err);
 		toast.custom(
 			(t) => (
-				<Card className="w-[95vw] sm:w-72 relative">
-					<MyBtn
-						size="icon"
-						variant={"secondary"}
-						onClick={() => toast.dismiss(t.id)}
-						className="size-7 rounded-xl hover:text-destructive absolute top-2 right-2 "
-					>
-						<X />
-					</MyBtn>
-					<CardContent className="px-2 py-1">
-						<Heading className="text-xl">🚨Form input error(s) </Heading>
-						<Separator className="my-1" />
-						<div>
-							{Object.entries(err).map(([k, v]) => (
-								<p key={k} className={"text-sm text-secondary-foreground"}>
-									<span className="font-medium text-destructive">{k}: </span>
-									<code>{v.message}</code>
-								</p>
-							))}
-						</div>
-					</CardContent>
-				</Card>
+				<ToastErrCard t={t}>
+					{Object.entries(err).map(([k, v]) => (
+						<p key={k} className={"text-sm text-secondary-foreground"}>
+							<span className="font-medium text-destructive">{k}: </span>
+							<code>{v.message}</code>
+						</p>
+					))}
+				</ToastErrCard>
 			),
 			{ id: "adiou2b947" }
 		);
@@ -137,11 +146,11 @@ export default function DoctorForm({
 
 	return (
 		<div className="">
-			<div className="px-2 sticky top-0 bg-background/40 backdrop-blur-2xl backdrop-saturate-150">
+			<div className="px-2 sticky top-0 glass-bg">
 				<Heading className="text-xl md:text-2xl text-primary">
 					<Hospital /> Doctor Form <Badge variant={"secondary"}>{action}</Badge>{" "}
 				</Heading>
-				<Separator className="my-3" />
+				<Separator className="mt-1 my-3" />
 			</div>
 
 			<Form {...form}>
