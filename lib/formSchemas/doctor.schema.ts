@@ -8,6 +8,8 @@ import {
 	eMedicalSpecialties,
 	eRating,
 } from "@/types/enums/enums";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 // Medical License Schema
 const licenseSchema = z.object({
@@ -127,3 +129,39 @@ export {
 	contactSchema,
 	metricsSchema,
 };
+
+// Form Hook
+export const useDoctorForm = (doctor?: IDoctor) =>
+	useForm({
+		resolver: zodResolver(doctorFormSchema),
+		// ! Fix default type errs [enums & dates]
+		defaultValues: {
+			bio: doctor?.bio || "",
+			DOB: doctor?.DOB || "",
+			gender: doctor?.gender || "",
+			languages: doctor ? doctor.languages?.join(", ") : "",
+			contact: doctor ? doctor.contact : {},
+			credentials: {
+				...doctor.credentials,
+				hospitalAffiliations:
+					doctor.credentials.hospitalAffiliations!.map((h) => ({
+						...h,
+						roles: h.roles.join(", "),
+						endDate: h.endDate,
+					})) || [],
+				licenses: doctor
+					? doctor.credentials.licenses!.map((l) => ({
+							...l,
+							type: l.type,
+					  }))
+					: [],
+			},
+			// credentials: doctor.credentials || {},
+			specialties: doctor
+				? doctor.specialties!.map((s) => ({
+						...s,
+						procedures: s.procedures.join(", "),
+				  }))
+				: [],
+		},
+	});

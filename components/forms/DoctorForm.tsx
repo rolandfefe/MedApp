@@ -4,17 +4,13 @@ import { Badge } from "@/components/ui/badge";
 import { Form } from "@/components/ui/form";
 import { useCurrent } from "@/contexts/Current.context";
 import { createDoctor, updateDoctor } from "@/lib/actions/doctor.actions";
-import {
-	DoctorFormData,
-	doctorFormSchema,
-} from "@/lib/formSchemas/doctor.schema";
+import { DoctorFormData, useDoctorForm } from "@/lib/formSchemas/doctor.schema";
 import { PatientFormData } from "@/lib/formSchemas/patient.schema";
 import { cn } from "@/lib/utils";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Hospital } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { ReactNode, useState, useTransition } from "react";
-import { FieldErrors, useForm } from "react-hook-form";
+import { FieldErrors } from "react-hook-form";
 import toast from "react-hot-toast";
 import ToastErrCard from "../cards/ToastErrCard";
 import {
@@ -40,41 +36,11 @@ export default function DoctorForm({
 	const [activeStep, setActiveStep] = useState<number>(1);
 	const [isPending, startTransition] = useTransition();
 	const [isSuccess, setIsSuccess] = useState<boolean>(false);
-	const pathname = usePathname();
 	const router = useRouter();
 	const currentUser = useCurrent().currentUser as IUser;
 	const doctor = useCurrent().currentDoctor as IDoctor;
 
-	const form = useForm<DoctorFormData>({
-		resolver: zodResolver(doctorFormSchema),
-		// ! Fix default type errs [enums & dates]
-		defaultValues: {
-			bio: doctor?.bio || "",
-			DOB: doctor?.DOB || "",
-			gender: doctor?.gender || "",
-			languages: doctor ? doctor.languages?.join(", ") : "",
-			contact: doctor?.contact || {},
-			credentials: {
-				...doctor.credentials,
-				hospitalAffiliations:
-					doctor.credentials.hospitalAffiliations!.map((h) => ({
-						...h,
-						roles: h.roles.join(", "),
-						endDate: h.endDate,
-					})) || [],
-				licenses: doctor.credentials.licenses!.map((l) => ({
-					...l,
-					type: l.type,
-				})),
-			},
-			// credentials: doctor.credentials || {},
-			specialties:
-				doctor.specialties!.map((s) => ({
-					...s,
-					procedures: s.procedures.join(", "),
-				})) || [],
-		},
-	});
+	const form = useDoctorForm(doctor);
 
 	const submitHandler = async (data: DoctorFormData) => {
 		const cleanData: IDoctor = {
