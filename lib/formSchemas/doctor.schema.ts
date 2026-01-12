@@ -141,21 +141,23 @@ export const useDoctorForm = (doctor?: IDoctor) =>
 			gender: doctor?.gender || "",
 			languages: doctor ? doctor.languages?.join(", ") : "",
 			contact: doctor ? doctor.contact : {},
-			credentials: {
-				...doctor.credentials,
-				hospitalAffiliations:
-					doctor.credentials.hospitalAffiliations!.map((h) => ({
-						...h,
-						roles: h.roles.join(", "),
-						endDate: h.endDate,
-					})) || [],
-				licenses: doctor
-					? doctor.credentials.licenses!.map((l) => ({
-							...l,
-							type: l.type,
-					  }))
-					: [],
-			},
+			credentials: doctor
+				? {
+						...doctor.credentials,
+						hospitalAffiliations:
+							doctor.credentials.hospitalAffiliations!.map((h) => ({
+								...h,
+								roles: h.roles.join(", "),
+								endDate: h.endDate,
+							})) || [],
+						licenses: doctor
+							? doctor.credentials.licenses!.map((l) => ({
+									...l,
+									type: l.type,
+							  }))
+							: [],
+				  }
+				: {},
 			// credentials: doctor.credentials || {},
 			specialties: doctor
 				? doctor.specialties!.map((s) => ({
