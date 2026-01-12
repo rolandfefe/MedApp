@@ -18,7 +18,7 @@ export const createUser = async (data: IUser): Promise<IUser> => {
 			data,
 		});
 
-		updateTag("users");
+		// updateTag("users"); // ! Not necessary on creation / sign up
 
 		return user;
 	} catch (error: any) {
@@ -75,7 +75,7 @@ export const deleteUser = async (clerkId: string): Promise<void> => {
 };
 
 /**
- * @Fetches
+ * @Queries
  */
 export const getCurrentUser = async (): Promise<IUser> => {
 	try {
