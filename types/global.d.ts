@@ -83,7 +83,7 @@ declare global {
 		sent: boolean;
 		status?: "pending" | "sent" | "failed";
 	}
-	
+
 	interface CustomJwtSessionClaims extends Base {
 		metadata: {
 			onboardingComplete?: boolean;

@@ -11,7 +11,9 @@ const isDevMode = process.env.MY_ENV === "dev";
 /**
  * @Mutations
  */
-export const createUser = async (data: IUser): Promise<IUser> => {
+export const createUser = async (
+	data: Omit<IUser, "id" | "updatedAt" | "createdAt">
+): Promise<IUser> => {
 	try {
 		const user = await payload.create({
 			collection: "users",
