@@ -54,7 +54,7 @@ export default function DoctorForm({
 			bio: doctor?.bio || "",
 			DOB: doctor?.DOB || "",
 			gender: doctor?.gender || "",
-			languages: doctor?.languages!.join(", ") || "",
+			languages: doctor?.languages?.join(", ") || "",
 			contact: doctor?.contact || {},
 			credentials: {
 				...doctor.credentials,
