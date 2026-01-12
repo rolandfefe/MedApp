@@ -242,24 +242,6 @@ const EmergencyFormField = ({
 
 	return (
 		<div>
-			{fields.length < 3 && (
-				<MyBtn
-					variant={"secondary"}
-					size="sm"
-					onClick={() =>
-						append({
-							name: "",
-							phone: "",
-							priority: eRating.ONE,
-							relationship: "",
-						})
-					}
-					className="mb-3"
-				>
-					Add Contact <Plus />
-				</MyBtn>
-			)}
-
 			<div className="space-y-2">
 				{/* <AnimatePresence> */}
 				{fields.map((field, i) => (
@@ -363,6 +345,24 @@ const EmergencyFormField = ({
 						</div>
 					</motion.div>
 				))}
+
+				{fields.length < 3 && (
+					<MyBtn
+						variant={"secondary"}
+						size="sm"
+						onClick={() =>
+							append({
+								name: "",
+								phone: "",
+								priority: eRating.ONE,
+								relationship: "",
+							})
+						}
+						className="my-3"
+					>
+						Add Contact <Plus />
+					</MyBtn>
+				)}
 				{/* </AnimatePresence> */}
 			</div>
 		</div>

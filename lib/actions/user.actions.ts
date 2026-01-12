@@ -70,7 +70,7 @@ export const deleteUser = async (clerkId: string): Promise<void> => {
 			},
 		});
 
-		updateTag("users");
+		// updateTag("users"); // ! Avoid since interacts with webhooks
 	} catch (error: any) {
 		throw new Error(error);
 	}
