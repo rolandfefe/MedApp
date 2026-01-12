@@ -79,12 +79,17 @@ export const deleteUser = async (clerkId: string): Promise<void> => {
  */
 export const getCurrentUser = async (): Promise<IUser> => {
 	try {
-		// ? "user_44Ep69eYVSnVJI1XSnkXxkyFbkE" // - Dr Alexandar Chen
-		// ? "user_33Ny58nhEBwER0gBwuGgthOktnN" // - Dr lina
-		// ? "user_88It03icZWrZN5bWrpBbocJfoI" // - Dr Miah Johnson
-		const clerkId = isDevMode
-			? "user_44Oz69oiFCxEQ1hCwvHhuiPkuoO" // - Pat olivia brown
-			: (await currentUser())!.id;
+		let clerkId: string | null;
+
+		if (isDevMode) {
+			// ? "user_44Ep69eYVSnVJI1XSnkXxkyFbkE" // - Dr Alexandar Chen
+			// ? "user_33Ny58nhEBwER0gBwuGgthOktnN" // - Dr lina
+			// ? "user_44Oz69oiFCxEQ1hCwvHhuiPkuoO" // - Pat olivia brown
+			clerkId = "user_88It03icZWrZN5bWrpBbocJfoI"; // - Dr Miah Johnson
+		} else {
+			const clerkUser = await currentUser();
+			clerkId = clerkUser && clerkUser.id;
+		}
 
 		const {
 			docs: [user],
@@ -92,7 +97,7 @@ export const getCurrentUser = async (): Promise<IUser> => {
 			collection: "users",
 			limit: 1,
 			where: {
-				clerkId: { equals: clerkId },
+				clerkId: { equals: clerkId ?? "" },
 			},
 		});
 

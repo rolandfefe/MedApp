@@ -75,7 +75,6 @@ declare global {
 
 	interface IReminder extends Base {
 		user: IUser | string;
-
 		variant: eReminderVariants;
 		item: IAppointment | IMedication | string;
 		body: string;
@@ -84,7 +83,7 @@ declare global {
 		sent: boolean;
 		status?: "pending" | "sent" | "failed";
 	}
-
+	
 	interface CustomJwtSessionClaims extends Base {
 		metadata: {
 			onboardingComplete?: boolean;
