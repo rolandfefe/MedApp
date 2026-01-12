@@ -9,12 +9,14 @@ import { getCurrentUser } from "./user.actions";
 import { getVerdict } from "./verdict.actions";
 
 export const getCurrentPatient = async (): Promise<IPatient> => {
-	const { id: user } = await getCurrentUser();
+	const user = (await getCurrentUser())?.id;
+
 	return await getPatient({ user });
 };
 
 export const getCurrentDoctor = async (): Promise<IDoctor> => {
-	const { id: user } = await getCurrentUser();
+	const user = (await getCurrentUser())?.id;
+
 	return await getDoctor({ user });
 };
 
