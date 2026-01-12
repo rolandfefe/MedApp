@@ -52,3 +52,13 @@ export const getIsAppointmentDoctor = (
 	appointment: IAppointment,
 	currentUser: IUser
 ): boolean => appointment?.doctor!.user.id == currentUser.id;
+
+export function enumToArray<T extends string>(enumObj: {
+	[key: string]: T;
+}): [T, ...T[]] {
+	const values = Object.values(enumObj) as T[];
+	if (values.length === 0) {
+		throw new Error("Enum must have at least one value");
+	}
+	return [values[0], ...values.slice(1)];
+}

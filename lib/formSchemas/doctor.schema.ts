@@ -10,15 +10,13 @@ import {
 } from "@/types/enums/enums";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { enumToArray } from "../utils";
 
 // Medical License Schema
 const licenseSchema = z.object({
 	licenseNumber: z.string().min(1, "License number is required"),
-	type: z.nativeEnum(eLicenseType).nullable(),
-	status: z
-		.nativeEnum(eLicenseStatus)
-		.nullable()
-		.default(eLicenseStatus.ACTIVE),
+	type: z.enum(enumToArray(eLicenseType)),
+	status: z.enum(enumToArray(eLicenseStatus)).default(eLicenseStatus.ACTIVE),
 	issuingState: z.string().min(1, "Issuing state is required"),
 	expirationDate: z.string(),
 });
@@ -28,7 +26,7 @@ const boardCertificationsSchema = z.object({
 	certificationId: z.string().min(1, "Certification ID is required"),
 	boardName: z.string().min(1, "Board name is required"),
 	status: z
-		.nativeEnum(eCertificationStatus)
+		.enum(enumToArray(eCertificationStatus))
 		.default(eCertificationStatus.ACTIVE),
 	date: z.string(),
 	expirationDate: z.string(),
@@ -47,7 +45,7 @@ const hospitalAffiliationSchema = z.object({
 const medicalCertificationSchema = z.object({
 	name: z.string(),
 	institution: z.string().min(1, "Institution is required"),
-	type: z.nativeEnum(eMedicalCertificationTypes),
+	type: z.enum(enumToArray(eMedicalCertificationTypes)),
 	date: z.string(),
 });
 
@@ -70,11 +68,11 @@ const metricsSchema = z.object({
 
 // Specialty Schema
 const specialtySchema = z.object({
-	primary: z.nativeEnum(eMedicalSpecialties, {
+	primary: z.enum(enumToArray(eMedicalSpecialties), {
 		required_error: "Primary specialty is required",
 	}),
-	secondary: z.nativeEnum(eMedicalSpecialties).optional(),
-	procedures: z.string().min(1, "Procedure name is required"),
+	secondary: z.enum(enumToArray(eMedicalSpecialties)).optional(),
+	procedures: z.string().min(1, "Procedure name is required"), // ? could be optional
 });
 
 // Contact Schema
@@ -87,7 +85,7 @@ const contactSchema = z.object({
 // Main Doctor Form Schema
 export const doctorFormSchema = z.object({
 	DOB: z.string(),
-	gender: z.nativeEnum(eGender),
+	gender: z.enum(["Male", "Female", "Other"]),
 	languages: z.string().optional(),
 	bio: z.string().max(5000, "Bio must be 5000 characters or less").optional(),
 	credentials: credentialsSchema,
@@ -138,7 +136,7 @@ export const useDoctorForm = (doctor?: IDoctor) =>
 		defaultValues: {
 			bio: doctor?.bio || "",
 			DOB: doctor?.DOB || "",
-			gender: doctor?.gender || "",
+			gender: doctor?.gender || eGender.OTHER,
 			languages: doctor ? doctor.languages?.join(", ") : "",
 			contact: doctor ? doctor.contact : {},
 			credentials: doctor
