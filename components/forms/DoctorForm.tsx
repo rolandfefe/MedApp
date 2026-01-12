@@ -2,17 +2,21 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Form } from "@/components/ui/form";
+import { useCurrent } from "@/contexts/Current.context";
+import { createDoctor, updateDoctor } from "@/lib/actions/doctor.actions";
 import {
 	DoctorFormData,
 	doctorFormSchema,
 } from "@/lib/formSchemas/doctor.schema";
 import { PatientFormData } from "@/lib/formSchemas/patient.schema";
+import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Hospital, X } from "lucide-react";
+import { Hospital } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { ReactNode, useState, useTransition } from "react";
 import { FieldErrors, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import ToastErrCard from "../cards/ToastErrCard";
 import {
 	FormPanel,
 	FormPanelContent,
@@ -25,14 +29,8 @@ import {
 	StepperContent,
 	StepperTrigger,
 } from "../custom/motion-stepper";
-import MyBtn from "../custom/MyBtn";
 import getDoctorFormStepper from "../formSteppers/doctorFormStepper";
-import { Card, CardContent } from "../ui/card";
 import { Separator } from "../ui/separator";
-import { createDoctor, updateDoctor } from "@/lib/actions/doctor.actions";
-import { useCurrent } from "@/contexts/Current.context";
-import { cn } from "@/lib/utils";
-import ToastErrCard from "../cards/ToastErrCard";
 
 export default function DoctorForm({
 	action,
@@ -54,7 +52,7 @@ export default function DoctorForm({
 			bio: doctor?.bio || "",
 			DOB: doctor?.DOB || "",
 			gender: doctor?.gender || "",
-			languages: doctor?.languages?.join(", ") || "",
+			languages: doctor ? doctor.languages?.join(", ") : "",
 			contact: doctor?.contact || {},
 			credentials: {
 				...doctor.credentials,
