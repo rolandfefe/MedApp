@@ -50,7 +50,7 @@ export const deletePlan = async (id: string) => {
 };
 
 /**
- * @Fetches
+ * @Queries
  */
 export const getPlan = cache(
 	async ({
@@ -104,6 +104,7 @@ export const getPlans = cache(
 				where: {
 					supervisor: { equals: supervisor },
 				},
+				depth: 3,
 				page,
 				limit,
 			});
@@ -147,6 +148,8 @@ export const getPlansByPatient = cache(
 				where: {
 					appointment: { in: appointmentsIDArr },
 				},
+				depth: 3,
+
 				page,
 				limit,
 			});

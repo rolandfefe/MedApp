@@ -5,7 +5,7 @@ import { createContext, ReactNode, useContext, useMemo } from "react";
 interface ContextProps {
 	appointment: IAppointment;
 	referrals: IReferral[];
-	patientHistory: IHistory;
+	patientHistory?: IHistory;
 	verdict?: IVerdict;
 	diagnosis?: IDiagnosis;
 	recurrencePlan?: IRecurrencePlan;

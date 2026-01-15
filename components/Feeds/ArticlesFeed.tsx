@@ -49,6 +49,7 @@ export default function ArticlesFeed() {
 								scale: 1.01,
 							}}
 							whileTap={{ scale: 1 }}
+							key={article.id}
 							className="flex-1 basis-full sm:basis-[45%]"
 						>
 							{isSmScreen ? (

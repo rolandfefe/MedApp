@@ -161,7 +161,7 @@ const EssentialsHistorySection = ({
 							<MyBtn size={"sm"}>Current History</MyBtn>
 						</FormPanelTrigger>
 						<FormPanelContent>
-							<PatientHistorySection history={patientHistory} />
+							<PatientHistorySection history={patientHistory!} />
 						</FormPanelContent>
 					</FormPanel>
 					<MyBtn size={"sm"} variant={"secondary"} className="text-primary">

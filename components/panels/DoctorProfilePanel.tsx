@@ -72,7 +72,7 @@ export default function DoctorProfilePanel({
 
 	return (
 		<DynamicPanel>
-			<DynamicPanelTrigger {...props} className={cn("", className)}>
+			<DynamicPanelTrigger {...props} className={cn("cursor-pointer", className)}>
 				{children}
 			</DynamicPanelTrigger>
 

@@ -80,7 +80,7 @@ export default function DiagnosisForm() {
 			doctor: currentDoctor.id!,
 			chiefComplaint: complaintEditorState,
 			notes: notesEditorState,
-			history: patientHistory.id,
+			history: patientHistory!.id,
 		};
 
 		console.log(data, notesEditorState, complaintEditorState);

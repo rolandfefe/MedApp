@@ -133,7 +133,7 @@ ConsentControl.Doctor = () => {
 							</FormPanelTrigger>
 							<FormPanelContent>
 								{consent === ePatientConsent.HISTORY ? (
-									<PatientHistorySection history={patientHistory} />
+									<PatientHistorySection history={patientHistory!} />
 								) : (
 									"Other Panels"
 								)}

@@ -4,6 +4,7 @@ import config from "@/payload.config";
 import { eDiagnosisStatus } from "@/types/enums/enums";
 import { unstable_cache as cache, updateTag } from "next/cache";
 import { getPayload } from "payload";
+import { getAppointments } from "./appointment.actions";
 
 const payload = await getPayload({ config });
 
@@ -106,6 +107,9 @@ export const getDiagnoses = async ({
 	limit?: number;
 }): Promise<{ diagnoses: IDiagnosis[]; nextPg: number }> => {
 	try {
+		const { appointments } = await getAppointments({ patient, doctor });
+		const appointmentsIdArr = appointments.map((a) => a.id);
+
 		const {
 			docs: diagnoses,
 			hasNextPage,
@@ -114,8 +118,7 @@ export const getDiagnoses = async ({
 			collection: "diagnoses",
 			where: {
 				or: [
-					{ patient: { equals: patient } },
-					{ doctor: { equals: doctor } },
+					{ appointment: { in: appointmentsIdArr } },
 					{ status: { equals: status } },
 				],
 			},

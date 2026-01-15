@@ -49,7 +49,7 @@ export function PlanProvider({
 	plansInit: IRecurrencePlan[];
 	variant: "Patient" | "Doctor";
 } & ComponentProps<"div">) {
-	const [plans, setPlans] = useState<IRecurrencePlan[]>([]);
+	const [plans, setPlans] = useState<IRecurrencePlan[]>(plansInit);
 	const [nextPg, setNextPg] = useState<number>();
 	const [hasNextPg, setHasNextPg] = useState<boolean>(true);
 	const { currentDoctor: doctor, currentPatient } = useCurrent();

@@ -3,6 +3,8 @@
 import { getPayload } from "payload";
 import config from "@payload-config";
 import { updateTag, unstable_cache as cache } from "next/cache";
+import { getAppointments } from "./appointment.actions";
+import { getDiagnoses } from "./diagnosis.actions";
 
 const payload = await getPayload({ config });
 
@@ -85,6 +87,7 @@ export const getVerdict = cache(
 /**
  * @Utils
  */
+
 export const getVerdicts = cache(
 	async ({
 		patient,
@@ -98,27 +101,25 @@ export const getVerdicts = cache(
 		limit?: number;
 	}) => {
 		try {
+			// get Diagnoses
+			const { diagnoses } = await getDiagnoses({ patient, doctor });
+			const diagnosesIdArr = diagnoses.map((d) => d.id);
+
+			// get Verdicts
 			const {
-				docs: allVerdicts,
+				docs: verdicts,
 				hasNextPage,
 				nextPage,
 			} = await payload.find({
 				collection: "Verdict",
-				limit,
+				where: {
+					diagnosis: { in: diagnosesIdArr },
+				},
 				page,
+				limit,
 			});
 
-			const verdicts: IVerdict[] = allVerdicts.filter(({ diagnosis }) => {
-				const appointment = diagnosis.appointment as IAppointment;
-
-				return patient
-					? appointment.patient.id === patient
-					: doctor
-					? appointment.doctor.id === doctor
-					: [];
-			});
-
-			return { verdicts, hasNextPage, nextPage: nextPage ?? page };
+			return { verdicts, hasNextPage, nextPage };
 		} catch (error: any) {
 			throw new Error(error);
 		}

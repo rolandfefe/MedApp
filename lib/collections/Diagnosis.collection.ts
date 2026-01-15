@@ -13,15 +13,10 @@ export const Diagnosis: CollectionConfig = {
 			name: "appointment",
 			type: "relationship",
 			relationTo: "appointments",
-			unique: true,
+			unique: true, // ? Strict One diagnosis for each appointment
 			required: true,
 		},
-		// {
-		// 	name: "doctor",
-		// 	type: "relationship",
-		// 	relationTo: "doctors",
-		// 	required: true,
-		// },
+
 		{
 			name: "history",
 			type: "relationship",
@@ -33,7 +28,6 @@ export const Diagnosis: CollectionConfig = {
 			type: "relationship",
 			relationTo: "healthStatuses",
 		},
-
 		{ name: "templateUsed", type: "text" },
 		{ name: "onsetDate", type: "date", required: true },
 		{ name: "dateResolved", type: "date" },

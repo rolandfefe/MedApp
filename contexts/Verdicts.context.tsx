@@ -36,7 +36,7 @@ export const VerdictsProvider = ({
 	children,
 	...props
 }: { verdictsInit: IVerdict[] } & ComponentProps<"div">) => {
-	const [verdicts, setVerdicts] = useState<IVerdict[]>([]);
+	const [verdicts, setVerdicts] = useState<IVerdict[]>(verdictsInit ?? []);
 	const [nextPg, setNextPg] = useState<number>();
 	const [hasNextPg, setHasNextPg] = useState<boolean>(true);
 	const { currentPatient, currentDoctor } = useCurrent();

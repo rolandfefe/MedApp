@@ -112,7 +112,7 @@ DoctorCard.XS = ({
 	);
 };
 
-DoctorCard.MD = ({ doctor, className }: ComponentProps<typeof DoctorCard>) => {
+DoctorCard.MD = ({ doctor, className, hideProfile = false }: ComponentProps<typeof DoctorCard>) => {
 	const user = doctor.user as IUser;
 
 	return (
