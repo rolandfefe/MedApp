@@ -65,8 +65,8 @@ export const VerdictsProvider = ({
 				async (_, i) =>
 					(
 						await getVerdicts({
-							patient: currentPatient!.id,
-							doctor: currentDoctor!.id,
+							patient: currentPatient?.id,
+							doctor: currentDoctor?.id,
 							page: i + 1,
 						})
 					).verdicts

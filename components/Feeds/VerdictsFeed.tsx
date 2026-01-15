@@ -8,6 +8,8 @@ import MedicationCard from "../cards/MedicationCard";
 import ProcedureCard from "../cards/ProcedureCard";
 import TherapyCard from "../cards/TherapyCard";
 import { Flower, HandHelping, Pill } from "lucide-react";
+import { useSidebar } from "../ui/sidebar";
+import { cn } from "@/lib/utils";
 
 const motionVariants: Variants = {
 	hidden: {
@@ -22,17 +24,18 @@ const motionVariants: Variants = {
 
 export default function VerdictsFeed() {
 	const { isLoading, loadRef, verdicts } = useVerdicts();
+	const { state: sidebarState } = useSidebar();
 
 	const medications =
 		verdicts.flatMap((v) => v.treatmentPlan.medications) ?? [];
 	const procedures = verdicts.flatMap((v) => v.treatmentPlan.procedures) ?? [];
 	const therapies = verdicts.flatMap((v) => v.treatmentPlan.therapies) ?? [];
 
-	console.log("Pat verdicts", verdicts);
+	// console.log("Pat verdicts", verdicts);
 
 	return (
-		<Tabs defaultValue="Drugs" className="pt-3 sm:p-3">
-			<TabsList className="flex mx-auto rounded-xl">
+		<Tabs defaultValue="Drugs" className="pt3 sm:p-3">
+			<TabsList className="flex mx-auto rounded-xl sticky top-0">
 				<TabsTrigger value="Drugs" className="flex items-center gap-x-1">
 					<Pill size={20} />
 					<span>Drugs</span>
@@ -68,32 +71,6 @@ export default function VerdictsFeed() {
 					)}
 				</motion.section>
 			</TabsContent>
-			<TabsContent value="Procedures">
-				<motion.section
-					variants={motionVariants}
-					initial="hidden"
-					animate="visible"
-					transition={{
-						delayChildren: stagger(0.3),
-					}}
-					className="flex flex-col flex-wrap sm:flex-row sm:items-center gap-3"
-				>
-					{procedures.length > 0 ? (
-						procedures.map((p) => (
-							<motion.div
-								variants={motionVariants}
-								key={p!.id}
-								layout
-								className="flex-1 sm:basis-[45%] md:basis-[30%]"
-							>
-								<ProcedureCard procedure={p!} />
-							</motion.div>
-						))
-					) : (
-						<Void msg="No procedure prescribed🏃‍♀️" />
-					)}
-				</motion.section>
-			</TabsContent>
 			<TabsContent value="Therapies">
 				<motion.section
 					variants={motionVariants}
@@ -110,13 +87,50 @@ export default function VerdictsFeed() {
 								variants={motionVariants}
 								key={t!.id}
 								layout
-								className="flex-1 sm:basis-[45%] md:basis-[30%]"
+								className={cn(
+									"flex-1 basis-full  lg:basis-[30%]",
+									sidebarState === "expanded"
+										? "sm:basis-full md:basis-[45%]"
+										: "sm:basis-[45%] md:basis-[30%] "
+								)}
 							>
 								<TherapyCard therapy={t!} />
 							</motion.div>
 						))
 					) : (
 						<Void msg="No therapies prescribed🧘" />
+					)}
+				</motion.section>
+			</TabsContent>
+
+			<TabsContent value="Procedures">
+				<motion.section
+					variants={motionVariants}
+					initial="hidden"
+					animate="visible"
+					transition={{
+						delayChildren: stagger(0.3),
+					}}
+					className="flex flex-col flex-wrap sm:flex-row sm:items-center gap-3"
+				>
+					{procedures.length > 0 ? (
+						procedures.map((p) => (
+							<motion.div
+								variants={motionVariants}
+								key={p!.id}
+								layout
+								className={cn(
+									"flex-1 basis-full  lg:basis-[30%]",
+									sidebarState === "expanded"
+										? "sm:basis-full md:basis-[45%]"
+										: "sm:basis-[45%] md:basis-[30%] "
+								)}
+							>
+								<ProcedureCard procedure={p!} />
+							</motion.div>
+						))
+					) : (
+						<Void msg="No procedure prescribed🏃‍♀️" />
 					)}
 				</motion.section>
 			</TabsContent>

@@ -86,8 +86,8 @@ export const getCurrentUser = async (): Promise<IUser> => {
 		if (isDevMode) {
 			// ? "user_44Ep69eYVSnVJI1XSnkXxkyFbkE" // - Dr Alexandar Chen
 			// ? "user_33Ny58nhEBwER0gBwuGgthOktnN" // - Dr lina
-			clerkId = "user_44Oz69oiFCxEQ1hCwvHhuiPkuoO" // - Pat olivia brown
-			// clerkId = "user_88It03icZWrZN5bWrpBbocJfoI"; // - Dr Miah Johnson
+			// clerkId = "user_44Oz69oiFCxEQ1hCwvHhuiPkuoO"; // - Pat olivia brown
+			clerkId = "user_88It03icZWrZN5bWrpBbocJfoI"; // - Dr Miah Johnson
 		} else {
 			const clerkUser = await currentUser();
 			clerkId = clerkUser && clerkUser.id;

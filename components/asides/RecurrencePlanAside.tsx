@@ -9,16 +9,16 @@ import RecurrenceForm from "../forms/RecurrenceForm";
 import { Badge } from "../ui/badge";
 import { Separator } from "../ui/separator";
 
-	const motionVariants: Variants = {
-		hidden: {
-			opacity: 0,
-			scale: 0.5,
-		},
-		visible: {
-			opacity: 1,
-			scale: 1,
-		},
-	};
+const motionVariants: Variants = {
+	hidden: {
+		opacity: 0,
+		scale: 0.5,
+	},
+	visible: {
+		opacity: 1,
+		scale: 1,
+	},
+};
 
 export default function RecurrencePlanAside() {
 	const { recurrencePlan } = useConsultation();
@@ -41,7 +41,7 @@ export default function RecurrencePlanAside() {
 				<p className="mb-3 text-lg font-medium flex items-center gap-x-2">
 					<UserCircle /> Supervisor :
 				</p>
-				<DoctorCard doctor={recurrencePlan.supervisor as IDoctor} />
+				<DoctorCard doctor={recurrencePlan.supervisor as IDoctor} className="border-0 bg-secondary glass-shadow" />
 			</motion.section>
 
 			<motion.section

@@ -12,21 +12,36 @@ import {
 import AppointmentCard from "./AppointmentCard";
 import DoctorCard from "./DoctorCard";
 import { ConsultationProvider } from "@/contexts/consultation.context";
+import PatientCard from "./patientCard";
+import { useCurrent } from "@/contexts/Current.context";
 
 export default function PlanCard({
 	plan,
 	className,
+	mode = "Patient",
 	...props
-}: { plan: IRecurrencePlan } & ComponentProps<typeof Card>) {
+}: { plan: IRecurrencePlan; mode?: "Patient" | "Doctor" } & ComponentProps<
+	typeof Card
+>) {
+	const appointment = plan.appointment as IAppointment;
+	const { currentPatient } = useCurrent();
+
 	return (
 		<ConsultationProvider
 			appointment={plan.appointment as IAppointment}
 			recurrencePlan={plan}
 			referrals={[]}
 		>
-			<Card {...props} className={cn("", className)}>
+			<Card {...props} className={cn("bg-transparent", className)}>
 				<CardContent className="space-y-3">
-					<DoctorCard doctor={plan.supervisor as IDoctor} />
+					{currentPatient ? (
+						<DoctorCard
+							doctor={plan.supervisor as IDoctor}
+							className="border-0 bg-card glass-shadow"
+						/>
+					) : (
+						<PatientCard patient={appointment.patient as IPatient} />
+					)}
 
 					<Collapsible>
 						<section className="flex items-center justify-between gap-x-3">
@@ -42,12 +57,11 @@ export default function PlanCard({
 								</MyBtn>
 							</RecurrencePlanPanel>
 						</section>
-
 						<CollapsibleContent className="py-2">
 							<AppointmentCard.SM
 								appointment={plan.appointment as IAppointment}
 								mode="Patient"
-								// className="border-none"
+								className="border-none glass-shadow"
 							/>
 						</CollapsibleContent>
 					</Collapsible>

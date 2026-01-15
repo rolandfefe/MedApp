@@ -149,7 +149,6 @@ export const getPlansByPatient = cache(
 					appointment: { in: appointmentsIDArr },
 				},
 				depth: 3,
-
 				page,
 				limit,
 			});

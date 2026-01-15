@@ -18,7 +18,7 @@ export function ThemeBtn({ className }: { className?: string }) {
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
-				<MyBtn variant="outline" size="icon" className={cn("", className)}>
+				<MyBtn variant="secondary" size="icon" className={cn("glass-shadow", className)}>
 					{theme === "light" ? (
 						<Sun />
 					) : theme === "dark" ? (

@@ -4,6 +4,7 @@ import config from "@/payload.config";
 import { eReferralStatus } from "@/types/enums/enums";
 import { unstable_cache as cache, updateTag } from "next/cache";
 import { getPayload } from "payload";
+import { getAppointments } from "./appointment.actions";
 
 const payload = await getPayload({ config });
 
@@ -140,19 +141,23 @@ export const getReferralsByPatient = cache(
 		limit?: number;
 	}) => {
 		try {
+			// get pat appointments
+			const { appointments } = await getAppointments({ patient, limit: 0 });
+			const appointmentsIDArr = appointments.map((a) => a.id);
+
+			// Query Referrals
 			const {
-				docs: allReferrals,
+				docs: referrals,
 				hasNextPage,
 				nextPage,
 			} = await payload.find({
 				collection: "referrals",
+				where: {
+					appointment: { in: appointmentsIDArr },
+				},
 				page,
 				limit,
 			});
-
-			const referrals = allReferrals.filter(
-				({ appointment }) => appointment.patient.id == patient
-			);
 
 			return { referrals, hasNextPage, nextPage: nextPage ?? page };
 		} catch (error: any) {

@@ -1,14 +1,5 @@
-import React, { ComponentProps } from "react";
-import {
-	DynamicPanel,
-	DynamicPanelContent,
-	DynamicPanelTrigger,
-} from "../custom/DynamicPanel";
 import { cn } from "@/lib/utils";
-import { DialogContent } from "../ui/dialog";
 import { useMediaQuery } from "@uidotdev/usehooks";
-import PatientCard from "../cards/patientCard";
-import Heading from "../custom/Heading";
 import {
 	ArrowUpRightFromCircleIcon,
 	Calendar1,
@@ -20,14 +11,21 @@ import {
 	UserCircle,
 	Users,
 } from "lucide-react";
-import { Separator } from "../ui/separator";
-import { Variants, motion, motionValue, stagger } from "motion/react";
 import moment from "moment";
-import { ScrollArea } from "../ui/scroll-area";
-import CopyBadge from "../custom/CopyBadge";
-import { Badge } from "../ui/badge";
-import MyBtn from "../custom/MyBtn";
+import { Variants, motion, stagger } from "motion/react";
+import { ComponentProps } from "react";
 import CallBtn from "../btns/CallBtn";
+import PatientCard from "../cards/patientCard";
+import CopyBadge from "../custom/CopyBadge";
+import {
+	DynamicPanel,
+	DynamicPanelContent,
+	DynamicPanelTrigger,
+} from "../custom/DynamicPanel";
+import Heading from "../custom/Heading";
+import { Badge } from "../ui/badge";
+import { ScrollArea } from "../ui/scroll-area";
+import { Separator } from "../ui/separator";
 
 const motionVariants: Variants = {
 	hidden: {
@@ -56,7 +54,7 @@ export default function PatientProfilePanel({
 				{children}
 			</DynamicPanelTrigger>
 
-			<DynamicPanelContent className="sm:flex gap-1 sm:items-start p-0 overflow-hidden min-h-[94vh]! sm:min-h-[70vh]! sm:min-w-[75vw]! md:min-w-[60vw]!">
+			<DynamicPanelContent className="sm:flex gap-1 sm:items-start p-0 overflow-hidden min-h-[94vh]! sm:min-h-[70vh]! sm:min-w-[75vw]! md:min-w-[70vw]! lg:min-w-[60vw]!">
 				<PatientProfilePanel.InfoAside
 					patient={patient}
 					className="h-fit w-[97%] rounded-lg sm:rounded-r-none mx-auto sm:h-[75vh] sm:w-56"

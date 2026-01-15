@@ -72,11 +72,14 @@ export default function DoctorProfilePanel({
 
 	return (
 		<DynamicPanel>
-			<DynamicPanelTrigger {...props} className={cn("cursor-pointer", className)}>
+			<DynamicPanelTrigger
+				{...props}
+				className={cn("cursor-pointer", className)}
+			>
 				{children}
 			</DynamicPanelTrigger>
 
-			<DynamicPanelContent className="sm:flex gap-1 items-start p-0 overflow-hidden min-h-[94vh]! sm:min-h-[70vh]! sm:min-w-[75vw]! md:min-w-[60vw]!">
+			<DynamicPanelContent className="sm:flex gap-1 items-start p-0 overflow-hidden min-h-[94vh]! sm:min-h-[70vh]! sm:min-w-[75vw]! md:min-w-[70vw]! lg:min-w-[60vw]!">
 				<DoctorProfilePanel.InfoAside
 					doctor={doctor}
 					className="h-fit w-[97%] rounded-lg sm:rounded-r-none mx-auto sm:h-[75vh] sm:w-56"
