@@ -744,6 +744,12 @@ export interface Appointment {
  */
 export interface Reminder {
   id: string;
+  user: string | User;
+  variant?: ('Appointment' | 'Medication' | 'Personal') | null;
+  reminderLabel: string;
+  description?: string | null;
+  time: string;
+  status?: ('Pending' | 'Sent' | 'Silenced') | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1324,6 +1330,12 @@ export interface DiagnosesSelect<T extends boolean = true> {
  * via the `definition` "reminders_select".
  */
 export interface RemindersSelect<T extends boolean = true> {
+  user?: T;
+  variant?: T;
+  reminderLabel?: T;
+  description?: T;
+  time?: T;
+  status?: T;
   updatedAt?: T;
   createdAt?: T;
 }

@@ -18,11 +18,8 @@ import { useCurrent } from "@/contexts/Current.context";
 export default function PlanCard({
 	plan,
 	className,
-	mode = "Patient",
 	...props
-}: { plan: IRecurrencePlan; mode?: "Patient" | "Doctor" } & ComponentProps<
-	typeof Card
->) {
+}: { plan: IRecurrencePlan } & ComponentProps<typeof Card>) {
 	const appointment = plan.appointment as IAppointment;
 	const { currentPatient } = useCurrent();
 

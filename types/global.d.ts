@@ -22,6 +22,7 @@ import {
 	PatientNav,
 	RecurrencePlan,
 	Referral,
+	Reminder,
 	User,
 	Verdict,
 } from "./payload";
@@ -54,6 +55,7 @@ declare global {
 	type IHealthStatus = HealthStatus;
 	type IVerdict = Verdict;
 	type IArticle = Article;
+	type IReminder = Reminder
 
 	// Globals
 	type ILandingNav = LandingNav;
@@ -76,10 +78,10 @@ declare global {
 	interface IReminder extends Base {
 		user: IUser | string;
 		variant: eReminderVariants;
-		item: IAppointment | IMedication | string;
 		body: string;
+		item: IAppointment | IMedication | string;
 
-		scheduledTime: Date | string;
+		time: Date | string;
 		sent: boolean;
 		status?: "pending" | "sent" | "failed";
 	}

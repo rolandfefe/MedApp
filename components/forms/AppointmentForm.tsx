@@ -42,6 +42,7 @@ import {
 	StepperTrigger,
 } from "../custom/motion-stepper";
 import { ScrollArea } from "../ui/scroll-area";
+import ToastErrCard from "../cards/ToastErrCard";
 
 export default function AppointmentForm({
 	action,
@@ -65,10 +66,10 @@ export default function AppointmentForm({
 	const form = useForm<AppointmentFormData>({
 		resolver: zodResolver(appointmentFormSchema),
 		defaultValues: {
-			reason: appointment?.reason,
-			type: appointment?.type,
-			endTime: appointment?.endTime,
-			startTime: appointment?.startTime,
+			reason: appointment?.reason || "",
+			type: appointment?.type || "",
+			endTime: appointment?.endTime || "",
+			startTime: appointment?.startTime || "",
 		},
 	});
 
@@ -105,28 +106,16 @@ export default function AppointmentForm({
 		console.log("err: ", err);
 		toast.custom(
 			(t) => (
-				<Card className="w-[95vw] sm:w-72 relative">
-					<MyBtn
-						size="icon"
-						variant={"secondary"}
-						onClick={() => toast.dismiss(t.id)}
-						className="size-7 rounded-xl hover:text-destructive absolute top-2 right-2 "
-					>
-						<X />
-					</MyBtn>
-					<CardContent className="px-2 py-1">
-						<Heading className="text-xl">🚨Form input error(s) </Heading>
-						<Separator className="my-1" />
-						<div>
-							{Object.entries(err).map(([k, v]) => (
-								<p key={k} className={"text-sm text-secondary-foreground"}>
-									<span className="font-medium text-destructive">{k}: </span>
-									<code>{v.message}</code>
-								</p>
-							))}
-						</div>
-					</CardContent>
-				</Card>
+				<ToastErrCard t={t}>
+					<div>
+						{Object.entries(err).map(([k, v]) => (
+							<p key={k} className={"text-sm text-secondary-foreground"}>
+								<span className="font-medium text-destructive">{k}: </span>
+								<code>{v.message}</code>
+							</p>
+						))}
+					</div>
+				</ToastErrCard>
 			),
 			{ id: "9c247bf4" }
 		);

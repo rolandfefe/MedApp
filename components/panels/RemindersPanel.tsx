@@ -13,6 +13,7 @@ import {
 	SheetTrigger,
 } from "../ui/sheet";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import ReminderForm from "../forms/ReminderForm";
 
 export default function RemindersPanel({
 	children,
@@ -31,7 +32,7 @@ export default function RemindersPanel({
 				)}
 			</SheetTrigger>
 
-			<SheetContent side="left" className="sm:max-w-[25rem]">
+			<SheetContent side="left" className="sm:max-w-100">
 				<SheetHeader className="p-2 ">
 					<SheetTitle>
 						<Heading>
@@ -70,7 +71,7 @@ export default function RemindersPanel({
 						</TabsList>
 						<TabsList className="collapsible-tabs">
 							<TabsTrigger
-								value="New"
+								value="New"	
 								className="data-[state=inactive]:!text-primary"
 							>
 								<PlusCircle />
@@ -83,7 +84,9 @@ export default function RemindersPanel({
 						<TabsContent value="Appointments">Appointments</TabsContent>
 						<TabsContent value="Medications">Medications</TabsContent>
 						<TabsContent value="Personal">Personal</TabsContent>
-						<TabsContent value="New">New Reminder form</TabsContent>
+						<TabsContent value="New">
+							<ReminderForm />
+						</TabsContent>
 					</ScrollArea>
 				</Tabs>
 			</SheetContent>
