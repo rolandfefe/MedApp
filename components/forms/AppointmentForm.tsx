@@ -3,15 +3,15 @@
 import {
 	AppointmentFormData,
 	appointmentFormSchema,
+	useAppointmentForm,
 } from "@/lib/formSchemas/appointment.schema";
 import { cn } from "@/lib/utils";
 import { ePatientConsent } from "@/types/enums/enums";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Headset, X } from "lucide-react";
+import { Headset } from "lucide-react";
 import { ComponentProps, ReactNode, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import Heading from "../custom/Heading";
-import MyBtn from "../custom/MyBtn";
 import getAppointmentFormStepper from "../formSteppers/AppointmentFormStepper";
 import {
 	MorphingDialog,
@@ -22,12 +22,10 @@ import {
 	MorphingDialogTitle,
 	MorphingDialogTrigger,
 } from "../motion-primitives/morphing-dialog";
-import { Card, CardContent } from "../ui/card";
 import { Form } from "../ui/form";
 import { Separator } from "../ui/separator";
 
 import { useCurrent } from "@/contexts/Current.context";
-import { useDoctors } from "@/contexts/Doctors.context";
 import {
 	createAppointment,
 	updateAppointment,
@@ -35,6 +33,7 @@ import {
 import { PatientFormData } from "@/lib/formSchemas/patient.schema";
 import { FieldErrors } from "react-hook-form";
 import toast from "react-hot-toast";
+import ToastErrCard from "../cards/ToastErrCard";
 import {
 	Step,
 	Stepper,
@@ -42,7 +41,6 @@ import {
 	StepperTrigger,
 } from "../custom/motion-stepper";
 import { ScrollArea } from "../ui/scroll-area";
-import ToastErrCard from "../cards/ToastErrCard";
 
 export default function AppointmentForm({
 	action,
@@ -61,17 +59,9 @@ export default function AppointmentForm({
 	>([ePatientConsent.HEALTH_STATUSES]);
 	const [selectedDoctor, setSelectedDoctor] = useState<IDoctor>();
 
-	console.log("selected Doc:", selectedDoctor);
+	// console.log("selected Doc:", selectedDoctor);
 
-	const form = useForm<AppointmentFormData>({
-		resolver: zodResolver(appointmentFormSchema),
-		defaultValues: {
-			reason: appointment?.reason || "",
-			type: appointment?.type || "",
-			endTime: appointment?.endTime || "",
-			startTime: appointment?.startTime || "",
-		},
-	});
+	const form = useAppointmentForm(appointment)
 
 	const submitHandler = async (data: AppointmentFormData) => {
 		const cleanData = {

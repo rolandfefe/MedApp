@@ -86,8 +86,7 @@ export const Appointments: CollectionConfig = {
 			hasMany: true,
 		},
 
-		{ name: "isEmergency", type: "checkbox", defaultValue: "false" },
-		// {name: "imgs", type: } // ! image field
+		{ name: "isEmergency", type: "checkbox", defaultValue: false },
 		{
 			name: "online",
 			type: "group",

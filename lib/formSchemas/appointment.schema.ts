@@ -3,6 +3,8 @@ import {
 	eAppointmentTypes,
 	ePatientConsent,
 } from "@/types/enums/enums";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import z from "zod";
 
 const onlineFormSchema = z.object({
@@ -24,7 +26,7 @@ export const appointmentFormSchema = z
 			.optional(),
 		endTime: z.coerce.string().optional(),
 		online: onlineFormSchema.optional(),
-		isEmergency: z.boolean().optional(),
+		isEmergency: z.boolean().default(false),
 		consentLevels: z
 			.nativeEnum(ePatientConsent)
 			.default(ePatientConsent.HEALTH_STATUSES),
@@ -125,3 +127,16 @@ export const validateAppointmentTime = (startTime: Date, endTime?: Date) => {
 export const isAppointmentInFuture = (date: Date) => {
 	return date > new Date();
 };
+
+// Form Schema
+export const useAppointmentForm = (appointment?: IAppointment) =>
+	useForm({
+		resolver: zodResolver(appointmentFormSchema),
+		defaultValues: {
+			reason: appointment?.reason || "",
+			type: appointment?.type || "",
+			endTime: appointment?.endTime || "",
+			startTime: appointment?.startTime || "",
+			isEmergency: appointment?.isEmergency || false,
+		},
+	});
