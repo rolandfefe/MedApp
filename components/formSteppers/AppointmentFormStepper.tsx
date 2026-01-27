@@ -1,12 +1,7 @@
 import { AppointmentFormData } from "@/lib/formSchemas/appointment.schema";
 import { cn } from "@/lib/utils";
-import {
-	eAppointmentTypes,
-	ePatientConsent
-} from "@/types/enums/enums";
-import {
-	Loader
-} from "lucide-react";
+import { eAppointmentTypes, ePatientConsent } from "@/types/enums/enums";
+import { Loader } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
 import { Dispatch, JSX, SetStateAction } from "react";

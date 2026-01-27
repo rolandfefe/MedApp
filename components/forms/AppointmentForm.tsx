@@ -61,13 +61,13 @@ export default function AppointmentForm({
 
 	// console.log("selected Doc:", selectedDoctor);
 
-	const form = useAppointmentForm(appointment)
+	const form = useAppointmentForm(appointment);
 
 	const submitHandler = async (data: AppointmentFormData) => {
-		const cleanData = {
+		const cleanData: IAppointment = {
 			...data,
 			consentLevels: selectedConsent,
-			doctor: selectedDoctor,
+			doctor: selectedDoctor?.id,
 			patient: patient.id!,
 		};
 		console.log(data);
