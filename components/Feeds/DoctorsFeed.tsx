@@ -2,7 +2,7 @@
 
 import { useCurrent } from "@/contexts/Current.context";
 import { useDoctors } from "@/contexts/Doctors.context";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/_utils";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import DoctorCard from "../cards/DoctorCard";

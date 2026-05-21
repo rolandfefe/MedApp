@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/_utils";
 import { ComponentProps } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Badge } from "../ui/badge";
@@ -93,8 +93,6 @@ DoctorCard.XS = ({
 						</Avatar>
 					</DoctorProfilePanel>
 
-					{/* <Tooltip>
-							<TooltipTrigger asChild> */}
 					<div className="space-y-2 ">
 						<div className="leading-tight">
 							<p className="line-clamp-1 font-medium">
@@ -112,7 +110,11 @@ DoctorCard.XS = ({
 	);
 };
 
-DoctorCard.MD = ({ doctor, className, hideProfile = false }: ComponentProps<typeof DoctorCard>) => {
+DoctorCard.MD = ({
+	doctor,
+	className,
+	hideProfile = false,
+}: ComponentProps<typeof DoctorCard>) => {
 	const user = doctor.user as IUser;
 
 	return (

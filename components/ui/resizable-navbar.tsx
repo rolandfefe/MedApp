@@ -1,5 +1,5 @@
 "use client";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/_utils";
 import { Menu, X } from "lucide-react";
 import {
 	motion,
@@ -153,7 +153,9 @@ export const NavItems = ({
 						/>
 					)}
 					{showIcons && (
-						<span className="relative z-20 text-sm"><DynamicIcon name={item.icon} /></span>
+						<span className="relative z-20 text-sm">
+							<DynamicIcon name={item.icon} />
+						</span>
 					)}
 					<span className="relative z-20">{item.name}</span>
 				</Link>
@@ -257,6 +259,7 @@ export const NavbarLogo = () => {
 				// src="/assets/logo_transparent.png"
 				src="/assets/logo.png"
 				alt="logo"
+				loading={"eager"}
 				width={999}
 				height={999}
 				className="size-10 rounded-lg "

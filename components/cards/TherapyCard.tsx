@@ -2,7 +2,7 @@
 
 import { ComponentProps } from "react";
 import { Card, CardContent } from "../ui/card";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/_utils";
 import { Separator } from "../ui/separator";
 import Heading from "../custom/Heading";
 import { Badge } from "../ui/badge";

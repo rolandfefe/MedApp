@@ -2,7 +2,8 @@
 
 import useLoadMore from "@/hooks/useLoadMore";
 import { getMsgs } from "@/lib/actions/message.actions";
-import { extend, flattenDeep, uniqBy } from "lodash-es";
+import { pusherClient } from "@/lib/pusher";
+import { flattenDeep, uniqBy } from "lodash-es";
 import {
 	ComponentProps,
 	createContext,
@@ -14,7 +15,6 @@ import {
 	useEffectEvent,
 	useState,
 } from "react";
-import { pusherClient } from "@/lib/pusher";
 
 interface Props extends IPagination {
 	msgs: IMessage[];

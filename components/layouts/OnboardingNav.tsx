@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/_utils";
 import Image from "next/image";
 import React from "react";
 import LogoText from "./LogoText";
@@ -21,6 +21,7 @@ export default function OnboardingNav({ className }: { className?: string }) {
 				<Image
 					src={"/assets/logo.png"}
 					alt="logo"
+					loading={"eager"}
 					width={999}
 					height={999}
 					className="size-12 rounded-lg"

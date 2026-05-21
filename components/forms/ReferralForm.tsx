@@ -5,7 +5,7 @@ import {
 	ReferralFormData,
 	referralSchema,
 } from "@/lib/formSchemas/referral.schema";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/_utils";
 import { eAppointmentStatus } from "@/types/enums/enums";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowBigRightDash } from "lucide-react";

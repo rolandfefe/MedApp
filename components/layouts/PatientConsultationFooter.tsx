@@ -68,8 +68,7 @@ export default function PatientConsultationFooter() {
 				<DoctorNotesFormPanel>
 					<MyBtn className="flex-1">
 						{/* Medical */}
-						 Notes <Notebook />
-
+						Notes <Notebook />
 					</MyBtn>
 				</DoctorNotesFormPanel>
 				<LinkBtn
@@ -187,16 +186,19 @@ PatientConsultationFooter.OnlineMeetBtn = () => {
 				<Video /> Join
 			</MyBtn>
 			<Popover open={isOpen} onOpenChange={setOpen}>
-				<PopoverTrigger asChild onClick={() => setOpen(!isOpen)}>
-					<MyBtn
-						disabled={isPending}
-						size="icon"
-						variant={"secondary"}
-						className="text-primary"
-					>
-						<ChevronsUpDown />
-					</MyBtn>
-				</PopoverTrigger>
+				<PopoverTrigger
+					render={
+						<MyBtn
+							disabled={isPending}
+							size="icon"
+							variant={"secondary"}
+							className="text-primary"
+						>
+							<ChevronsUpDown />
+						</MyBtn>
+					}
+					onClick={() => setOpen(!isOpen)}
+				/>
 
 				<PopoverContent side={isSmScreen ? "top" : "right"}>
 					<Heading className="text-lg text-primary ">

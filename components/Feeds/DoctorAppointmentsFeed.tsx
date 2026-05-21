@@ -2,7 +2,7 @@
 
 import { useAppointments } from "@/contexts/Appointments.context";
 import { useCurrent } from "@/contexts/Current.context";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/_utils";
 import { eAppointmentStatus, eAppointmentTypes } from "@/types/enums/enums";
 import { ChevronsUpDown, Sparkles, TriangleAlert } from "lucide-react";
 import { AnimatePresence, motion, stagger, Variants } from "motion/react";
@@ -142,19 +142,21 @@ const FilterBar = ({
 			</MyBtn>
 
 			<DropdownMenu>
-				<DropdownMenuTrigger asChild>
-					<MyBtn
-						size="sm"
-						variant={"secondary"}
-						className={cn(
-							"rounded-2xl text-xs",
-							filters?.type && "text-primary "
-						)}
-					>
-						{filters?.type ?? "Type"}
-						<ChevronsUpDown size={17} />
-					</MyBtn>
-				</DropdownMenuTrigger>
+				<DropdownMenuTrigger
+					render={
+						<MyBtn
+							size="sm"
+							variant={"secondary"}
+							className={cn(
+								"rounded-2xl text-xs",
+								filters?.type && "text-primary "
+							)}
+						>
+							{filters?.type ?? "Type"}
+							<ChevronsUpDown size={17} />
+						</MyBtn>
+					}
+				/>
 
 				<DropdownMenuContent>
 					{Object.entries(eAppointmentTypes).map(([k, v]) => (
@@ -166,19 +168,21 @@ const FilterBar = ({
 			</DropdownMenu>
 
 			<DropdownMenu>
-				<DropdownMenuTrigger asChild>
-					<MyBtn
-						size="sm"
-						variant={"secondary"}
-						className={cn(
-							"rounded-2xl text-xs",
-							filters?.status && "text-primary "
-						)}
-					>
-						{filters?.status ?? "Status"}
-						<ChevronsUpDown size={17} />
-					</MyBtn>
-				</DropdownMenuTrigger>
+				<DropdownMenuTrigger
+					render={
+						<MyBtn
+							size="sm"
+							variant={"secondary"}
+							className={cn(
+								"rounded-2xl text-xs",
+								filters?.status && "text-primary "
+							)}
+						>
+							{filters?.status ?? "Status"}
+							<ChevronsUpDown size={17} />
+						</MyBtn>
+					}
+				/>
 
 				<DropdownMenuContent>
 					{Object.entries(eAppointmentStatus).map(([k, v]) => (

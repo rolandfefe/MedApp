@@ -64,7 +64,6 @@ export default async function layout({ children }: { children: ReactNode }) {
 					className="fixed bottom-3 right-3 size"
 				>
 					<MyBtn
-						asChild
 						size="icon"
 						variant={"secondary"}
 						className="size-12 sm:size-16 rounded-full glass glass-shadow text-primary"

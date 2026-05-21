@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/_utils";
 import { ComponentProps } from "react";
 import { Card, CardContent } from "../ui/card";
 import { Building, Calendar1, GraduationCap } from "lucide-react";

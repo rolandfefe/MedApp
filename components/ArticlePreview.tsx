@@ -23,7 +23,7 @@ import {
 } from "lucide-react";
 import { Badge } from "./ui/badge";
 import DoctorCard from "./cards/DoctorCard";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/_utils";
 import MyBtn from "./custom/MyBtn";
 import { Spinner } from "./ui/spinner";
 import BackBtn from "./btns/BackBtn";

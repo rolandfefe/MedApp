@@ -1,7 +1,7 @@
 "use client";
 
 import { useCurrent } from "@/contexts/Current.context";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/_utils";
 import { eMessageStatus } from "@/types/enums/enums";
 import { Check, CheckCheck, Edit3, Reply, Trash2 } from "lucide-react";
 import moment from "moment";
@@ -47,7 +47,7 @@ export default function MsgCard({
 				)}
 			>
 				<UserCard.XS user={msg.from as IUser} />
-				<MsgCard.Context msg={msg} isAuthor={isAuthor} asChild>
+				<MsgCard.Context msg={msg} isAuthor={isAuthor} >
 					<CardContent
 						className={cn(
 							"glass-shadow p-2 rounded-xl w-fit max-w-3/4 sm:max-w-2/3 lg:max-w-1/2",

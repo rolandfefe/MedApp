@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/_utils";
 import { CalendarX2, CreditCard, Flag, GitCommit } from "lucide-react";
 import moment from "moment";
 import { ComponentProps } from "react";

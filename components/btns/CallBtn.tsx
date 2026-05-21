@@ -4,7 +4,7 @@ import { PhoneCall } from "lucide-react";
 import { ComponentProps, useTransition } from "react";
 import toast from "react-hot-toast";
 import MyBtn from "../custom/MyBtn";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/_utils";
 import { Spinner } from "../ui/spinner";
 
 export default function CallBtn({
@@ -17,7 +17,7 @@ export default function CallBtn({
 	const callHandler = () => {
 		startCalling(async () => {
 			// ! Figure this out coming soon.
-			toast("Coming soon...", {id: "s0c48ncs"});
+			toast("Coming soon...", { id: "s0c48ncs" });
 		});
 	};
 	return (

@@ -24,13 +24,17 @@ export default function RemindersPanel({
 }) {
 	return (
 		<Sheet>
-			<SheetTrigger asChild>
-				{children || (
-					<MyBtn size="icon" variant={"outline"}>
-						<AlarmClock />
-					</MyBtn>
-				)}
-			</SheetTrigger>
+			<SheetTrigger
+				render={
+					<>
+						{children || (
+							<MyBtn size="icon" variant={"outline"}>
+								<AlarmClock />
+							</MyBtn>
+						)}
+					</>
+				}
+			/>
 
 			<SheetContent side="left" className="sm:max-w-100">
 				<SheetHeader className="p-2 ">
@@ -71,7 +75,7 @@ export default function RemindersPanel({
 						</TabsList>
 						<TabsList className="collapsible-tabs">
 							<TabsTrigger
-								value="New"	
+								value="New"
 								className="data-[state=inactive]:!text-primary"
 							>
 								<PlusCircle />

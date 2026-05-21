@@ -5,7 +5,7 @@ import {
 	appointmentFormSchema,
 	useAppointmentForm,
 } from "@/lib/formSchemas/appointment.schema";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/_utils";
 import { ePatientConsent } from "@/types/enums/enums";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Headset } from "lucide-react";
@@ -70,7 +70,6 @@ export default function AppointmentForm({
 			doctor: selectedDoctor?.id,
 			patient: patient.id!,
 		};
-		console.log(data);
 
 		if (action === "Create") {
 			startTransition(async () => {
@@ -179,6 +178,7 @@ export const AppointmentPanel = ({
 			<MorphingDialogTrigger
 				shortcutKey="p"
 				asChild
+				
 				className={cn("", className)}
 			>
 				{children}

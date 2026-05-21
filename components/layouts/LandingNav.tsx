@@ -11,7 +11,7 @@ import {
 	NavBody,
 	NavItems,
 } from "@/components/ui/resizable-navbar";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/_utils";
 import { SignedOut, SignInButton } from "@clerk/nextjs";
 import { useTheme } from "next-themes";
 import { useState } from "react";

@@ -6,7 +6,7 @@ import {
 	DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { SearchFilter } from "./smart-search";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/_utils";
 
 export default function DropdownFilter({
 	filter,

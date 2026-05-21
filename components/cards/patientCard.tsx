@@ -1,7 +1,7 @@
 "use client";
 
 import { useCurrent } from "@/contexts/Current.context";
-import { cn, getAge } from "@/lib/utils";
+import { cn, getAge } from "@/lib/_utils";
 import { Patient, User } from "@/types/payload";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Badge } from "../ui/badge";

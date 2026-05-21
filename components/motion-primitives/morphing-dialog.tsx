@@ -17,7 +17,7 @@ import {
 	Variant,
 } from "motion/react";
 import { createPortal } from "react-dom";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/_utils";
 import { XIcon } from "lucide-react";
 import useClickOutside from "@/hooks/useClickOutside";
 import { Slot } from "@radix-ui/react-slot";

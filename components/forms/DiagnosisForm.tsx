@@ -7,7 +7,7 @@ import {
 	DiagnosisFormData,
 	diagnosisFormSchema,
 } from "@/lib/formSchemas/diagnosis.schema";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/_utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SerializedEditorState } from "lexical";
 import { Hospital, X } from "lucide-react";

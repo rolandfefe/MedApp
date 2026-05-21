@@ -11,7 +11,7 @@ import { CalendarClock } from "lucide-react";
 import { useConsultation } from "@/contexts/consultation.context";
 import { Separator } from "../ui/separator";
 import RecurrencePlanAside from "../asides/RecurrencePlanAside";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/_utils";
 
 export default function RecurrencePlanPanel({
 	children,

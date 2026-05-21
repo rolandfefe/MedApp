@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/_utils";
 import { ArrowRight, ChevronsUpDown } from "lucide-react";
 import { ComponentProps } from "react";
 import MyBtn from "../custom/MyBtn";
@@ -42,11 +42,13 @@ export default function PlanCard({
 
 					<Collapsible>
 						<section className="flex items-center justify-between gap-x-3">
-							<CollapsibleTrigger asChild>
-								<MyBtn size={"sm"} variant={"invert"} className="py-0">
-									Appointment <ChevronsUpDown />
-								</MyBtn>
-							</CollapsibleTrigger>
+							<CollapsibleTrigger
+								render={
+									<MyBtn size={"sm"} variant={"invert"} className="py-0">
+										Appointment <ChevronsUpDown />
+									</MyBtn>
+								}
+							/>
 
 							<RecurrencePlanPanel>
 								<MyBtn variant={"secondary"} size="icon" className="">

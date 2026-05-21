@@ -7,7 +7,7 @@ import {
 	ArticleFormData,
 	ArticleZodSchema,
 } from "@/lib/formSchemas/article.schema";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/_utils";
 import {
 	eArticleCategories,
 	eArticleStatus,
@@ -186,24 +186,24 @@ export default function ArticleForm({}: {}) {
 				) : (
 					<Collapsible>
 						<CollapsibleTrigger
-							asChild
-							className="cursor-pointer! hover:bg-primary/30 dark:hover:bg-primary/10"
-						>
-							<div className="relative p-2 rounded-xl border-2 border-primary">
-								<div className="space-y-2">
-									<p className="text-lg font-medium text-primary flex items-center gep-x-2">
-										<Stars />
-										<span>Essentials</span>
-									</p>
-									<p className="text-sm text-muted-foreground">
-										Set up the the essential details of your article. These will
-										make it more discoverable.
-									</p>
-								</div>
+							render={
+								<div className="relative p-2 rounded-xl border-2 border-primary">
+									<div className="space-y-2">
+										<p className="text-lg font-medium text-primary flex items-center gep-x-2">
+											<Stars />
+											<span>Essentials</span>
+										</p>
+										<p className="text-sm text-muted-foreground">
+											Set up the the essential details of your article. These
+											will make it more discoverable.
+										</p>
+									</div>
 
-								<ChevronsUpDown className="text-muted-foreground absolute top-2 right-2" />
-							</div>
-						</CollapsibleTrigger>
+									<ChevronsUpDown className="text-muted-foreground absolute top-2 right-2" />
+								</div>
+							}
+							className="cursor-pointer! hover:bg-primary/30 dark:hover:bg-primary/10"
+						/>
 
 						<CollapsibleContent>
 							<ArticleForm.Essentials
@@ -296,21 +296,24 @@ ArticleForm.Trigger = ({
 
 	return (
 		<Tooltip>
-			<TooltipTrigger asChild>
-				<LinkBtn
-					{...props}
-					link={{
-						href: `/doctor/${currentDoctor.id}/articles/new`,
-						className: className,
-					}}
-					size={"icon"}
-					variant={"secondary"}
-					className={cn("rounded-full glass text-primary size-14", className)}
-				>
-					<ShineBorder shineColor={["#A07CFE", "#FE8FB5", "#FFBE7B"]} />
-					<PenTool size={24} />
-				</LinkBtn>
-			</TooltipTrigger>
+			<TooltipTrigger
+				render={
+					<LinkBtn
+						{...props}
+						link={{
+							href: `/doctor/${currentDoctor.id}/articles/new`,
+							className: className,
+						}}
+						size={"icon"}
+						variant={"secondary"}
+						className={cn("rounded-full glass text-primary size-14", className)}
+					>
+						<ShineBorder shineColor={["#A07CFE", "#FE8FB5", "#FFBE7B"]} />
+						<PenTool size={24} />
+					</LinkBtn>
+				}
+			/>
+
 			<TooltipContent>✍️Write article</TooltipContent>
 		</Tooltip>
 	);

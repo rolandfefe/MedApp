@@ -9,7 +9,7 @@ import {
 	DrawerTitle,
 	DrawerTrigger,
 } from "@/components/ui/drawer";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/_utils";
 import { useMediaQuery } from "@uidotdev/usehooks";
 import { X } from "lucide-react";
 import { ComponentProps } from "react";
@@ -35,9 +35,14 @@ export function FormPanel({
 
 export const FormPanelTrigger = ({
 	children,
+	asChild,
 	...props
-}: ComponentProps<typeof DrawerTrigger>) => {
-	return <DrawerTrigger {...props}>{children}</DrawerTrigger>;
+}: ComponentProps<typeof DrawerTrigger> & { asChild?: boolean }) => {
+	return (
+		<DrawerTrigger asChild={asChild} {...props}>
+			{children}
+		</DrawerTrigger>
+	);
 };
 
 export const FormPanelContent = ({
@@ -61,10 +66,8 @@ export const FormPanelContent = ({
 				<DrawerDescription>Fill in your details</DrawerDescription>
 			</DrawerHeader>
 
-			<DrawerClose asChild className="glass absolute top-2 right-2 z-30">
-				<MyBtn size="icon" variant={"outline"} className="rounded-xl size-7">
-					<X />
-				</MyBtn>
+			<DrawerClose className="glass absolute top-2 right-2 z-30 inline-flex items-center justify-center rounded-lg border border-transparent h-7 w-7">
+				<X className="size-4" />
 			</DrawerClose>
 
 			<ScrollArea className="h-[93vh] sm:h-screen p-2 sm:p-3">

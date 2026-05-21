@@ -1,7 +1,7 @@
 "use client";
 
 import { createMsg, updateMsg } from "@/lib/actions/message.actions";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/_utils";
 import { Loader, Plus, Send, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 import {
@@ -53,7 +53,7 @@ export default function MessageForm({
 
 				setEditMsg(undefined);
 				setBody("");
-				setRefMsg(undefined)
+				setRefMsg(undefined);
 				toast("Message Updated✍️");
 			});
 		} else {
@@ -179,15 +179,17 @@ export default function MessageForm({
 							)}
 						</div>
 						<InputGroupButton
-							asChild
 							disabled={isSending}
 							variant={"default"}
 							onClick={submitHandler}
 							className="ml-auto rounded-full"
-						>
-							Send
-							{isSending ? <Loader className="animate-spin" /> : <Send />}
-						</InputGroupButton>
+							render={
+								<>
+									Send
+									{isSending ? <Loader className="animate-spin" /> : <Send />}
+								</>
+							}
+						/>
 					</InputGroupAddon>
 				</InputGroup>
 			</div>

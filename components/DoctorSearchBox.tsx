@@ -1,4 +1,4 @@
-import { cn, containsRegex } from "@/lib/utils";
+import { cn } from "@/lib/_utils";
 import { eGender, eLanguages, eMedicalSpecialties } from "@/types/enums/enums";
 import { uniqBy } from "lodash-es";
 import {
@@ -240,23 +240,26 @@ const Filters = ({
 				</MyBtn>
 			)}
 			<DropdownMenu>
-				<DropdownMenuTrigger asChild className="text-sm">
-					<MyBtn
-						variant={filters?.specialties ? "secondary" : "outline"}
-						size="sm"
-						className={cn("rounded-2xl !text-xs text-muted-foreground")}
-					>
-						<HandCoins />
-						<span
-							className={cn(
-								filters?.specialties ? "text-primary" : "text-muted-secondary"
-							)}
+				<DropdownMenuTrigger
+					className="text-sm"
+					render={
+						<MyBtn
+							variant={filters?.specialties ? "secondary" : "outline"}
+							size="sm"
+							className={cn("rounded-2xl !text-xs text-muted-foreground")}
 						>
-							{filters?.specialties ?? "Specialties"}
-						</span>
-						<ChevronsUpDown />
-					</MyBtn>
-				</DropdownMenuTrigger>
+							<HandCoins />
+							<span
+								className={cn(
+									filters?.specialties ? "text-primary" : "text-muted-secondary"
+								)}
+							>
+								{filters?.specialties ?? "Specialties"}
+							</span>
+							<ChevronsUpDown />
+						</MyBtn>
+					}
+				/>
 				<DropdownMenuContent>
 					{Object.entries(eMedicalSpecialties).map(([k, v]) => (
 						<DropdownMenuItem
@@ -272,23 +275,27 @@ const Filters = ({
 			</DropdownMenu>
 
 			<DropdownMenu>
-				<DropdownMenuTrigger asChild className="text-sm">
-					<MyBtn
-						variant={filters?.gender ? "secondary" : "outline"}
-						size="sm"
-						className={cn("rounded-2xl !text-xs text-muted-foreground")}
-					>
-						<UserPen />
-						<span
-							className={cn(
-								filters?.gender ? "text-primary" : "text-muted-secondary"
-							)}
+				<DropdownMenuTrigger
+					className="text-sm"
+					render={
+						<MyBtn
+							variant={filters?.gender ? "secondary" : "outline"}
+							size="sm"
+							className={cn("rounded-2xl !text-xs text-muted-foreground")}
 						>
-							{filters?.gender ?? "Gender"}
-						</span>
-						<ChevronsUpDown />
-					</MyBtn>
-				</DropdownMenuTrigger>
+							<UserPen />
+							<span
+								className={cn(
+									filters?.gender ? "text-primary" : "text-muted-secondary"
+								)}
+							>
+								{filters?.gender ?? "Gender"}
+							</span>
+							<ChevronsUpDown />
+						</MyBtn>
+					}
+				/>
+
 				<DropdownMenuContent>
 					{Object.entries(eGender).map(([k, v]) => (
 						<DropdownMenuItem
@@ -302,23 +309,27 @@ const Filters = ({
 			</DropdownMenu>
 
 			<DropdownMenu>
-				<DropdownMenuTrigger asChild className="text-sm">
-					<MyBtn
-						variant={filters?.languages ? "secondary" : "outline"}
-						size="sm"
-						className={cn("rounded-2xl !text-xs text-muted-foreground")}
-					>
-						<Languages />
-						<span
-							className={cn(
-								filters?.languages ? "text-primary" : "text-muted-secondary"
-							)}
+				<DropdownMenuTrigger
+					className="text-sm"
+					render={
+						<MyBtn
+							variant={filters?.languages ? "secondary" : "outline"}
+							size="sm"
+							className={cn("rounded-2xl !text-xs text-muted-foreground")}
 						>
-							{filters?.languages ?? "Languages"}
-						</span>
-						<ChevronsUpDown />
-					</MyBtn>
-				</DropdownMenuTrigger>
+							<Languages />
+							<span
+								className={cn(
+									filters?.languages ? "text-primary" : "text-muted-secondary"
+								)}
+							>
+								{filters?.languages ?? "Languages"}
+							</span>
+							<ChevronsUpDown />
+						</MyBtn>
+					}
+				/>
+
 				<DropdownMenuContent>
 					{Object.entries(eLanguages).map(([k, v]) => (
 						<DropdownMenuItem

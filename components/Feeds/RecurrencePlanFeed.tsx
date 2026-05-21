@@ -5,7 +5,7 @@ import Void from "../custom/Void";
 import PlanCard from "../cards/PlanCard";
 import { Variants, motion, stagger } from "motion/react";
 import { useSidebar } from "../ui/sidebar";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/_utils";
 
 const motionVariants: Variants = {
 	hidden: {

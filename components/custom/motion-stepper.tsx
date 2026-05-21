@@ -2,7 +2,7 @@
 
 import React, { ReactNode } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { cn } from "../../lib/utils";
+import { cn } from "../../lib/_utils";
 import { BadgeAlert, Check, ChevronLeft, ChevronRight } from "lucide-react";
 import MyBtn from "./MyBtn";
 
@@ -10,7 +10,7 @@ export function Stepper({ children }: { children: ReactNode }) {
 	return <div className="space-y-2">{children}</div>;
 }
 
-export function Step({ children}: { children: ReactNode;}) {
+export function Step({ children }: { children: ReactNode }) {
 	return <motion.div layout>{children}</motion.div>;
 }
 

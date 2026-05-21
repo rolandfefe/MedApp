@@ -63,26 +63,28 @@ export default function AppSidebarFooter() {
 			</RemindersPanel>
 
 			<DropdownMenu>
-				<DropdownMenuTrigger asChild>
-					<SidebarMenuButton
-						tooltip={"Choose mode"}
-						variant={"outline"}
-						className="h-12"
-					>
-						{isDoctorMode ? (
-							<>
-								<Hospital />
-								<span>Doctor mode</span>
-							</>
-						) : (
-							<>
-								<UserPlus2 />
-								<span>Patient mode</span>
-							</>
-						)}
-						<ChevronsUpDown />
-					</SidebarMenuButton>
-				</DropdownMenuTrigger>
+				<DropdownMenuTrigger
+					render={
+						<SidebarMenuButton
+							tooltip={"Choose mode"}
+							variant={"outline"}
+							className="h-12"
+						>
+							{isDoctorMode ? (
+								<>
+									<Hospital />
+									<span>Doctor mode</span>
+								</>
+							) : (
+								<>
+									<UserPlus2 />
+									<span>Patient mode</span>
+								</>
+							)}
+							<ChevronsUpDown />
+						</SidebarMenuButton>
+					}
+				>
 
 				<DropdownMenuContent
 					side={isSmScreen ? "bottom" : "right"}
@@ -118,7 +120,7 @@ export default function AppSidebarFooter() {
 					) : (
 						<PatientFormPanel action="create">
 							<MyBtn size="sm" className="w-full">
-								Apply as Patient
+								Register as patient
 								<UserPlus2 />
 							</MyBtn>
 						</PatientFormPanel>

@@ -6,7 +6,7 @@ import Image from "next/image";
 import { AnimatePresence, motion } from "motion/react";
 import { useSidebar } from "../ui/sidebar";
 import LogoText from "./LogoText";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/_utils";
 
 export default function AppSidebarHeader() {
 	const { state } = useSidebar();
@@ -22,6 +22,7 @@ export default function AppSidebarHeader() {
 			<Image
 				src="/assets/logo.png"
 				alt="logo"
+				loading={"eager"}
 				width={999}
 				height={999}
 				priority

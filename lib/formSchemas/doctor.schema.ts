@@ -10,7 +10,7 @@ import {
 } from "@/types/enums/enums";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { enumToArray } from "../utils";
+import { enumToArray } from "../_utils";
 
 // Medical License Schema
 const licenseSchema = z.object({

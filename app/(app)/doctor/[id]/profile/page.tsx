@@ -1,5 +1,6 @@
 import { getDoctor } from "@/lib/actions/doctor.actions";
 import { getCurrentUser } from "@/lib/actions/user.actions";
+import { getCurrentDoctor } from "@/lib/actions/utils.actions";
 
 export default async function page({
 	params,

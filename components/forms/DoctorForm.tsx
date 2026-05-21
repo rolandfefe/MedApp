@@ -6,7 +6,7 @@ import { useCurrent } from "@/contexts/Current.context";
 import { createDoctor, updateDoctor } from "@/lib/actions/doctor.actions";
 import { DoctorFormData, useDoctorForm } from "@/lib/formSchemas/doctor.schema";
 import { PatientFormData } from "@/lib/formSchemas/patient.schema";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/_utils";
 import { Hospital } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { ReactNode, useState, useTransition } from "react";

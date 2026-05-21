@@ -9,7 +9,7 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/_utils";
 import MyBtn from "../custom/MyBtn";
 
 export function ThemeBtn({ className }: { className?: string }) {
@@ -17,18 +17,24 @@ export function ThemeBtn({ className }: { className?: string }) {
 
 	return (
 		<DropdownMenu>
-			<DropdownMenuTrigger asChild>
-				<MyBtn variant="secondary" size="icon" className={cn("glass-shadow", className)}>
-					{theme === "light" ? (
-						<Sun />
-					) : theme === "dark" ? (
-						<Moon />
-					) : (
-						<Monitor />
-					)}
-					<span className="sr-only">Toggle theme</span>
-				</MyBtn>
-			</DropdownMenuTrigger>
+			<DropdownMenuTrigger
+				render={
+					<MyBtn
+						variant="secondary"
+						size="icon"
+						className={cn("glass-shadow", className)}
+					>
+						{theme === "light" ? (
+							<Sun />
+						) : theme === "dark" ? (
+							<Moon />
+						) : (
+							<Monitor />
+						)}
+						<span className="sr-only">Toggle theme</span>
+					</MyBtn>
+				}
+			/>
 			<DropdownMenuContent align="end">
 				<DropdownMenuItem
 					disabled={theme === "light"}

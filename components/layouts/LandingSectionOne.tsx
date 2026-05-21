@@ -8,7 +8,7 @@ import { Stars } from "lucide-react";
 import Orb from "../ui/orb";
 import Image from "next/image";
 import LogoText from "./LogoText";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/_utils";
 
 export default function LandingSectionOne({
 	className,

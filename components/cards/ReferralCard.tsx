@@ -1,7 +1,7 @@
 "use client";
 
 import { deleteReferral } from "@/lib/actions/referral.actions";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/_utils";
 import { ArrowBigRightDash, ChevronsUpDown, Edit3, Trash2 } from "lucide-react";
 import moment from "moment";
 import { usePathname } from "next/navigation";
@@ -168,11 +168,13 @@ ReferralCard.LG = ({
 
 				<Collapsible>
 					<section className="flex items-center justify-between">
-						<CollapsibleTrigger asChild>
-							<MyBtn size={"sm"} variant={"invert"} className="py-0">
-								Appointment <ChevronsUpDown />
-							</MyBtn>
-						</CollapsibleTrigger>
+						<CollapsibleTrigger
+							render={
+								<MyBtn size={"sm"} variant={"invert"} className="py-0">
+									Appointment <ChevronsUpDown />
+								</MyBtn>
+							}
+						/>
 						<span className="text-xs text-muted-foreground">
 							{moment(referral.createdAt).format("Do MMM - h:mma")}
 						</span>

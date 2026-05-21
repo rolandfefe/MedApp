@@ -61,7 +61,7 @@ export const deleteAppointment = async (id: string) => {
 };
 
 /**
- * @Fetches
+ * @Queries
  */
 export const getAppointments = cache(
 	async ({

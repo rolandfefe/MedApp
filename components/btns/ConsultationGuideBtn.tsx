@@ -9,7 +9,7 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/_utils";
 import { ArrowRightCircle } from "lucide-react";
 import { usePathname } from "next/navigation";
 
@@ -22,9 +22,11 @@ export default function ConsultationGuideBtn({
 
 	return (
 		<DropdownMenu>
-			<DropdownMenuTrigger {...props} asChild className={cn("", className)}>
-				<MyBtn></MyBtn>
-			</DropdownMenuTrigger>
+			<DropdownMenuTrigger
+				{...props}
+				render={<MyBtn></MyBtn>}
+				className={cn("", className)}
+			/>
 
 			<DropdownMenuContent>
 				<LinkBtn link={{ href: `` }}>

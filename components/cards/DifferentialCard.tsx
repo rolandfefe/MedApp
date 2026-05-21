@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/_utils";
 import { Brain, GitCompare } from "lucide-react";
 import { ComponentProps } from "react";
 import { Card, CardContent } from "../ui/card";

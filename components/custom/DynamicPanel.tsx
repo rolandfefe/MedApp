@@ -17,7 +17,7 @@ import {
 	DrawerTrigger,
 } from "../ui/drawer";
 import { useMediaQuery } from "@uidotdev/usehooks";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/_utils";
 
 export function DynamicPanel({
 	children,

@@ -3,7 +3,7 @@
 import { useConsultation } from "@/contexts/consultation.context";
 import { useCurrent } from "@/contexts/Current.context";
 import { deleteVerdict, updateVerdict } from "@/lib/actions/verdict.actions";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/_utils";
 import { useMediaQuery } from "@uidotdev/usehooks";
 import {
 	BookAIcon,

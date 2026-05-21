@@ -11,16 +11,18 @@ export default function BackBtn({ ...props }: ComponentProps<typeof MyBtn>) {
 
 	return (
 		<Tooltip>
-			<TooltipTrigger asChild>
-				<MyBtn
-					size={"icon"}
-					onClick={() => router.back()}
-					variant={"secondary"}
-					{...props}
-				>
-					<ArrowLeft />
-				</MyBtn>
-			</TooltipTrigger>
+			<TooltipTrigger
+				render={
+					<MyBtn
+						size={"icon"}
+						onClick={() => router.back()}
+						variant={"secondary"}
+						{...props}
+					>
+						<ArrowLeft />
+					</MyBtn>
+				}
+			/>
 
 			<TooltipContent>Back</TooltipContent>
 		</Tooltip>

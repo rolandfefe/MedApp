@@ -1,5 +1,5 @@
 import { useCurrent } from "@/contexts/Current.context";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/_utils";
 import { eAppointmentStatus } from "@/types/enums/enums";
 import {
 	CircleX,
@@ -202,7 +202,6 @@ AppointmentCard.ACTIONS = ({
 								href: `/consultation/${encodeURIComponent(appointment.id!)}`,
 							}}
 							variant={"ghost"}
-							asChild
 							className="p-0! "
 						>
 							<HoverBorderGradient
