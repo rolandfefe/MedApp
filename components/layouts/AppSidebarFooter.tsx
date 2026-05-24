@@ -84,7 +84,7 @@ export default function AppSidebarFooter() {
 							<ChevronsUpDown />
 						</SidebarMenuButton>
 					}
-				>
+				/>
 
 				<DropdownMenuContent
 					side={isSmScreen ? "bottom" : "right"}

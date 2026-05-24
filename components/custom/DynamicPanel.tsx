@@ -63,10 +63,8 @@ export const DynamicPanelTrigger = ({
 			<DialogTrigger
 				className={cn("", className)}
 				{...props.dialogProps}
-				asChild
-			>
-				{children}
-			</DialogTrigger>
+				render={<>{children}</>}
+			/>
 		);
 	}
 };

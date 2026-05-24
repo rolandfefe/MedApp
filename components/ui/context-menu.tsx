@@ -17,30 +17,15 @@ function ContextMenuPortal({ ...props }: ContextMenuPrimitive.Portal.Props) {
 }
 
 function ContextMenuTrigger({
-  asChild,
   className,
-  children,
   ...props
-}: ContextMenuPrimitive.Trigger.Props & { asChild?: boolean }) {
-  if (asChild && React.isValidElement(children)) {
-    return (
-      <ContextMenuPrimitive.Trigger
-        data-slot="context-menu-trigger"
-        className={cn("select-none", className)}
-        render={children}
-        {...props}
-      />
-    )
-  }
-
+}: ContextMenuPrimitive.Trigger.Props) {
   return (
     <ContextMenuPrimitive.Trigger
       data-slot="context-menu-trigger"
       className={cn("select-none", className)}
       {...props}
-    >
-      {children}
-    </ContextMenuPrimitive.Trigger>
+    />
   )
 }
 
