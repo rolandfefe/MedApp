@@ -34,9 +34,10 @@ export default function ConfirmationDialog({
 
 	return (
 		<Dialog open={isOpen} onOpenChange={setIsOpen}>
-			<DialogTrigger asChild onClick={() => setIsOpen((prev) => !prev)}>
-				{children}
-			</DialogTrigger>
+			<DialogTrigger
+				render={<>{children}</>}
+				onClick={() => setIsOpen((prev) => !prev)}
+			/>
 
 			<DialogContent>
 				<DialogHeader>

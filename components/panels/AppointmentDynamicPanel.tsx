@@ -111,7 +111,6 @@ export default function AppointmentDynamicPanel({
 	return (
 		<DynamicPanel>
 			<DynamicPanelTrigger
-				dialogProps={{ asChild: true }}
 				drawerProps={{ asChild: true }}
 			>
 				{children}
@@ -235,7 +234,6 @@ export default function AppointmentDynamicPanel({
 											)}`,
 										}}
 										variant={"ghost"}
-										asChild
 										className="p-0! "
 									>
 										<HoverBorderGradient

@@ -25,14 +25,15 @@ export default function RemindersPanel({
 	return (
 		<Sheet>
 			<SheetTrigger
+				nativeButton={false}
 				render={
-					<>
+					<div>
 						{children || (
 							<MyBtn size="icon" variant={"outline"}>
 								<AlarmClock />
 							</MyBtn>
 						)}
-					</>
+					</div>
 				}
 			/>
 

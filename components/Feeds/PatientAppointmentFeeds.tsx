@@ -38,7 +38,7 @@ export default function PatientAppointmentFeeds() {
 	const { state: sidebarState } = useSidebar();
 	const { appointments, loadRef, isLoading } = useAppointments();
 
-	console.log(appointments);
+	// console.log(appointments);
 
 	// console.log("loading Appointments:", isLoading)
 
@@ -56,7 +56,7 @@ export default function PatientAppointmentFeeds() {
 					filters.emergency == a.isEmergency! ||
 					// filters.referred == !!a.referral ||
 					filters.status == a.status ||
-					filters.type == a.type || a
+					filters.type == a.type 
 			)
 		);
 	}, [filters, appointments]);

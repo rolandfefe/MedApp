@@ -17,7 +17,7 @@ import {
 	MailIcon,
 	Phone,
 	PhoneCall,
-	User
+	User,
 } from "lucide-react";
 import moment from "moment";
 import { Variants, motion, stagger } from "motion/react";
@@ -80,7 +80,7 @@ export default function DoctorProfilePanel({
 					className="h-fit w-[97%] rounded-lg sm:rounded-r-none mx-auto sm:h-[75vh] sm:w-56"
 				/>
 
-				<div className="flex1 p-2 w-full bg-red-600">
+				<div className="flex-1 p-2 w-full ">
 					<Tabs defaultValue="Fundamentals">
 						<TabsList className="flex mx-auto">
 							<TabsTrigger value="Fundamentals">Fundamentals</TabsTrigger>

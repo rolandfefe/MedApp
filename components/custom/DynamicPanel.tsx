@@ -2,14 +2,7 @@ import { ComponentProps, ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
 import { useMediaQuery } from "@uidotdev/usehooks";
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
-} from "../ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 import {
 	Drawer,
 	DrawerContent,
@@ -18,28 +11,21 @@ import {
 	DrawerTitle,
 	DrawerTrigger,
 } from "../ui/drawer";
-import { Dialog as DialogPrimitive } from "@base-ui/react/dialog";
-
-const dialogHandle = DialogPrimitive.createHandle();
 
 export function DynamicPanel({
 	children,
 	...props
 }: {
-	children: ReactNode;
 	dialogProps?: ComponentProps<typeof Dialog>;
 	drawerProps?: ComponentProps<typeof Drawer>;
+	children: ReactNode;
 }) {
 	const isSmScreen = useMediaQuery("(width <= 640px)");
 
 	if (isSmScreen) {
 		return <Drawer {...props.drawerProps}>{children}</Drawer>;
 	} else {
-		return (
-			<Dialog {...props.dialogProps} handle={dialogHandle}>
-				{children}
-			</Dialog>
-		);
+		return <Dialog {...props.dialogProps}>{children}</Dialog>;
 	}
 }
 
@@ -69,9 +55,9 @@ export const DynamicPanelTrigger = ({
 		return (
 			<DialogTrigger
 				{...props.dialogProps}
-				handle={dialogHandle}
 				className={cn("", className)}
-				render={<>{children}</>}
+				nativeButton={false}
+				render={<div>{children}</div>}
 			/>
 		);
 	}
@@ -105,10 +91,10 @@ export const DynamicPanelContent = ({
 	} else {
 		return (
 			<DialogContent className={cn("", className)} {...props.dialogProps}>
-				<DialogHeader className="hidden">
+				{/* <DialogHeader className="hidden">
 					<DialogTitle>Title</DialogTitle>
 					<DialogDescription>Description</DialogDescription>
-				</DialogHeader>
+				</DialogHeader> */}
 
 				{children}
 			</DialogContent>
