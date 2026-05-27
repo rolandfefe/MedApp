@@ -56,7 +56,7 @@ export default function PatientAppointmentFeeds() {
 					filters.emergency == a.isEmergency! ||
 					// filters.referred == !!a.referral ||
 					filters.status == a.status ||
-					filters.type == a.type
+					filters.type == a.type || a
 			)
 		);
 	}, [filters, appointments]);

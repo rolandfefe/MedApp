@@ -1,5 +1,7 @@
-import React, { ComponentProps, ReactNode } from "react";
+import { ComponentProps, ReactNode } from "react";
 
+import { cn } from "@/lib/utils";
+import { useMediaQuery } from "@uidotdev/usehooks";
 import {
 	Dialog,
 	DialogContent,
@@ -16,8 +18,6 @@ import {
 	DrawerTitle,
 	DrawerTrigger,
 } from "../ui/drawer";
-import { useMediaQuery } from "@uidotdev/usehooks";
-import { cn } from "@/lib/utils";
 
 export function DynamicPanel({
 	children,

@@ -1,17 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { ComponentProps } from "react";
-import {
-	DynamicPanel,
-	DynamicPanelContent,
-	DynamicPanelTrigger,
-} from "../custom/DynamicPanel";
 import { useMediaQuery } from "@uidotdev/usehooks";
-import UserCard from "../cards/UserCard";
-import DoctorCard from "../cards/DoctorCard";
-import { DoctorFormPanel } from "../forms/DoctorForm";
-import MyBtn from "../custom/MyBtn";
 import {
 	ArrowUpRightFromCircleIcon,
 	Building2,
@@ -20,7 +10,6 @@ import {
 	CreditCard,
 	Cross,
 	Crosshair,
-	Edit3,
 	GraduationCap,
 	HandCoins,
 	HandPlatter,
@@ -28,24 +17,30 @@ import {
 	MailIcon,
 	Phone,
 	PhoneCall,
-	User,
+	User
 } from "lucide-react";
-import { Separator } from "../ui/separator";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
-import { Variants, motion, stagger } from "motion/react";
-import { ScrollArea } from "../ui/scroll-area";
 import moment from "moment";
+import { Variants, motion, stagger } from "motion/react";
+import { ComponentProps } from "react";
+import BoardCertificationCard from "../cards/BoardCertificationCard";
+import DoctorCard from "../cards/DoctorCard";
+import HospitalAffiliationCard from "../cards/HospitalAffiliationCard";
+import LicenseCard from "../cards/LicenseCard";
+import MedicalCertificationCard from "../cards/MedicalCertificationCard";
+import {
+	DynamicPanel,
+	DynamicPanelContent,
+	DynamicPanelTrigger,
+} from "../custom/DynamicPanel";
 import Heading from "../custom/Heading";
-import { DocumentControls, GearIcon } from "@payloadcms/ui";
 import {
 	Carousel,
 	CarouselContent,
 	CarouselItem,
 } from "../motion-primitives/carousel";
-import MedicalCertificationCard from "../cards/MedicalCertificationCard";
-import LicenseCard from "../cards/LicenseCard";
-import BoardCertificationCard from "../cards/BoardCertificationCard";
-import HospitalAffiliationCard from "../cards/HospitalAffiliationCard";
+import { ScrollArea } from "../ui/scroll-area";
+import { Separator } from "../ui/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 
 const motionVariants: Variants = {
 	hidden: {
