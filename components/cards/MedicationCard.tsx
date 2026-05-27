@@ -8,7 +8,7 @@ import {
 	AccordionItem,
 	AccordionTrigger,
 } from "../ui/accordion";
-import { cn } from "@/lib/_utils";
+import { cn } from "@/lib/utils";
 import { Separator } from "../ui/separator";
 import { AlertCircle, BrainCircuit, Pill, ShieldHalf } from "lucide-react";
 import moment from "moment";

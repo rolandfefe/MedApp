@@ -2,7 +2,7 @@
 
 import { useConsultation } from "@/contexts/consultation.context";
 import { useCurrent } from "@/contexts/Current.context";
-import { getIsAppointmentDoctor } from "@/lib/_utils";
+import { getIsAppointmentDoctor } from "@/lib/utils";
 import PatientConsultationAside from "../asides/PatientConsultationAside";
 import DoctorCard from "../cards/DoctorCard";
 import {

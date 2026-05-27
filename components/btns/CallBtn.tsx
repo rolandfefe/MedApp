@@ -4,7 +4,7 @@ import { PhoneCall } from "lucide-react";
 import { ComponentProps, useTransition } from "react";
 import toast from "react-hot-toast";
 import MyBtn from "../custom/MyBtn";
-import { cn } from "@/lib/_utils";
+import { cn } from "@/lib/utils";
 import { Spinner } from "../ui/spinner";
 
 export default function CallBtn({

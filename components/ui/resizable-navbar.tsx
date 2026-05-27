@@ -1,5 +1,5 @@
 "use client";
-import { cn } from "@/lib/_utils";
+import { cn } from "@/lib/utils";
 import { Menu, X } from "lucide-react";
 import {
 	motion,

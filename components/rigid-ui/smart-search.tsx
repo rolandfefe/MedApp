@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useDebouncer } from "@tanstack/react-pacer";
 import { Search, X, Clock, Hash } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/_utils";
+import { cn } from "@/lib/utils";
 import DropdownFilter from "./DropdownFilter";
 
 export interface SearchFilter {

@@ -1,7 +1,7 @@
 "use client";
 
 import { createMsg, updateMsg } from "@/lib/actions/message.actions";
-import { cn } from "@/lib/_utils";
+import { cn } from "@/lib/utils";
 import { Loader, Plus, Send, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 import {

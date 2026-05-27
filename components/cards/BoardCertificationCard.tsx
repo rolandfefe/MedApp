@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/lib/_utils";
+import { cn } from "@/lib/utils";
 import { ComponentProps } from "react";
 import { Card, CardContent } from "../ui/card";
 import {

@@ -2,7 +2,7 @@
 
 import { useConsultation } from "@/contexts/consultation.context";
 import { useMsg } from "@/contexts/message.context";
-import { cn } from "@/lib/_utils";
+import { cn } from "@/lib/utils";
 import { AnimatePresence, motion, Variants } from "motion/react";
 import { ComponentProps, useLayoutEffect, useRef } from "react";
 import MsgCard from "../cards/MsgCard";

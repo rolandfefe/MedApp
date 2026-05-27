@@ -2,7 +2,7 @@
 
 import { useAppointments } from "@/contexts/Appointments.context";
 import { useCurrent } from "@/contexts/Current.context";
-import { cn } from "@/lib/_utils";
+import { cn } from "@/lib/utils";
 import { eAppointmentStatus, eAppointmentTypes } from "@/types/enums/enums";
 import { ChevronsUpDown, Sparkles, TriangleAlert } from "lucide-react";
 import { AnimatePresence, motion, stagger, Variants } from "motion/react";

@@ -17,7 +17,7 @@ import {
 	DrawerTrigger,
 } from "../ui/drawer";
 import { useMediaQuery } from "@uidotdev/usehooks";
-import { cn } from "@/lib/_utils";
+import { cn } from "@/lib/utils";
 
 export function DynamicPanel({
 	children,
@@ -61,8 +61,8 @@ export const DynamicPanelTrigger = ({
 	} else {
 		return (
 			<DialogTrigger
-				className={cn("", className)}
 				{...props.dialogProps}
+				className={cn("", className)}
 				render={<>{children}</>}
 			/>
 		);

@@ -9,7 +9,7 @@ import {
 	DrawerTitle,
 	DrawerTrigger,
 } from "@/components/ui/drawer";
-import { cn } from "@/lib/_utils";
+import { cn } from "@/lib/utils";
 import { useMediaQuery } from "@uidotdev/usehooks";
 import { X } from "lucide-react";
 import { ComponentProps } from "react";

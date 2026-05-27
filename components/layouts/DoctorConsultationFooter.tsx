@@ -160,7 +160,7 @@ DoctorConsultationFooter.DiagnosisBtn = () => {
 		<ButtonGroup className="w-full">
 			<FormPanel>
 				<FormPanelTrigger asChild className="flex-1">
-					<MyBtn variant={"outline"} className="rounded-e-none justify-start!">
+					<MyBtn variant={"invert"} className="rounded-e-none justify-start!">
 						<Stethoscope />
 						Diagnosis
 					</MyBtn>

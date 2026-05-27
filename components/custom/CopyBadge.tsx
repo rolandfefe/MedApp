@@ -6,7 +6,7 @@ import { Copy } from "lucide-react";
 import { useCopyToClipboard } from "@uidotdev/usehooks";
 import toast from "react-hot-toast";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
-import { cn } from "@/lib/_utils";
+import { cn } from "@/lib/utils";
 import { motion } from "motion/react";
 
 export default function CopyBadge({

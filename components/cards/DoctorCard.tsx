@@ -1,4 +1,4 @@
-import { cn } from "@/lib/_utils";
+import { cn } from "@/lib/utils";
 import { ComponentProps } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Badge } from "../ui/badge";

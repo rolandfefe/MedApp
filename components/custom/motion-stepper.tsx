@@ -2,7 +2,7 @@
 
 import React, { ReactNode } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { cn } from "../../lib/_utils";
+import { cn } from "../../lib/utils";
 import { BadgeAlert, Check, ChevronLeft, ChevronRight } from "lucide-react";
 import MyBtn from "./MyBtn";
 

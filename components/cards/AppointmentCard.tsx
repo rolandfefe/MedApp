@@ -1,5 +1,5 @@
 import { useCurrent } from "@/contexts/Current.context";
-import { cn } from "@/lib/_utils";
+import { cn } from "@/lib/utils";
 import { eAppointmentStatus } from "@/types/enums/enums";
 import {
 	CircleX,

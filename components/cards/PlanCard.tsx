@@ -1,4 +1,4 @@
-import { cn } from "@/lib/_utils";
+import { cn } from "@/lib/utils";
 import { ArrowRight, ChevronsUpDown } from "lucide-react";
 import { ComponentProps } from "react";
 import MyBtn from "../custom/MyBtn";

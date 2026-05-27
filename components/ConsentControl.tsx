@@ -8,7 +8,7 @@ import {
 } from "./custom/form-panel";
 import MyBtn from "./custom/MyBtn";
 import PatientHistorySection from "./PatientHistorySection";
-import { cn } from "@/lib/_utils";
+import { cn } from "@/lib/utils";
 import { ePatientConsent } from "@/types/enums/enums";
 import { useState, useTransition } from "react";
 import { updateAppointment } from "@/lib/actions/appointment.actions";

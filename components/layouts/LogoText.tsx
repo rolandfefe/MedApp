@@ -1,4 +1,4 @@
-import { cn } from "@/lib/_utils";
+import { cn } from "@/lib/utils";
 import { headerFont, logoFont } from "../../app/fonts";
 
 export default function LogoText({ className }: { className?: string }) {

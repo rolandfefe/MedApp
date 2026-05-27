@@ -6,7 +6,7 @@ import Image from "next/image";
 import { AnimatePresence, motion } from "motion/react";
 import { useSidebar } from "../ui/sidebar";
 import LogoText from "./LogoText";
-import { cn } from "@/lib/_utils";
+import { cn } from "@/lib/utils";
 
 export default function AppSidebarHeader() {
 	const { state } = useSidebar();

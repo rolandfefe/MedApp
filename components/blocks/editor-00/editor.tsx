@@ -12,7 +12,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 
 import { nodes } from "./nodes";
 import { Plugins } from "./plugins";
-import { cn } from "@/lib/_utils";
+import { cn } from "@/lib/utils";
 import { ComponentProps } from "react";
 
 const editorConfig: InitialConfigType = {

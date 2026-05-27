@@ -9,7 +9,7 @@ import {
 	useState,
 } from "react";
 import { motion, Transition, useMotionValue } from "motion/react";
-import { cn } from "@/lib/_utils";
+import { cn } from "@/lib/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export type CarouselContextType = {

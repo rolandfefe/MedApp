@@ -7,7 +7,7 @@ import {
 	ArticleFormData,
 	ArticleZodSchema,
 } from "@/lib/formSchemas/article.schema";
-import { cn } from "@/lib/_utils";
+import { cn } from "@/lib/utils";
 import {
 	eArticleCategories,
 	eArticleStatus,

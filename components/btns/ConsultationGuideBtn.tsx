@@ -9,7 +9,7 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { cn } from "@/lib/_utils";
+import { cn } from "@/lib/utils";
 import { ArrowRightCircle } from "lucide-react";
 import { usePathname } from "next/navigation";
 

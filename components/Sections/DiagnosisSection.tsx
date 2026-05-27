@@ -28,7 +28,7 @@ import DifferentialCard from "../cards/DifferentialCard";
 import { Variants, motion, stagger } from "motion/react";
 import moment from "moment";
 import { Badge } from "../ui/badge";
-import { cn } from "@/lib/_utils";
+import { cn } from "@/lib/utils";
 import { useMediaQuery } from "@uidotdev/usehooks";
 import {
 	Activity,

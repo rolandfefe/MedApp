@@ -1,4 +1,4 @@
-import { cn } from "@/lib/_utils";
+import { cn } from "@/lib/utils";
 import { ReactNode } from "react";
 import { headerFont } from "../../app/fonts";
 

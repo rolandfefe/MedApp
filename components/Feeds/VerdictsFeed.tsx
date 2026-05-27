@@ -9,7 +9,7 @@ import ProcedureCard from "../cards/ProcedureCard";
 import TherapyCard from "../cards/TherapyCard";
 import { Flower, HandHelping, Pill } from "lucide-react";
 import { useSidebar } from "../ui/sidebar";
-import { cn } from "@/lib/_utils";
+import { cn } from "@/lib/utils";
 
 const motionVariants: Variants = {
 	hidden: {

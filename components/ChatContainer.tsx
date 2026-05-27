@@ -11,7 +11,7 @@ import {
 import MyBtn from "./custom/MyBtn";
 import { ArrowLeft, ArrowLeftCircle, MessageSquareText } from "lucide-react";
 import { ComponentProps } from "react";
-import { cn } from "@/lib/_utils";
+import { cn } from "@/lib/utils";
 import LinkBtn from "./btns/LinkBtn";
 import { useConsultation } from "@/contexts/consultation.context";
 

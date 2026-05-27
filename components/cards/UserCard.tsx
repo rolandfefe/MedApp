@@ -2,7 +2,7 @@
 
 import React, { ComponentProps } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { cn } from "@/lib/_utils";
+import { cn } from "@/lib/utils";
 import { useCurrent } from "@/contexts/Current.context";
 import { Card, CardContent } from "../ui/card";
 import Heading from "../custom/Heading";

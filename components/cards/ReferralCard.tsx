@@ -1,7 +1,7 @@
 "use client";
 
 import { deleteReferral } from "@/lib/actions/referral.actions";
-import { cn } from "@/lib/_utils";
+import { cn } from "@/lib/utils";
 import { ArrowBigRightDash, ChevronsUpDown, Edit3, Trash2 } from "lucide-react";
 import moment from "moment";
 import { usePathname } from "next/navigation";
@@ -106,7 +106,11 @@ const ActionBtns = ({
 				msg={`Are you sure you want to PERMANENTLY delete referral 🆔: ${referral.id!}?`}
 				successMsg={`Referral deleted.🗑️`}
 			>
-				<MyBtn size="icon" variant="outline" className="text-destructive">
+				<MyBtn
+					size="icon"
+					variant="outline"
+					className="text-destructive rounded-l-none"
+				>
 					{isDeleting ? <Spinner /> : <Trash2 />}
 				</MyBtn>
 			</ConfirmationDialog>
@@ -150,6 +154,7 @@ ReferralCard.LG = ({
 							{referral.id!}
 						</CopyBadge>
 					</Heading>
+
 					<Badge variant="secondary">{referral.status}</Badge>
 				</div>
 				<Separator className="my-2" />

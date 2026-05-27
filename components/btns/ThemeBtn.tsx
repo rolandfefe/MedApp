@@ -9,7 +9,7 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/_utils";
+import { cn } from "@/lib/utils";
 import MyBtn from "../custom/MyBtn";
 
 export function ThemeBtn({ className }: { className?: string }) {

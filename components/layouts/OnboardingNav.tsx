@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/lib/_utils";
+import { cn } from "@/lib/utils";
 import Image from "next/image";
 import React from "react";
 import LogoText from "./LogoText";

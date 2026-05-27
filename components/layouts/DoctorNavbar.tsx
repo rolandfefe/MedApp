@@ -1,6 +1,6 @@
 "use client";
 
-import { cn, getNavItem } from "@/lib/_utils";
+import { cn, getNavItem } from "@/lib/utils";
 import { SignedIn, UserButton } from "@clerk/nextjs";
 import { useParams, usePathname } from "next/navigation";
 import BackBtn from "../btns/BackBtn";

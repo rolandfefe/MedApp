@@ -32,7 +32,7 @@ import getPatientFormStepper from "../formSteppers/patientFormStepper";
 import { Card, CardContent } from "../ui/card";
 import { Separator } from "../ui/separator";
 import { useCurrent } from "@/contexts/Current.context";
-import { cn } from "@/lib/_utils";
+import { cn } from "@/lib/utils";
 import ToastErrCard from "../cards/ToastErrCard";
 
 export default function PatientForm({

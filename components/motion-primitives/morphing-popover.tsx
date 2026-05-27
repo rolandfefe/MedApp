@@ -17,7 +17,7 @@ import {
 	Variants,
 } from "motion/react";
 import useClickOutside from "@/hooks/useClickOutside";
-import { cn } from "@/lib/_utils";
+import { cn } from "@/lib/utils";
 
 const TRANSITION = {
 	type: "spring",

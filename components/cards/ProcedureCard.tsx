@@ -2,7 +2,7 @@
 
 import { ComponentProps } from "react";
 import { Card, CardContent } from "../ui/card";
-import { cn } from "@/lib/_utils";
+import { cn } from "@/lib/utils";
 import Heading from "../custom/Heading";
 import { CalendarClock, GitCommit, HandHelping } from "lucide-react";
 import { Separator } from "../ui/separator";

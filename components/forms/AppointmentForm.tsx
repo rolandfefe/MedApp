@@ -5,7 +5,7 @@ import {
 	appointmentFormSchema,
 	useAppointmentForm,
 } from "@/lib/formSchemas/appointment.schema";
-import { cn } from "@/lib/_utils";
+import { cn } from "@/lib/utils";
 import { ePatientConsent } from "@/types/enums/enums";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Headset } from "lucide-react";
@@ -178,7 +178,6 @@ export const AppointmentPanel = ({
 			<MorphingDialogTrigger
 				shortcutKey="p"
 				asChild
-				
 				className={cn("", className)}
 			>
 				{children}

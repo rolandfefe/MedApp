@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/lib/_utils";
+import { cn } from "@/lib/utils";
 import {
 	Apple,
 	BottleWine,
