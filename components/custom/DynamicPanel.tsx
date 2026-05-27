@@ -18,6 +18,9 @@ import {
 	DrawerTitle,
 	DrawerTrigger,
 } from "../ui/drawer";
+import { Dialog as DialogPrimitive } from "@base-ui/react/dialog";
+
+const dialogHandle = DialogPrimitive.createHandle();
 
 export function DynamicPanel({
 	children,
@@ -32,7 +35,11 @@ export function DynamicPanel({
 	if (isSmScreen) {
 		return <Drawer {...props.drawerProps}>{children}</Drawer>;
 	} else {
-		return <Dialog {...props.dialogProps}>{children}</Dialog>;
+		return (
+			<Dialog {...props.dialogProps} handle={dialogHandle}>
+				{children}
+			</Dialog>
+		);
 	}
 }
 
@@ -62,6 +69,7 @@ export const DynamicPanelTrigger = ({
 		return (
 			<DialogTrigger
 				{...props.dialogProps}
+				handle={dialogHandle}
 				className={cn("", className)}
 				render={<>{children}</>}
 			/>
