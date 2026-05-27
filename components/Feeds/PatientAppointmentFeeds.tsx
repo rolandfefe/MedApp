@@ -38,9 +38,9 @@ export default function PatientAppointmentFeeds() {
 	const { state: sidebarState } = useSidebar();
 	const { appointments, loadRef, isLoading } = useAppointments();
 
-	// console.log(appointments)
+	console.log(appointments);
 
-	console.log("loading Appointments:", isLoading);
+	// console.log("loading Appointments:", isLoading)
 
 	const [filters, setFilters] = useState<Filters>({
 		emergency: false,
@@ -67,7 +67,8 @@ export default function PatientAppointmentFeeds() {
 
 			<section className="flex gap-3 flex-col sm:flex-row flex-wrap">
 				<AnimatePresence>
-					{appointments.length > 0 || filterResults.length > 0 ? (
+					{/* {appointments.length > 0 || filterResults.length > 0 ? ( */}
+					{filterResults.length > 0 ? (
 						filterResults.map((appointment) => {
 							const isLastItem =
 								appointments[appointments.length - 1].id === appointment.id;
