@@ -21,7 +21,12 @@ export default function ArticleSidebar() {
 	const { activeArticle } = useArticles();
 
 	return (
-		<Sidebar variant="floating" collapsible="offcanvas" side="right">
+		<Sidebar
+			variant="floating"
+			collapsible="offcanvas"
+			side="right"
+			// className="w-96!"
+		>
 			<SidebarHeader>
 				<div className="flex items-center justify-between gap-x-2">
 					<SidebarTrigger />

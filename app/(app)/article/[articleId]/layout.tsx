@@ -26,7 +26,10 @@ export default async function layout({
 	return (
 		<CurrentProvider user={user} doctor={doctor}>
 			<ArticleProvider article={article} articlesInit={articles}>
-				<SidebarProvider sidebarWidth="20rem">
+				{/* <SidebarProvider sidebarWidth="20rem"> */}
+				<SidebarProvider
+					style={{ "--sidebar-width": "25rem" } as React.CSSProperties}
+				>
 					<SidebarInset>
 						<main className="p-3 relative ">
 							{children}
