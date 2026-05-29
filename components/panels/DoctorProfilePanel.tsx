@@ -119,7 +119,7 @@ DoctorProfilePanel.InfoAside = ({
 	return (
 		<div className={cn("relative bg-secondary glass-shadow p2", className)}>
 			<section>
-				<DoctorCard.LG doctor={doctor} className="shadow-none border-0" />
+				<DoctorCard.LG doctor={doctor} className="shadow-none! border-0" />
 			</section>
 		</div>
 	);

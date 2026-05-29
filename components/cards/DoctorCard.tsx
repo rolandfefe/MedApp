@@ -177,7 +177,7 @@ DoctorCard.LG = ({
 				>
 					<Avatar className="size-14 sm:size-20 mx-auto">
 						<AvatarImage src={user.imageUrl!} />
-						<AvatarFallback className="size-full rounded-lg bg-fuchsia-400 dark:bg-fuchsia-600">
+						<AvatarFallback className="size-full rounded-lg bg-fuchsia-400 dark:bg-fuchsia-600 text-foreground font-bold">
 							{user.username[0].toUpperCase()}
 						</AvatarFallback>
 					</Avatar>

@@ -35,14 +35,9 @@ export function FormPanel({
 
 export const FormPanelTrigger = ({
 	children,
-	asChild,
 	...props
-}: ComponentProps<typeof DrawerTrigger> & { asChild?: boolean }) => {
-	return (
-		<DrawerTrigger asChild={asChild} {...props}>
-			{children}
-		</DrawerTrigger>
-	);
+}: ComponentProps<typeof DrawerTrigger>) => {
+	return <DrawerTrigger {...props}>{children}</DrawerTrigger>;
 };
 
 export const FormPanelContent = ({

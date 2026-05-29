@@ -30,7 +30,7 @@ export default function Navbar({
 				<BackBtn />
 			</div>
 
-			<Heading className="text-xl md:text-2xl">
+			<Heading className="text-xl md:text-2xl text-primary">
 				{getNavItem(pathname, patientNav.items!)?.name}
 			</Heading>
 

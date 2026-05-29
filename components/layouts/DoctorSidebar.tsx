@@ -40,7 +40,6 @@ export default function DoctorSidebar({
 				</SidebarMenu>
 			</SidebarContent>
 
-			
 			<SidebarFooter>
 				<AppSidebarFooter />
 			</SidebarFooter>

@@ -46,7 +46,7 @@ export default function ConsultationNavbar({
 				<BackBtn />
 			</div>
 
-			<Heading className="text-xl md:text-2xl capitalize">
+			<Heading className="text-xl md:text-2xl capitalize text-primary">
 				{pathname.split("/")[3] || "Consultation"}
 			</Heading>
 

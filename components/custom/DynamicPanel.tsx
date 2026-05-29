@@ -91,11 +91,6 @@ export const DynamicPanelContent = ({
 	} else {
 		return (
 			<DialogContent className={cn("", className)} {...props.dialogProps}>
-				{/* <DialogHeader className="hidden">
-					<DialogTitle>Title</DialogTitle>
-					<DialogDescription>Description</DialogDescription>
-				</DialogHeader> */}
-
 				{children}
 			</DialogContent>
 		);

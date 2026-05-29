@@ -25,6 +25,7 @@ import { Separator } from "../ui/separator";
 import { useMsg } from "@/contexts/message.context";
 import { useConsultation } from "@/contexts/consultation.context";
 import { useCurrent } from "@/contexts/Current.context";
+import { Spinner } from "../ui/spinner";
 
 export default function MessageForm({
 	className,
@@ -180,14 +181,14 @@ export default function MessageForm({
 						</div>
 						<InputGroupButton
 							disabled={isSending}
-							variant={"default"}
+							variant={"invert"}
 							onClick={submitHandler}
 							className="ml-auto rounded-full"
 							render={
-								<>
+								<div>
 									Send
-									{isSending ? <Loader className="animate-spin" /> : <Send />}
-								</>
+									{isSending ? <Spinner /> : <Send />}
+								</div>
 							}
 						/>
 					</InputGroupAddon>
