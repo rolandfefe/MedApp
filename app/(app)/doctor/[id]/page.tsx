@@ -1,8 +1,6 @@
-import DashboardCard from "@/components/cards/DashboardCard";
 import Heading from "@/components/custom/Heading";
 import DoctorDashboardMainSection from "@/components/Sections/DoctorDashboardMainSection";
 import { Separator } from "@/components/ui/separator";
-import { getAppointments } from "@/lib/actions/appointment.actions";
 import { getArticles } from "@/lib/actions/article.actions";
 import { getPlans } from "@/lib/actions/recurrencePlan.actions";
 import { getReferrals } from "@/lib/actions/referral.actions";
@@ -25,8 +23,9 @@ export default async function page() {
 
 	return (
 		<div className="space-y-4">
+
 			<section className="flex flex-col sm:flex-row gap-3">
-				<div className="flex-1 sm:flex-[.5] border">
+				<div className="flex-1 sm:flex-[.5]">
 					<Image
 						src="/assets/doctor-heart.svg"
 						alt="doctor-heart"
@@ -38,7 +37,7 @@ export default async function page() {
 				</div>
 
 				<div className="flex-1">
-					<Heading className="text-xl sm:text-3xl md:text-4xl">
+					<Heading className="text-2xl sm:text-3xl md:text-4xl">
 						Hello, <span className="text-primary">Dr.{doctor.user.fname}</span>
 						👋
 					</Heading>

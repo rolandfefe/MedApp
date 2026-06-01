@@ -1,13 +1,13 @@
-import { currentUser } from "@clerk/nextjs/server";
+// import { currentUser } from "@clerk/nextjs/server";
 import { AuthStrategy, Payload } from "payload";
 
 export async function getDbUser(payload: Payload): Promise<IUser | null> {
-	// const { user.id }: { user.id: string | null } = await auth();
-	const user = await currentUser();
+	"use server";
+	// const user = await currentUser();
+	const user = {};
 
 	if (!user) return null;
 
-	// const dbUser = await getUser({ clerkId: user.id });
 	const {
 		docs: [dbUser],
 	} = await payload.find({

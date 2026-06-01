@@ -44,13 +44,13 @@ export default function DashboardCard({
 			>
 				<CardContent className="p-2">
 					<Heading className="font-medium text-primary text-xl">
-						<DynamicIcon name={icon} className="" />
+						<DynamicIcon name={icon} />
 						{title}
 					</Heading>
 
 					<Badge
-						variant={"outline"}
-						className="text-primary font-semibold absolute bottom-2 right-2"
+						variant={"default"}
+						className="textprimary glass-shadow font-semibold absolute bottom-2 right-2"
 					>
 						{n}
 					</Badge>

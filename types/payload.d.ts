@@ -122,9 +122,10 @@ export interface Config {
     DoctorNav: DoctorNavSelect<false> | DoctorNavSelect<true>;
   };
   locale: null;
-  user: User & {
-    collection: 'users';
+  widgets: {
+    collections: CollectionsWidget;
   };
+  user: User;
   jobs: {
     tasks: unknown;
     workflows: unknown;
@@ -163,6 +164,7 @@ export interface User {
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
+  collection: 'users';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -172,6 +174,7 @@ export interface Media {
   id: string;
   alt: string;
   _key?: string | null;
+  prefix?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -748,6 +751,7 @@ export interface Reminder {
   variant?: ('Appointment' | 'Medication' | 'Personal') | null;
   reminderLabel: string;
   description?: string | null;
+  itemId?: string | null;
   time: string;
   status?: ('Pending' | 'Sent' | 'Silenced') | null;
   updatedAt: string;
@@ -1025,6 +1029,7 @@ export interface UsersSelect<T extends boolean = true> {
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
   _key?: T;
+  prefix?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -1334,6 +1339,7 @@ export interface RemindersSelect<T extends boolean = true> {
   variant?: T;
   reminderLabel?: T;
   description?: T;
+  itemId?: T;
   time?: T;
   status?: T;
   updatedAt?: T;
@@ -7182,6 +7188,16 @@ export interface DoctorNavSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "collections_widget".
+ */
+export interface CollectionsWidget {
+  data?: {
+    [k: string]: unknown;
+  };
+  width: 'full';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

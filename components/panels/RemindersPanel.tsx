@@ -37,7 +37,7 @@ export default function RemindersPanel({
 				}
 			/>
 
-			<SheetContent side="left" className="sm:max-w-100">
+			<SheetContent side="left" className="sm:max-w-200! sm:w-110!">
 				<SheetHeader className="p-2 ">
 					<SheetTitle>
 						<Heading>
@@ -54,21 +54,21 @@ export default function RemindersPanel({
 						<TabsList className="text-sm collapsible-tabs">
 							<TabsTrigger
 								value="Appointments"
-								className="data-[state=active]:collapsible-tab"
+								// className="data-[state=active]:collapsible-tab"
 							>
 								<Headset size={20} />
 								<span>Appointments</span>
 							</TabsTrigger>
 							<TabsTrigger
 								value="Medications"
-								className="data-[state=active]:collapsible-tab"
+								// className="data-[state=active]:collapsible-tab"
 							>
 								<Pill size={20} />
 								<span>Medications</span>
 							</TabsTrigger>
 							<TabsTrigger
 								value="Personal"
-								className="data-[state=active]:collapsible-tab"
+								// className="data-[state=active]:collapsible-tab"
 							>
 								<User size={20} />
 								<span>Personal</span>

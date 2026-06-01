@@ -127,6 +127,7 @@ export default function ReminderForm() {
 					disabled={isPending}
 					size="lg"
 					onClick={form.handleSubmit(submitHandler, errHandler)}
+					className={"mt-4"}
 				>
 					{isPending ? <Spinner /> : <AlarmClockPlusIcon />}
 					Set Reminder

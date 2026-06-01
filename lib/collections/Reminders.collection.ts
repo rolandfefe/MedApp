@@ -19,12 +19,13 @@ export const Reminders: CollectionConfig = {
 		{ name: "reminderLabel", type: "text", required: true },
 		{ name: "description", type: "textarea" },
 
-		// todo find out how to set up dynamic-collection relations
+		// todo find out how to set up dynamic-collection relation zs
 		// {
 		// 	name: "item",
-		// 	type: "relationship",	
+		// 	type: "relationship",
 		// 	relationTo: ["appointments", "Medication"],
 		// },
+		{ name: "itemId", type: "text" }, // ? replacement for 👆
 		{ name: "time", type: "date", required: true },
 		{
 			name: "status",
@@ -35,5 +36,6 @@ export const Reminders: CollectionConfig = {
 			})),
 			defaultValue: eReminderStatus.PENDING,
 		},
+
 	],
 };
