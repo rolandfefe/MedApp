@@ -9,18 +9,17 @@ export default function ReminderPopup({
 }: {
 	reminders: IReminder[];
 }) {
-
-
-
 	const triggerHandler = () => {
 		const reminderNotifications = reminders
 			.filter((r) => r.status === eReminderStatus.PENDING)
-			.filter((r) => Date.parse(r.time) > Date.now());
+			.filter((r) => Date.parse(r.time) < Date.now());
+
+		if (reminderNotifications.length < 0) return;
 
 		const reminder =
 			reminderNotifications[random(0, reminderNotifications.length - 1)];
 
-		console.log("timer", reminder);
+		console.log("timer");
 
 		toast.custom((t) => <ReminderCard.Popup t={t} reminder={reminder} />, {
 			id: "sw242",
