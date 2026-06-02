@@ -41,6 +41,7 @@ import {
 	StepperTrigger,
 } from "../custom/motion-stepper";
 import { ScrollArea } from "../ui/scroll-area";
+import { createReminder } from "@/lib/actions/reminder.actions";
 
 export default function AppointmentForm({
 	action,
@@ -73,13 +74,23 @@ export default function AppointmentForm({
 
 		if (action === "Create") {
 			startTransition(async () => {
-				await createAppointment({ ...cleanData });
+				const { id } = await createAppointment({ ...cleanData });
 				toast.success(
 					"Appointment Placed. \n You notified once it's confirmed."
 				);
 
 				// form.reset()
 				setIsSuccess(true);
+
+				// TODO might make it seem slower
+				await createReminder({
+					user: patient.user.id,
+					time: data.startTime!,
+					reminderLabel: `Appointment with Dr.${selectedDoctor?.user.fname}.`,
+					description: data.reason,
+					variant: "Appointment",
+					itemId: id,
+				});
 			});
 		} else if (action === "Update" && appointment) {
 			startTransition(async () => {

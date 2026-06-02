@@ -47,6 +47,7 @@ export default function DoctorDashboardMainSection({
 			<AnimatePresence>
 				<motion.div
 					variants={VARIANTS}
+					key={"sdfd"}
 					className="flex-1 basis-[60%] md:basis-[24%]"
 				>
 					<DashboardCard
@@ -60,6 +61,7 @@ export default function DoctorDashboardMainSection({
 
 				<motion.div
 					variants={VARIANTS}
+					key={"asdf24"}
 					className="flex-1 basis-[40%] md:basis-[24%]"
 				>
 					<DashboardCard
@@ -73,6 +75,7 @@ export default function DoctorDashboardMainSection({
 
 				<motion.div
 					variants={VARIANTS}
+					key={"d242nc"}
 					className="flex-1 basis-[30%] md:basis-[24%]"
 				>
 					<DashboardCard
@@ -86,6 +89,7 @@ export default function DoctorDashboardMainSection({
 
 				<motion.div
 					variants={VARIANTS}
+					key={"d2984h"}
 					className="flex-1 basis-[70%] md:basis-[24%]"
 				>
 					<DashboardCard

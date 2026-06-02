@@ -15,12 +15,14 @@ export const createAppointment = async (
 	data: Omit<IAppointment, "id" | "createdAt" | "updatedAt">
 ) => {
 	try {
-		await payload.create({
+		const appointment = await payload.create({
 			collection: "appointments",
 			data,
 		});
 
 		updateTag("appointments");
+
+		return appointment;
 	} catch (error: any) {
 		throw new Error(error);
 	}
