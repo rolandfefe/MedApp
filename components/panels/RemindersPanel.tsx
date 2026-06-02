@@ -14,6 +14,8 @@ import {
 } from "../ui/sheet";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import ReminderForm from "../forms/ReminderForm";
+import RemindersFeed from "../Feeds/RemindersFeed";
+import { eReminderVariants } from "@/types/enums/enums";
 
 export default function RemindersPanel({
 	children,
@@ -38,9 +40,9 @@ export default function RemindersPanel({
 			/>
 
 			<SheetContent side="left" className="sm:max-w-200! sm:w-110!">
-				<SheetHeader className="p-2 ">
+				<SheetHeader className="">
 					<SheetTitle>
-						<Heading>
+						<Heading className="text-2xl sm:text-3xl text-primary">
 							<AlarmClock />
 							Reminders
 						</Heading>
@@ -52,6 +54,13 @@ export default function RemindersPanel({
 				<Tabs defaultValue="Appointments" className="p-2">
 					<div className="flex items-center gap-x-2 justify-between">
 						<TabsList className="text-sm collapsible-tabs">
+							<TabsTrigger
+								value="Personal"
+								// className="data-[state=active]:collapsible-tab"
+							>
+								<User size={20} />
+								<span>Personal</span>
+							</TabsTrigger>
 							<TabsTrigger
 								value="Appointments"
 								// className="data-[state=active]:collapsible-tab"
@@ -67,15 +76,6 @@ export default function RemindersPanel({
 								<span>Medications</span>
 							</TabsTrigger>
 							<TabsTrigger
-								value="Personal"
-								// className="data-[state=active]:collapsible-tab"
-							>
-								<User size={20} />
-								<span>Personal</span>
-							</TabsTrigger>
-						</TabsList>
-						<TabsList className="collapsible-tabs">
-							<TabsTrigger
 								value="New"
 								className="data-[state=inactive]:!text-primary"
 							>
@@ -83,12 +83,20 @@ export default function RemindersPanel({
 								<span className="sm:!hidden">Add</span>
 							</TabsTrigger>
 						</TabsList>
+						{/* <TabsList className="collapsibletabs">
+						</TabsList> */}
 					</div>
 
 					<ScrollArea className="h-[97vh]">
-						<TabsContent value="Appointments">Appointments</TabsContent>
-						<TabsContent value="Medications">Medications</TabsContent>
-						<TabsContent value="Personal">Personal</TabsContent>
+						<TabsContent value="Appointments">
+							<RemindersFeed variant={eReminderVariants.APPOINTMENT} />
+						</TabsContent>
+						<TabsContent value="Medications">
+							<RemindersFeed variant={eReminderVariants.MEDICATION} />
+						</TabsContent>
+						<TabsContent value="Personal">
+							<RemindersFeed variant={eReminderVariants.PERSONAL} />
+						</TabsContent>
 						<TabsContent value="New">
 							<ReminderForm />
 						</TabsContent>

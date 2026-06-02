@@ -748,7 +748,7 @@ export interface Appointment {
 export interface Reminder {
   id: string;
   user: string | User;
-  variant?: ('Appointment' | 'Medication' | 'Personal') | null;
+  variant?: ('Appointment' | 'Medication' | 'Follow-up' | 'Personal') | null;
   reminderLabel: string;
   description?: string | null;
   itemId?: string | null;

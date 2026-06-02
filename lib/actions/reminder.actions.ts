@@ -10,14 +10,21 @@ const payload = await getPayload({ config });
 /**
  * @Mutations
  */
-export const createReminder = async (data: IReminder) => {
+
+/**
+ * @Type
+ * `Omit<IReminder, "id" | "createdAt" | "updatedAt">`
+ */
+export const createReminder = async (
+	data: Omit<IReminder, "id" | "createdAt" | "updatedAt">
+) => {
 	try {
 		await payload.create({
 			collection: "reminders",
 			data,
 		});
 
-		updateTag("reminders");
+		updateTag("reminders"); // ! NOT working in DEV -> ⚠️FIX
 	} catch (error: any) {
 		throw new Error(error);
 	}

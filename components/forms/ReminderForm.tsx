@@ -30,19 +30,22 @@ export default function ReminderForm() {
 	const form = useReminderForm();
 
 	const submitHandler = (data: ReminderFormData) => {
-		console.log(data);
-
-		const cleanData: IReminder = {
+		const cleanData: Omit<IReminder, "id" | "createdAt" | "updatedAt"> = {
 			...data,
 			user: currentUser.id,
 		};
+		console.log(cleanData);
 
 		startTransition(async () => {
 			await createReminder(cleanData);
 
 			toast.success(
-				`${data.reminderLabel} reminder set at ${moment(data.time).format("")}`
+				`'${data.reminderLabel}' reminder set at ${moment(data.time).format(
+					"Do MMM - h:mma"
+				)}`
 			);
+
+			form.reset();
 		});
 	};
 

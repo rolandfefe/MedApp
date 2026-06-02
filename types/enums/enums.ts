@@ -225,6 +225,7 @@ export enum eMessageStatus {
 export enum eReminderVariants {
 	APPOINTMENT = "Appointment",
 	MEDICATION = "Medication",
+	FOLLOW_UP = "Follow-up",
 	PERSONAL = "Personal",
 }
 
@@ -233,7 +234,6 @@ export enum eReminderStatus {
 	SENT = "Sent",
 	SILENCED = "Silenced",
 }
-
 
 export enum eConfidenceLevel {
 	RULED_OUT = "Ruled-out",

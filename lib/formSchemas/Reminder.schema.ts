@@ -8,7 +8,7 @@ export const reminderFormSchema = z.object({
 		.string()
 		.max(500, "Description should be at most 500 characters!")
 		.optional(),
-	time: z.string().datetime(),
+	time: z.string(),
 });
 
 export type ReminderFormData = z.infer<typeof reminderFormSchema>;

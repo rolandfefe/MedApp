@@ -1,3 +1,5 @@
+"use client"
+
 import {
 	ComponentProps,
 	createContext,
@@ -37,7 +39,6 @@ export const useReminders = () => {
 };
 
 export const RemindersProvider = ({
-	children,
 	remindersInit = { appointments: [], medications: [], personal: [] },
 	...props
 }: { remindersInit: Props["reminders"] } & ComponentProps<"div">) => {
@@ -53,7 +54,7 @@ export const RemindersProvider = ({
 
 	return (
 		<RemindersContext.Provider value={contextValue}>
-			<div {...props} >{children}</div>
+			<div {...props} />
 		</RemindersContext.Provider>
 	);
 };
