@@ -71,3 +71,5 @@ export const getVerdictByAppointment = async (
 
 	return;
 };
+
+

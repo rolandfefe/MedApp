@@ -1,5 +1,6 @@
 "use client";
 
+import ReminderPopup from "@/components/layouts/ReminderPopup";
 import {
 	ComponentProps,
 	createContext,
@@ -62,6 +63,15 @@ export const RemindersProvider = ({
 	return (
 		<RemindersContext.Provider value={contextValue}>
 			<div {...props} />
+
+			<ReminderPopup
+				reminders={[
+					...reminders.appointments,
+					...reminders.followUp,
+					...reminders.medications,
+					...reminders.personal,
+				]}
+			/>
 		</RemindersContext.Provider>
 	);
 };
