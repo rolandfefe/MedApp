@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
 	ComponentProps,
@@ -15,6 +15,7 @@ interface Props {
 		appointments: IReminder[];
 		medications: IReminder[];
 		personal: IReminder[];
+		followUp: IReminder[];
 	};
 
 	setReminder: Dispatch<SetStateAction<IReminder | undefined>>;
@@ -23,6 +24,7 @@ interface Props {
 			appointments: IReminder[];
 			medications: IReminder[];
 			personal: IReminder[];
+			followUp: IReminder[];
 		}>
 	>;
 }
@@ -39,7 +41,12 @@ export const useReminders = () => {
 };
 
 export const RemindersProvider = ({
-	remindersInit = { appointments: [], medications: [], personal: [] },
+	remindersInit = {
+		appointments: [],
+		medications: [],
+		personal: [],
+		followUp: [],
+	},
 	...props
 }: { remindersInit: Props["reminders"] } & ComponentProps<"div">) => {
 	const [reminder, setReminder] = useState<IReminder>();

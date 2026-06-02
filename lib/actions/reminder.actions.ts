@@ -100,8 +100,8 @@ export const getReminders = cache(
 	},
 	[],
 	{
-		tags: ["reminders"],
 		revalidate: 60 * 15,
+		tags: ["reminders"],
 	}
 );
 

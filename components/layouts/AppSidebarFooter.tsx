@@ -28,7 +28,6 @@ import PatientProfilePanel from "../panels/PatientProfilePanel";
 
 export default function AppSidebarFooter() {
 	const { state: sidebarState } = useSidebar();
-	const [reminders, setReminders] = useState<IReminder[]>([]);
 	const { currentDoctor: doctor, currentPatient: patient } = useCurrent();
 
 	const isSmScreen = useMediaQuery("(width <= 640px )");
@@ -55,7 +54,7 @@ export default function AppSidebarFooter() {
 				)
 			)}
 
-			<RemindersPanel reminders={reminders}>
+			<RemindersPanel>
 				<SidebarMenuButton tooltip={"Reminders"} className="border">
 					<AlarmClock />
 					<span>Reminders</span>

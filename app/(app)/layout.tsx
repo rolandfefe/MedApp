@@ -9,6 +9,10 @@ import { Geist_Mono, Poppins } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import { extractRouterConfig } from "uploadthing/server";
 import "./globals.css";
+import { getCurrentUser } from "@/lib/actions/user.actions";
+import { RemindersProvider } from "@/contexts/Reminder.context";
+import { eReminderVariants } from "@/types/enums/enums";
+import { getReminders } from "@/lib/actions/reminder.actions";
 
 const poppinsFont = Poppins({
 	weight: ["100", "200", "300", "400", "500", "600", "700"],
@@ -32,6 +36,29 @@ export default async function RootLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
+	const currentUser = await getCurrentUser();
+
+	const [
+		{ reminders: appointmentReminders },
+		{ reminders: medicationReminders },
+		{ reminders: personalReminders },
+		{ reminders: followUpReminders },
+	] = await Promise.all([
+		getReminders({
+			user: currentUser.id,
+			variant: eReminderVariants.APPOINTMENT,
+		}),
+		getReminders({
+			user: currentUser.id,
+			variant: eReminderVariants.MEDICATION,
+		}),
+		getReminders({ user: currentUser.id, variant: eReminderVariants.PERSONAL }),
+		getReminders({
+			user: currentUser.id,
+			variant: eReminderVariants.FOLLOW_UP,
+		}),
+	]);
+
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<AuthProvider>
@@ -48,10 +75,19 @@ export default async function RootLayout({
 						disableTransitionOnChange
 					>
 						<BProgressProvider>
-							<ScrollArea className="h-screen">
-								{children}
-								<ScrollBar />
-							</ScrollArea>
+							<RemindersProvider
+								remindersInit={{
+									appointments: appointmentReminders,
+									medications: medicationReminders,
+									personal: personalReminders,
+									followUp: followUpReminders,
+								}}
+							>
+								<ScrollArea className="h-screen">
+									{children}
+									<ScrollBar />
+								</ScrollArea>
+							</RemindersProvider>
 						</BProgressProvider>
 					</ThemeProvider>
 				</body>

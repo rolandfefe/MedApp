@@ -1,8 +1,24 @@
-import { AlarmClock, Headset, Pill, PlusCircle, User } from "lucide-react";
-import { ReactNode } from "react";
+"use client";
+
+import { eReminderStatus, eReminderVariants } from "@/types/enums/enums";
+import {
+	AlarmClock,
+	ChevronsUpDown,
+	Filter,
+	PlusCircle,
+	XCircle,
+} from "lucide-react";
+import { ReactNode, useState } from "react";
 import Heading from "../custom/Heading";
 import MyBtn from "../custom/MyBtn";
-import { ScrollArea } from "../ui/scroll-area";
+import RemindersFeed from "../Feeds/RemindersFeed";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 import { Separator } from "../ui/separator";
 import {
 	Sheet,
@@ -12,18 +28,13 @@ import {
 	SheetTitle,
 	SheetTrigger,
 } from "../ui/sheet";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
-import ReminderForm from "../forms/ReminderForm";
-import RemindersFeed from "../Feeds/RemindersFeed";
-import { eReminderVariants } from "@/types/enums/enums";
+import { ScrollArea } from "../ui/scroll-area";
+import { cn } from "@/lib/utils";
 
-export default function RemindersPanel({
-	children,
-	reminders,
-}: {
-	children: ReactNode;
-	reminders: IReminder[];
-}) {
+export default function RemindersPanel({ children }: { children: ReactNode }) {
+	const [TAB, setTab] = useState<eReminderVariants | "New" | "All">("All");
+	const [status, setStatus] = useState<eReminderStatus>();
+
 	return (
 		<Sheet>
 			<SheetTrigger
@@ -39,8 +50,8 @@ export default function RemindersPanel({
 				}
 			/>
 
-			<SheetContent side="left" className="sm:max-w-200! sm:w-110!">
-				<SheetHeader className="">
+			<SheetContent side="left" className="w-screen! sm:max-w-200! sm:w-110! gap-0!">
+				<SheetHeader className="pb-0">
 					<SheetTitle>
 						<Heading className="text-2xl sm:text-3xl text-primary">
 							<AlarmClock />
@@ -51,57 +62,73 @@ export default function RemindersPanel({
 				</SheetHeader>
 				<Separator />
 
-				<Tabs defaultValue="Appointments" className="p-2">
-					<div className="flex items-center gap-x-2 justify-between">
-						<TabsList className="text-sm collapsible-tabs">
-							<TabsTrigger
-								value="Personal"
-								// className="data-[state=active]:collapsible-tab"
-							>
-								<User size={20} />
-								<span>Personal</span>
-							</TabsTrigger>
-							<TabsTrigger
-								value="Appointments"
-								// className="data-[state=active]:collapsible-tab"
-							>
-								<Headset size={20} />
-								<span>Appointments</span>
-							</TabsTrigger>
-							<TabsTrigger
-								value="Medications"
-								// className="data-[state=active]:collapsible-tab"
-							>
-								<Pill size={20} />
-								<span>Medications</span>
-							</TabsTrigger>
-							<TabsTrigger
-								value="New"
-								className="data-[state=inactive]:!text-primary"
-							>
-								<PlusCircle />
-								<span className="sm:!hidden">Add</span>
-							</TabsTrigger>
-						</TabsList>
-						{/* <TabsList className="collapsibletabs">
-						</TabsList> */}
+				<section className="p-2 md:p-3">
+					<div className="flex items-center gap-x-3 justify-between mb-3">
+						<DropdownMenu>
+							<DropdownMenuTrigger
+								render={
+									<MyBtn size="sm" variant={"secondary"}>
+										<ChevronsUpDown />
+										{TAB}
+									</MyBtn>
+								}
+							/>
+
+							<DropdownMenuContent>
+								<DropdownMenuItem onClick={() => setTab("All")}>
+									All
+								</DropdownMenuItem>
+								{Object.values(eReminderVariants).map((v) => (
+									<DropdownMenuItem key={v} onClick={() => setTab(v)}>
+										{v}
+									</DropdownMenuItem>
+								))}
+							</DropdownMenuContent>
+						</DropdownMenu>
+
+						<DropdownMenu>
+							<DropdownMenuTrigger
+								// className={"absolute -top-10 left-1/2 -translate-x-1/2 z-50"}
+								render={
+									<MyBtn
+										variant="secondary"
+										size="sm"
+										className={cn(status && "text-primary")}
+									>
+										<Filter />
+										{status ?? "Filter Status"}
+									</MyBtn>
+								}
+							/>
+
+							<DropdownMenuContent side="top">
+								{Object.values(eReminderStatus).map((s) => (
+									<DropdownMenuItem key={s} onClick={() => setStatus(s)}>
+										{s}
+									</DropdownMenuItem>
+								))}
+								<DropdownMenuSeparator />
+								<DropdownMenuItem onClick={() => setStatus(undefined)}>
+									<XCircle />
+									Clear
+								</DropdownMenuItem>
+							</DropdownMenuContent>
+						</DropdownMenu>
+
+						<MyBtn
+							size={"sm"}
+							variant={"secondary"}
+							onClick={() => setTab("New")}
+							className="text-primary"
+						>
+							<PlusCircle /> New
+						</MyBtn>
 					</div>
 
-					<ScrollArea className="h-[97vh]">
-						<TabsContent value="Appointments">
-							<RemindersFeed variant={eReminderVariants.APPOINTMENT} />
-						</TabsContent>
-						<TabsContent value="Medications">
-							<RemindersFeed variant={eReminderVariants.MEDICATION} />
-						</TabsContent>
-						<TabsContent value="Personal">
-							<RemindersFeed variant={eReminderVariants.PERSONAL} />
-						</TabsContent>
-						<TabsContent value="New">
-							<ReminderForm />
-						</TabsContent>
+					<ScrollArea className="h-[84vh]">
+						<RemindersFeed TAB={TAB} status={status} className="pb-40" />
 					</ScrollArea>
-				</Tabs>
+				</section>
 			</SheetContent>
 		</Sheet>
 	);

@@ -22,6 +22,7 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import ReminderForm from "../forms/ReminderForm";
 
 const MotionVariants: Variants = {
 	hidden: {
@@ -32,23 +33,38 @@ const MotionVariants: Variants = {
 		opacity: 1,
 		y: 0,
 	},
+	exit: {
+		opacity: 0,
+		x: 100,
+	},
 };
 
 export default function RemindersFeed({
-	variant,
+	TAB,
+	status,
 	...props
 }: {
-	variant: eReminderVariants;
+	TAB: eReminderVariants | "New" | "All";
+	status: eReminderStatus | undefined;
 } & ComponentProps<"div">) {
 	const { reminders: _reminders } = useReminders();
-	const [status, setStatus] = useState<eReminderStatus>();
+
+	if (TAB === "New") return <ReminderForm />;
 
 	const reminders =
-		variant === eReminderVariants.APPOINTMENT
+		TAB === eReminderVariants.APPOINTMENT
 			? _reminders.appointments
-			: variant === eReminderVariants.MEDICATION
+			: TAB === eReminderVariants.MEDICATION
 			? _reminders.medications
-			: _reminders.personal;
+			: TAB === eReminderVariants.PERSONAL
+			? _reminders.personal
+			: TAB === eReminderVariants.FOLLOW_UP
+			? _reminders.followUp
+			: [
+					..._reminders.personal,
+					..._reminders.medications,
+					..._reminders.appointments,
+			  ];
 
 	// console.log("Reminders:", _reminders);
 
@@ -59,6 +75,7 @@ export default function RemindersFeed({
 					variants={MotionVariants}
 					initial={"hidden"}
 					animate={"visible"}
+					exit={"exit"}
 					transition={{
 						delayChildren: stagger(0.2),
 						ease: easeInOut,
@@ -68,45 +85,18 @@ export default function RemindersFeed({
 					{reminders.length > 0 ? (
 						reminders.map((r) => {
 							if (status && r.status !== status) return;
-							// return <Void msg={`Sorry, no '${status}' appointments.`} />;
 
 							return (
-								<motion.div variants={MotionVariants} key={r.id}>
+								<motion.div variants={MotionVariants} layout key={r.id}>
 									<ReminderCard reminder={r} />
 								</motion.div>
 							);
 						})
 					) : (
-						<Void msg={`Sorry, no '${variant}' reminders.`} />
+						<Void msg={`Sorry, no '${TAB}' reminders.`} />
 					)}
 				</motion.div>
 			</AnimatePresence>
-
-			{reminders.length > 0 && (
-				<DropdownMenu>
-					<DropdownMenuTrigger
-						className={"absolute bottom-2 right-2"}
-						render={
-							<MyBtn variant="outline" size="sm">
-								<Filter />
-								{status ?? "Filter Status"}
-							</MyBtn>
-						}
-					/>
-
-					<DropdownMenuContent side="top">
-						{Object.values(eReminderStatus).map((s) => (
-							<DropdownMenuItem key={s} onClick={() => setStatus(s)}>
-								{s}
-							</DropdownMenuItem>
-						))}
-						<DropdownMenuSeparator />
-						<DropdownMenuItem onClick={() => setStatus(undefined)}>
-							None
-						</DropdownMenuItem>
-					</DropdownMenuContent>
-				</DropdownMenu>
-			)}
 		</div>
 	);
 }

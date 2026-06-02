@@ -3,14 +3,23 @@
 import { ComponentProps, useTransition } from "react";
 import { Card, CardContent } from "../ui/card";
 import { cn } from "@/lib/utils";
-import { ArrowRight, Clock3 } from "lucide-react";
+import {
+	ArrowRight,
+	Check,
+	CheckCircle,
+	CircleMinusIcon,
+	Clock3,
+	Trash,
+} from "lucide-react";
 import { Separator } from "../ui/separator";
 import moment from "moment";
 import { Badge } from "../ui/badge";
 import MyBtn from "../custom/MyBtn";
 import { useRouter } from "next/navigation";
-import { eReminderVariants } from "@/types/enums/enums";
+import { eReminderStatus, eReminderVariants } from "@/types/enums/enums";
 import { Spinner } from "../ui/spinner";
+import { ButtonGroup, ButtonGroupSeparator } from "../ui/button-group";
+import { deleteReminder, updateReminder } from "@/lib/actions/reminder.actions";
 
 export default function ReminderCard({
 	reminder,
@@ -18,6 +27,7 @@ export default function ReminderCard({
 }: { reminder: IReminder } & ComponentProps<typeof Card>) {
 	const router = useRouter();
 	const [isPending, startTransition] = useTransition();
+	const [isDeleting, startDeleteTransition] = useTransition();
 
 	const visitHandler = () => {
 		let link: string;
@@ -36,6 +46,12 @@ export default function ReminderCard({
 
 		startTransition(() => router.push(link));
 	};
+
+	const statusHandler = (status: eReminderStatus) =>
+		startTransition(async () => await updateReminder({ ...reminder, status }));
+
+	const deleteHandler = () =>
+		startDeleteTransition(async () => await deleteReminder(reminder.id));
 
 	return (
 		<Card {...props} className={cn("p-2! border-2 glass", props.className)}>
@@ -60,15 +76,50 @@ export default function ReminderCard({
 
 					<Badge variant={"secondary"}>{reminder.status}</Badge>
 
-					<MyBtn
-						onClick={visitHandler}
-						size="sm"
-						variant={"secondary"}
-						disabled={isPending}
-						className="text-primary"
-					>
-						Visit {isPending ? <Spinner /> : <ArrowRight />}
-					</MyBtn>
+					{reminder.variant !== eReminderVariants.PERSONAL ? (
+						<MyBtn
+							onClick={visitHandler}
+							size="sm"
+							variant={"secondary"}
+							disabled={isPending}
+							className="text-primary"
+						>
+							Visit {isPending ? <Spinner /> : <ArrowRight />}
+						</MyBtn>
+					) : (
+						<>
+							<ButtonGroup>
+								<MyBtn
+									onClick={() => statusHandler(eReminderStatus.SENT)}
+									size="sm"
+									variant={"secondary"}
+									disabled={isPending}
+									className="text-primary"
+								>
+									{isPending ? <Spinner /> : <CheckCircle />}
+								</MyBtn>
+								<ButtonGroupSeparator orientation="vertical" />
+								<MyBtn
+									onClick={() => statusHandler(eReminderStatus.SILENCED)}
+									size="sm"
+									variant={"secondary"}
+									disabled={isPending}
+									className="text-primary"
+								>
+									{isPending ? <Spinner /> : <CircleMinusIcon />}
+								</MyBtn>
+							</ButtonGroup>
+							<MyBtn
+								onClick={deleteHandler}
+								size="icon"
+								variant={"secondary"}
+								disabled={isDeleting}
+								className="text-destructive"
+							>
+								{isDeleting ? <Spinner /> : <Trash />}
+							</MyBtn>
+						</>
+					)}
 				</section>
 			</CardContent>
 		</Card>
