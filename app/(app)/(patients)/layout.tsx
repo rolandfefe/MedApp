@@ -9,14 +9,17 @@ import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { ArticleProvider } from "@/contexts/Articles.context";
 import { CurrentProvider } from "@/contexts/Current.context";
 import { DoctorsProvider } from "@/contexts/Doctors.context";
+import { RemindersProvider } from "@/contexts/Reminder.context";
 import { getArticles } from "@/lib/actions/article.actions";
 import { getDoctors } from "@/lib/actions/doctor.actions";
 import { getPatientNav } from "@/lib/actions/globals.actions";
+import { getReminders } from "@/lib/actions/reminder.actions";
 import { getCurrentUser } from "@/lib/actions/user.actions";
 import {
 	getCurrentDoctor,
 	getCurrentPatient,
 } from "@/lib/actions/utils.actions";
+import { eReminderVariants } from "@/types/enums/enums";
 import { Headset } from "lucide-react";
 import { redirect } from "next/navigation";
 import { ReactNode } from "react";
@@ -38,6 +41,27 @@ export default async function layout({ children }: { children: ReactNode }) {
 		getArticles({}),
 	]);
 
+	const [
+		{ reminders: appointmentReminders },
+		{ reminders: medicationReminders },
+		{ reminders: personalReminders },
+		{ reminders: followUpReminders },
+	] = await Promise.all([
+		getReminders({
+			user: currentUser.id,
+			variant: eReminderVariants.APPOINTMENT,
+		}),
+		getReminders({
+			user: currentUser.id,
+			variant: eReminderVariants.MEDICATION,
+		}),
+		getReminders({ user: currentUser.id, variant: eReminderVariants.PERSONAL }),
+		getReminders({
+			user: currentUser.id,
+			variant: eReminderVariants.FOLLOW_UP,
+		}),
+	]);
+
 	console.log(currentUser, patient, currentDoctor);
 
 	// ? Redirect to doctor mode if no patient account found
@@ -47,16 +71,25 @@ export default async function layout({ children }: { children: ReactNode }) {
 		<CurrentProvider user={currentUser} patient={patient}>
 			<DoctorsProvider doctorsInit={doctors}>
 				<ArticleProvider articlesInit={articles}>
-					<SidebarProvider defaultOpen>
-						<AppSidebar />
-						<SidebarInset>
-							<ScrollArea className="h-screen">
-								<Navbar patientNav={patientNav} />
-								<main className="overflow-x-hidden p-3">{children}</main>
-								<ScrollBar />
-							</ScrollArea>
-						</SidebarInset>
-					</SidebarProvider>
+					<RemindersProvider
+						remindersInit={{
+							appointments: appointmentReminders,
+							medications: medicationReminders,
+							personal: personalReminders,
+							followUp: followUpReminders,
+						}}
+					>
+						<SidebarProvider defaultOpen>
+							<AppSidebar />
+							<SidebarInset>
+								<ScrollArea className="h-screen">
+									<Navbar patientNav={patientNav} />
+									<main className="overflow-x-hidden p-3">{children}</main>
+									<ScrollBar />
+								</ScrollArea>
+							</SidebarInset>
+						</SidebarProvider>
+					</RemindersProvider>
 				</ArticleProvider>
 
 				<AppointmentPanel

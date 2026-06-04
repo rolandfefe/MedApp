@@ -38,26 +38,26 @@ export default async function RootLayout({
 }>) {
 	const currentUser = await getCurrentUser();
 
-	const [
-		{ reminders: appointmentReminders },
-		{ reminders: medicationReminders },
-		{ reminders: personalReminders },
-		{ reminders: followUpReminders },
-	] = await Promise.all([
-		getReminders({
-			user: currentUser.id,
-			variant: eReminderVariants.APPOINTMENT,
-		}),
-		getReminders({
-			user: currentUser.id,
-			variant: eReminderVariants.MEDICATION,
-		}),
-		getReminders({ user: currentUser.id, variant: eReminderVariants.PERSONAL }),
-		getReminders({
-			user: currentUser.id,
-			variant: eReminderVariants.FOLLOW_UP,
-		}),
-	]);
+	// const [
+	// 	{ reminders: appointmentReminders },
+	// 	{ reminders: medicationReminders },
+	// 	{ reminders: personalReminders },
+	// 	{ reminders: followUpReminders },
+	// ] = await Promise.all([
+	// 	getReminders({
+	// 		user: currentUser.id,
+	// 		variant: eReminderVariants.APPOINTMENT,
+	// 	}),
+	// 	getReminders({
+	// 		user: currentUser.id,
+	// 		variant: eReminderVariants.MEDICATION,
+	// 	}),
+	// 	getReminders({ user: currentUser.id, variant: eReminderVariants.PERSONAL }),
+	// 	getReminders({
+	// 		user: currentUser.id,
+	// 		variant: eReminderVariants.FOLLOW_UP,
+	// 	}),
+	// ]);
 
 	return (
 		<html lang="en" suppressHydrationWarning>
@@ -75,19 +75,11 @@ export default async function RootLayout({
 						disableTransitionOnChange
 					>
 						<BProgressProvider>
-							<RemindersProvider
-								remindersInit={{
-									appointments: appointmentReminders,
-									medications: medicationReminders,
-									personal: personalReminders,
-									followUp: followUpReminders,
-								}}
-							>
+							
 								<ScrollArea className="h-screen">
 									{children}
 									<ScrollBar />
 								</ScrollArea>
-							</RemindersProvider>
 						</BProgressProvider>
 					</ThemeProvider>
 				</body>

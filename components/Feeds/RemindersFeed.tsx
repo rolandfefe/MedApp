@@ -3,7 +3,6 @@
 import { useReminders } from "@/contexts/Reminder.context";
 import { cn } from "@/lib/utils";
 import { eReminderStatus, eReminderVariants } from "@/types/enums/enums";
-import { Filter } from "lucide-react";
 import {
 	AnimatePresence,
 	easeInOut,
@@ -11,17 +10,9 @@ import {
 	stagger,
 	Variants,
 } from "motion/react";
-import { ComponentProps, useState } from "react";
+import { ComponentProps } from "react";
 import ReminderCard from "../cards/ReminderCard";
-import MyBtn from "../custom/MyBtn";
 import Void from "../custom/Void";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
 import ReminderForm from "../forms/ReminderForm";
 
 const MotionVariants: Variants = {
@@ -66,7 +57,7 @@ export default function RemindersFeed({
 					..._reminders.appointments,
 			  ];
 
-	// console.log("Reminders:", _reminders);
+	console.log("Reminders:", _reminders);
 
 	return (
 		<div {...props} className={cn("relative h-[]", props.className)}>
