@@ -7,6 +7,8 @@ import {
 } from "@/lib/actions/utils.actions";
 import { ReactNode } from "react";
 
+export const dynamic = "force-dynamic"; // ! test
+
 export default async function layout({ children }: { children: ReactNode }) {
 	// if ((await auth()).sessionClaims?.metadata.onboardingComplete === true) {
 	// 	redirect("/");
