@@ -24,6 +24,8 @@ import { Headset } from "lucide-react";
 import { redirect } from "next/navigation";
 import { ReactNode } from "react";
 
+export const dynamic = 'force-dynamic'; // !test
+
 export default async function layout({ children }: { children: ReactNode }) {
 	const [
 		currentUser,

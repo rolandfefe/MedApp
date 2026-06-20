@@ -6,6 +6,8 @@ import {
 } from "@/lib/actions/utils.actions";
 import Image from "next/image";
 
+export const dynamic = 'force-dynamic';
+
 export default async function page() {
 	const { healthStatuses: statuses } = await getCurrentPatientHealStatuses({
 		limit: 0,
