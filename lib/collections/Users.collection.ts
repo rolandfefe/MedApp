@@ -26,6 +26,7 @@ export const Users: CollectionConfig = {
 		{ name: "username", type: "text", unique: true, required: true },
 		{ name: "fname", type: "text", required: true },
 		{ name: "lname", type: "text", required: true },
+		{ name: "imageUrl", type: "text" },
 		{
 			name: "email",
 			type: "text",
@@ -33,6 +34,5 @@ export const Users: CollectionConfig = {
 			// hasMany: true, // ? Only one major email FOR NOW
 			required: true,
 		},
-		{ name: "imageUrl", type: "text" },
 	],
 };

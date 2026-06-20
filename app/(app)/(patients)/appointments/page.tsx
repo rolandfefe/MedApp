@@ -2,6 +2,8 @@ import PatientAppointmentFeeds from "@/components/Feeds/PatientAppointmentFeeds"
 import { AppointmentsProvider } from "@/contexts/Appointments.context";
 import { getCurrentPatientAppointments } from "@/lib/actions/utils.actions";
 
+export const dynamic = 'force-dynamic';
+
 export default async function page() {
 	const [{ appointments }] = await Promise.all([
 		getCurrentPatientAppointments({}),
