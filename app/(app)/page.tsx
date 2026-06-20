@@ -3,6 +3,8 @@ import LandingSectionOne from "@/components/layouts/LandingSectionOne";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { getLandingNav } from "@/lib/actions/globals.actions";
 
+export const dynamic = "force-dynamic";
+
 export default async function page() {
 	const landingNav = await getLandingNav();
 	return (
