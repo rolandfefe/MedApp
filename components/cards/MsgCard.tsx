@@ -46,10 +46,14 @@ export default function MsgCard({
 				)}
 			>
 				<UserCard.XS user={msg.from as IUser} />
-				<MsgCard.Context msg={msg} isAuthor={isAuthor}>
+				<MsgCard.Context
+					msg={msg}
+					isAuthor={isAuthor}
+					className={cn("w-fit! max-w-3/4! sm:max-w-2/3! lg:max-w-1/2!")}
+				>
 					<div
 						className={cn(
-							"glass-shadow p-2 rounded-xl w-fit max-w-3/4 sm:max-w-2/3 lg:max-w-1/2",
+							"glass-shadow p-2 rounded-xl",
 							isAuthor
 								? "glass-primary rounded-tr-sm  text-primary-foreground"
 								: "glass rounded-tl-sm"
