@@ -1,24 +1,23 @@
 "use client";
 
 import { useCurrent } from "@/contexts/Current.context";
+import { useMsg } from "@/contexts/message.context";
+import { deleteMsg } from "@/lib/actions/message.actions";
 import { cn } from "@/lib/utils";
 import { eMessageStatus } from "@/types/enums/enums";
 import { Check, CheckCheck, Edit3, Reply, Trash2 } from "lucide-react";
 import moment from "moment";
 import { ComponentProps, useTransition } from "react";
-import { Card, CardContent } from "../ui/card";
+import MyBtn from "../custom/MyBtn";
+import ConfirmationDialog from "../panels/ConfirmationDialog";
 import {
 	ContextMenu,
 	ContextMenuContent,
 	ContextMenuItem,
 	ContextMenuTrigger,
 } from "../ui/context-menu";
-import UserCard from "./UserCard";
-import { useMsg } from "@/contexts/message.context";
-import { deleteMsg } from "@/lib/actions/message.actions";
-import ConfirmationDialog from "../panels/ConfirmationDialog";
-import MyBtn from "../custom/MyBtn";
 import { Spinner } from "../ui/spinner";
+import UserCard from "./UserCard";
 
 export default function MsgCard({
 	className,
@@ -26,17 +25,17 @@ export default function MsgCard({
 	...props
 }: {
 	msg: IMessage;
-} & ComponentProps<typeof Card>) {
+} & ComponentProps<"div">) {
 	const currentUser = useCurrent().currentUser as IUser;
 	const author = msg.from as IUser;
 	const isAuthor = author.id === currentUser.id;
 	const refMsg = msg.refMessage as IMessage | undefined;
 
 	return (
-		<Card
+		<div
 			{...props}
 			className={cn(
-				"bg-transparent border-none p-0 shadow-none w-full",
+				"bg-transparent border-0 p-0 shadow-none w-full",
 				className
 			)}
 		>
@@ -48,7 +47,7 @@ export default function MsgCard({
 			>
 				<UserCard.XS user={msg.from as IUser} />
 				<MsgCard.Context msg={msg} isAuthor={isAuthor}>
-					<CardContent
+					<div
 						className={cn(
 							"glass-shadow p-2 rounded-xl w-fit max-w-3/4 sm:max-w-2/3 lg:max-w-1/2",
 							isAuthor
@@ -88,10 +87,10 @@ export default function MsgCard({
 								)
 							) : null}
 						</div>
-					</CardContent>
+					</div>
 				</MsgCard.Context>
 			</div>
-		</Card>
+		</div>
 	);
 }
 
@@ -123,7 +122,7 @@ MsgCard.Context = ({
 		<ContextMenu>
 			<ContextMenuTrigger
 				{...props}
-				disabled={isDeleting}
+				aria-disabled={isDeleting}
 				className={cn("", isDeleting && "animate-pulse")}
 			>
 				{children}

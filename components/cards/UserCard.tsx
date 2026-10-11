@@ -1,11 +1,11 @@
 "use client";
 
-import React, { ComponentProps } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { cn } from "@/lib/utils";
 import { useCurrent } from "@/contexts/Current.context";
-import { Card, CardContent } from "../ui/card";
+import { cn } from "@/lib/utils";
+import { ComponentProps } from "react";
 import Heading from "../custom/Heading";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Card, CardContent } from "../ui/card";
 
 export default function UserCard({
 	user,
