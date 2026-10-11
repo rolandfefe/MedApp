@@ -4,7 +4,7 @@ import config from "@/payload.config";
 import { eAppointmentStatus, eAppointmentTypes } from "@/types/enums/enums";
 import { unstable_cache as cache, updateTag } from "next/cache";
 import { getPayload } from "payload";
-import { pusherServer } from "@/lib/pusher/pusher.server"
+import { pusherServer } from "@/lib/pusher/pusher.server";
 
 const payload = await getPayload({ config });
 
@@ -19,6 +19,12 @@ export const createAppointment = async (
 			collection: "appointments",
 			data,
 		});
+
+		await pusherServer.trigger(
+			`Appointments-${data.doctor}`,
+			`New-appointment-${data.doctor}`,
+			appointment.id
+		);
 
 		updateTag("appointments");
 
@@ -50,7 +56,7 @@ export const updateAppointment = async (data: IAppointment) => {
 };
 
 export const deleteAppointment = async (id: string) => {
-	try {	
+	try {
 		await payload.delete({
 			collection: "appointments",
 			id,
