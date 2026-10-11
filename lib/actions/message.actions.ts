@@ -105,10 +105,11 @@ export const getMsgs = cache(
 				where: { appointment: { equals: appointment } },
 				depth: 1,
 				sort: "createdAt",
-				page,
+				pagination: false,
 			});
 
 			// return { msgs, hasNextPage, nextPage: nextPage ?? page };
+			// return { msgs, hasPrevPage, prevPage: prevPage ?? totalPages };
 			return { msgs, hasPrevPage, prevPage: prevPage ?? totalPages };
 		} catch (error: any) {
 			throw new Error(error);
