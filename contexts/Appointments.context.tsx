@@ -84,7 +84,7 @@ export const AppointmentsProvider = ({
 	const pusher = pusherClient.subscribe(`Appointments`);
 
 	const pusherEvent = useEffectEvent(() => {
-		pusher.bind(`New-appointment-${currentDoctor.id}`, async (id: string) => {
+		pusher.bind(`New-appointment`, async (id: string) => {
 			console.log("Pusher new Appointment:", id);
 			const appointment = await getAppointment(id);
 			setAppointments((prev) => [...prev, appointment]);
