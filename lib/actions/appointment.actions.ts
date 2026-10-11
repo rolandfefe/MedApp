@@ -4,7 +4,7 @@ import config from "@/payload.config";
 import { eAppointmentStatus, eAppointmentTypes } from "@/types/enums/enums";
 import { unstable_cache as cache, updateTag } from "next/cache";
 import { getPayload } from "payload";
-import { pusherServer } from "../pusher";
+import { pusherServer } from "@/lib/pusher/pusher.server"
 
 const payload = await getPayload({ config });
 

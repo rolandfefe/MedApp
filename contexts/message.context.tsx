@@ -1,8 +1,8 @@
 "use client";
 
 import useLoadMore from "@/hooks/useLoadMore";
-import { getMsgs } from "@/lib/actions/message.actions";
-import { pusherClient } from "@/lib/pusher";
+import { getMsg, getMsgs } from "@/lib/actions/message.actions";
+import { pusherClient } from "@/lib/pusher/pusher.client";
 import { flattenDeep, uniqBy } from "lodash-es";
 import {
 	ComponentProps,
@@ -85,22 +85,21 @@ export const MsgProvider = ({
 
 		setMsgs(uniqBy(flattenDeep(_m), "id"));
 	});
+	const pusher = pusherClient.subscribe(`chat-channel-${appointment.id!}`);
 
 	const pusherHandler = useEffectEvent(() => {
-		pusherClient
-			.subscribe(`chat-${appointment.id!}-channel`)
-			.bind(`new-${appointment.id!}-msg`, (newMsg: IMessage) =>
-				setMsgs((prev) => uniqBy([...prev, newMsg], "id"))
-			);
-
-		return () => pusherClient.unsubscribe(`chat-${appointment.id!}-channel`);
+		pusher.bind(`new-msg-${appointment.id!}`, async (id: string) => {
+			const newMsg = await getMsg(id);
+			setMsgs((prev) => uniqBy([...prev, newMsg], "id"));
+		});
 	});
 
 	useEffect(() => {
-		console.log("🔃Msgs");
-		sync();
+		// console.log("🔃Msgs");
+		// sync();
 		pusherHandler(); //! test
-	}, [msgsInit]);
+		return () => pusherClient.unsubscribe(`chat-${appointment.id!}-channel`);
+	}, [msgsInit, pusher]);
 
 	const contextValues: Props = {
 		msgs,

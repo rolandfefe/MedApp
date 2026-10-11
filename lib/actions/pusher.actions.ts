@@ -1,6 +1,7 @@
 "use server";
 
-import { pusherServer } from "../pusher";
+import { pusherServer } from "@/lib/pusher/pusher.server"
+
 
 const CreateConsultationChannel = async () => {
 	try {

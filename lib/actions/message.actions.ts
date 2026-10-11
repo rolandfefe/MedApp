@@ -2,7 +2,7 @@
 
 import { unstable_cache as cache, updateTag } from "next/cache";
 import { getPayload } from "payload";
-import { pusherServer } from "../pusher";
+import { pusherServer } from "@/lib/pusher/pusher.server";
 
 import config from "@/payload.config";
 
@@ -23,9 +23,9 @@ export const createMsg = async (
 
 		// ? 1. Pusher trigger.
 		await pusherServer.trigger(
-			`chat-${data.appointment}-channel`,
-			`new-${data.appointment}-msg`,
-			JSON.parse(JSON.stringify(msg))
+			`chat-channel-${data.appointment}`,
+			`new-msg-${data.appointment}`,
+			msg.id
 		);
 
 		updateTag("msgs");
@@ -64,6 +64,27 @@ export const deleteMsg = async (id: string) => {
 /**
  * @Fetches
  */
+
+export const getMsg = cache(
+	async (id: string) => {
+		try {
+			const mgs = await payload.findByID({
+				collection: "messages",
+				id,
+			});
+
+			return mgs;
+		} catch (error: any) {
+			throw new Error(error);
+		}
+	},
+	[],
+	{
+		revalidate: 15 * 60,
+		tags: ["msgs"],
+	}
+);
+
 export const getMsgs = cache(
 	async ({
 		appointment,
