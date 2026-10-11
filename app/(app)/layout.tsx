@@ -1,18 +1,16 @@
 import { ourFileRouter } from "@/app/(payload)/api/uploadthing/core";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { getCurrentUser } from "@/lib/actions/user.actions";
 import AuthProvider from "@/Providers/AuthProvider";
 import BProgressProvider from "@/Providers/BProgressProvider";
+import GoeyProvider from "@/Providers/GoeyProvider";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import type { Metadata } from "next";
 import { Geist_Mono, Poppins } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import { extractRouterConfig } from "uploadthing/server";
 import "./globals.css";
-import { getCurrentUser } from "@/lib/actions/user.actions";
-import { RemindersProvider } from "@/contexts/Reminder.context";
-import { eReminderVariants } from "@/types/enums/enums";
-import { getReminders } from "@/lib/actions/reminder.actions";
 
 const poppinsFont = Poppins({
 	weight: ["100", "200", "300", "400", "500", "600", "700"],
@@ -38,27 +36,6 @@ export default async function RootLayout({
 }>) {
 	const currentUser = await getCurrentUser();
 
-	// const [
-	// 	{ reminders: appointmentReminders },
-	// 	{ reminders: medicationReminders },
-	// 	{ reminders: personalReminders },
-	// 	{ reminders: followUpReminders },
-	// ] = await Promise.all([
-	// 	getReminders({
-	// 		user: currentUser.id,
-	// 		variant: eReminderVariants.APPOINTMENT,
-	// 	}),
-	// 	getReminders({
-	// 		user: currentUser.id,
-	// 		variant: eReminderVariants.MEDICATION,
-	// 	}),
-	// 	getReminders({ user: currentUser.id, variant: eReminderVariants.PERSONAL }),
-	// 	getReminders({
-	// 		user: currentUser.id,
-	// 		variant: eReminderVariants.FOLLOW_UP,
-	// 	}),
-	// ]);
-
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<AuthProvider>
@@ -66,6 +43,7 @@ export default async function RootLayout({
 					className={`${poppinsFont.className} ${geistMono.variable} antialiased`}
 				>
 					<Toaster />
+
 					<NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
 
 					<ThemeProvider
@@ -74,13 +52,15 @@ export default async function RootLayout({
 						enableSystem
 						disableTransitionOnChange
 					>
-						<BProgressProvider>
-							
+						<GoeyProvider>
+							<BProgressProvider>
 								<ScrollArea className="h-screen">
 									{children}
 									<ScrollBar />
 								</ScrollArea>
-						</BProgressProvider>
+							</BProgressProvider>
+						</GoeyProvider>
+						ss
 					</ThemeProvider>
 				</body>
 			</AuthProvider>

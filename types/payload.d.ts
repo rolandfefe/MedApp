@@ -159,8 +159,8 @@ export interface User {
   username: string;
   fname: string;
   lname: string;
-  email: string;
   imageUrl?: string | null;
+  email: string;
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
@@ -175,6 +175,7 @@ export interface Media {
   alt: string;
   _key?: string | null;
   prefix?: string | null;
+  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -1016,8 +1017,8 @@ export interface UsersSelect<T extends boolean = true> {
   username?: T;
   fname?: T;
   lname?: T;
-  email?: T;
   imageUrl?: T;
+  email?: T;
   updatedAt?: T;
   createdAt?: T;
   deletedAt?: T;
@@ -1030,6 +1031,7 @@ export interface MediaSelect<T extends boolean = true> {
   alt?: T;
   _key?: T;
   prefix?: T;
+  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;

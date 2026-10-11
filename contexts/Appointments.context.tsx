@@ -80,7 +80,8 @@ export const AppointmentsProvider = ({
 		setAppointments(uniqBy(flattenDeep(_appointments), "id"));
 	});
 
-	const pusher = pusherClient.subscribe(`Appointments-${currentDoctor.id}`);
+	// const pusher = pusherClient.subscribe(`Appointments-${currentDoctor.id}`);
+	const pusher = pusherClient.subscribe(`Appointments`);
 
 	const pusherEvent = useEffectEvent(() => {
 		pusher.bind(`New-appointment-${currentDoctor.id}`, async (id: string) => {
@@ -93,6 +94,7 @@ export const AppointmentsProvider = ({
 	useEffect(() => {
 		// console.log("🔃Appointments");
 		// syncHandler();
+		pusherEvent();
 		return () => pusherClient.unsubscribe(`Appointments-${currentDoctor.id}`);
 	}, [appointmentsInit, pusher]);
 

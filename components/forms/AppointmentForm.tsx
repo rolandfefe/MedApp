@@ -42,6 +42,7 @@ import {
 } from "../custom/motion-stepper";
 import { ScrollArea } from "../ui/scroll-area";
 import { createReminder } from "@/lib/actions/reminder.actions";
+import { gooeyToast } from "goey-toast";
 
 export default function AppointmentForm({
 	action,
@@ -75,7 +76,7 @@ export default function AppointmentForm({
 		if (action === "Create") {
 			startTransition(async () => {
 				const { id } = await createAppointment({ ...cleanData });
-				toast.success(
+				gooeyToast.success(
 					"Appointment Placed. \n You notified once it's confirmed."
 				);
 
@@ -95,7 +96,7 @@ export default function AppointmentForm({
 		} else if (action === "Update" && appointment) {
 			startTransition(async () => {
 				await updateAppointment({ ...appointment, ...cleanData });
-				toast.success("Appointment Updated.");
+				gooeyToast.success("Appointment Updated.");
 				// form.reset();
 				setIsSuccess(true);
 			});
