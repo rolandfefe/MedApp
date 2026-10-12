@@ -1,15 +1,17 @@
 "use client";
 
+import { StaggerVariants } from "@/app/MotionVariants";
 import { useAppointments } from "@/contexts/Appointments.context";
 import { useCurrent } from "@/contexts/Current.context";
 import { cn } from "@/lib/utils";
 import { eAppointmentStatus, eAppointmentTypes } from "@/types/enums/enums";
 import { ChevronsUpDown, Sparkles, TriangleAlert } from "lucide-react";
-import { AnimatePresence, motion, stagger, Variants } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import AppointmentCard from "../cards/AppointmentCard";
 import MyBtn from "../custom/MyBtn";
 import Void from "../custom/Void";
+import StaggerList from "../layouts/StaggerList";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -24,12 +26,6 @@ interface Filters {
 	status?: eAppointmentStatus;
 	emergency?: boolean;
 }
-
-const motionVariants: Variants = {
-	hidden: { opacity: 0, y: 50 },
-	visible: { opacity: 1, y: 0 },
-	exit: { opacity: 0, y: 50 },
-};
 
 export default function DoctorAppointmentFeeds({
 	autoAppointments,
@@ -68,15 +64,7 @@ export default function DoctorAppointmentFeeds({
 		<div className="space-y-2 ">
 			<FilterBar filters={filters} setFilters={setFilters} />
 
-			<motion.section
-				variants={motionVariants}
-				initial="hidden"
-				animate="visible"
-				transition={{
-					delayChildren: stagger(0.3),
-				}}
-				className="flex gap-3 flex-col sm:flex-row flex-wrap"
-			>
+			<StaggerList className="flex gap-3 flex-col sm:flex-row flex-wrap">
 				<AnimatePresence>
 					{appointments.length > 0 && filterResults.length > 0 ? (
 						filterResults.map((appointment) => {
@@ -85,10 +73,11 @@ export default function DoctorAppointmentFeeds({
 
 							return (
 								<motion.div
-									variants={motionVariants}
-									exit={"exit"}
 									layout
 									key={appointment.id}
+									variants={StaggerVariants}
+									transition={{ ease: "easeOut", duration: 0.5 }}
+									exit={"exit"}
 									className={cn(
 										"mb-2 basis-full sm:basis-[47%] flex-1",
 										sidebarState === "expanded" &&
@@ -106,7 +95,7 @@ export default function DoctorAppointmentFeeds({
 						</div>
 					)}
 				</AnimatePresence>
-			</motion.section>
+			</StaggerList>
 		</div>
 	);
 }

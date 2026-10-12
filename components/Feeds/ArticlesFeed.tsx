@@ -9,6 +9,8 @@ import { motion, stagger, Variants } from "motion/react";
 import { useCurrent } from "@/contexts/Current.context";
 import ArticleForm from "../forms/ArticleForm";
 import { useMediaQuery } from "@uidotdev/usehooks";
+import StaggerList from "../layouts/StaggerList";
+import { StaggerVariants } from "@/app/MotionVariants";
 
 const motionVariants: Variants = {
 	hidden: {
@@ -30,21 +32,13 @@ export default function ArticlesFeed() {
 
 	return (
 		<div>
-			<motion.section
-				variants={motionVariants}
-				initial="hidden"
-				animate="visible"
-				transition={{
-					delayChildren: stagger(0.3),
-				}}
-				// className="flex items-center gap-3 flex-wrap"
-				className="space-y-2"
-			>
+			<StaggerList className="space-y-2">
 				{articles.length > 0 ? (
 					articles.map((article) => (
 						<motion.div
-							variants={motionVariants}
 							layout
+							variants={StaggerVariants}
+							transition={{ ease: "easeOut", duration: 0.5 }}
 							whileHover={{
 								scale: 1.01,
 							}}
@@ -74,7 +68,7 @@ export default function ArticlesFeed() {
 						)}{" "}
 					</div>
 				)}
-			</motion.section>
+			</StaggerList>
 
 			{currentDoctor && (
 				<ArticleForm.Trigger className="fixed bottom-3 right-3" />

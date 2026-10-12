@@ -24,6 +24,8 @@ import {
 } from "../ui/dropdown-menu";
 import { ShineBorder } from "../ui/shine-border";
 import { useSidebar } from "../ui/sidebar";
+import { StaggerVariants } from "@/app/MotionVariants";
+import StaggerList from "../layouts/StaggerList";
 
 interface Filters {
 	referred?: boolean;
@@ -66,52 +68,54 @@ export default function PatientAppointmentFeeds() {
 
 			<section className="flex gap-3 flex-col sm:flex-row flex-wrap">
 				<AnimatePresence>
-					{/* {appointments.length > 0 || filterResults.length > 0 ? ( */}
-					{filterResults.length > 0 ? (
-						filterResults.map((appointment) => {
-							const isLastItem =
-								appointments[appointments.length - 1].id === appointment.id;
+					<StaggerList>
+						{filterResults.length > 0 ? (
+							filterResults.map((appointment) => {
+								const isLastItem =
+									appointments[appointments.length - 1].id === appointment.id;
 
-							return (
-								<motion.div
-									key={appointment.id}
-									layout
-									initial={{ opacity: 0, y: 100 }}
-									animate={{ opacity: 1, y: 0 }}
-									exit={{ opacity: 0, y: 100 }}
-									className={cn(
-										"mb-3 basis-full sm:basis-[47%] flex-1",
-										sidebarState === "expanded" &&
-											"sm:basis-full lg:basis-[47%]"
-									)}
-									ref={isLastItem ? loadRef : null}
-								>
-									<AppointmentCard appointment={appointment} mode="Patient" />
-								</motion.div>
-							);
-						})
-					) : (
-						<div>
-							<Void
-								msg={
-									filters
-										? `No Appointment matches your filters. Create one by clicking below.`
-										: "Oops! You have no appointment. Click below to apply.🤗"
-								}
-							/>
+								return (
+									<motion.div
+										key={appointment.id}
+										layout
+										variants={StaggerVariants}
+										transition={{ ease: "easeOut", duration: 0.5 }}
+										className={cn(
+											"mb-3 basis-full sm:basis-[47%] flex-1",
+											sidebarState === "expanded" &&
+												"sm:basis-full lg:basis-[47%]"
+										)}
+										ref={isLastItem ? loadRef : null}
+									>
+										<AppointmentCard appointment={appointment} mode="Patient" />
+									</motion.div>
+								);
+							})
+						) : (
+							<div>
+								<Void
+									msg={
+										filters
+											? `No Appointment matches your filters. Create one by clicking below.`
+											: "Oops! You have no appointment. Click below to apply.🤗"
+									}
+								/>
 
-							<AppointmentPanel action="Create">
-								<MyBtn
-									size="lg"
-									variant={"secondary"}
-									className="glass flex w-fit mx-auto mt-4 rounded-xl text-primary"
-								>
-									<ShineBorder shineColor={["#A07CFE", "#FE8FB5", "#FFBE7B"]} />
-									<Headset /> New Appointment
-								</MyBtn>
-							</AppointmentPanel>
-						</div>
-					)}
+								<AppointmentPanel action="Create">
+									<MyBtn
+										size="lg"
+										variant={"secondary"}
+										className="glass flex w-fit mx-auto mt-4 rounded-xl text-primary"
+									>
+										<ShineBorder
+											shineColor={["#A07CFE", "#FE8FB5", "#FFBE7B"]}
+										/>
+										<Headset /> New Appointment
+									</MyBtn>
+								</AppointmentPanel>
+							</div>
+						)}
+					</StaggerList>
 				</AnimatePresence>
 			</section>
 		</div>

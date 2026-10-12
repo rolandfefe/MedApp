@@ -1,26 +1,17 @@
 "use client";
 
+import { StaggerVariants } from "@/app/MotionVariants";
 import { useVerdicts } from "@/contexts/Verdicts.context";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
-import { stagger, Variants, motion } from "motion/react";
-import Void from "../custom/Void";
+import { cn } from "@/lib/utils";
+import { Flower, HandHelping, Pill } from "lucide-react";
+import { motion } from "motion/react";
 import MedicationCard from "../cards/MedicationCard";
 import ProcedureCard from "../cards/ProcedureCard";
 import TherapyCard from "../cards/TherapyCard";
-import { Flower, HandHelping, Pill } from "lucide-react";
+import Void from "../custom/Void";
+import StaggerList from "../layouts/StaggerList";
 import { useSidebar } from "../ui/sidebar";
-import { cn } from "@/lib/utils";
-
-const motionVariants: Variants = {
-	hidden: {
-		opacity: 0,
-		scale: 0.5,
-	},
-	visible: {
-		opacity: 1,
-		scale: 1,
-	},
-};
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 
 export default function VerdictsFeed() {
 	const { isLoading, loadRef, verdicts } = useVerdicts();
@@ -51,40 +42,30 @@ export default function VerdictsFeed() {
 			</TabsList>
 
 			<TabsContent value="Drugs">
-				<motion.section
-					variants={motionVariants}
-					initial="hidden"
-					animate="visible"
-					transition={{
-						delayChildren: stagger(0.3),
-					}}
-					className="space-y-4"
-				>
+				<StaggerList className="space-y-4">
 					{medications.length > 0 ? (
 						medications.map((m) => (
-							<motion.div variants={motionVariants} key={m!.id} layout>
+							<motion.div
+								variants={StaggerVariants}
+								transition={{ ease: "easeOut", duration: 0.5 }}
+								key={m!.id}
+								layout
+							>
 								<MedicationCard medication={m!} />
 							</motion.div>
 						))
 					) : (
 						<Void msg="No Medications prescribed💊" />
 					)}
-				</motion.section>
+				</StaggerList>
 			</TabsContent>
 			<TabsContent value="Therapies">
-				<motion.section
-					variants={motionVariants}
-					initial="hidden"
-					animate="visible"
-					transition={{
-						delayChildren: stagger(0.3),
-					}}
-					className="flex flex-col flex-wrap sm:flex-row sm:items-center gap-3 gap-y-4"
-				>
+				<StaggerList className="flex flex-col flex-wrap sm:flex-row sm:items-center gap-3 gap-y-4">
 					{therapies.length > 0 ? (
 						therapies.map((t) => (
 							<motion.div
-								variants={motionVariants}
+								variants={StaggerVariants}
+								transition={{ ease: "easeOut", duration: 0.5 }}
 								key={t!.id}
 								layout
 								className={cn(
@@ -100,23 +81,16 @@ export default function VerdictsFeed() {
 					) : (
 						<Void msg="No therapies prescribed🧘" />
 					)}
-				</motion.section>
+				</StaggerList>
 			</TabsContent>
 
 			<TabsContent value="Procedures">
-				<motion.section
-					variants={motionVariants}
-					initial="hidden"
-					animate="visible"
-					transition={{
-						delayChildren: stagger(0.3),
-					}}
-					className="flex flex-col flex-wrap sm:flex-row sm:items-center gap-3"
-				>
+				<StaggerList className="flex flex-col flex-wrap sm:flex-row sm:items-center gap-3">
 					{procedures.length > 0 ? (
 						procedures.map((p) => (
 							<motion.div
-								variants={motionVariants}
+								variants={StaggerVariants}
+								transition={{ ease: "easeOut", duration: 0.5 }}
 								key={p!.id}
 								layout
 								className={cn(
@@ -132,7 +106,7 @@ export default function VerdictsFeed() {
 					) : (
 						<Void msg="No procedure prescribed🏃‍♀️" />
 					)}
-				</motion.section>
+				</StaggerList>
 			</TabsContent>
 		</Tabs>
 	);

@@ -40,11 +40,11 @@ export default function DoctorsFeed() {
 									initial={{ opacity: 0, y: 100 }}
 									animate={{ opacity: 1, y: 0 }}
 									exit={{ opacity: 0, y: 100 }}
+									transition={{ ease: "easeOut", duration: 0.5 }}
 									ref={isLastItem ? loadRef : null}
 									className="mb-3"
 								>
 									<DoctorCard doctor={doctor} className={cn("w-full")} />
-									{/* {doctor.user.username} */}
 								</motion.div>
 							);
 						})
