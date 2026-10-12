@@ -2,26 +2,14 @@
 
 import {
 	AppointmentFormData,
-	appointmentFormSchema,
-	useAppointmentForm,
+	useAppointmentForm
 } from "@/lib/formSchemas/appointment.schema";
 import { cn } from "@/lib/utils";
 import { ePatientConsent } from "@/types/enums/enums";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Headset } from "lucide-react";
 import { ComponentProps, ReactNode, useState, useTransition } from "react";
-import { useForm } from "react-hook-form";
 import Heading from "../custom/Heading";
 import getAppointmentFormStepper from "../formSteppers/AppointmentFormStepper";
-import {
-	MorphingDialog,
-	MorphingDialogClose,
-	MorphingDialogContainer,
-	MorphingDialogContent,
-	MorphingDialogSubtitle,
-	MorphingDialogTitle,
-	MorphingDialogTrigger,
-} from "../motion-primitives/morphing-dialog";
 import { Form } from "../ui/form";
 import { Separator } from "../ui/separator";
 
@@ -30,10 +18,17 @@ import {
 	createAppointment,
 	updateAppointment,
 } from "@/lib/actions/appointment.actions";
+import { createReminder } from "@/lib/actions/reminder.actions";
 import { PatientFormData } from "@/lib/formSchemas/patient.schema";
+import { gooeyToast } from "goey-toast";
 import { FieldErrors } from "react-hook-form";
 import toast from "react-hot-toast";
 import ToastErrCard from "../cards/ToastErrCard";
+import {
+	FormPanel,
+	FormPanelContent,
+	FormPanelTrigger,
+} from "../custom/form-panel";
 import {
 	Step,
 	Stepper,
@@ -41,13 +36,6 @@ import {
 	StepperTrigger,
 } from "../custom/motion-stepper";
 import { ScrollArea } from "../ui/scroll-area";
-import { createReminder } from "@/lib/actions/reminder.actions";
-import { gooeyToast } from "goey-toast";
-import {
-	FormPanel,
-	FormPanelContent,
-	FormPanelTrigger,
-} from "../custom/form-panel";
 
 export default function AppointmentForm({
 	action,
@@ -139,15 +127,13 @@ export default function AppointmentForm({
 	return (
 		<div>
 			<section>
-				<MorphingDialogTitle className="text-primary">
+				<p className="text-primary">
 					<Heading className="text-xl">
 						<Headset size={23} />
 						<span>New Appointment</span>
 					</Heading>
-				</MorphingDialogTitle>
-				<MorphingDialogSubtitle>
-					Set up a one-on-one meet with a doctor👨‍⚕️
-				</MorphingDialogSubtitle>
+				</p>
+				<p>Set up a one-on-one meet with a doctor👨‍⚕️</p>
 			</section>
 			<Separator className="my-2" />
 

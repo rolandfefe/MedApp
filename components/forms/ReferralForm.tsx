@@ -18,14 +18,10 @@ import DoctorCard from "../cards/DoctorCard";
 import Heading from "../custom/Heading";
 import MyBtn from "../custom/MyBtn";
 import {
-	MorphingDialog,
-	MorphingDialogClose,
-	MorphingDialogContainer,
-	MorphingDialogContent,
-	MorphingDialogSubtitle,
-	MorphingDialogTitle,
-	MorphingDialogTrigger,
-} from "../motion-primitives/morphing-dialog";
+	FormPanel,
+	FormPanelContent,
+	FormPanelTrigger,
+} from "../custom/form-panel";
 import { errHandler } from "../toastErr";
 import {
 	Form,
@@ -112,9 +108,7 @@ export default function ReferralForm({
 	return (
 		<div>
 			<section>
-				<MorphingDialogSubtitle>
-					Set up a one-on-one meet with a doctor👨‍⚕️
-				</MorphingDialogSubtitle>
+				<p>Set up a one-on-one meet with a doctor👨‍⚕️</p>
 			</section>
 
 			<Separator className="my-2" />
@@ -202,26 +196,21 @@ export const ReferralFormDialog = ({
 	className?: string;
 } & ComponentProps<typeof ReferralForm>) => {
 	return (
-		<MorphingDialog>
-			<MorphingDialogTrigger asChild className={cn("", className)}>
+		<FormPanel>
+			<FormPanelTrigger asChild className={cn("", className)}>
 				{children}
-			</MorphingDialogTrigger>
+			</FormPanelTrigger>
 
-			<MorphingDialogContainer>
-				<MorphingDialogContent className=" sm:max-w-[80vw]  md:min-w-lg">
-					<MorphingDialogTitle>
-						<Heading className="text-lg sm:text-xl text-primary">
-							Referral Form
-							<ArrowBigRightDash />
-						</Heading>
-					</MorphingDialogTitle>
+			<FormPanelContent className=" sm:max-w-[80vw]  md:min-w-lg">
+				<Heading className="text-lg sm:text-xl text-primary">
+					Referral Form
+					<ArrowBigRightDash />
+				</Heading>
 
-					<section>
-						<ReferralForm {...props} />
-					</section>
-					<MorphingDialogClose className="text-foreground" />
-				</MorphingDialogContent>
-			</MorphingDialogContainer>
-		</MorphingDialog>
+				<section>
+					<ReferralForm {...props} />
+				</section>
+			</FormPanelContent>
+		</FormPanel>
 	);
 };

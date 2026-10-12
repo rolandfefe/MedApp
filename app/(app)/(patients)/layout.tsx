@@ -2,7 +2,6 @@ import MyBtn from "@/components/custom/MyBtn";
 import { AppointmentPanel } from "@/components/forms/AppointmentForm";
 import AppSidebar from "@/components/layouts/AppSidebar";
 import Navbar from "@/components/layouts/Navbar";
-import { MorphingDialogTitle } from "@/components/motion-primitives/morphing-dialog";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { ShineBorder } from "@/components/ui/shine-border";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
@@ -104,10 +103,7 @@ export default async function layout({ children }: { children: ReactNode }) {
 						className="size-12 sm:size-16 rounded-full glass glass-shadow text-primary"
 					>
 						<ShineBorder shineColor={["#A07CFE", "#FE8FB5", "#FFBE7B"]} />
-
-						<MorphingDialogTitle>
-							<Headset size={23} />
-						</MorphingDialogTitle>
+						<Headset size={23} />
 					</MyBtn>
 				</AppointmentPanel>
 			</DoctorsProvider>

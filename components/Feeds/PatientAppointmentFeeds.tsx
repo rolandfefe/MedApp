@@ -16,7 +16,6 @@ import AppointmentCard from "../cards/AppointmentCard";
 import MyBtn from "../custom/MyBtn";
 import Void from "../custom/Void";
 import { AppointmentPanel } from "../forms/AppointmentForm";
-import { MorphingDialogTitle } from "../motion-primitives/morphing-dialog";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -108,9 +107,7 @@ export default function PatientAppointmentFeeds() {
 									className="glass flex w-fit mx-auto mt-4 rounded-xl text-primary"
 								>
 									<ShineBorder shineColor={["#A07CFE", "#FE8FB5", "#FFBE7B"]} />
-									<MorphingDialogTitle className="flex items-center gap-x-2">
-										<Headset /> New Appointment
-									</MorphingDialogTitle>
+									<Headset /> New Appointment
 								</MyBtn>
 							</AppointmentPanel>
 						</div>
