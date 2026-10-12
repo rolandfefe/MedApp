@@ -54,10 +54,7 @@ export default async function RootLayout({
 					>
 						<GoeyProvider>
 							<BProgressProvider>
-								<ScrollArea className="h-screen">
-									{children}
-									<ScrollBar />
-								</ScrollArea>
+								<ScrollArea className="h-screen">{children}</ScrollArea>
 							</BProgressProvider>
 						</GoeyProvider>
 						ss
