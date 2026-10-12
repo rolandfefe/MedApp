@@ -12,7 +12,7 @@ export default function StaggerList({
 			variants={StaggerVariants}
 			initial={"hidden"}
 			animate={"visible"}
-			exit={"hidden"}
+			exit={"exit"}
 			transition={{
 				delayChildren: stagger(0.2),
 			}}

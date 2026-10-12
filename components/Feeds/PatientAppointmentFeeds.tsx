@@ -39,10 +39,6 @@ export default function PatientAppointmentFeeds() {
 	const { state: sidebarState } = useSidebar();
 	const { appointments, loadRef, isLoading } = useAppointments();
 
-	// console.log(appointments);
-
-	// console.log("loading Appointments:", isLoading)
-
 	const [filters, setFilters] = useState<Filters>({
 		emergency: false,
 		referred: false,
@@ -52,13 +48,13 @@ export default function PatientAppointmentFeeds() {
 
 	useEffect(() => {
 		setFilterResults(
-			appointments.filter(
-				(a) =>
-					filters.emergency == a.isEmergency! ||
-					// filters.referred == !!a.referral ||
-					filters.status == a.status ||
-					filters.type == a.type
-			)
+			appointments.filter((a) => {
+				if (filters.emergency) return filters.emergency == a.isEmergency;
+				// if (filters.referred) return filters.referred == !!a.;
+				if (filters.status) return filters.status == a.status;
+				if (filters.type) return filters.type == a.type;
+				return a;
+			})
 		);
 	}, [filters, appointments]);
 
@@ -66,9 +62,9 @@ export default function PatientAppointmentFeeds() {
 		<div className="space-y-2">
 			<FilterBar filters={filters} setFilters={setFilters} />
 
-			<section className="flex gap-3 flex-col sm:flex-row flex-wrap">
+			<section>
 				<AnimatePresence>
-					<StaggerList>
+					<StaggerList className="flex gap-3 flex-col sm:flex-row flex-wrap">
 						{filterResults.length > 0 ? (
 							filterResults.map((appointment) => {
 								const isLastItem =
@@ -76,8 +72,8 @@ export default function PatientAppointmentFeeds() {
 
 								return (
 									<motion.div
-										key={appointment.id}
 										layout
+										key={appointment.id}
 										variants={StaggerVariants}
 										transition={{ ease: "easeOut", duration: 0.5 }}
 										className={cn(

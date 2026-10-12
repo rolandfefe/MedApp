@@ -43,9 +43,13 @@ ConsentControl.Patient = () => {
 			await updateAppointment({ ...appointment, consentLevels });
 
 			if (isExisted) {
-				goeyToast(`${consent.toUpperCase()} info hidden from doctor.`);
+				goeyToast("Consent hidden", {
+					description: `${consent.toUpperCase()} info hidden from doctor.`,
+				});
 			} else {
-				goeyToast(`Doctor can now access your ${consent.toUpperCase()} info.`);
+				goeyToast("Consent granted.", {
+					description: `Doctor can now access your ${consent.toUpperCase()} info.`,
+				});
 			}
 		});
 	};

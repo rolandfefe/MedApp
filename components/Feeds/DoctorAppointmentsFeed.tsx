@@ -50,12 +50,13 @@ export default function DoctorAppointmentFeeds({
 			setFilterResults(autoAppointments);
 		} else {
 			setFilterResults(
-				appointments.filter(
-					(a) =>
-						filters.emergency == a.isEmergency! ||
-						filters.status == a.status ||
-						filters.type == a.type
-				)
+				appointments.filter((a) => {
+					if (filters.emergency) return filters.emergency == a.isEmergency!;
+					if (filters.status) return filters.status == a.status;
+					if (filters.type) return filters.type == a.type;
+
+					return a;
+				})
 			);
 		}
 	}, [filters, appointments, autoAppointments]);
@@ -64,8 +65,8 @@ export default function DoctorAppointmentFeeds({
 		<div className="space-y-2 ">
 			<FilterBar filters={filters} setFilters={setFilters} />
 
-			<StaggerList className="flex gap-3 flex-col sm:flex-row flex-wrap">
-				<AnimatePresence>
+			<AnimatePresence>
+				<StaggerList className="flex gap-3 flex-col sm:flex-row flex-wrap">
 					{appointments.length > 0 && filterResults.length > 0 ? (
 						filterResults.map((appointment) => {
 							const isLastItem =
@@ -94,8 +95,8 @@ export default function DoctorAppointmentFeeds({
 							<Void msg={"Oops! You have no appointments"} />
 						</div>
 					)}
-				</AnimatePresence>
-			</StaggerList>
+				</StaggerList>
+			</AnimatePresence>
 		</div>
 	);
 }

@@ -94,7 +94,7 @@ export default function DiagnosisForm() {
 					...cleanData,
 					updatedBy: currentDoctor.id!,
 				});
-				goeyToast.success("Diagnosis updated successfully🧑‍⚕️");
+				goeyToast.success("Diagnosis updated🧑‍⚕️");
 				form.reset();
 				setIsSuccess(true);
 			});
@@ -102,7 +102,7 @@ export default function DiagnosisForm() {
 			// ? Create
 			startTransition(async () => {
 				await createDiagnosis(cleanData);
-				goeyToast.success("Diagnosis created successfully🧑‍⚕️");
+				goeyToast.success("Diagnosis created🧑‍⚕️");
 				form.reset();
 				setIsSuccess(true);
 			});

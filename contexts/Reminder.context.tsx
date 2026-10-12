@@ -7,6 +7,7 @@ import {
 	Dispatch,
 	SetStateAction,
 	useContext,
+	useEffect,
 	useState,
 } from "react";
 
@@ -52,6 +53,10 @@ export const RemindersProvider = ({
 }: { remindersInit: Props["reminders"] } & ComponentProps<"div">) => {
 	const [reminder, setReminder] = useState<IReminder>();
 	const [reminders, setReminders] = useState<Props["reminders"]>(remindersInit);
+
+	useEffect(() => {
+		setReminders(remindersInit) // ! test;
+	}, [remindersInit]);
 
 	const contextValue: Props = {
 		reminder,

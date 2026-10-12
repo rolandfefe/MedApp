@@ -28,8 +28,6 @@ export default function ArticlesFeed() {
 	const currentDoctor = useCurrent().currentDoctor;
 	const isSmScreen = useMediaQuery("(width < 640px)");
 
-	console.log(articles);
-
 	return (
 		<div>
 			<StaggerList className="space-y-2">
