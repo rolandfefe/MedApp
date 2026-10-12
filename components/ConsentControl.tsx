@@ -12,7 +12,6 @@ import { cn } from "@/lib/utils";
 import { ePatientConsent } from "@/types/enums/enums";
 import { useState, useTransition } from "react";
 import { updateAppointment } from "@/lib/actions/appointment.actions";
-import goeyToast from "react-hot-goeyToast";
 import { Spinner } from "./ui/spinner";
 import { AnimatePresence, motion } from "motion/react";
 import { goeyToast } from "goey-toast";
