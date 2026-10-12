@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { cn } from "@/lib/utils";
 import { motion } from "motion/react";
+import { goeyToast } from "goey-toast";
 
 export default function CopyBadge({
 	tooltipMsg = "Copy to clipboard📋",
@@ -24,7 +25,7 @@ export default function CopyBadge({
 
 	const copyHandler = async () => {
 		await copyAction(content);
-		toast(successMsg, { icon: "📋", id: "cn22039x8adf" });
+		goeyToast(successMsg, { icon: "📋", id: "cn22039x8adf" });
 	};
 
 	return (

@@ -12,9 +12,10 @@ import { cn } from "@/lib/utils";
 import { ePatientConsent } from "@/types/enums/enums";
 import { useState, useTransition } from "react";
 import { updateAppointment } from "@/lib/actions/appointment.actions";
-import toast from "react-hot-toast";
+import goeyToast from "react-hot-goeyToast";
 import { Spinner } from "./ui/spinner";
 import { AnimatePresence, motion } from "motion/react";
+import { goeyToast } from "goey-toast";
 
 /**
  * @description Manage Consent btw doctor and patient
@@ -43,13 +44,9 @@ ConsentControl.Patient = () => {
 			await updateAppointment({ ...appointment, consentLevels });
 
 			if (isExisted) {
-				toast(`${consent.toUpperCase()} info hidden from doctor.`, {
-					icon: "ℹ️",
-				});
+				goeyToast(`${consent.toUpperCase()} info hidden from doctor.`);
 			} else {
-				toast(`Doctor can now access your ${consent.toUpperCase()} info.`, {
-					icon: "ℹ️",
-				});
+				goeyToast(`Doctor can now access your ${consent.toUpperCase()} info.`);
 			}
 		});
 	};

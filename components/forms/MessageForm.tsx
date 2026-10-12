@@ -26,6 +26,7 @@ import { useMsg } from "@/contexts/message.context";
 import { useConsultation } from "@/contexts/consultation.context";
 import { useCurrent } from "@/contexts/Current.context";
 import { Spinner } from "../ui/spinner";
+import { goeyToast } from "goey-toast";
 
 export default function MessageForm({
 	className,
@@ -55,7 +56,7 @@ export default function MessageForm({
 				setEditMsg(undefined);
 				setBody("");
 				setRefMsg(undefined);
-				toast("Message Updated✍️");
+				goeyToast("Message Updated✍️");
 			});
 		} else {
 			if (body) {

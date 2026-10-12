@@ -39,6 +39,7 @@ import {
 	createHealthStatus,
 	updateHealthStatus,
 } from "@/lib/actions/healthStatus.actions";
+import { goeyToast } from "goey-toast";
 
 export default function HealthStatusForm({
 	action,
@@ -80,14 +81,14 @@ export default function HealthStatusForm({
 		if (action === "Create") {
 			startTransition(async () => {
 				await createHealthStatus({ ...cleanData });
-				toast.success("Health status saved🫀");
+				goeyToast.success("Health status saved🫀");
 				form.reset();
 				setIsSuccess(true);
 			});
 		} else if (action === "Update" && healthStatus) {
 			startTransition(async () => {
 				await updateHealthStatus({ ...healthStatus, ...cleanData });
-				toast.success("Health status saved🫀");
+				goeyToast.success("Health status saved🫀");
 				form.reset();
 				setIsSuccess(true);
 			});

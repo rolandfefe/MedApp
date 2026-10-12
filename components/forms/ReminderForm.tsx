@@ -22,6 +22,7 @@ import { Spinner } from "../ui/spinner";
 import { createReminder } from "@/lib/actions/reminder.actions";
 import moment from "moment";
 import { useCurrent } from "@/contexts/Current.context";
+import { goeyToast } from "goey-toast";
 
 export default function ReminderForm() {
 	const [isPending, startTransition] = useTransition();
@@ -39,7 +40,7 @@ export default function ReminderForm() {
 		startTransition(async () => {
 			await createReminder(cleanData);
 
-			toast.success(
+			goeyToast.success(
 				`'${data.reminderLabel}' reminder set at ${moment(data.time).format(
 					"Do MMM - h:mma"
 				)}`

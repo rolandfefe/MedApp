@@ -31,6 +31,7 @@ import { Card, CardContent } from "../ui/card";
 import { getIsAppointmentDoctor } from "@/lib/utils";
 import { useConsultation } from "@/contexts/consultation.context";
 import { useCurrent } from "@/contexts/Current.context";
+import { goeyToast } from "goey-toast";
 
 export default function DoctorNotesForm() {
 	const currentUser = useCurrent().currentUser!;
@@ -67,7 +68,7 @@ export default function DoctorNotesForm() {
 			startTransition(async () => {
 				await updateAppointment({ ...appointment, ...data });
 
-				toast.success("Notes updated posted successfully📒");
+				goeyToast.success("Notes updated posted successfully📒");
 				form.reset();
 				setIsSuccess(true);
 			});

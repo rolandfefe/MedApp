@@ -20,7 +20,7 @@ export default function GoeyProvider({
 			<GooeyToaster
 				{...props}
 				theme={theme as "light" | "dark"}
-				position={isSMScreen ? "top-center" : "bottom-right"}
+				position={"top-center"}
 			/>
 			{children}
 		</>

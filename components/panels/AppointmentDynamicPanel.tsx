@@ -32,6 +32,7 @@ import { HoverBorderGradient } from "../ui/hover-border-gradient";
 import { Separator } from "../ui/separator";
 import { ShineBorder } from "../ui/shine-border";
 import ConfirmationDialog from "./ConfirmationDialog";
+import { goeyToast } from "goey-toast";
 
 export default function AppointmentDynamicPanel({
 	appointment,
@@ -82,7 +83,7 @@ export default function AppointmentDynamicPanel({
 				status: eAppointmentStatus.CONFIRMED,
 			});
 
-			toast.success("Confirmed");
+			goeyToast.success("Confirmed");
 		});
 
 	const deleteHandler = async () => await deleteAppointment(appointment.id!);
@@ -103,7 +104,7 @@ export default function AppointmentDynamicPanel({
 				status: eAppointmentStatus.CONFIRMED,
 			});
 
-			toast.success(
+			goeyToast.success(
 				`You have now been assigned appointment 🆔:'${appointment.id!}'`
 			);
 		});

@@ -27,6 +27,7 @@ import {
 } from "../custom/motion-stepper";
 import getDoctorFormStepper from "../formSteppers/doctorFormStepper";
 import { Separator } from "../ui/separator";
+import { goeyToast } from "goey-toast";
 
 export default function DoctorForm({
 	action,
@@ -67,7 +68,7 @@ export default function DoctorForm({
 			startTransition(async () => {
 				await updateDoctor({ ...doctor, ...cleanData });
 				form.reset();
-				toast.success("Doctor Profile updated.");
+				goeyToast.success("Doctor Profile updated.");
 				setIsSuccess(true);
 			});
 		} else {
@@ -75,7 +76,7 @@ export default function DoctorForm({
 			startTransition(async () => {
 				const { id } = await createDoctor(cleanData);
 				form.reset();
-				toast.success(
+				goeyToast.success(
 					"Application submitted for verification🤙. \n Feedback will be notified🤗"
 				);
 				setIsSuccess(true);

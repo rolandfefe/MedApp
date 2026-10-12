@@ -10,6 +10,7 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "../ui/dialog";
+import { goeyToast } from "goey-toast";
 
 export default function ConfirmationDialog({
 	children,
@@ -29,7 +30,7 @@ export default function ConfirmationDialog({
 		startTransition(async () => {
 			await action();
 			setIsOpen(false); // ? Close after action
-			toast.success(successMsg);
+			goeyToast.success(successMsg);
 		});
 
 	return (

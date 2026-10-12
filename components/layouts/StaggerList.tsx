@@ -13,14 +13,12 @@ export default function StaggerList({
 			initial={"hidden"}
 			animate={"visible"}
 			exit={"hidden"}
-      transition={
-        {
-          delayChildren: stagger(0.2)
-        }
-      }
+			transition={{
+				delayChildren: stagger(0.2),
+			}}
 			{...props}
 		>
-			{props.className}
+			{props.children}
 		</motion.div>
 	);
 }

@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import MyBtn from "../custom/MyBtn";
 import { cn } from "@/lib/utils";
 import { Spinner } from "../ui/spinner";
+import { goeyToast } from "goey-toast";
 
 export default function CallBtn({
 	contact,
@@ -17,7 +18,7 @@ export default function CallBtn({
 	const callHandler = () => {
 		startCalling(async () => {
 			// ! Figure this out coming soon.
-			toast("Coming soon...", { id: "s0c48ncs" });
+			goeyToast("Coming soon...", { id: "s0c48ncs" });
 		});
 	};
 	return (

@@ -24,6 +24,7 @@ import getVerdictFormStepper, {
 	TreatmentPlanSection,
 } from "../formSteppers/VerdictFormStepper";
 import { useCurrent } from "@/contexts/Current.context";
+import { goeyToast } from "goey-toast";
 
 export default function VerdictForm() {
 	const { verdict, diagnosis } = useConsultation();
@@ -75,7 +76,7 @@ export default function VerdictForm() {
 				),
 				{ id: "c2428nc209" }
 			);
-			toast.error(
+			goeyToast.error(
 				"Please ensure that you detail both the 'Verdict Notes' and 'Treatment Plan'."
 			);
 			return;
@@ -102,7 +103,7 @@ export default function VerdictForm() {
 					updatedBy: currentDoctor.id,
 				});
 
-				toast.success("Verdict Updated✍️");
+				goeyToast.success("Verdict Updated✍️");
 				form.reset();
 				setIsSuccess(true);
 			});
@@ -111,7 +112,7 @@ export default function VerdictForm() {
 			startTransition(async () => {
 				await createVerdict(cleanData);
 
-				toast.success("Verdict Created");
+				goeyToast.success("Verdict Created");
 				// ! Add real-time notification to Patient
 				form.reset();
 				setIsSuccess(true);

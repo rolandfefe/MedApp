@@ -38,6 +38,7 @@ import { Spinner } from "../ui/spinner";
 import MyBtn from "../custom/MyBtn";
 import { Textarea } from "../ui/textarea";
 import { Badge } from "../ui/badge";
+import { goeyToast } from "goey-toast";
 
 // ! Configure how handle Non-appointment docs.
 
@@ -68,7 +69,7 @@ export default function RecurrenceForm() {
 			// Update
 			startTransition(async () => {
 				await updatePlan({ ...recurrencePlan, ...cleanData });
-				toast.success("Plan updated 🔃");
+				goeyToast.success("Plan updated 🔃");
 				form.reset();
 			});
 		} else {
@@ -76,7 +77,7 @@ export default function RecurrenceForm() {
 			startTransition(async () => {
 				await createPlan(cleanData);
 
-				toast.success("Plan created🗓️");
+				goeyToast.success("Plan created🗓️");
 				form.reset();
 			});
 		}

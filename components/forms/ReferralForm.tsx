@@ -36,6 +36,7 @@ import { ScrollArea } from "../ui/scroll-area";
 import { Separator } from "../ui/separator";
 import { Spinner } from "../ui/spinner";
 import { Textarea } from "../ui/textarea";
+import { goeyToast } from "goey-toast";
 
 export default function ReferralForm({
 	action,
@@ -87,7 +88,7 @@ export default function ReferralForm({
 				form.reset();
 				setIsSuccess(true);
 				setSelectedDoctor(undefined);
-				toast.success("Referral registered.⏩");
+				goeyToast.success("Referral registered.⏩");
 			});
 		} else if (action === "Update" && referral) {
 			startTransition(async () => {
@@ -100,7 +101,7 @@ export default function ReferralForm({
 				form.reset();
 				setIsSuccess(true);
 				setSelectedDoctor(undefined);
-				toast.success("Referral Updated.⏩");
+				goeyToast.success("Referral Updated.⏩");
 			});
 		}
 	};

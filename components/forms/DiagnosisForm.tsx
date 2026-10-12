@@ -41,6 +41,7 @@ import {
 } from "@/lib/actions/diagnosis.actions";
 import { eConfidenceLevel } from "@/types/enums/enums";
 import ToastErrCard from "../cards/ToastErrCard";
+import { goeyToast } from "goey-toast";
 
 export default function DiagnosisForm() {
 	const { appointment, patientHistory, diagnosis } = useConsultation();
@@ -93,7 +94,7 @@ export default function DiagnosisForm() {
 					...cleanData,
 					updatedBy: currentDoctor.id!,
 				});
-				toast.success("Diagnosis updated successfully🧑‍⚕️");
+				goeyToast.success("Diagnosis updated successfully🧑‍⚕️");
 				form.reset();
 				setIsSuccess(true);
 			});
@@ -101,7 +102,7 @@ export default function DiagnosisForm() {
 			// ? Create
 			startTransition(async () => {
 				await createDiagnosis(cleanData);
-				toast.success("Diagnosis created successfully🧑‍⚕️");
+				goeyToast.success("Diagnosis created successfully🧑‍⚕️");
 				form.reset();
 				setIsSuccess(true);
 			});

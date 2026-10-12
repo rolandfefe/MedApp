@@ -52,6 +52,7 @@ import {
 	FormPanelTrigger,
 } from "../custom/form-panel";
 import { ReferralFormDialog } from "../forms/ReferralForm";
+import { goeyToast } from "goey-toast";
 
 export default function PatientConsultationFooter() {
 	const currentUser = useCurrent().currentUser!;
@@ -167,7 +168,7 @@ PatientConsultationFooter.OnlineMeetBtn = () => {
 		if (form.watch("url")) {
 			startTransition(async () => {
 				await updateAppointment({ ...appointment, online: { ...data } });
-				toast.success("Online meeting info updated🤙");
+				goeyToast.success("Online meeting info updated🤙");
 				setOpen(false);
 			});
 		} else {

@@ -43,6 +43,7 @@ import { ButtonGroup, ButtonGroupSeparator } from "../ui/button-group";
 import { Separator } from "../ui/separator";
 import { Spinner } from "../ui/spinner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import { goeyToast } from "goey-toast";
 
 const motionVariants: Variants = {
 	hidden: {
@@ -245,7 +246,9 @@ VerdictSection.Actions = ({
 					confirmedBy: undefined,
 				});
 
-				toast.success(`Verdict Rejected by @Dr.${currentDoctor.user.fname}`);
+				goeyToast.success(
+					`Verdict Rejected by @Dr.${currentDoctor.user.fname}`
+				);
 			} else {
 				// ? confirm
 				await updateVerdict({
@@ -254,7 +257,9 @@ VerdictSection.Actions = ({
 					confirmedBy: currentDoctor.id,
 				});
 
-				toast.success(`Verdict Confirmed by @Dr.${currentDoctor.user.fname}`);
+				goeyToast.success(
+					`Verdict Confirmed by @Dr.${currentDoctor.user.fname}`
+				);
 			}
 		});
 	};

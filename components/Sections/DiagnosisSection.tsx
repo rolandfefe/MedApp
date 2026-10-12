@@ -1,6 +1,11 @@
 "use client";
 
 import { useConsultation } from "@/contexts/consultation.context";
+import { useCurrent } from "@/contexts/Current.context";
+import { updateDiagnosis } from "@/lib/actions/diagnosis.actions";
+import { cn } from "@/lib/utils";
+import { useMediaQuery } from "@uidotdev/usehooks";
+import { goeyToast } from "goey-toast";
 import {
 	ArrowLeftCircle,
 	ArrowRightCircle,
@@ -11,25 +16,14 @@ import {
 	Cog,
 	Edit3,
 	GitCommit,
-	MessageSquareText,
 	Microscope,
 	PencilRuler,
 	Pill,
 	ShieldCheck,
 	UserCog,
 } from "lucide-react";
-import { Editor } from "../blocks/editor-00/editor";
-import LinkBtn from "../btns/LinkBtn";
-import DoctorCard from "../cards/DoctorCard";
-import PatientCard from "../cards/patientCard";
-import DiagnosisForm from "../forms/DiagnosisForm";
-import { Separator } from "../ui/separator";
-import DifferentialCard from "../cards/DifferentialCard";
-import { Variants, motion, stagger } from "motion/react";
 import moment from "moment";
-import { Badge } from "../ui/badge";
-import { cn } from "@/lib/utils";
-import { useMediaQuery } from "@uidotdev/usehooks";
+import { Variants, motion, stagger } from "motion/react";
 import {
 	Activity,
 	Dispatch,
@@ -37,11 +31,17 @@ import {
 	useState,
 	useTransition,
 } from "react";
-import MyBtn from "../custom/MyBtn";
-import { ButtonGroup, ButtonGroupSeparator } from "../ui/button-group";
-import { updateDiagnosis } from "@/lib/actions/diagnosis.actions";
-import { useCurrent } from "@/contexts/Current.context";
 import toast from "react-hot-toast";
+import { Editor } from "../blocks/editor-00/editor";
+import LinkBtn from "../btns/LinkBtn";
+import DifferentialCard from "../cards/DifferentialCard";
+import DoctorCard from "../cards/DoctorCard";
+import PatientCard from "../cards/patientCard";
+import MyBtn from "../custom/MyBtn";
+import DiagnosisForm from "../forms/DiagnosisForm";
+import { Badge } from "../ui/badge";
+import { ButtonGroup, ButtonGroupSeparator } from "../ui/button-group";
+import { Separator } from "../ui/separator";
 import { Spinner } from "../ui/spinner";
 
 const motionVariants: Variants = {
@@ -126,7 +126,9 @@ DiagnosisSection.Actions = ({
 				confirmedBy: currentDoctor.id!,
 			});
 
-			toast.success(`Diagnosis confirmed by @Dr.${currentDoctor.user.fname}👍`);
+			goeyToast.success(
+				`Diagnosis confirmed by @Dr.${currentDoctor.user.fname}👍`
+			);
 		});
 	};
 
@@ -137,7 +139,7 @@ DiagnosisSection.Actions = ({
 				medicationsReviewed: true,
 			});
 
-			toast.success(
+			goeyToast.success(
 				`Medications reviewed by @Dr.${currentDoctor.user.fname}👍`
 			);
 		});

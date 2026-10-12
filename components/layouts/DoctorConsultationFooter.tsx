@@ -29,6 +29,7 @@ import DiagnosisSection from "../Sections/DiagnosisSection";
 import { ButtonGroup } from "../ui/button-group";
 import { Separator } from "../ui/separator";
 import { ScrollArea } from "../ui/scroll-area";
+import { goeyToast } from "goey-toast";
 
 export default function DoctorConsultationFooter() {
 	return (
@@ -112,7 +113,7 @@ DoctorConsultationFooter.OnlineMeetBtn = () => {
 
 	const copyHandler = async (content: string, msg: string) => {
 		await copyAction(content);
-		toast(msg, { icon: "📋", id: "cn22039x8adf" });
+		goeyToast(msg, { icon: "📋", id: "cn22039x8adf" });
 	};
 
 	return (

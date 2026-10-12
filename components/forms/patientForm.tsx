@@ -34,6 +34,7 @@ import { Separator } from "../ui/separator";
 import { useCurrent } from "@/contexts/Current.context";
 import { cn } from "@/lib/utils";
 import ToastErrCard from "../cards/ToastErrCard";
+import { goeyToast } from "goey-toast";
 
 export default function PatientForm({
 	action = "create",
@@ -75,7 +76,7 @@ export default function PatientForm({
 				await updateOnBoardingStatus(true);
 
 				form.reset();
-				toast.success("Onboard successful🎉");
+				goeyToast.success("Onboard successful🎉");
 				router.push("/home");
 				// setIsSuccess(true); // ! Coming soon.
 			});
@@ -89,7 +90,7 @@ export default function PatientForm({
 			});
 
 			form.reset();
-			toast.success("Update complete🔃");
+			goeyToast.success("Update complete🔃");
 		}
 	};
 
