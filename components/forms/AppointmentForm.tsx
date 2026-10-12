@@ -43,6 +43,11 @@ import {
 import { ScrollArea } from "../ui/scroll-area";
 import { createReminder } from "@/lib/actions/reminder.actions";
 import { gooeyToast } from "goey-toast";
+import {
+	FormPanel,
+	FormPanelContent,
+	FormPanelTrigger,
+} from "../custom/form-panel";
 
 export default function AppointmentForm({
 	action,
@@ -79,8 +84,6 @@ export default function AppointmentForm({
 				gooeyToast.success(
 					"Appointment Placed. \n You notified once it's confirmed."
 				);
-
-				// form.reset()
 				setIsSuccess(true);
 
 				// TODO might make it seem slower
@@ -186,21 +189,13 @@ export const AppointmentPanel = ({
 	typeof AppointmentForm
 >) => {
 	return (
-		<MorphingDialog>
-			<MorphingDialogTrigger
-				shortcutKey="p"
-				asChild
-				className={cn("", className)}
-			>
+		<FormPanel>
+			<FormPanelTrigger asChild className={cn("", className)}>
 				{children}
-			</MorphingDialogTrigger>
-
-			<MorphingDialogContainer>
-				<MorphingDialogContent className=" sm:max-w-[80vw]  md:min-w-lg lg:min-w-md">
-					<AppointmentForm {...props} />
-					<MorphingDialogClose className="text-foreground" />
-				</MorphingDialogContent>
-			</MorphingDialogContainer>
-		</MorphingDialog>
+			</FormPanelTrigger>
+			<FormPanelContent>
+				<AppointmentForm {...props} />
+			</FormPanelContent>
+		</FormPanel>
 	);
 };

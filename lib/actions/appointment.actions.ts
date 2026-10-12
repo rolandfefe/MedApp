@@ -102,6 +102,7 @@ export const getAppointments = cache(
 						{ status: { equals: status } },
 					],
 				},
+				pagination: false, // ! temporary
 				page,
 				limit,
 			});
