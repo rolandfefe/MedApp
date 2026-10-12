@@ -122,19 +122,20 @@ export default function VerdictForm() {
 
 	const errHandler = async (err: FieldErrors<VerdictFormData>) => {
 		console.log("err: ", err);
-		toast.custom(
-			(t) => (
-				<ToastErrCard t={t}>
+		goeyToast.error("Form input error(s)", {
+			icon: "🚨",
+			description: (
+				<div>
 					{Object.entries(err).map(([k, v]) => (
 						<p key={k} className={"text-sm text-secondary-foreground"}>
 							<span className="font-medium text-destructive">{k}: </span>
 							<code>{v.message}</code>
 						</p>
 					))}
-				</ToastErrCard>
+				</div>
 			),
-			{ id: "cn94839k" }
-		);
+			id: "wrwr424c2v",
+		});
 	};
 
 	const FORM_STEPS = getVerdictFormStepper(

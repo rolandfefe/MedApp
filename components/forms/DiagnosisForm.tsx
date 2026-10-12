@@ -4,17 +4,20 @@ import { Form } from "@/components/ui/form";
 import { useConsultation } from "@/contexts/consultation.context";
 import { useCurrent } from "@/contexts/Current.context";
 import {
+	createDiagnosis,
+	updateDiagnosis,
+} from "@/lib/actions/diagnosis.actions";
+import {
 	DiagnosisFormData,
 	diagnosisFormSchema,
 } from "@/lib/formSchemas/diagnosis.schema";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { goeyToast } from "goey-toast";
 import { SerializedEditorState } from "lexical";
-import { Hospital, X } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { Hospital } from "lucide-react";
 import { ComponentProps, ReactNode, useState, useTransition } from "react";
 import { FieldErrors, useForm } from "react-hook-form";
-import toast from "react-hot-toast";
 import {
 	FormPanel,
 	FormPanelContent,
@@ -27,21 +30,12 @@ import {
 	StepperContent,
 	StepperTrigger,
 } from "../custom/motion-stepper";
-import MyBtn from "../custom/MyBtn";
 import getDiagnosisFormStepper, {
 	ChiefComplaintSection,
 	NotesSection,
 } from "../formSteppers/DiagnosisFormStepper";
 import { Badge } from "../ui/badge";
-import { Card, CardContent } from "../ui/card";
 import { Separator } from "../ui/separator";
-import {
-	createDiagnosis,
-	updateDiagnosis,
-} from "@/lib/actions/diagnosis.actions";
-import { eConfidenceLevel } from "@/types/enums/enums";
-import ToastErrCard from "../cards/ToastErrCard";
-import { goeyToast } from "goey-toast";
 
 export default function DiagnosisForm() {
 	const { appointment, patientHistory, diagnosis } = useConsultation();
@@ -111,19 +105,20 @@ export default function DiagnosisForm() {
 
 	const errHandler = async (err: FieldErrors<DiagnosisFormData>) => {
 		console.log("err: ", err);
-		toast.custom(
-			(t) => (
-				<ToastErrCard t={t}>
+		goeyToast.error("Form input error(s)", {
+			icon: "🚨",
+			description: (
+				<div>
 					{Object.entries(err).map(([k, v]) => (
 						<p key={k} className={"text-sm text-secondary-foreground"}>
 							<span className="font-medium text-destructive">{k}: </span>
 							<code>{v.message}</code>
 						</p>
 					))}
-				</ToastErrCard>
+				</div>
 			),
-			{ id: "cn94839k" }
-		);
+			id: "9c247bf4",
+		});
 	};
 
 	const FORM_STEPS = getDiagnosisFormStepper(

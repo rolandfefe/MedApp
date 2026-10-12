@@ -23,7 +23,6 @@ export default function ReminderPopup({
 		const reminder =
 			reminderNotifications[random(0, reminderNotifications.length - 1)];
 
-
 		toast.custom((t) => <ReminderCard.Popup t={t} reminder={reminder} />, {
 			id: "sw242",
 			position: "bottom-right",

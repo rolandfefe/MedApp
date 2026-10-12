@@ -85,19 +85,20 @@ export default function RecurrenceForm() {
 
 	const errHandler = async (err: FieldErrors<RecurrencePlanFormData>) => {
 		console.log("err: ", err);
-		toast.custom(
-			(t) => (
-				<ToastErrCard t={t}>
+		goeyToast.error("Form input error(s)", {
+			icon: "🚨",
+			description: (
+				<div>
 					{Object.entries(err).map(([k, v]) => (
 						<p key={k} className={"text-sm text-secondary-foreground"}>
 							<span className="font-medium text-destructive">{k}: </span>
 							<code>{v.message}</code>
 						</p>
 					))}
-				</ToastErrCard>
+				</div>
 			),
-			{ id: "034802jd20" }
-		);
+			id: "adaeq313sv",
+		});
 	};
 
 	return (

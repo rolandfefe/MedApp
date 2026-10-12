@@ -15,6 +15,7 @@ import {
 } from "@/types/enums/enums";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMediaQuery } from "@uidotdev/usehooks";
+import { goeyToast } from "goey-toast";
 import { SerializedEditorState, SerializedLexicalNode } from "lexical";
 import {
 	ChevronsUpDown,
@@ -36,7 +37,6 @@ import { FieldErrors, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { Editor } from "../blocks/editor-00/editor";
 import LinkBtn from "../btns/LinkBtn";
-import ToastErrCard from "../cards/ToastErrCard";
 import Heading from "../custom/Heading";
 import MyBtn from "../custom/MyBtn";
 import { Badge } from "../ui/badge";
@@ -159,19 +159,20 @@ export default function ArticleForm({}: {}) {
 
 	const errHandler = async (err: FieldErrors<ArticleFormData>) => {
 		console.log("err: ", err);
-		toast.custom(
-			(t) => (
-				<ToastErrCard t={t}>
+		goeyToast.error("Form input error(s)", {
+			icon: "🚨",
+			description: (
+				<div>
 					{Object.entries(err).map(([k, v]) => (
 						<p key={k} className={"text-sm text-secondary-foreground"}>
 							<span className="font-medium text-destructive">{k}: </span>
 							<code>{v.message}</code>
 						</p>
 					))}
-				</ToastErrCard>
+				</div>
 			),
-			{ id: "034802jd20" }
-		);
+			id: "9c247bf4",
+		});
 	};
 
 	return (

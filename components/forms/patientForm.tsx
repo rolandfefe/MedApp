@@ -95,19 +95,20 @@ export default function PatientForm({
 	};
 
 	const errHandler = async (err: FieldErrors<PatientFormData>) => {
-		toast.custom(
-			(t) => (
-				<ToastErrCard t={t}>
+		goeyToast.error("Form input error(s)", {
+			icon: "🚨",
+			description: (
+				<div>
 					{Object.entries(err).map(([k, v]) => (
 						<p key={k} className={"text-sm text-secondary-foreground"}>
 							<span className="font-medium text-destructive">{k}: </span>
 							<code>{v.message}</code>
 						</p>
 					))}
-				</ToastErrCard>
+				</div>
 			),
-			{ id: "adiou2b947" }
-		);
+			id: "42c242c42456w",
+		});
 	};
 
 	const FORM_STEPS = getPatientFormStepper(

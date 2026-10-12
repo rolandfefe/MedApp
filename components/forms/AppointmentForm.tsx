@@ -2,7 +2,7 @@
 
 import {
 	AppointmentFormData,
-	useAppointmentForm
+	useAppointmentForm,
 } from "@/lib/formSchemas/appointment.schema";
 import { cn } from "@/lib/utils";
 import { ePatientConsent } from "@/types/enums/enums";
@@ -20,10 +20,8 @@ import {
 } from "@/lib/actions/appointment.actions";
 import { createReminder } from "@/lib/actions/reminder.actions";
 import { PatientFormData } from "@/lib/formSchemas/patient.schema";
-import { gooeyToast } from "goey-toast";
+import { goeyToast, gooeyToast } from "goey-toast";
 import { FieldErrors } from "react-hook-form";
-import toast from "react-hot-toast";
-import ToastErrCard from "../cards/ToastErrCard";
 import {
 	FormPanel,
 	FormPanelContent,
@@ -96,21 +94,20 @@ export default function AppointmentForm({
 
 	const errHandler = async (err: FieldErrors<PatientFormData>) => {
 		console.log("err: ", err);
-		toast.custom(
-			(t) => (
-				<ToastErrCard t={t}>
-					<div>
-						{Object.entries(err).map(([k, v]) => (
-							<p key={k} className={"text-sm text-secondary-foreground"}>
-								<span className="font-medium text-destructive">{k}: </span>
-								<code>{v.message}</code>
-							</p>
-						))}
-					</div>
-				</ToastErrCard>
+		goeyToast.error("Form input error(s)", {
+			icon: "🚨",
+			description: (
+				<div>
+					{Object.entries(err).map(([k, v]) => (
+						<p key={k} className={"text-sm text-secondary-foreground"}>
+							<span className="font-medium text-destructive">{k}: </span>
+							<code>{v.message}</code>
+						</p>
+					))}
+				</div>
 			),
-			{ id: "9c247bf4" }
-		);
+			id: "9c247bf4",
+		});
 	};
 
 	const FORM_STEPS = getAppointmentFormStepper(

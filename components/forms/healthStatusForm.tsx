@@ -3,16 +3,20 @@
 import { Badge } from "@/components/ui/badge";
 import { Form } from "@/components/ui/form";
 import {
-	DoctorFormData,
-	doctorFormSchema,
-} from "@/lib/formSchemas/doctor.schema";
+	createHealthStatus,
+	updateHealthStatus,
+} from "@/lib/actions/healthStatus.actions";
+import {
+	HealthStatusFormData,
+	healthStatusFormSchema,
+} from "@/lib/formSchemas/healthStatus.schema";
 import { PatientFormData } from "@/lib/formSchemas/patient.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Hospital, X } from "lucide-react";
+import { goeyToast } from "goey-toast";
+import { Hospital } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { ComponentProps, ReactNode, useState, useTransition } from "react";
 import { FieldErrors, useForm } from "react-hook-form";
-import toast from "react-hot-toast";
 import {
 	FormPanel,
 	FormPanelContent,
@@ -25,21 +29,8 @@ import {
 	StepperContent,
 	StepperTrigger,
 } from "../custom/motion-stepper";
-import MyBtn from "../custom/MyBtn";
-import getDoctorFormStepper from "../formSteppers/doctorFormStepper";
-import { Card, CardContent } from "../ui/card";
-import { Separator } from "../ui/separator";
-import { createDoctor, updateDoctor } from "@/lib/actions/doctor.actions";
-import {
-	HealthStatusFormData,
-	healthStatusFormSchema,
-} from "@/lib/formSchemas/healthStatus.schema";
 import getHealthStatusFormStepper from "../formSteppers/healthStatusFormStepper";
-import {
-	createHealthStatus,
-	updateHealthStatus,
-} from "@/lib/actions/healthStatus.actions";
-import { goeyToast } from "goey-toast";
+import { Separator } from "../ui/separator";
 
 export default function HealthStatusForm({
 	action,
@@ -97,33 +88,20 @@ export default function HealthStatusForm({
 
 	const errHandler = async (err: FieldErrors<PatientFormData>) => {
 		console.log("err: ", err);
-		toast.custom(
-			(t) => (
-				<Card className="w-[95vw] sm:w-72 relative">
-					<MyBtn
-						size="icon"
-						variant={"secondary"}
-						onClick={() => toast.dismiss(t.id)}
-						className="size-7 rounded-xl hover:text-destructive absolute top-2 right-2 "
-					>
-						<X />
-					</MyBtn>
-					<CardContent className="px-2 py-1">
-						<Heading className="text-xl">🚨Form input error(s) </Heading>
-						<Separator className="my-1" />
-						<div>
-							{Object.entries(err).map(([k, v]) => (
-								<p key={k} className={"text-sm text-secondary-foreground"}>
-									<span className="font-medium text-destructive">{k}: </span>
-									<code>{v.message}</code>
-								</p>
-							))}
-						</div>
-					</CardContent>
-				</Card>
+		goeyToast.error("Form input error(s)", {
+			icon: "🚨",
+			description: (
+				<div>
+					{Object.entries(err).map(([k, v]) => (
+						<p key={k} className={"text-sm text-secondary-foreground"}>
+							<span className="font-medium text-destructive">{k}: </span>
+							<code>{v.message}</code>
+						</p>
+					))}
+				</div>
 			),
-			{ id: "adiou2b947" }
-		);
+			id: "9c247bf4",
+		});
 	};
 
 	const FORM_STEPS = getHealthStatusFormStepper(
