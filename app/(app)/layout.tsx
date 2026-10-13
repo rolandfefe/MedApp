@@ -57,7 +57,6 @@ export default async function RootLayout({
 								<ScrollArea className="h-screen">{children}</ScrollArea>
 							</BProgressProvider>
 						</GoeyProvider>
-						ss
 					</ThemeProvider>
 				</body>
 			</AuthProvider>

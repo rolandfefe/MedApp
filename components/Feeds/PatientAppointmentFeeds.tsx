@@ -64,7 +64,8 @@ export default function PatientAppointmentFeeds() {
 
 			<section>
 				<AnimatePresence>
-					<StaggerList className="flex gap-3 flex-col sm:flex-row flex-wrap">
+					{/* <StaggerList className="flex gap-3 flex-col sm:flex-row flex-wrap"> */}
+					<StaggerList className="grid grid-flow-row grid-cols-1 sm:grid-cols-2 gap-4">
 						{filterResults.length > 0 ? (
 							filterResults.map((appointment) => {
 								const isLastItem =

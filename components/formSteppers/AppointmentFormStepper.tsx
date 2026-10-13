@@ -73,7 +73,7 @@ export default function getAppointmentFormStepper(
 							render={({ field }) => (
 								<FormItem className="flex-1">
 									{/* <FormLabel>Type:</FormLabel> */}
-									<Select value={field.value} onValueChange={field.onChange}>
+									<Select defaultValue={field.value} onValueChange={field.onChange}>
 										<FormControl>
 											<SelectTrigger>
 												<SelectValue placeholder="Appointment type..." />
