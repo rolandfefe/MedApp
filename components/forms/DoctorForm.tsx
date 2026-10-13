@@ -9,7 +9,7 @@ import { PatientFormData } from "@/lib/formSchemas/patient.schema";
 import { cn } from "@/lib/utils";
 import { Hospital } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
-import { ReactNode, useState, useTransition } from "react";
+import { ComponentProps, ReactNode, useState, useTransition } from "react";
 import { FieldErrors } from "react-hook-form";
 import toast from "react-hot-toast";
 import ToastErrCard from "../cards/ToastErrCard";
@@ -31,9 +31,10 @@ import { goeyToast } from "goey-toast";
 
 export default function DoctorForm({
 	action,
+	...props
 }: {
 	action: "Create" | "Update";
-}) {
+} & ComponentProps<"div">) {
 	const [activeStep, setActiveStep] = useState<number>(1);
 	const [isPending, startTransition] = useTransition();
 	const [isSuccess, setIsSuccess] = useState<boolean>(false);
@@ -99,7 +100,7 @@ export default function DoctorForm({
 					))}
 				</div>
 			),
-			id: "9c247bf4",
+			id: "w42v24cwry4",
 		});
 	};
 
@@ -111,7 +112,7 @@ export default function DoctorForm({
 	);
 
 	return (
-		<div className="">
+		<div {...props} className={cn("", props.className)}>
 			<div className="px-2 sticky top-0 glass-bg">
 				<Heading className="text-xl md:text-2xl text-primary">
 					<Hospital /> Doctor Form <Badge variant={"secondary"}>{action}</Badge>{" "}

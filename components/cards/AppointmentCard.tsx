@@ -1,33 +1,32 @@
 import { useCurrent } from "@/contexts/Current.context";
+import {
+	deleteAppointment,
+	updateAppointment,
+} from "@/lib/actions/appointment.actions";
 import { cn } from "@/lib/utils";
 import { eAppointmentStatus } from "@/types/enums/enums";
 import {
 	CircleX,
 	Dot,
 	Headset,
-	Loader,
 	MessageCircleMore,
 	Sparkles,
 	Trash2,
 } from "lucide-react";
 import moment from "moment";
 import { ComponentProps, useTransition } from "react";
+import LinkBtn from "../btns/LinkBtn";
+import CopyBadge from "../custom/CopyBadge";
+import Heading from "../custom/Heading";
+import MyBtn from "../custom/MyBtn";
 import AppointmentDynamicPanel from "../panels/AppointmentDynamicPanel";
+import ConfirmationDialog from "../panels/ConfirmationDialog";
 import { Badge } from "../ui/badge";
 import { Card, CardContent } from "../ui/card";
+import { HoverBorderGradient } from "../ui/hover-border-gradient";
+import { Separator } from "../ui/separator";
 import DoctorCard from "./DoctorCard";
 import PatientCard from "./patientCard";
-import { HoverBorderGradient } from "../ui/hover-border-gradient";
-import LinkBtn from "../btns/LinkBtn";
-import MyBtn from "../custom/MyBtn";
-import ConfirmationDialog from "../panels/ConfirmationDialog";
-import {
-	deleteAppointment,
-	updateAppointment,
-} from "@/lib/actions/appointment.actions";
-import CopyBadge from "../custom/CopyBadge";
-import { Separator } from "../ui/separator";
-import Heading from "../custom/Heading";
 
 export default function AppointmentCard({
 	appointment,

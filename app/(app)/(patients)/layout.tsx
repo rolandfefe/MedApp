@@ -2,6 +2,7 @@ import MyBtn from "@/components/custom/MyBtn";
 import { AppointmentPanel } from "@/components/forms/AppointmentForm";
 import AppSidebar from "@/components/layouts/AppSidebar";
 import Navbar from "@/components/layouts/Navbar";
+import PopNotifications from "@/components/PopNotifications";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { ShineBorder } from "@/components/ui/shine-border";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
@@ -80,13 +81,13 @@ export default async function layout({ children }: { children: ReactNode }) {
 							followUp: followUpReminders,
 						}}
 					>
+						<PopNotifications />
 						<SidebarProvider defaultOpen>
 							<AppSidebar />
 							<SidebarInset>
 								<ScrollArea className="h-screen">
 									<Navbar patientNav={patientNav} />
 									<main className="overflow-x-hidden p-3">{children}</main>
-									<ScrollBar />
 								</ScrollArea>
 							</SidebarInset>
 						</SidebarProvider>

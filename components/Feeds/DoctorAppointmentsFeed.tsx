@@ -83,7 +83,7 @@ export default function DoctorAppointmentFeeds({
 									className={cn(
 										"mb-2 basis-full sm:basis-[47%] flex-1",
 										sidebarState === "expanded" &&
-											"sm:basis-full lg:basis-[47%] "
+											"sm:basis-full lg:basis-[47%]"
 									)}
 									ref={isLastItem ? loadRef : null}
 								>

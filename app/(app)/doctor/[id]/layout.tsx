@@ -1,6 +1,7 @@
 import DoctorNavbar from "@/components/layouts/DoctorNavbar";
 import DoctorSidebar from "@/components/layouts/DoctorSidebar";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import PopNotifications from "@/components/PopNotifications";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { CurrentProvider } from "@/contexts/Current.context";
 import { RemindersProvider } from "@/contexts/Reminder.context";
@@ -52,13 +53,13 @@ export default async function layout({ children }: { children: ReactNode }) {
 					followUp: followUpReminders,
 				}}
 			>
+				<PopNotifications />	
 				<SidebarProvider defaultOpen>
 					<DoctorSidebar doctorNav={doctorNav} currentUser={currentUser} />
 					<SidebarInset>
 						<ScrollArea className="h-screen">
 							<DoctorNavbar doctorNav={doctorNav} />
 							<main className="overflow-x-hidden p-3">{children}</main>
-							<ScrollBar />
 						</ScrollArea>
 					</SidebarInset>
 				</SidebarProvider>

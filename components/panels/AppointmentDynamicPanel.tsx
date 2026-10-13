@@ -33,6 +33,7 @@ import { Separator } from "../ui/separator";
 import { ShineBorder } from "../ui/shine-border";
 import ConfirmationDialog from "./ConfirmationDialog";
 import { goeyToast } from "goey-toast";
+import { pusherServer } from "@/lib/pusher/pusher.server";
 
 export default function AppointmentDynamicPanel({
 	appointment,
@@ -83,7 +84,14 @@ export default function AppointmentDynamicPanel({
 				status: eAppointmentStatus.CONFIRMED,
 			});
 
-			goeyToast.success("Confirmed");
+			// ? Real-time notification to patient
+			await pusherServer.trigger(
+				`appointment-${appointment.patient.id}`,
+				`appointment-${appointment.patient.id}-confirmed`,
+				appointment.id
+			);
+
+			goeyToast.success("Appointment confirmed");
 		});
 
 	const deleteHandler = async () => await deleteAppointment(appointment.id!);
@@ -111,9 +119,7 @@ export default function AppointmentDynamicPanel({
 
 	return (
 		<DynamicPanel>
-			<DynamicPanelTrigger
-				drawerProps={{ asChild: true }}
-			>
+			<DynamicPanelTrigger drawerProps={{ asChild: true }}>
 				{children}
 			</DynamicPanelTrigger>
 

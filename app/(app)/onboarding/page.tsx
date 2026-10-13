@@ -1,4 +1,5 @@
 import { logoFont } from "@/app/fonts";
+import LinkBtn from "@/components/btns/LinkBtn";
 import Heading from "@/components/custom/Heading";
 import MyBtn from "@/components/custom/MyBtn";
 import { DoctorFormPanel } from "@/components/forms/DoctorForm";
@@ -14,7 +15,7 @@ export default async function page() {
 	console.log("User:", currentUser);
 
 	if (!currentUser) return;
-		
+
 	return (
 		<div className="space-y-3 p-3">
 			<OnboardingNav className="mb-10" />
@@ -59,11 +60,15 @@ export default async function page() {
 							</MyBtn>
 						</PatientFormPanel>
 
-						<DoctorFormPanel>
-							<MyBtn size="lg" className="flex-1">
-								<Hospital /> Doctor
-							</MyBtn>
-						</DoctorFormPanel>
+						{/* <DoctorFormPanel> */}
+						<LinkBtn
+							link={{ href: "/doctor-application" }}
+							size="lg"
+							className="flex-1"
+						>
+							<Hospital /> Doctor
+						</LinkBtn>
+						{/* </DoctorFormPanel> */}
 					</div>
 				</div>
 			</section>
