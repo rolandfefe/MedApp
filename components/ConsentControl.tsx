@@ -15,6 +15,7 @@ import { updateAppointment } from "@/lib/actions/appointment.actions";
 import { Spinner } from "./ui/spinner";
 import { AnimatePresence, motion } from "motion/react";
 import { goeyToast } from "goey-toast";
+import { pusherServer } from "@/lib/pusher/pusher.server";
 
 /**
  * @description Manage Consent btw doctor and patient
@@ -43,10 +44,20 @@ ConsentControl.Patient = () => {
 			await updateAppointment({ ...appointment, consentLevels });
 
 			if (isExisted) {
+				await pusherServer.trigger(
+					`appointment-${appointment.doctor?.id}`,
+					`consent-granted-${appointment.doctor?.id}`,
+					{ id: appointment.id, consent }
+				);
 				goeyToast("Consent hidden", {
 					description: `${consent.toUpperCase()} info hidden from doctor.`,
 				});
 			} else {
+				await pusherServer.trigger(
+					`appointment-${appointment.doctor?.id}`,
+					`consent-denied-${appointment.doctor?.id}`,
+					{ id: appointment.id, consent }
+				);
 				goeyToast("Consent granted.", {
 					description: `Doctor can now access your ${consent.toUpperCase()} info.`,
 				});

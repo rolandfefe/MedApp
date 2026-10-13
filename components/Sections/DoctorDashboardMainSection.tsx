@@ -5,6 +5,7 @@ import { ComponentProps } from "react";
 import DashboardCard from "../cards/DashboardCard";
 import { AnimatePresence, motion, stagger, Variants } from "motion/react";
 import ArticleForm from "../forms/ArticleForm";
+import Link from "next/link";
 
 const VARIANTS: Variants = {
 	hidden: {
@@ -50,13 +51,14 @@ export default function DoctorDashboardMainSection({
 					key={"sdfd"}
 					className="flex-1 basis-[60%] md:basis-[24%]"
 				>
-					<DashboardCard
-						imageSrc="/assets/medical-care.svg"
-						icon="headset"
-						title="Appointments"
-						n={stats.appointmentsN}
-						onClick={() => router.push(`/doctor/${doctor.id}/appointments`)}
-					/>
+					<Link href={`/doctor/${doctor.id}/appointments`}>
+						<DashboardCard
+							imageSrc="/assets/medical-care.svg"
+							icon="headset"
+							title="Appointments"
+							n={stats.appointmentsN}
+						/>
+					</Link>
 				</motion.div>
 
 				<motion.div
@@ -64,13 +66,14 @@ export default function DoctorDashboardMainSection({
 					key={"asdf24"}
 					className="flex-1 basis-[40%] md:basis-[24%]"
 				>
-					<DashboardCard
-						imageSrc="/assets/medical-care.svg"
-						icon="arrow-big-right"
-						title="Referrals"
-						n={stats.referralsN}
-						onClick={() => router.push(`/doctor/${doctor.id}/referrals`)}
-					/>
+					<Link href={`/doctor/${doctor.id}/referrals`}>
+						<DashboardCard
+							imageSrc="/assets/medical-care.svg"
+							icon="arrow-big-right"
+							title="Referrals"
+							n={stats.referralsN}
+						/>
+					</Link>
 				</motion.div>
 
 				<motion.div
@@ -78,13 +81,14 @@ export default function DoctorDashboardMainSection({
 					key={"d242nc"}
 					className="flex-1 basis-[30%] md:basis-[24%]"
 				>
-					<DashboardCard
-						imageSrc="/assets/medical-care.svg"
-						icon="notebook-tabs"
-						title="Articles"
-						n={stats.articlesN}
-						onClick={() => router.push(`/doctor/${doctor.id}/articles`)}
-					/>
+					<Link href={`/doctor/${doctor.id}/articles`}>
+						<DashboardCard
+							imageSrc="/assets/medical-care.svg"
+							icon="notebook-tabs"
+							title="Articles"
+							n={stats.articlesN}
+						/>
+					</Link>
 				</motion.div>
 
 				<motion.div
@@ -92,13 +96,14 @@ export default function DoctorDashboardMainSection({
 					key={"d2984h"}
 					className="flex-1 basis-[70%] md:basis-[24%]"
 				>
-					<DashboardCard
-						imageSrc="/assets/medical-care.svg"
-						icon="arrow-down-right-from-circle"
-						title="Follow-ups"
-						n={stats.appointmentsN}
-						onClick={() => router.push(`/doctor/${doctor.id}/follow-ups`)}
-					/>
+					<Link href={`/doctor/${doctor.id}/follow-ups`}>
+						<DashboardCard
+							imageSrc="/assets/medical-care.svg"
+							icon="arrow-down-right-from-circle"
+							title="Follow-ups"
+							n={stats.appointmentsN}
+						/>
+					</Link>
 				</motion.div>
 			</AnimatePresence>
 		</motion.section>

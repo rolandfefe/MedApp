@@ -8,15 +8,19 @@ import { useRouter } from "next/navigation";
 import { useEffect, useEffectEvent } from "react";
 
 export default function PopNotifications() {
-	const currentPatient = useCurrent().currentPatient;
+	const { currentPatient, currentDoctor } = useCurrent();
 	const router = useRouter();
 
-	const appointmentsPusherChannel = pusherClient.subscribe(
+	const appointmentsPatientPusherChannel = pusherClient.subscribe(
 		`appointment-${currentPatient?.id}`
 	);
 
+	const appointmentsDoctorPusherChannel = pusherClient.subscribe(
+		`appointment-${currentDoctor?.id}`
+	);
+
 	const pusherEvents = useEffectEvent(() => {
-		appointmentsPusherChannel.bind(
+		appointmentsPatientPusherChannel.bind(
 			`appointment-${currentPatient?.id}-confirmed`,
 			async (id: string) => {
 				const appointment = await getAppointment(id);
@@ -34,11 +38,35 @@ export default function PopNotifications() {
 				});
 			}
 		);
+
+		appointmentsDoctorPusherChannel.bind(
+			`consent-granted-${currentDoctor?.id}`,
+			async ({ id, consent }: { id: string; consent: string }) => {
+				const appointment = await getAppointment(id);
+				goeyToast(`Consent granted`, {
+					description: `Pat.${
+						appointment.patient!.user?.fname
+					} gave you access to their "${consent}" information.`,
+				});
+			}
+		);
+
+		appointmentsDoctorPusherChannel.bind(
+			`consent-denied-${currentDoctor?.id}`,
+			async ({ id, consent }: { id: string; consent: string }) => {
+				const appointment = await getAppointment(id);
+				goeyToast.warning(`Consent Denied`, {
+					description: `Pat.${
+						appointment.patient!.user?.fname
+					} denied access to their "${consent}" information.`,
+				});
+			}
+		);
 	});
 
 	useEffect(() => {
 		pusherEvents();
-	}, [appointmentsPusherChannel]);
+	}, [appointmentsPatientPusherChannel]);
 
 	return <div>PopNotifications</div>;
 }

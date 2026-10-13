@@ -23,7 +23,6 @@ export default async function page() {
 
 	return (
 		<div className="space-y-4">
-
 			<section className="flex flex-col sm:flex-row gap-3">
 				<div className="flex-1 sm:flex-[.5]">
 					<Image
