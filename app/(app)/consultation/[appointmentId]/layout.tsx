@@ -20,6 +20,7 @@ import {
 	getCurrentPatient,
 	getVerdictByAppointment,
 } from "@/lib/actions/utils.actions";
+import { getVerdicts } from "@/lib/actions/verdict.actions";
 import GoeyProvider from "@/Providers/GoeyProvider";
 import { ReactNode } from "react";
 
@@ -45,6 +46,7 @@ export default async function layout({
 		{ doctors },
 		recurrencePlan,
 		healthStatus,
+		{ verdicts },
 	] = await Promise.all([
 		getCurrentUser(),
 		getCurrentDoctor(),
@@ -57,6 +59,7 @@ export default async function layout({
 		getDoctors({ limit: 0 }),
 		getPlan({ appointment: appointmentId }),
 		getHealthStatus({ patient: appointment.patient!.id as string }),
+		getVerdicts({ patient: appointment.patient!.id as string }),
 	]);
 
 	return (
@@ -74,6 +77,7 @@ export default async function layout({
 				verdict={verdict}
 				recurrencePlan={recurrencePlan}
 				healthStatus={healthStatus}
+				patientVerdicts={verdicts}
 			>
 				<DoctorsProvider doctorsInit={doctors}>
 					<MsgProvider msgsInit={msgs} appointment={appointment}>

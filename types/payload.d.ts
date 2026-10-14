@@ -733,7 +733,7 @@ export interface Appointment {
     };
     [k: string]: unknown;
   } | null;
-  consentLevels?: ('Health statuses' | 'Vitals' | 'History' | 'Patient profile' | 'User profile')[] | null;
+  consentLevels?: ('Health statuses' | 'Vitals' | 'History' | 'Patient profile' | 'Medications')[] | null;
   isEmergency?: boolean | null;
   online?: {
     url?: string | null;

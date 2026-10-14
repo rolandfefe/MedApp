@@ -8,7 +8,6 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
 	ArrowBigRightDash,
-	ArrowUpRightFromSquare,
 	CalendarClock,
 	ChevronsUpDown,
 	FileBadge2,
@@ -16,15 +15,13 @@ import {
 	Notebook,
 	Plus,
 	Stethoscope,
-	Video,
+	Video
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
 import Heading from "../custom/Heading";
 import MyBtn from "../custom/MyBtn";
-import { DiagnosisFormPanel } from "../forms/DiagnosisForm";
 import { DoctorNotesFormPanel } from "../forms/DoctorNotesForm";
 import { errHandler } from "../toastErr";
 import { ButtonGroup } from "../ui/button-group";
@@ -43,6 +40,7 @@ import { Separator } from "../ui/separator";
 import { useConsultation } from "@/contexts/consultation.context";
 import { useCurrent } from "@/contexts/Current.context";
 import { useMediaQuery } from "@uidotdev/usehooks";
+import { goeyToast } from "goey-toast";
 import RecurrencePlanAside from "../asides/RecurrencePlanAside";
 import ReferralsAside from "../asides/ReferralsAside";
 import LinkBtn from "../btns/LinkBtn";
@@ -52,7 +50,6 @@ import {
 	FormPanelTrigger,
 } from "../custom/form-panel";
 import { ReferralFormDialog } from "../forms/ReferralForm";
-import { goeyToast } from "goey-toast";
 
 export default function PatientConsultationFooter() {
 	const currentUser = useCurrent().currentUser!;

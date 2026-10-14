@@ -15,8 +15,12 @@ import {
 interface ContextProps {
 	appointment: IAppointment;
 	referrals: IReferral[];
+
+	// Patient Personal
 	patientHistory?: IHistory;
+	patientVerdicts?: IVerdict[];
 	healthStatus?: IHealthStatus;
+
 	verdict?: IVerdict;
 	diagnosis?: IDiagnosis;
 	recurrencePlan?: IRecurrencePlan;

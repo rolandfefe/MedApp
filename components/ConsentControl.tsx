@@ -1,6 +1,6 @@
 "use client";
 import { useConsultation } from "@/contexts/consultation.context";
-import { HeartPulse, PlusCircle } from "lucide-react";
+import { HeartPulse, PlusCircle, Stethoscope } from "lucide-react";
 import {
 	FormPanel,
 	FormPanelContent,
@@ -22,6 +22,9 @@ import {
 	consentControlTrigger,
 	promptPatientTrigger,
 } from "@/lib/actions/pusher.actions";
+import { VerdictsProvider } from "@/contexts/Verdicts.context";
+import VerdictsFeed from "./Feeds/VerdictsFeed";
+import LinkBtn from "./btns/LinkBtn";
 
 /**
  * @description Manage Consent btw doctor and patient
@@ -111,7 +114,8 @@ ConsentControl.Patient = () => {
 };
 
 ConsentControl.Doctor = () => {
-	const { appointment, patientHistory, healthStatus } = useConsultation();
+	const { appointment, patientHistory, healthStatus, patientVerdicts } =
+		useConsultation();
 	const consentLevels = appointment.consentLevels ?? [];
 
 	const [consentTab, setConsentTab] =
@@ -180,6 +184,27 @@ ConsentControl.Doctor = () => {
 													<HeartPulse />
 													Take patient Vitals
 												</MyBtn>
+											</div>
+										)}
+									</>
+								) : consent === ePatientConsent.MEDICATIONS ? (
+									<>
+										{patientVerdicts ? (
+											<VerdictsProvider verdictsInit={patientVerdicts}>
+												<VerdictsFeed />
+											</VerdictsProvider>
+										) : (
+											<div>
+												<Void msg="Patient has no medications records from the system. Write Diagnosis & Verdict to fill patient's medication records" />
+												<LinkBtn
+													size="lg"
+													link={{
+														href: `/consultation/${appointment.id}/diagnosis`,
+													}}
+													className="flex w-fit md:w-1/3 mx-auto mt-4"
+												>
+													<Stethoscope />s Diagnosis
+												</LinkBtn>
 											</div>
 										)}
 									</>

@@ -128,7 +128,7 @@ export enum ePatientConsent {
 	VITALS = "Vitals",
 	HISTORY = "History",
 	PATIENT_PROFILE = "Patient profile",
-	USER_PROFILE = "User profile",
+	MEDICATIONS = "Medications",
 }
 
 export enum eMedicalSpecialties {

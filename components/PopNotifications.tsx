@@ -112,7 +112,7 @@ export default function PopNotifications() {
 	}, [appointmentsPatientPusherChannel, appointmentsDoctorPusherChannel]);
 
 	return (
-		<div>
+		<>
 			<HistoryFormPanel
 				action="Create"
 				panelProps={{
@@ -127,6 +127,6 @@ export default function PopNotifications() {
 					onOpenChange: setHealthStatusFormFormIsOpen,
 				}}
 			/>
-		</div>
+		</>
 	);
 }

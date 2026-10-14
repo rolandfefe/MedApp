@@ -31,7 +31,7 @@ import { Separator } from "../ui/separator";
 import { ScrollArea } from "../ui/scroll-area";
 import { goeyToast } from "goey-toast";
 
-export default function DoctorConsultationFooter() {
+export default function wDoctorConsultationFooter() {
 	return (
 		<div className="space-y-3">
 			<DoctorConsultationFooter.RecurrenceBtn />
