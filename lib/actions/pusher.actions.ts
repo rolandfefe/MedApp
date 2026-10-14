@@ -2,13 +2,19 @@
 
 import { pusherServer } from "@/lib/pusher/pusher.server";
 
-// export const pusherAction = async (channel: string, ) => {
-// 	try {
-// 		await pusherServer.trigger(`appointment-${}`, )
-// 	} catch (error: any) {
-// 		throw new Error(error)
-// 	}
-// }
+export const appointmentConfirmationTrigger = async (
+	appointment: IAppointment
+) => {
+	try {
+		await pusherServer.trigger(
+			`appointment-${appointment.patient.id}`,
+			`appointment-${appointment.patient.id}-confirmed`,
+			appointment.id
+		);
+	} catch (error: any) {
+		throw new Error(error);
+	}
+};
 
 export const promptPatientTrigger = async (
 	appointment: IAppointment,

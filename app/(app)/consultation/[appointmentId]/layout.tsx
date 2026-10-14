@@ -20,6 +20,7 @@ import {
 	getCurrentPatient,
 	getVerdictByAppointment,
 } from "@/lib/actions/utils.actions";
+import GoeyProvider from "@/Providers/GoeyProvider";
 import { ReactNode } from "react";
 
 export default async function layout({
@@ -79,9 +80,11 @@ export default async function layout({
 						<SidebarProvider defaultOpen>
 							<ConsultationSidebar />
 							<SidebarInset>
-								<PopNotifications />
-								<ConsultationNavbar />
-								<main className="px-2 sm:px-5 mt-6">{children}</main>
+								<GoeyProvider>
+									<PopNotifications />
+									<ConsultationNavbar />
+									<main className="px-2 sm:px-5 mt-6">{children}</main>
+								</GoeyProvider>
 							</SidebarInset>
 						</SidebarProvider>
 					</MsgProvider>

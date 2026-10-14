@@ -19,6 +19,7 @@ import {
 	getCurrentDoctor,
 	getCurrentPatient,
 } from "@/lib/actions/utils.actions";
+import GoeyProvider from "@/Providers/GoeyProvider";
 import { eReminderVariants } from "@/types/enums/enums";
 import { Headset } from "lucide-react";
 import { redirect } from "next/navigation";
@@ -81,16 +82,18 @@ export default async function layout({ children }: { children: ReactNode }) {
 							followUp: followUpReminders,
 						}}
 					>
-						<PopNotifications />
-						<SidebarProvider defaultOpen>
-							<AppSidebar />
-							<SidebarInset>
-								<ScrollArea className="h-screen">
-									<Navbar patientNav={patientNav} />
-									<main className="overflow-x-hidden p-3">{children}</main>
-								</ScrollArea>
-							</SidebarInset>
-						</SidebarProvider>
+						<GoeyProvider>
+							<PopNotifications />
+							<SidebarProvider defaultOpen>
+								<AppSidebar />
+								<SidebarInset>
+									<ScrollArea className="h-screen">
+										<Navbar patientNav={patientNav} />
+										<main className="overflow-x-hidden p-3">{children}</main>
+									</ScrollArea>
+								</SidebarInset>
+							</SidebarProvider>
+						</GoeyProvider>
 					</RemindersProvider>
 				</ArticleProvider>
 

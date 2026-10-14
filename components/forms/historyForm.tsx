@@ -156,10 +156,14 @@ export default function HistoryForm({
 
 export const HistoryFormPanel = ({
 	children,
+	panelProps,
 	...props
-}: { children: ReactNode } & ComponentProps<typeof HistoryForm>) => {
+}: {
+	children?: ReactNode;
+	panelProps?: ComponentProps<typeof FormPanel>;
+} & ComponentProps<typeof HistoryForm>) => {
 	return (
-		<FormPanel>
+		<FormPanel {...panelProps}>
 			<FormPanelTrigger asChild>{children}</FormPanelTrigger>
 
 			<FormPanelContent>

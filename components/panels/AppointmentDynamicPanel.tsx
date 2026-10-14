@@ -34,6 +34,7 @@ import { ShineBorder } from "../ui/shine-border";
 import ConfirmationDialog from "./ConfirmationDialog";
 import { goeyToast } from "goey-toast";
 import { pusherServer } from "@/lib/pusher/pusher.server";
+import { appointmentConfirmationTrigger } from "@/lib/actions/pusher.actions";
 
 export default function AppointmentDynamicPanel({
 	appointment,
@@ -85,11 +86,7 @@ export default function AppointmentDynamicPanel({
 			});
 
 			// ? Real-time notification to patient
-			await pusherServer.trigger(
-				`appointment-${appointment.patient.id}`,
-				`appointment-${appointment.patient.id}-confirmed`,
-				appointment.id
-			);
+			await appointmentConfirmationTrigger(appointment);
 
 			goeyToast.success("Appointment confirmed");
 		});

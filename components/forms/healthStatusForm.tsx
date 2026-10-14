@@ -150,12 +150,15 @@ export default function HealthStatusForm({
 export const HealthStatusFormPanel = ({
 	className,
 	children,
+	panelProps,
 	...props
-}: { className?: string; children: ReactNode } & ComponentProps<
-	typeof HealthStatusForm
->) => {
+}: {
+	className?: string;
+	children?: ReactNode;
+	panelProps?: ComponentProps<typeof FormPanel>;
+} & ComponentProps<typeof HealthStatusForm>) => {
 	return (
-		<FormPanel>
+		<FormPanel {...panelProps}>
 			<FormPanelTrigger asChild className={className}>
 				{children}
 			</FormPanelTrigger>

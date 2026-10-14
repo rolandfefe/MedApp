@@ -42,7 +42,6 @@ export default function ConsultationNavbar({
 						<Home />
 					</LinkBtn>
 				)}
-				<SidebarTrigger className=" " />
 				<BackBtn />
 			</div>
 
@@ -51,6 +50,7 @@ export default function ConsultationNavbar({
 			</Heading>
 
 			<div className="flex items-center gap-x-2">
+				<SidebarTrigger className=" " />
 				<ThemeBtn />
 
 				{pathname.split("/")[3] && <ChatContainer.Panel />}

@@ -6,15 +6,15 @@ import {
 } from "@/lib/actions/utils.actions";
 import Image from "next/image";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 export default async function page() {
 	const { healthStatuses: statuses } = await getCurrentPatientHealStatuses({
-		limit: 0,
+		// limit: 0,
 	});
 	const patient = await getCurrentPatient();
 
-	console.log("statuses: ", statuses);
+	console.log("💻statuses: ", statuses);
 
 	return (
 		<div className="space-y-3">
@@ -48,8 +48,8 @@ export default async function page() {
 					</div>
 				</div>
 			</section>
-			<section className="border rounded-xl p-3">
-				<HealthStatusDashboard healthStatuses={statuses} patient={patient} />
+			<section className="border rounded-2xl p-3">
+				<HealthStatusDashboard healthStatuses={statuses} />
 			</section>
 		</div>
 	);

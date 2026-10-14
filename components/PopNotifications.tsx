@@ -5,7 +5,7 @@ import { getAppointment } from "@/lib/actions/appointment.actions";
 import { pusherClient } from "@/lib/pusher/pusher.client";
 import { goeyToast } from "goey-toast";
 import { useRouter } from "next/navigation";
-import { useEffect, useEffectEvent } from "react";
+import { useEffect, useEffectEvent, useState } from "react";
 import { Badge } from "./ui/badge";
 import { HistoryFormPanel } from "./forms/historyForm";
 import MyBtn from "./custom/MyBtn";
@@ -13,6 +13,8 @@ import { HealthStatusFormPanel } from "./forms/healthStatusForm";
 
 export default function PopNotifications() {
 	const { currentPatient, currentDoctor } = useCurrent();
+	const [isOpen, setIsOpen] = useState<boolean>(false);
+
 	const router = useRouter();
 
 	const appointmentsPatientPusherChannel = pusherClient.subscribe(
@@ -58,13 +60,11 @@ export default function PopNotifications() {
 
 							<div className="mt-2">
 								{prompt == "History" ? (
-									<HistoryFormPanel action="Update">
-										<MyBtn>Take history</MyBtn>
-									</HistoryFormPanel>
+									<MyBtn onClick={() => setIsOpen(true)}>Take history</MyBtn>
 								) : (
-									<HealthStatusFormPanel action="Create">
-										<MyBtn>Take history</MyBtn>
-									</HealthStatusFormPanel>
+									<MyBtn onClick={() => setIsOpen(true)}>
+										Take Health status vitals
+									</MyBtn>
 								)}
 							</div>
 						</div>
@@ -107,5 +107,16 @@ export default function PopNotifications() {
 		};
 	}, [appointmentsPatientPusherChannel, appointmentsDoctorPusherChannel]);
 
-	return <div></div>;
+	return (
+		<div>
+			<HistoryFormPanel
+				action="Create"
+				panelProps={{ open: isOpen, onOpenChange: setIsOpen }}
+			/>
+			<HealthStatusFormPanel
+				action="Create"
+				panelProps={{ open: isOpen, onOpenChange: setIsOpen }}
+			/>
+		</div>
+	);
 }
