@@ -97,7 +97,7 @@ export default function PopNotifications() {
 						<div>
 							<p>
 								Dr.${appointment.doctor!.user?.fname} would like to access your{" "}
-								<Badge>{consent}</Badge> information.,
+								<Badge variant="secondary">{consent}</Badge> information.,
 							</p>
 							{/* <div className="flex items-center gap-x-2">
 								<MyBtn>Grand</MyBtn>
@@ -105,7 +105,7 @@ export default function PopNotifications() {
 						</div>
 					),
 					action: {
-						label: "Grand consent",
+						label: "Grant consent",
 						successLabel: "Consent granted",
 						onClick: async () => {
 							await updateAppointment({
@@ -119,6 +119,7 @@ export default function PopNotifications() {
 				});
 			}
 		);
+
 		appointmentsDoctorPusherChannel.bind(
 			`consent-granted-${currentDoctor?.id}`,
 			async ({ id, consent }: { id: string; consent: string }) => {
@@ -132,7 +133,7 @@ export default function PopNotifications() {
 		);
 
 		appointmentsDoctorPusherChannel.bind(
-			`consent-denied-${currentDoctor?.id}`,
+			`consent-denied-${currenthelloDoctor?.id}`,
 			async ({ id, consent }: { id: string; consent: string }) => {
 				const appointment = await getAppointment(id);
 				goeyToast.warning(`Consent Denied`, {
