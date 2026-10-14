@@ -101,7 +101,11 @@ export default function PopNotifications() {
 
 	useEffect(() => {
 		pusherEvents();
-	}, [appointmentsPatientPusherChannel]);
+		return () => {
+			pusherClient.unsubscribe(`appointment-${currentPatient?.id}`);
+			pusherClient.unsubscribe(`appointment-${currentDoctor?.id}`);
+		};
+	}, [appointmentsPatientPusherChannel, appointmentsDoctorPusherChannel]);
 
-	return <div>PopNotifications</div>;
+	return <div></div>;
 }

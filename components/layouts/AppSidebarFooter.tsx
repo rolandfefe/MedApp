@@ -93,16 +93,13 @@ export default function AppSidebarFooter() {
 					className="min-w-56"
 				>
 					{doctor ? (
-						// <DoctorFormPanel action="Create">
-						<LinkBtn
-							link={{ href: "/onboarding/doctor-application" }}
-							size="sm"
-							className="w-full"
-						>
-							Apply as Doctor <Hospital />
-						</LinkBtn>
+						<PatientFormPanel action="create">
+							<MyBtn size="sm" className="w-full">
+								Register as patient
+								<UserPlus2 />
+							</MyBtn>
+						</PatientFormPanel>
 					) : (
-						// </DoctorFormPanel>
 						<DropdownMenuItem disabled={isDoctorMode}>
 							<Link href={`/home`} className="flex item-center gap-x-1">
 								<UserPlus2 />
@@ -112,12 +109,13 @@ export default function AppSidebarFooter() {
 					)}
 
 					{patient ? (
-						<PatientFormPanel action="create">
-							<MyBtn size="sm" className="w-full">
-								Register as patient
-								<UserPlus2 />
-							</MyBtn>
-						</PatientFormPanel>
+						<LinkBtn
+							link={{ href: "/onboarding/doctor-application" }}
+							size="sm"
+							className="w-full"
+						>
+							Apply as Doctor <Hospital />
+						</LinkBtn>
 					) : (
 						<DropdownMenuItem disabled={!isDoctorMode}>
 							<Link

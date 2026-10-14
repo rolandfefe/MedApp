@@ -53,7 +53,7 @@ export default async function layout({ children }: { children: ReactNode }) {
 					followUp: followUpReminders,
 				}}
 			>
-				<PopNotifications />	
+				<PopNotifications />
 				<SidebarProvider defaultOpen>
 					<DoctorSidebar doctorNav={doctorNav} currentUser={currentUser} />
 					<SidebarInset>

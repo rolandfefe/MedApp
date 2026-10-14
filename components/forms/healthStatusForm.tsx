@@ -2,6 +2,7 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Form } from "@/components/ui/form";
+import { useCurrent } from "@/contexts/Current.context";
 import {
 	createHealthStatus,
 	updateHealthStatus,
@@ -14,7 +15,6 @@ import { PatientFormData } from "@/lib/formSchemas/patient.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { goeyToast } from "goey-toast";
 import { Hospital } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
 import { ComponentProps, ReactNode, useState, useTransition } from "react";
 import { FieldErrors, useForm } from "react-hook-form";
 import {
@@ -31,7 +31,6 @@ import {
 } from "../custom/motion-stepper";
 import getHealthStatusFormStepper from "../formSteppers/healthStatusFormStepper";
 import { Separator } from "../ui/separator";
-import { useCurrent } from "@/contexts/Current.context";
 
 export default function HealthStatusForm({
 	action,
@@ -42,10 +41,8 @@ export default function HealthStatusForm({
 }) {
 	const patient = useCurrent().currentPatient!;
 	const [activeStep, setActiveStep] = useState<number>(1);
-	const pathname = usePathname();
 	const [isPending, startTransition] = useTransition();
 	const [isSuccess, setIsSuccess] = useState<boolean>(false);
-	const router = useRouter();
 
 	const form = useForm<HealthStatusFormData>({
 		resolver: zodResolver(healthStatusFormSchema),

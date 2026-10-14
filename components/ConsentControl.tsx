@@ -18,6 +18,10 @@ import { goeyToast } from "goey-toast";
 import { pusherServer } from "@/lib/pusher/pusher.server";
 import Void from "./custom/Void";
 import VitalsSection from "./VitalsSection";
+import {
+	consentControlTrigger,
+	promptPatientTrigger,
+} from "@/lib/actions/pusher.actions";
 
 /**
  * @description Manage Consent btw doctor and patient
@@ -30,6 +34,7 @@ ConsentControl.Patient = () => {
 	const { appointment } = useConsultation();
 	const doctor = appointment.doctor;
 	const [isPending, startTransition] = useTransition();
+	const consentLevels = appointment.consentLevels ?? [];
 
 	// Todo: Add Realtime requests from dr
 	// Todo: Realtime indication on what dr is viewing
@@ -46,20 +51,12 @@ ConsentControl.Patient = () => {
 			await updateAppointment({ ...appointment, consentLevels });
 
 			if (isExisted) {
-				await pusherServer.trigger(
-					`appointment-${appointment.doctor?.id}`,
-					`consent-granted-${appointment.doctor?.id}`,
-					{ id: appointment.id, consent }
-				);
+				await consentControlTrigger(appointment, consent, "hidden");
 				goeyToast("Consent hidden", {
 					description: `${consent.toUpperCase()} info hidden from doctor.`,
 				});
 			} else {
-				await pusherServer.trigger(
-					`appointment-${appointment.doctor?.id}`,
-					`consent-denied-${appointment.doctor?.id}`,
-					{ id: appointment.id, consent }
-				);
+				await consentControlTrigger(appointment, consent, "granted");
 				goeyToast("Consent granted.", {
 					description: `Doctor can now access your ${consent.toUpperCase()} info.`,
 				});
@@ -90,9 +87,7 @@ ConsentControl.Patient = () => {
 
 			<div className="flex gap-2 flex-wrap">
 				{Object.entries(ePatientConsent).map(([k, consent]) => {
-					const isAllowed = appointment.consentLevels?.find(
-						(c) => c == consent
-					);
+					const isAllowed = consentLevels?.find((c) => c == consent);
 
 					return (
 						<MyBtn
@@ -117,24 +112,17 @@ ConsentControl.Patient = () => {
 
 ConsentControl.Doctor = () => {
 	const { appointment, patientHistory, healthStatus } = useConsultation();
+	const consentLevels = appointment.consentLevels ?? [];
 
 	const [consentTab, setConsentTab] =
 		useState<NonNullable<IAppointment["consentLevels"]>[number]>();
-
-	const promptPatientHandler = async (prompt: "History" | "Vitals") => {
-		await pusherServer.trigger(
-			`appointment-${appointment.patient?.id}`,
-			`patient-prompt-${appointment.patient?.id}`,
-			{ id: appointment.id, prompt }
-		);
-	};
 
 	return (
 		<div>
 			<p className="text-sm font-medium">Consent Info:</p>
 			<div className="flex items-center gap-2 flex-wrap">
-				{appointment.consentLevels &&
-					appointment.consentLevels.map((consent) => (
+				{consentLevels &&
+					consentLevels.map((consent) => (
 						<FormPanel key={consent}>
 							<FormPanelTrigger asChild>
 								<MyBtn
@@ -162,7 +150,9 @@ ConsentControl.Doctor = () => {
 												<Void msg="Patient has not filled history form" />
 												<MyBtn
 													size="lg"
-													onClick={() => promptPatientHandler("History")}
+													onClick={async () =>
+														await promptPatientTrigger(appointment, "History")
+													}
 													className="flex w-fit md:w-1/3 mx-auto mt-4"
 												>
 													Take patient history
@@ -179,10 +169,12 @@ ConsentControl.Doctor = () => {
 											/>
 										) : (
 											<div>
-												<Void msg="Patient has not filled history form" />
+												<Void msg="Patient has not health vitals records." />
 												<MyBtn
 													size="lg"
-													onClick={() => promptPatientHandler("Vitals")}
+													onClick={async () =>
+														promptPatientTrigger(appointment, "Vitals")
+													}
 													className="flex w-fit md:w-1/3 mx-auto mt-4"
 												>
 													<HeartPulse />
@@ -197,7 +189,7 @@ ConsentControl.Doctor = () => {
 							</FormPanelContent>
 						</FormPanel>
 					))}
-				{appointment.consentLevels!.length < 5 && (
+				{consentLevels!.length < 5 && (
 					<MyBtn size="sm" className="!py-0 h-6 rounded-lg">
 						Request <PlusCircle />
 					</MyBtn>

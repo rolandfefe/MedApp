@@ -66,17 +66,20 @@ export default function getAppointmentFormStepper(
 						)}
 					/>
 
-					<div className="flex flex-col sm:flex-row sm:items-center gap-2">
+					{/* <div className="flex flex-col sm:flex-row sm:items-center gap-2"> */}
+					<div className="flex flex-row items-center gap-2">
 						<FormField
 							control={form.control}
 							name="type"
 							render={({ field }) => (
 								<FormItem className="flex-1">
-									{/* <FormLabel>Type:</FormLabel> */}
-									<Select defaultValue={field.value} onValueChange={field.onChange}>
+									<Select
+										defaultValue={field.value}
+										onValueChange={field.onChange}
+									>
 										<FormControl>
 											<SelectTrigger>
-												<SelectValue placeholder="Appointment type..." />
+												<SelectValue placeholder="Select Type..." />
 											</SelectTrigger>
 										</FormControl>
 
@@ -109,14 +112,13 @@ export default function getAppointmentFormStepper(
 											/>
 										</FormControl>
 									</div>
-
 									<FormMessage />
 								</FormItem>
 							)}
 						/>
 					</div>
 
-					<div className="flex items-center gap-x-2">
+					<div className="flex sm:items-center gap-2 flex-col sm:flex-row">
 						<FormField
 							control={form.control}
 							name="startTime"
