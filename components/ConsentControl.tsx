@@ -1,6 +1,6 @@
 "use client";
 import { useConsultation } from "@/contexts/consultation.context";
-import { HeartPulse, PlusCircle, Stethoscope } from "lucide-react";
+import { HeartPulse, Plus, PlusCircle, Stethoscope } from "lucide-react";
 import {
 	FormPanel,
 	FormPanelContent,
@@ -21,11 +21,19 @@ import VitalsSection from "./VitalsSection";
 import {
 	consentControlTrigger,
 	promptPatientTrigger,
+	requestConsentTrigger,
 } from "@/lib/actions/pusher.actions";
 import { VerdictsProvider } from "@/contexts/Verdicts.context";
 import VerdictsFeed from "./Feeds/VerdictsFeed";
 import LinkBtn from "./btns/LinkBtn";
 import PatientProfilePanel from "./panels/PatientProfilePanel";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+import { difference } from "lodash";
 
 /**
  * @description Manage Consent btw doctor and patient
@@ -121,6 +129,14 @@ ConsentControl.Doctor = () => {
 
 	const [consentTab, setConsentTab] =
 		useState<NonNullable<IAppointment["consentLevels"]>[number]>();
+
+	const requestConsentHandler = async (
+		consent: NonNullable<IAppointment["consentLevels"]>[number]
+	) => {
+		await requestConsentTrigger(appointment, consent);
+
+		goeyToast.success(`Request for ${consent} Sent`);
+	};
 
 	return (
 		<div>
@@ -220,9 +236,25 @@ ConsentControl.Doctor = () => {
 						</FormPanel>
 					))}
 				{consentLevels!.length < 5 && (
-					<MyBtn size="sm" className="!py-0 h-6 rounded-lg">
-						Request <PlusCircle />
-					</MyBtn>
+					<DropdownMenu>
+						<DropdownMenuTrigger
+							render={
+								<MyBtn size="sm" className="!py-0 h-6 rounded-lg">
+									Request <PlusCircle />
+								</MyBtn>
+							}
+						/>
+
+						<DropdownMenuContent>
+							{difference(Object.values(ePatientConsent), consentLevels).map(
+								(v) => (
+									<DropdownMenuItem onClick={() => requestConsentHandler(v)}>
+										<Plus /> {v}
+									</DropdownMenuItem>
+								)
+							)}
+						</DropdownMenuContent>
+					</DropdownMenu>
 				)}
 			</div>
 		</div>

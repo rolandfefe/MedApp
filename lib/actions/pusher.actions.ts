@@ -1,6 +1,7 @@
 "use server";
 
 import { pusherServer } from "@/lib/pusher/pusher.server";
+import { ePatientConsent } from "@/types/enums/enums";
 
 export const appointmentConfirmationTrigger = async (
 	appointment: IAppointment
@@ -50,6 +51,21 @@ export const consentControlTrigger = async (
 				{ id: appointment.id, consent }
 			);
 		}
+	} catch (error: any) {
+		throw new Error(error);
+	}
+};
+
+export const requestConsentTrigger = async (
+	appointment: IAppointment,
+	consent: NonNullable<IAppointment["consentLevels"]>[number]
+) => {
+	try {
+		await pusherServer.trigger(
+			`appointment-${appointment.patient?.id}`,
+			`Request-consent-${appointment.patient?.id}`,
+			{ id: appointment.id, consent }
+		);
 	} catch (error: any) {
 		throw new Error(error);
 	}

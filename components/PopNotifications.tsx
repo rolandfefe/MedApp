@@ -1,7 +1,10 @@
 "use client";
 
 import { useCurrent } from "@/contexts/Current.context";
-import { getAppointment } from "@/lib/actions/appointment.actions";
+import {
+	getAppointment,
+	updateAppointment,
+} from "@/lib/actions/appointment.actions";
 import { pusherClient } from "@/lib/pusher/pusher.client";
 import { goeyToast } from "goey-toast";
 import { useRouter } from "next/navigation";
@@ -10,6 +13,7 @@ import { Badge } from "./ui/badge";
 import { HistoryFormPanel } from "./forms/historyForm";
 import MyBtn from "./custom/MyBtn";
 import { HealthStatusFormPanel } from "./forms/healthStatusForm";
+import { consentControlTrigger } from "@/lib/actions/pusher.actions";
 
 export default function PopNotifications() {
 	const { currentPatient, currentDoctor } = useCurrent();
@@ -78,6 +82,43 @@ export default function PopNotifications() {
 			}
 		);
 
+		appointmentsPatientPusherChannel.bind(
+			`Request-consent-${currentPatient?.id}`,
+			async ({
+				id,
+				consent,
+			}: {
+				id: string;
+				consent: NonNullable<IAppointment["consentLevels"]>[number];
+			}) => {
+				const appointment = await getAppointment(id);
+				goeyToast.info(`Consent Request`, {
+					description: (
+						<div>
+							<p>
+								Dr.${appointment.doctor!.user?.fname} would like to access your{" "}
+								<Badge>{consent}</Badge> information.,
+							</p>
+							{/* <div className="flex items-center gap-x-2">
+								<MyBtn>Grand</MyBtn>
+							</div> */}
+						</div>
+					),
+					action: {
+						label: "Grand consent",
+						successLabel: "Consent granted",
+						onClick: async () => {
+							await updateAppointment({
+								...appointment,
+								consentLevels: [...appointment.consentLevels!, consent],
+							});
+
+							await consentControlTrigger(appointment, consent, "granted");
+						},
+					},
+				});
+			}
+		);
 		appointmentsDoctorPusherChannel.bind(
 			`consent-granted-${currentDoctor?.id}`,
 			async ({ id, consent }: { id: string; consent: string }) => {
