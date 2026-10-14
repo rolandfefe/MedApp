@@ -1,5 +1,6 @@
 import ConsultationNavbar from "@/components/layouts/ConsultationNavbar";
 import ConsultationSidebar from "@/components/layouts/ConsultationSidebar";
+import PopNotifications from "@/components/PopNotifications";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { ConsultationProvider } from "@/contexts/consultation.context";
 import { CurrentProvider } from "@/contexts/Current.context";
@@ -78,6 +79,7 @@ export default async function layout({
 						<SidebarProvider defaultOpen>
 							<ConsultationSidebar />
 							<SidebarInset>
+								<PopNotifications />
 								<ConsultationNavbar />
 								<main className="px-2 sm:px-5 mt-6">{children}</main>
 							</SidebarInset>

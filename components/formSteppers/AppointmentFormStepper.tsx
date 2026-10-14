@@ -118,7 +118,7 @@ export default function getAppointmentFormStepper(
 						/>
 					</div>
 
-					<div className="flex sm:items-center gap-2 flex-col sm:flex-row">
+					<div className="flex sm:items-center gap-x-2 gap-y-4 flex-col sm:flex-row">
 						<FormField
 							control={form.control}
 							name="startTime"

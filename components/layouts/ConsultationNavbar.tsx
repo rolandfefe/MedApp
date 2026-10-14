@@ -29,7 +29,6 @@ export default function ConsultationNavbar({
 			)}
 		>
 			<div className="flex items-center gap-x-2">
-				{/* <SidebarTrigger className=" " /> */}
 				{currentDoctor ? (
 					<LinkBtn
 						link={{ href: `/doctor/${currentDoctor.id}` }}
@@ -43,6 +42,7 @@ export default function ConsultationNavbar({
 						<Home />
 					</LinkBtn>
 				)}
+				<SidebarTrigger className=" " />
 				<BackBtn />
 			</div>
 
