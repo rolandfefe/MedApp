@@ -6,6 +6,10 @@ import { pusherClient } from "@/lib/pusher/pusher.client";
 import { goeyToast } from "goey-toast";
 import { useRouter } from "next/navigation";
 import { useEffect, useEffectEvent } from "react";
+import { Badge } from "./ui/badge";
+import { HistoryFormPanel } from "./forms/historyForm";
+import MyBtn from "./custom/MyBtn";
+import { HealthStatusFormPanel } from "./forms/healthStatusForm";
 
 export default function PopNotifications() {
 	const { currentPatient, currentDoctor } = useCurrent();
@@ -35,6 +39,37 @@ export default function PopNotifications() {
 							router.push(`/consultation/${id}`);
 						},
 					},
+				});
+			}
+		);
+
+		appointmentsPatientPusherChannel.bind(
+			`patient-prompt-${currentPatient?.id}`,
+			async ({ id, prompt }: { id: string; prompt: "History" | "Vitals" }) => {
+				const appointment = await getAppointment(id);
+				goeyToast(`Medical Prompt`, {
+					icon: "🩺",
+					description: (
+						<div>
+							<p>
+								Dr.{appointment.doctor!.user?.fname} would like you to take your{" "}
+								<Badge variant={"secondary"}>{prompt}.</Badge>
+							</p>
+
+							<div className="mt-2">
+								{prompt == "History" ? (
+									<HistoryFormPanel action="Update">
+										<MyBtn>Take history</MyBtn>
+									</HistoryFormPanel>
+								) : (
+									<HealthStatusFormPanel action="Create">
+										<MyBtn>Take history</MyBtn>
+									</HealthStatusFormPanel>
+								)}
+							</div>
+						</div>
+					),
+					duration: 5,
 				});
 			}
 		);

@@ -35,6 +35,7 @@ export default function PatientHistorySection({
 	history: IHistory;
 	className?: string;
 }) {
+
 	const {
 		diseaseHistory,
 		surgicalHistory,

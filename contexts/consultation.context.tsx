@@ -6,6 +6,7 @@ interface ContextProps {
 	appointment: IAppointment;
 	referrals: IReferral[];
 	patientHistory?: IHistory;
+	healthStatus?: IHealthStatus;
 	verdict?: IVerdict;
 	diagnosis?: IDiagnosis;
 	recurrencePlan?: IRecurrencePlan;

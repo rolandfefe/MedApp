@@ -8,6 +8,7 @@ import { MsgProvider } from "@/contexts/message.context";
 import { getAppointment } from "@/lib/actions/appointment.actions";
 import { getDiagnosis } from "@/lib/actions/diagnosis.actions";
 import { getDoctors } from "@/lib/actions/doctor.actions";
+import { getHealthStatus } from "@/lib/actions/healthStatus.actions";
 import { getHistory } from "@/lib/actions/history.action";
 import { getMsgs } from "@/lib/actions/message.actions";
 import { getPlan } from "@/lib/actions/recurrencePlan.actions";
@@ -41,6 +42,7 @@ export default async function layout({
 		verdict,
 		{ doctors },
 		recurrencePlan,
+		healthStatus,
 	] = await Promise.all([
 		getCurrentUser(),
 		getCurrentDoctor(),
@@ -52,6 +54,7 @@ export default async function layout({
 		getVerdictByAppointment(appointmentId),
 		getDoctors({ limit: 0 }),
 		getPlan({ appointment: appointmentId }),
+		getHealthStatus({ patient: appointment.patient!.id as string }),
 	]);
 
 	return (
@@ -68,6 +71,7 @@ export default async function layout({
 				diagnosis={diagnosis}
 				verdict={verdict}
 				recurrencePlan={recurrencePlan}
+				healthStatus={healthStatus}
 			>
 				<DoctorsProvider doctorsInit={doctors}>
 					<MsgProvider msgsInit={msgs} appointment={appointment}>

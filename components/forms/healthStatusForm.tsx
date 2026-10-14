@@ -31,16 +31,16 @@ import {
 } from "../custom/motion-stepper";
 import getHealthStatusFormStepper from "../formSteppers/healthStatusFormStepper";
 import { Separator } from "../ui/separator";
+import { useCurrent } from "@/contexts/Current.context";
 
 export default function HealthStatusForm({
 	action,
-	patient,
 	healthStatus,
 }: {
 	action: "Create" | "Update";
-	patient: IPatient;
 	healthStatus?: IHealthStatus;
 }) {
+	const patient = useCurrent().currentPatient!;
 	const [activeStep, setActiveStep] = useState<number>(1);
 	const pathname = usePathname();
 	const [isPending, startTransition] = useTransition();

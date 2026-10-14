@@ -25,6 +25,7 @@ import {
 } from "../ui/dropdown-menu";
 import { SidebarMenuButton, useSidebar } from "../ui/sidebar";
 import PatientProfilePanel from "../panels/PatientProfilePanel";
+import LinkBtn from "../btns/LinkBtn";
 
 export default function AppSidebarFooter() {
 	const { state: sidebarState } = useSidebar();
@@ -92,21 +93,32 @@ export default function AppSidebarFooter() {
 					className="min-w-56"
 				>
 					{doctor ? (
+						// <DoctorFormPanel action="Create">
+						<LinkBtn
+							link={{ href: "/onboarding/doctor-application" }}
+							size="sm"
+							className="w-full"
+						>
+							Apply as Doctor <Hospital />
+						</LinkBtn>
+					) : (
+						// </DoctorFormPanel>
 						<DropdownMenuItem disabled={isDoctorMode}>
 							<Link href={`/home`} className="flex item-center gap-x-1">
 								<UserPlus2 />
 								Patient mode
 							</Link>
 						</DropdownMenuItem>
-					) : (
-						<DoctorFormPanel action="Create">
-							<MyBtn size="sm" className="w-full">
-								Apply as Doctor <Hospital />
-							</MyBtn>
-						</DoctorFormPanel>
 					)}
 
 					{patient ? (
+						<PatientFormPanel action="create">
+							<MyBtn size="sm" className="w-full">
+								Register as patient
+								<UserPlus2 />
+							</MyBtn>
+						</PatientFormPanel>
+					) : (
 						<DropdownMenuItem disabled={!isDoctorMode}>
 							<Link
 								href={`/doctor/${doctor?.id!}`}
@@ -116,13 +128,6 @@ export default function AppSidebarFooter() {
 								Doctor mode
 							</Link>
 						</DropdownMenuItem>
-					) : (
-						<PatientFormPanel action="create">
-							<MyBtn size="sm" className="w-full">
-								Register as patient
-								<UserPlus2 />
-							</MyBtn>
-						</PatientFormPanel>
 					)}
 				</DropdownMenuContent>
 			</DropdownMenu>

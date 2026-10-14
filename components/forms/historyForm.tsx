@@ -38,18 +38,17 @@ import {
 import { createHistory, updateHistory } from "@/lib/actions/history.action";
 import getHistoryFormStepper from "../formSteppers/HistoryFormStepper";
 import { goeyToast } from "goey-toast";
+import { useCurrent } from "@/contexts/Current.context";
 
 export default function HistoryForm({
 	history,
 	action,
-	currentUser,
-	patient,
 }: {
 	history?: IHistory;
 	action: "Create" | "Update";
-	currentUser: IUser;
-	patient: IPatient;
 }) {
+	const patient = useCurrent().currentPatient!;
+	const currentUser = useCurrent().currentUser!;
 	const [activeStep, setActiveStep] = useState<number>(1);
 	const pathname = usePathname();
 	const [isPending, startTransition] = useTransition();

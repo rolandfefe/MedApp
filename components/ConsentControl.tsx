@@ -1,6 +1,6 @@
 "use client";
 import { useConsultation } from "@/contexts/consultation.context";
-import { PlusCircle } from "lucide-react";
+import { HeartPulse, PlusCircle } from "lucide-react";
 import {
 	FormPanel,
 	FormPanelContent,
@@ -16,6 +16,8 @@ import { Spinner } from "./ui/spinner";
 import { AnimatePresence, motion } from "motion/react";
 import { goeyToast } from "goey-toast";
 import { pusherServer } from "@/lib/pusher/pusher.server";
+import Void from "./custom/Void";
+import VitalsSection from "./VitalsSection";
 
 /**
  * @description Manage Consent btw doctor and patient
@@ -114,10 +116,18 @@ ConsentControl.Patient = () => {
 };
 
 ConsentControl.Doctor = () => {
-	const { appointment, patientHistory } = useConsultation();
+	const { appointment, patientHistory, healthStatus } = useConsultation();
 
 	const [consentTab, setConsentTab] =
 		useState<NonNullable<IAppointment["consentLevels"]>[number]>();
+
+	const promptPatientHandler = async (prompt: "History" | "Vitals") => {
+		await pusherServer.trigger(
+			`appointment-${appointment.patient?.id}`,
+			`patient-prompt-${appointment.patient?.id}`,
+			{ id: appointment.id, prompt }
+		);
+	};
 
 	return (
 		<div>
@@ -144,7 +154,43 @@ ConsentControl.Doctor = () => {
 							</FormPanelTrigger>
 							<FormPanelContent>
 								{consent === ePatientConsent.HISTORY ? (
-									<PatientHistorySection history={patientHistory!} />
+									<>
+										{patientHistory ? (
+											<PatientHistorySection history={patientHistory!} />
+										) : (
+											<div>
+												<Void msg="Patient has not filled history form" />
+												<MyBtn
+													size="lg"
+													onClick={() => promptPatientHandler("History")}
+													className="flex w-fit md:w-1/3 mx-auto mt-4"
+												>
+													Take patient history
+												</MyBtn>
+											</div>
+										)}
+									</>
+								) : consent === ePatientConsent.VITALS ? (
+									<>
+										{healthStatus ? (
+											<VitalsSection
+												healthStatus={healthStatus}
+												patient={appointment.patient as IPatient}
+											/>
+										) : (
+											<div>
+												<Void msg="Patient has not filled history form" />
+												<MyBtn
+													size="lg"
+													onClick={() => promptPatientHandler("Vitals")}
+													className="flex w-fit md:w-1/3 mx-auto mt-4"
+												>
+													<HeartPulse />
+													Take patient Vitals
+												</MyBtn>
+											</div>
+										)}
+									</>
 								) : (
 									"Other Panels"
 								)}

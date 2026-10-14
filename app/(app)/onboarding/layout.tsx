@@ -1,3 +1,4 @@
+import OnboardingNav from "@/components/layouts/OnboardingNav";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CurrentProvider } from "@/contexts/Current.context";
 import { getCurrentUser } from "@/lib/actions/user.actions";
@@ -26,6 +27,8 @@ export default async function layout({ children }: { children: ReactNode }) {
 			patient={currentPatient}
 		>
 			<ScrollArea className="h-screen">
+				<OnboardingNav className="mb-10" />
+
 				<main className="p-1">{children}</main>
 			</ScrollArea>
 		</CurrentProvider>

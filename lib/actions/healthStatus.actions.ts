@@ -3,7 +3,6 @@
 import config from "@/payload.config";
 import { updateTag, unstable_cache as cache } from "next/cache";
 import { getPayload } from "payload";
-import healthStatusModel from "../db/models/healthStatus.model";
 
 const payload = await getPayload({ config });
 
@@ -90,13 +89,29 @@ export const getHealthStatuses = cache(
 );
 
 export const getHealthStatus = cache(
-	async (id: string, latest?: boolean): Promise<IHealthStatus> => {
+	async ({
+		id,
+		patient,
+		latest,
+	}: {
+		id?: string;
+		patient?: string;
+		latest?: boolean;
+	}): Promise<IHealthStatus> => {
 		try {
-			return await payload.findByID({
+			const {
+				docs: [healthStatus],
+			} = await payload.find({
 				collection: "healthStatuses",
-				id,
+				where: {
+					or: [{ id: { equals: id } }, { patient: { equals: patient } }],
+				},
 				depth: 1,
+				limit: 1,
+				pagination: false,
 			});
+
+			return healthStatus;
 		} catch (error: any) {
 			throw new Error(error);
 		}

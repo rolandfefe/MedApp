@@ -7,13 +7,14 @@ import LogoText from "./LogoText";
 import { SignedIn, UserButton } from "@clerk/nextjs";
 import { ThemeBtn } from "../btns/ThemeBtn";
 import Heading from "../custom/Heading";
+import BackBtn from "../btns/BackBtn";
 // import { SignedIn } from "@clerk/clerk-react";
 
 export default function OnboardingNav({ className }: { className?: string }) {
 	return (
 		<nav
 			className={cn(
-				"flex items-center gap-x-3 justify-between sticky top-0 rounded-xl p-2 glass glass-shadow w-[98%] mx-auto",
+				"flex items-center gap-x-3 justify-between sticky top-0  z-20 rounded-xl p-2 glass glass-shadow w-[98%] mx-auto",
 				className
 			)}
 		>
@@ -32,6 +33,7 @@ export default function OnboardingNav({ className }: { className?: string }) {
 			<Heading className="text-xl md:text-2xl">OnBoarding</Heading>
 
 			<div className="flex items-center gap-x-2">
+				<BackBtn />
 				<ThemeBtn />
 				<SignedIn>
 					<UserButton />

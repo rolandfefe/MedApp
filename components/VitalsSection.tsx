@@ -1,13 +1,11 @@
 import React from "react";
 
 export default function VitalsSection({
-	vitals,
 	patient,
-	currentDoctor,
+	healthStatus,
 }: {
 	patient: IPatient;
-	currentDoctor: IDoctor;
-	vitals: IHealthStatus["vitals"];
+	healthStatus: IHealthStatus;
 }) {
 	return <div>VitalsSection</div>;
 }

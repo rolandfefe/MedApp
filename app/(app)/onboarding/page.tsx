@@ -18,8 +18,6 @@ export default async function page() {
 
 	return (
 		<div className="space-y-3 p-3">
-			<OnboardingNav className="mb-10" />
-
 			<section className="flex flex-col sm:flex-row items-start gap-3 sm:px-10 md:px-20">
 				<Image
 					src={"/assets/welcome.svg"}
@@ -62,9 +60,9 @@ export default async function page() {
 
 						{/* <DoctorFormPanel> */}
 						<LinkBtn
-							link={{ href: "/doctor-application" }}
+							link={{ href: "/onboarding/doctor-application" }}
 							size="lg"
-							className="flex-1"
+							className="flex-1!"
 						>
 							<Hospital /> Doctor
 						</LinkBtn>
