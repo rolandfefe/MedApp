@@ -25,6 +25,7 @@ import {
 import { VerdictsProvider } from "@/contexts/Verdicts.context";
 import VerdictsFeed from "./Feeds/VerdictsFeed";
 import LinkBtn from "./btns/LinkBtn";
+import PatientProfilePanel from "./panels/PatientProfilePanel";
 
 /**
  * @description Manage Consent btw doctor and patient
@@ -203,11 +204,15 @@ ConsentControl.Doctor = () => {
 													}}
 													className="flex w-fit md:w-1/3 mx-auto mt-4"
 												>
-													<Stethoscope />s Diagnosis
+													<Stethoscope /> Diagnosis
 												</LinkBtn>
 											</div>
 										)}
 									</>
+								) : consent === ePatientConsent.PATIENT_PROFILE ? (
+									<PatientProfilePanel.Body
+										patient={appointment.patient as IPatient}
+									/>
 								) : (
 									"Other Panels"
 								)}

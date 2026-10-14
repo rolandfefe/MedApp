@@ -46,8 +46,6 @@ export default function PatientProfilePanel({
 }: {
 	patient: IPatient;
 } & ComponentProps<typeof DynamicPanelTrigger>) {
-	const emergencyContacts = patient.emergencyContacts!;
-
 	return (
 		<DynamicPanel>
 			<DynamicPanelTrigger {...props} className={cn("", className)}>
@@ -69,143 +67,7 @@ export default function PatientProfilePanel({
 						<Separator className="mt-1 mb-3" />
 					</div>
 
-					<ScrollArea className="h-[52vh] sm:h-[66vh]">
-						<motion.div
-							variants={motionVariants}
-							initial="hidden"
-							animate="visible"
-							transition={{
-								delayChildren: stagger(0.3),
-							}}
-							className={cn("space-y-4")}
-						>
-							<motion.div
-								variants={motionVariants}
-								layout
-								className="space-y-2"
-							>
-								<p className="text-xs md:text-sm font-medium text-muted-foreground flex items-center gap-x-1">
-									<Calendar1 size={18} />
-									<span>Date of birth:</span>
-								</p>
-								<p className="font-mono">
-									{moment(patient.DOB).format("Do-MM-YYYY")}
-								</p>
-								<Separator />
-							</motion.div>
-							<motion.div
-								variants={motionVariants}
-								layout
-								className="space-y-2"
-							>
-								<p className="text-xs md:text-sm font-medium text-muted-foreground flex items-center gap-x-1">
-									<ArrowUpRightFromCircleIcon size={18} />
-									<span>Gender:</span>
-								</p>
-								<p className="font-mono">{patient.gender}</p>
-								<Separator />
-							</motion.div>
-							<motion.div
-								variants={motionVariants}
-								layout
-								className="space-y-2"
-							>
-								<p className="text-xs md:text-sm font-medium text-muted-foreground flex items-center gap-x-1">
-									<Languages size={18} />
-									<span>Languages:</span>
-								</p>
-								<p className="font-mono">{patient.languages?.join(", ")}</p>
-								<Separator />
-							</motion.div>
-							<motion.div
-								variants={motionVariants}
-								layout
-								className="space-y-2"
-							>
-								<p className="text-xs md:text-sm font-medium text-muted-foreground flex items-center gap-x-1">
-									<Users size={18} />
-									<span>Marital Status:</span>
-								</p>
-								<p className="font-mono">{patient.maritalStatus}</p>
-								<Separator />
-							</motion.div>
-							<motion.div
-								variants={motionVariants}
-								layout
-								className="space-y-2"
-							>
-								<p className="text-xs md:text-sm font-medium text-muted-foreground flex items-center gap-x-1">
-									<HandCoins size={18} />
-									<span>Occupation:</span>
-								</p>
-								<p className="font-mono capitalize">{patient.occupation}</p>
-								<Separator />
-							</motion.div>
-							<motion.div
-								variants={motionVariants}
-								layout
-								className="space-y-2"
-							>
-								<p className="text-xs md:text-sm font-medium text-muted-foreground flex items-center gap-x-1">
-									<Globe2 size={18} />
-									<span>Race:</span>
-								</p>
-								<p className="font-mono">{patient.race}</p>
-								<Separator />
-							</motion.div>
-
-							{/* Contacts */}
-							<motion.section
-								variants={motionVariants}
-								transition={{ delayChildren: stagger(0.3) }}
-								layout
-								className="space-y-2"
-							>
-								<motion.div variants={motionVariants} layout>
-									<Heading className="font-medium text-primary text-lg">
-										<PhoneCall />
-										<span>Emergency contacts:</span>
-									</Heading>
-								</motion.div>
-
-								{emergencyContacts.map((c) => (
-									<motion.div
-										key={c.id}
-										variants={motionVariants}
-										layout
-										className="space-y-3 relative"
-									>
-										<div className="flex item-center gap-x-1">
-											<Heading className="text-xs md:text-sm font-medium text-muted-foreground flex items-center gap-x-1">
-												<User size={18} />
-												<span>{c.name}</span>
-											</Heading>
-											~
-											<Badge variant={"primary-luminous"}>
-												{c.relationship}
-											</Badge>
-										</div>
-
-										<CopyBadge
-											variant="secondary"
-											className="textprimary font-mono text-base"
-											content={c.phone}
-										/>
-										<Separator />
-
-										<Badge variant="outline" className="absolute top-1 right-1">
-											Priority - {c.priority}
-										</Badge>
-
-										<CallBtn
-											contact={c.phone}
-											className="absolute bottom-1 right-1"
-										/>
-									</motion.div>
-								))}
-							</motion.section>
-						</motion.div>
-					</ScrollArea>
+					<PatientProfilePanel.Body patient={patient} />
 				</div>
 			</DynamicPanelContent>
 		</DynamicPanel>
@@ -227,5 +89,122 @@ PatientProfilePanel.InfoAside = ({
 				<PatientCard.MD patient={patient} className="shadow-none border-0" />
 			</section>
 		</div>
+	);
+};
+
+PatientProfilePanel.Body = ({ patient }: { patient: IPatient }) => {
+	const emergencyContacts = patient.emergencyContacts!;
+
+	return (
+		<ScrollArea className="h-[52vh] sm:h-[66vh]">
+			<motion.div
+				variants={motionVariants}
+				initial="hidden"
+				animate="visible"
+				transition={{
+					delayChildren: stagger(0.3),
+				}}
+				className={cn("space-y-4")}
+			>
+				<motion.div variants={motionVariants} layout className="space-y-2">
+					<p className="text-xs md:text-sm font-medium text-muted-foreground flex items-center gap-x-1">
+						<Calendar1 size={18} />
+						<span>Date of birth:</span>
+					</p>
+					<p className="font-mono">
+						{moment(patient.DOB).format("Do-MM-YYYY")}
+					</p>
+					<Separator />
+				</motion.div>
+				<motion.div variants={motionVariants} layout className="space-y-2">
+					<p className="text-xs md:text-sm font-medium text-muted-foreground flex items-center gap-x-1">
+						<ArrowUpRightFromCircleIcon size={18} />
+						<span>Gender:</span>
+					</p>
+					<p className="font-mono">{patient.gender}</p>
+					<Separator />
+				</motion.div>
+				<motion.div variants={motionVariants} layout className="space-y-2">
+					<p className="text-xs md:text-sm font-medium text-muted-foreground flex items-center gap-x-1">
+						<Languages size={18} />
+						<span>Languages:</span>
+					</p>
+					<p className="font-mono">{patient.languages?.join(", ")}</p>
+					<Separator />
+				</motion.div>
+				<motion.div variants={motionVariants} layout className="space-y-2">
+					<p className="text-xs md:text-sm font-medium text-muted-foreground flex items-center gap-x-1">
+						<Users size={18} />
+						<span>Marital Status:</span>
+					</p>
+					<p className="font-mono">{patient.maritalStatus}</p>
+					<Separator />
+				</motion.div>
+				<motion.div variants={motionVariants} layout className="space-y-2">
+					<p className="text-xs md:text-sm font-medium text-muted-foreground flex items-center gap-x-1">
+						<HandCoins size={18} />
+						<span>Occupation:</span>
+					</p>
+					<p className="font-mono capitalize">{patient.occupation}</p>
+					<Separator />
+				</motion.div>
+				<motion.div variants={motionVariants} layout className="space-y-2">
+					<p className="text-xs md:text-sm font-medium text-muted-foreground flex items-center gap-x-1">
+						<Globe2 size={18} />
+						<span>Race:</span>
+					</p>
+					<p className="font-mono">{patient.race}</p>
+					<Separator />
+				</motion.div>
+
+				{/* Contacts */}
+				<motion.section
+					variants={motionVariants}
+					transition={{ delayChildren: stagger(0.3) }}
+					layout
+					className="space-y-2"
+				>
+					<motion.div variants={motionVariants} layout>
+						<Heading className="font-medium text-primary text-lg">
+							<PhoneCall />
+							<span>Emergency contacts:</span>
+						</Heading>
+					</motion.div>
+
+					{emergencyContacts?.map((c) => (
+						<motion.div
+							key={c.id}
+							variants={motionVariants}
+							layout
+							className="space-y-3 relative"
+						>
+							<div className="flex item-center gap-x-1">
+								<Heading className="text-xs md:text-sm font-medium text-muted-foreground flex items-center gap-x-1">
+									<User size={18} />
+									<span>{c.name}</span>
+								</Heading>
+								~<Badge variant={"primary-luminous"}>{c.relationship}</Badge>
+							</div>
+
+							<CopyBadge
+								variant="secondary"
+								className="textprimary font-mono text-base"
+								content={c.phone}
+							/>
+							<Separator />
+
+							<Badge variant="outline" className="absolute top-1 right-1">
+								Priority - {c.priority}
+							</Badge>
+
+							<CallBtn
+								contact={c.phone}
+								className="absolute bottom-1 right-1"
+							/>
+						</motion.div>
+					))}
+				</motion.section>
+			</motion.div>
+		</ScrollArea>
 	);
 };
