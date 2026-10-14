@@ -1,6 +1,16 @@
 "use client";
 
-import { createContext, ReactNode, useContext, useMemo } from "react";
+import { getAppointment } from "@/lib/actions/appointment.actions";
+import { pusherClient } from "@/lib/pusher/pusher.client";
+import {
+	createContext,
+	ReactNode,
+	useContext,
+	useEffect,
+	useEffectEvent,
+	useMemo,
+	useState,
+} from "react";
 
 interface ContextProps {
 	appointment: IAppointment;
@@ -27,9 +37,29 @@ export const useConsultation = () => {
 
 export const ConsultationProvider = ({
 	children,
+	appointment,
 	...props
 }: { children: ReactNode } & ContextProps) => {
-	const contextValue = props;
+	const [_appointment, setAppointment] = useState<IAppointment>(appointment);
+	const contextValue = { ...props, appointment: _appointment };
+
+	const pusherChannel = pusherClient.subscribe(`appointment-${appointment.id}`);
+
+	const pusherEvent = useEffectEvent(() => {
+		pusherChannel.bind(
+			`appointment-${appointment.id}-updated`,
+			async (id: string) => {
+				const a = await getAppointment(id);
+				setAppointment(a);
+			}
+		);
+	});
+
+	useEffect(() => {
+		pusherEvent();
+
+		return () => pusherClient.unsubscribe(`appointment-${appointment.id}`);
+	}, [pusherChannel]);
 
 	return (
 		<ConsultationContext.Provider value={contextValue}>

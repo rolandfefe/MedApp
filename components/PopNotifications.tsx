@@ -13,7 +13,9 @@ import { HealthStatusFormPanel } from "./forms/healthStatusForm";
 
 export default function PopNotifications() {
 	const { currentPatient, currentDoctor } = useCurrent();
-	const [isOpen, setIsOpen] = useState<boolean>(false);
+	const [historyFormIsOpen, setHistoryFormIsOpen] = useState<boolean>(false);
+	const [HealthStatusFormIsOpen, setHealthStatusFormFormIsOpen] =
+		useState<boolean>(false);
 
 	const router = useRouter();
 
@@ -60,9 +62,11 @@ export default function PopNotifications() {
 
 							<div className="mt-2">
 								{prompt == "History" ? (
-									<MyBtn onClick={() => setIsOpen(true)}>Take history</MyBtn>
+									<MyBtn onClick={() => setHistoryFormIsOpen(true)}>
+										Take history
+									</MyBtn>
 								) : (
-									<MyBtn onClick={() => setIsOpen(true)}>
+									<MyBtn onClick={() => setHealthStatusFormFormIsOpen(true)}>
 										Take Health status vitals
 									</MyBtn>
 								)}
@@ -111,11 +115,17 @@ export default function PopNotifications() {
 		<div>
 			<HistoryFormPanel
 				action="Create"
-				panelProps={{ open: isOpen, onOpenChange: setIsOpen }}
+				panelProps={{
+					open: historyFormIsOpen,
+					onOpenChange: setHistoryFormIsOpen,
+				}}
 			/>
 			<HealthStatusFormPanel
 				action="Create"
-				panelProps={{ open: isOpen, onOpenChange: setIsOpen }}
+				panelProps={{
+					open: HealthStatusFormIsOpen,
+					onOpenChange: setHealthStatusFormFormIsOpen,
+				}}
 			/>
 		</div>
 	);

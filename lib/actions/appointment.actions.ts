@@ -45,11 +45,11 @@ export const updateAppointment = async (data: IAppointment) => {
 
 		updateTag("appointments");
 
-		// pusherServer.trigger(
-		// 	`appointment-${appointment.id}`,
-		// 	`appointment-${appointment.id}-updated`,
-		// 	appointment
-		// );
+		pusherServer.trigger(
+			`appointment-${appointment.id}`,
+			`appointment-${appointment.id}-updated`,
+			appointment.id
+		);
 	} catch (error: any) {
 		throw new Error(error);
 	}
