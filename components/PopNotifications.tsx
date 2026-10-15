@@ -133,7 +133,7 @@ export default function PopNotifications() {
 		);
 
 		appointmentsDoctorPusherChannel.bind(
-			`consent-denied-${currenthelloDoctor?.id}`,
+			`consent-denied-${currentDoctor?.id}`,
 			async ({ id, consent }: { id: string; consent: string }) => {
 				const appointment = await getAppointment(id);
 				goeyToast.warning(`Consent Denied`, {
