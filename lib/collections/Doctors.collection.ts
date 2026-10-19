@@ -12,7 +12,13 @@ export const Doctors: CollectionConfig = {
 	slug: "doctors",
 	// ! typescript:  { interface: "IDoctor" },
 	fields: [
-		{ name: "user", type: "relationship", relationTo: "users", required: true },
+		{
+			name: "user",
+			type: "relationship",
+			relationTo: "users",
+			unique: true,
+			required: true,
+		},
 		{ name: "DOB", type: "date", required: true },
 		{
 			name: "gender",

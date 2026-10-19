@@ -48,7 +48,7 @@ export default async function page() {
 					</div>
 				</div>
 			</section>
-			<section className="border rounded-2xl p-3">
+			<section className="border rounded-2xl p-3">s
 				<HealthStatusDashboard healthStatuses={statuses} />
 			</section>
 		</div>
